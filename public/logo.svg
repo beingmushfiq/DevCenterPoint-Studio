@@ -1,0 +1,92 @@
+<svg width="600" height="640" viewBox="0 0 600 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logo-p-gradient" x1="290" y1="90" x2="420" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="60%" stop-color="#1D4ED8" />
+      <stop offset="100%" stop-color="#1E40AF" />
+    </linearGradient>
+
+    <radialGradient id="logo-iris-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(304 212) rotate(45) scale(38)">
+      <stop offset="0%" stop-color="#60A5FA" />
+      <stop offset="45%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </radialGradient>
+  </defs>
+
+  <!-- === LOGO MARK (TOP CENTERED) === -->
+  <g id="logo-mark" transform="translate(45, 0)">
+    <!-- Left 'D' in Deep Navy Charcoal -->
+    <path
+      d="M 120 70 
+         L 255 70 
+         C 335 70, 375 130, 375 220 
+         C 375 310, 335 370, 255 370 
+         L 120 370 
+         Z
+         M 175 130 
+         L 175 310 
+         L 245 310 
+         C 285 310, 310 275, 310 220 
+         C 310 165, 285 130, 245 130 
+         Z"
+      fill="#0E131F"
+    />
+
+    <!-- Right 'P' Loop with Pointer Tail -->
+    <path
+      d="M 252 88
+         C 315 88, 385 115, 385 198
+         C 385 268, 335 302, 275 302
+         L 256 366
+         L 256 282
+         C 256 282, 252 170, 252 88
+         Z"
+      fill="url(#logo-p-gradient)"
+    />
+
+    <!-- Outer White Target Ring with Precision Border -->
+    <circle
+      cx="260"
+      cy="216"
+      r="58"
+      fill="#FFFFFF"
+      stroke="#0E131F"
+      stroke-width="5"
+    />
+
+    <!-- Inner Center Point Blue Sphere -->
+    <circle
+      cx="260"
+      cy="216"
+      r="34"
+      fill="url(#logo-iris-gradient)"
+    />
+
+    <!-- Specular Reflection Highlight -->
+    <circle
+      cx="249"
+      cy="205"
+      r="8"
+      fill="#93C5FD"
+      opacity="0.9"
+    />
+
+    <!-- Angled Code Brackets </> inside the P Loop -->
+    <g transform="translate(328, 142) rotate(38)" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -12 -9 L -18 0 L -12 9" />
+      <path d="M 4 -12 L -4 12" />
+      <path d="M 12 -9 L 18 0 L 12 9" />
+    </g>
+  </g>
+
+  <!-- === TYPOGRAPHY (STACKED) === -->
+  <!-- Wordmark -->
+  <text x="300" y="475" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="62" font-weight="900" letter-spacing="-1.5">
+    <tspan fill="#3B82F6">DevCenter</tspan><tspan fill="#FFFFFF">Point</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="300" y="530" text-anchor="middle" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="700" fill="#CBD5E1" letter-spacing="7">
+    CODE. BUILD. DEPLOY. SCALE.
+  </text>
+</svg>

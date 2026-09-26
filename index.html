@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>DevCenterPoint — Digital Products, Software & Intelligent Systems</title>
+    <meta name="description" content="DevCenterPoint designs and engineers software products, SaaS platforms, AI-powered systems, healthcare tech, and digital experiences built for real-world impact." />
+    
+    <!-- Open Graph / Meta -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="DevCenterPoint — Digital Products, Software & Intelligent Systems" />
+    <meta property="og:description" content="We don't just develop software. We engineer digital products." />
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#070b14" media="(prefers-color-scheme: dark)" />
+
+    <!-- Instant Pre-Hydration Theme Script (Light Mode Default) -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('dcp_theme');
+          var isDark = saved === 'dark'; // Light mode is default if not explicitly dark
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-white antialiased selection:bg-blue-600 selection:text-white font-sans overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

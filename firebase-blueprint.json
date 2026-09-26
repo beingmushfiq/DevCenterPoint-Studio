@@ -1,0 +1,116 @@
+{
+  "entities": {
+    "inquiry": {
+      "collectionName": "inquiries",
+      "fields": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "Full name of the inquiring partner"
+        },
+        "email": {
+          "type": "string",
+          "required": true,
+          "description": "Work email address for correspondence"
+        },
+        "company": {
+          "type": "string",
+          "required": false,
+          "description": "Company or organization name"
+        },
+        "projectType": {
+          "type": "string",
+          "required": true,
+          "description": "Domain/category of product to engineer"
+        },
+        "budgetRange": {
+          "type": "string",
+          "required": true,
+          "description": "Estimated capital allocation range"
+        },
+        "timeline": {
+          "type": "string",
+          "required": true,
+          "description": "Desired deployment timeline"
+        },
+        "description": {
+          "type": "string",
+          "required": false,
+          "description": "Overview of technical requirements and goals"
+        },
+        "selectedTech": {
+          "type": "array",
+          "required": true,
+          "description": "Target technologies and infrastructure preferences"
+        },
+        "referenceNumber": {
+          "type": "string",
+          "required": true,
+          "description": "Human-readable inquiry tracking code"
+        },
+        "status": {
+          "type": "string",
+          "required": true,
+          "description": "Triage status: pending, reviewed, contacted"
+        },
+        "authUid": {
+          "type": "string",
+          "required": false,
+          "description": "Auth UID of the submitter session"
+        },
+        "submittedAt": {
+          "type": "string",
+          "required": true,
+          "description": "ISO timestamp string of client submission"
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "required": true,
+          "description": "Server timestamp of document persistence"
+        }
+      }
+    },
+    "newsletterSubscriber": {
+      "title": "Newsletter Subscriber",
+      "description": "Email subscriber record for company engineering updates and architectural dispatches",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Subscriber work or personal email address",
+          "maxLength": 150
+        },
+        "source": {
+          "type": "string",
+          "description": "Signup source component identifier",
+          "maxLength": 50
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "unsubscribed"],
+          "description": "Subscription status"
+        },
+        "subscribedAt": {
+          "type": "string",
+          "description": "ISO timestamp string of subscription"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Server timestamp of record persistence"
+        }
+      },
+      "required": ["email", "status", "subscribedAt"]
+    }
+  },
+  "firestore": {
+    "/inquiries/{inquiryId}": {
+      "schema": "inquiry",
+      "description": "Public client project intake and scoped estimates"
+    },
+    "/newsletter_subscribers/{subscriberId}": {
+      "schema": "newsletterSubscriber",
+      "description": "Newsletter email subscribers for company updates and architectural dispatches"
+    }
+  }
+}

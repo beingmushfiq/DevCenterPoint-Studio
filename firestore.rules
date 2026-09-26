@@ -1,0 +1,58 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Valid document ID
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 64;
+    }
+
+    // Validation helper for incoming project inquiry payload
+    function isValidInquiry(data) {
+      return data.keys().hasAll(['name', 'email', 'projectType', 'timeline', 'referenceNumber', 'status', 'submittedAt'])
+        && data.keys().hasOnly(['name', 'email', 'company', 'projectType', 'budgetRange', 'timeline', 'description', 'selectedTech', 'referenceNumber', 'status', 'authUid', 'submittedAt', 'createdAt'])
+        && data.name is string && data.name.size() >= 1 && data.name.size() <= 100
+        && data.email is string && data.email.size() >= 3 && data.email.size() <= 150
+        && (!('company' in data) || (data.company is string && data.company.size() <= 100))
+        && data.projectType is string && data.projectType.size() >= 1 && data.projectType.size() <= 100
+        && (!('budgetRange' in data) || (data.budgetRange is string && data.budgetRange.size() <= 50))
+        && data.timeline is string && data.timeline.size() >= 1 && data.timeline.size() <= 50
+        && (!('description' in data) || (data.description is string && data.description.size() <= 5000))
+        && (!('selectedTech' in data) || (data.selectedTech is list && data.selectedTech.size() <= 20))
+        && data.referenceNumber is string && data.referenceNumber.size() >= 4 && data.referenceNumber.size() <= 50
+        && data.status in ['pending', 'reviewed', 'contacted']
+        && (!('authUid' in data) || (data.authUid is string && data.authUid.size() <= 128))
+        && data.submittedAt is string && data.submittedAt.size() <= 50;
+    }
+
+    // Inquiries Collection: Public intake for client project briefs
+    match /inquiries/{inquiryId} {
+      allow create: if isValidId(inquiryId) && isValidInquiry(request.resource.data);
+
+      // Authenticated users can read their own submitted inquiries
+      allow get: if request.auth != null && resource.data.authUid == request.auth.uid;
+      allow list: if request.auth != null && resource.data.authUid == request.auth.uid;
+
+      // Inquiries are immutable client records; cannot be modified or deleted by clients
+      allow update, delete: if false;
+    }
+
+    // Validation helper for newsletter subscription
+    function isValidNewsletterSubscriber(data) {
+      return data.keys().hasAll(['email', 'status', 'subscribedAt'])
+        && data.keys().hasOnly(['email', 'source', 'status', 'subscribedAt', 'createdAt'])
+        && data.email is string && data.email.size() >= 5 && data.email.size() <= 150
+        && (!('source' in data) || (data.source is string && data.source.size() <= 50))
+        && data.status in ['active', 'unsubscribed']
+        && data.subscribedAt is string && data.subscribedAt.size() <= 50;
+    }
+
+    // Newsletter Subscribers: Email collection for updates and architectural dispatches
+    match /newsletter_subscribers/{subscriberId} {
+      allow create: if isValidId(subscriberId) && isValidNewsletterSubscriber(request.resource.data);
+      // PII Protection: Public cannot read or enumerate emails
+      allow read, update, delete: if false;
+    }
+  }
+}

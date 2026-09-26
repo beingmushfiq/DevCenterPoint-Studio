@@ -1,0 +1,6 @@
+{
+  "name": "DevCenterPoint",
+  "description": "DevCenterPoint designs and engineers software products, intelligent systems, and digital experiences built for real-world impact.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

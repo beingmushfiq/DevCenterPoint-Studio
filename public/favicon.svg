@@ -1,0 +1,81 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fav-p-gradient" x1="240" y1="120" x2="380" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="60%" stop-color="#1D4ED8" />
+      <stop offset="100%" stop-color="#1E40AF" />
+    </linearGradient>
+
+    <radialGradient id="fav-iris-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(262 250) rotate(45) scale(38)">
+      <stop offset="0%" stop-color="#60A5FA" />
+      <stop offset="45%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </radialGradient>
+  </defs>
+
+  <!-- Dark Rounded Container (Favicon Base) -->
+  <rect width="512" height="512" rx="116" fill="#050811" />
+
+  <!-- Left 'D' in Solid White -->
+  <path
+    d="M 125 106 
+       L 260 106 
+       C 340 106, 380 166, 380 256 
+       C 380 346, 340 406, 260 406 
+       L 125 406 
+       Z
+       M 180 166 
+       L 180 346 
+       L 250 346 
+       C 290 346, 315 311, 315 256 
+       C 315 201, 290 166, 250 166 
+       Z"
+    fill="#FFFFFF"
+  />
+
+  <!-- Right 'P' Loop with Pointer Tail -->
+  <path
+    d="M 256 124
+       C 320 124, 390 151, 390 234
+       C 390 304, 340 338, 280 338
+       L 260 402
+       L 260 318
+       C 260 318, 256 200, 256 124
+       Z"
+    fill="url(#fav-p-gradient)"
+  />
+
+  <!-- Outer White Target Ring -->
+  <circle
+    cx="268"
+    cy="252"
+    r="58"
+    fill="#FFFFFF"
+    stroke="#050811"
+    stroke-width="5"
+  />
+
+  <!-- Inner Center Point Blue Sphere -->
+  <circle
+    cx="268"
+    cy="252"
+    r="34"
+    fill="url(#fav-iris-gradient)"
+  />
+
+  <!-- Specular Reflection Highlight -->
+  <circle
+    cx="257"
+    cy="241"
+    r="8"
+    fill="#93C5FD"
+    opacity="0.9"
+  />
+
+  <!-- Angled Code Brackets </> inside the P Loop -->
+  <g transform="translate(334, 178) rotate(38)" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M -12 -9 L -18 0 L -12 9" />
+    <path d="M 4 -12 L -4 12" />
+    <path d="M 12 -9 L 18 0 L 12 9" />
+  </g>
+</svg>
