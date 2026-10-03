@@ -1,91 +1,63 @@
-<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
   <defs>
-    <!-- Vibrant Blue Gradient for P shape -->
-    <linearGradient id="mark-p-gradient" x1="240" y1="120" x2="380" y2="340" gradientUnits="userSpaceOnUse">
+    <linearGradient id="dcp-blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#2563EB" />
-      <stop offset="60%" stop-color="#1D4ED8" />
+      <stop offset="50%" stop-color="#1D4ED8" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+    <linearGradient id="dcp-core-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
       <stop offset="100%" stop-color="#1E40AF" />
     </linearGradient>
-
-    <!-- Center Point Sphere Gradient -->
-    <radialGradient id="mark-iris-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(254 240) rotate(45) scale(38)">
-      <stop offset="0%" stop-color="#60A5FA" />
-      <stop offset="45%" stop-color="#2563EB" />
-      <stop offset="100%" stop-color="#1E3A8A" />
-    </radialGradient>
-
-    <style>
-      .mark-d-shape { fill: #0E131F; }
-      @media (prefers-color-scheme: dark) {
-        .mark-d-shape { fill: #FFFFFF; }
-      }
-    </style>
   </defs>
 
-  <!-- Left 'D' in Deep Navy Charcoal (Light) / White (Dark) -->
-  <path
-    class="mark-d-shape"
-    d="M 120 100 
-       L 255 100 
-       C 335 100, 375 160, 375 250 
-       C 375 340, 335 400, 255 400 
-       L 120 400 
-       Z
-       M 175 160 
-       L 175 340 
-       L 245 340 
-       C 285 340, 310 305, 310 250 
-       C 310 195, 285 160, 245 160 
-       Z"
-    fill="#0E131F"
-  />
+  <!-- Left 'D' Form in Dark Carbon -->
+  <path d="M 140 110 
+           L 260 110 
+           C 275 110, 285 116, 292 125 
+           C 272 138, 255 160, 245 185
+           L 205 185
+           L 205 315
+           L 270 315
+           C 285 315, 305 305, 320 290
+           L 320 340
+           C 300 375, 260 390, 215 390
+           L 140 390 
+           Z" 
+        fill="#0D111A" />
 
-  <!-- Right 'P' Loop with Pointer Tail -->
-  <path
-    d="M 252 118
-       C 315 118, 385 145, 385 228
-       C 385 298, 335 332, 275 332
-       L 256 396
-       L 256 312
-       C 256 312, 252 200, 252 118
-       Z"
-    fill="url(#mark-p-gradient)"
-  />
+  <!-- Right 'P' Pin Form in Electric Blue -->
+  <path d="M 268 128
+           C 285 128, 305 132, 325 142
+           C 355 158, 375 188, 375 228
+           C 375 272, 350 305, 312 320
+           L 268 320
+           L 268 425
+           L 268 360
+           L 268 320
+           C 252 305, 238 285, 230 262
+           C 240 248, 248 232, 252 215
+           C 255 200, 255 185, 252 170
+           C 255 155, 260 142, 268 128
+           Z" 
+        fill="url(#dcp-blue-grad)" />
 
-  <!-- Outer White Target Ring with Precision Border -->
-  <circle
-    cx="260"
-    cy="246"
-    r="58"
-    fill="#FFFFFF"
-    stroke="#0E131F"
-    stroke-width="5"
-  />
-
-  <!-- Inner Center Point Blue Sphere -->
-  <circle
-    cx="260"
-    cy="246"
-    r="34"
-    fill="url(#mark-iris-gradient)"
-  />
-
-  <!-- Specular Reflection Highlight on Sphere -->
-  <circle
-    cx="249"
-    cy="235"
-    r="8"
-    fill="#93C5FD"
-    opacity="0.9"
-  />
-
-  <!-- Angled Code Brackets </> inside the P Loop -->
-  <g transform="translate(328, 172) rotate(38)" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
-    <!-- Left bracket < -->
-    <path d="M -12 -9 L -18 0 L -12 9" />
-    <!-- Center slash / -->
-    <path d="M 4 -12 L -4 12" />
-    <!-- Right bracket > -->
-    <path d="M 12 -9 L 18 0 L 12 9" />
+  <!-- The Code symbol </> inside the upper right of 'P' -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" transform="translate(305, 155)">
+    <!-- < -->
+    <polyline points="14,10 4,20 14,30" />
+    <!-- / -->
+    <line x1="22" y1="8" x2="16" y2="32" stroke-width="7" />
+    <!-- > -->
+    <polyline points="24,10 34,20 24,30" />
   </g>
+
+  <!-- Center Pinpoint / Lens Bullseye -->
+  <!-- Outer White Ring -->
+  <circle cx="268" cy="245" r="58" fill="#FFFFFF" />
+  <circle cx="268" cy="245" r="58" fill="none" stroke="#0D111A" stroke-width="4" />
+
+  <!-- Inner Electric Blue Bullseye Pupil -->
+  <circle cx="268" cy="245" r="32" fill="url(#dcp-core-grad)" />
+  <circle cx="262" cy="238" r="8" fill="#60A5FA" opacity="0.6" />
 </svg>
