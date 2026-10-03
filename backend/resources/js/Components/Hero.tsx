@@ -3,6 +3,7 @@ import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { DigitalSystemMap } from './DigitalSystemMap';
 import { DevCenterPointLogo } from './DevCenterPointLogo';
+import { HeroInteractiveCanvas } from './HeroInteractiveCanvas';
 import { soundEngine } from '../lib/soundEngine';
 
 export const Hero: React.FC = () => {
@@ -40,6 +41,9 @@ export const Hero: React.FC = () => {
 
   return (
     <section id="hero" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors duration-300">
+      {/* Interactive Neural Canvas & Sound Controller */}
+      <HeroInteractiveCanvas />
+
       {/* Background Subtle Accent Lights */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-600/10 blur-[140px] rounded-full pointer-events-none"></div>
 

@@ -1,15 +1,15 @@
-import { Project } from '../types';
+import { Project, PrototypeDemo } from '../types';
 
 export const PROJECTS_DATA: Project[] = [
   {
     id: 'ordershield',
     number: '01',
-    title: 'OrderShield',
-    subtitle: 'Enterprise Order Management System (OMS)',
+    title: 'DevCenterPoint ERP & Storefront',
+    subtitle: 'Omnichannel E-Commerce & Enterprise ERP Core',
     category: 'Business Systems',
-    industry: 'Logistics & Supply Chain',
-    year: '2025',
-    shortDescription: 'Real-time order lifecycle tracking, automated multi-warehouse inventory sync, and operational rule engine.',
+    industry: 'Commerce & Logistics Infrastructure',
+    year: '2026',
+    shortDescription: 'Full-stack enterprise ERP integrated with an omnichannel storefront, inventory workflows, and sales management.',
     context: 'High-volume fulfillment businesses struggle with fragmented stock management across disparate warehouses and sales channels, causing inventory drift and delayed dispatch.',
     problem: 'Existing legacy systems produced frequent double-allocation errors during peak load, with latency in stock updates exceeding 15 minutes across distributed inventory locations.',
     strategy: 'Engineered an event-driven micro-service architecture with strict transactional locks and atomic inventory updates, paired with a high-density, low-latency operational dashboard.',
@@ -33,17 +33,28 @@ export const PROJECTS_DATA: Project[] = [
     ],
     techStack: ['Laravel', 'Vue.js / React', 'PostgreSQL', 'Redis', 'WebSockets', 'Tailwind CSS'],
     architectureOverview: 'Client Frontend -> Express API Gateway -> Event-Driven Order Processing Worker Queue -> PostgreSQL Master (with Redis Cache) -> Multi-Carrier Logistics Webhooks.',
-    accentColor: '#2E4AF9'
+    accentColor: '#2E4AF9',
+    liveUrl: 'https://demoerp.devcenterpoint.com',
+    adminUrl: 'https://demoerp.devcenterpoint.com/login',
+    demoCredentials: {
+      username: 'Admin',
+      password: '12345678',
+      role: 'Enterprise Administrator',
+      notes: 'Demo access for evaluating omnichannel inventory, POS, and sales workflows.'
+    },
+    githubUrl: 'https://github.com/beingmushfiq',
+    openSourceRepoName: 'Omnichannel E-Commerce & ERP Core',
+    isRealWorldApp: true
   },
   {
     id: 'qttenzy',
     number: '02',
     title: 'Qttenzy',
-    subtitle: 'Smart QR Attendance Platform',
+    subtitle: 'Smart Dynamic QR & Geofenced Attendance Platform',
     category: 'Healthcare & Enterprise',
     industry: 'Education & Workplace Tech',
-    year: '2025',
-    shortDescription: 'Secure time-bound dynamic QR access control, geolocation verification, and real-time attendance analytics.',
+    year: '2026',
+    shortDescription: 'QR-based automated geofenced attendance system that verifies check-ins within precise physical boundaries.',
     context: 'Educational institutions and enterprise campuses required a contactless, fraud-resistant method to log attendance without expensive physical biometrics hardware.',
     problem: 'Static QR codes were easily copied or shared remotely via messaging apps, bypassing attendance validity and skewing compliance logs.',
     strategy: 'Developed a time-sensitive dynamic QR code generation engine with encrypted device signatures, anti-spoofing geolocation bounds, and real-time verification.',
@@ -67,7 +78,10 @@ export const PROJECTS_DATA: Project[] = [
     ],
     techStack: ['React Native', 'Node.js', 'TypeScript', 'MongoDB', 'PWA', 'Tailwind CSS'],
     architectureOverview: 'Mobile Client (Dynamic Token Generator) -> Encrypted API Endpoint -> Verification Service -> Real-time Attendance Ledger Database.',
-    accentColor: '#00D084'
+    accentColor: '#00D084',
+    liveUrl: 'https://qttenzy.vercel.app',
+    githubUrl: 'https://github.com/beingmushfiq',
+    isRealWorldApp: true
   },
   {
     id: 'commercecore',
@@ -76,7 +90,7 @@ export const PROJECTS_DATA: Project[] = [
     subtitle: 'Modular E-Commerce Engine',
     category: 'Commerce Infrastructure',
     industry: 'Retail & Multi-Vendor',
-    year: '2024',
+    year: '2026',
     shortDescription: 'Headless commerce backend, multi-currency checkout, and customizable product catalog architecture.',
     context: 'Traditional monolithic e-commerce platforms became slow and inflexible as catalog sizes grew and brand storefronts expanded to multiple international channels.',
     problem: 'Slow page render speeds directly impacted conversion rates, while rigid database schemas made complex variant management painful.',
@@ -101,17 +115,18 @@ export const PROJECTS_DATA: Project[] = [
     ],
     techStack: ['Next.js', 'Node.js', 'PostgreSQL', 'Stripe API', 'GraphQL', 'Docker'],
     architectureOverview: 'Next.js Edge Storefront -> GraphQL / REST API -> Core Transaction & Catalog Engine -> PostgreSQL & Redis -> Stripe & Webhook Integrations.',
-    accentColor: '#3B82F6'
+    accentColor: '#3B82F6',
+    githubUrl: 'https://github.com/beingmushfiq'
   },
   {
     id: 'leadlayer',
     number: '04',
-    title: 'LeadLayer',
-    subtitle: 'Intelligent CRM & Lead Pipeline',
+    title: 'LeadLayer System Architecture',
+    subtitle: 'Multi-Channel Webhook Ingestion & CRM Pipeline',
     category: 'Business Systems',
     industry: 'B2B Sales & Operations',
-    year: '2024',
-    shortDescription: 'Kanban pipeline management, automated lead assignment, and communication history tracking.',
+    year: '2026',
+    shortDescription: 'Multi-channel webhook ingestion pipeline and CRM automation tool designed for outbound lead processing.',
     context: 'Sales teams were losing prospective deals due to untracked email threads, delayed follow-ups, and manual lead distribution bottlenecks.',
     problem: 'Sales managers lacked real-time visibility into deal velocity, pipeline health, and representative activity metrics across teams.',
     strategy: 'Built an intuitive, real-time Kanban pipeline management platform with automated lead scoring, activity timelines, and smart notification triggers.',
@@ -135,7 +150,9 @@ export const PROJECTS_DATA: Project[] = [
     ],
     techStack: ['React', 'TypeScript', 'Express', 'PostgreSQL', 'Tailwind CSS'],
     architectureOverview: 'React Single-Page Application -> Express API Gateway -> PostgreSQL Database -> OAuth Email Service Sync.',
-    accentColor: '#8B5CF6'
+    accentColor: '#8B5CF6',
+    openSourceRepoName: 'LeadLayer System Architecture',
+    githubUrl: 'https://github.com/beingmushfiq'
   },
   {
     id: 'shap-career',
@@ -144,9 +161,9 @@ export const PROJECTS_DATA: Project[] = [
     subtitle: 'Explainable AI Career Forecasting Engine',
     category: 'AI & Intelligent Systems',
     industry: 'EdTech & Workforce Analytics',
-    year: '2025',
+    year: '2026',
     shortDescription: 'Machine learning skill analysis and career path prediction model backed by SHAP feature explainability.',
-    context: 'Educational advisors and job seekers needed data-backed guidance on career transitions, but standard black-box AI tools failed to explain *why* specific skills mattered.',
+    context: 'Educational advisors and job seekers needed data-backed guidance on career transitions, but standard black-box AI tools failed to explain why specific skills mattered.',
     problem: 'Traditional predictive models acted as unexplainable "black boxes", leading to low trust from career counselors who required clear rationale behind recommendations.',
     strategy: 'Implemented an XGBoost classification pipeline paired with SHAP (SHapley Additive exPlanations) values to render transparent, human-interpretable feature importance charts.',
     designHighlights: [
@@ -169,18 +186,19 @@ export const PROJECTS_DATA: Project[] = [
     ],
     techStack: ['Python', 'XGBoost', 'SHAP', 'FastAPI', 'React', 'Tailwind CSS'],
     architectureOverview: 'React Frontend -> FastAPI ML Endpoint -> XGBoost & SHAP Inference Engine -> Recommendation Formatter Response.',
-    accentColor: '#EC4899'
+    accentColor: '#EC4899',
+    githubUrl: 'https://github.com/beingmushfiq'
   },
   {
     id: 'clinic-queue',
     number: '06',
-    title: 'Clinic Queue Manager',
-    subtitle: 'Healthcare Token & Queue Management Platform',
+    title: 'Feroza Medicine Corner Serial Manager',
+    subtitle: 'Real-Time Healthcare Counter & Queue Management Portal',
     category: 'Healthcare Tech',
-    industry: 'Medical & Hospital Systems',
-    year: '2025',
-    shortDescription: 'Real-time patient registration, digital serial allocation, and live doctor counter display feeds.',
-    context: 'Busy outpatient clinics experienced severe waiting room congestion, unpredictable doctor consultation schedules, and frustrated patients.',
+    industry: 'Healthcare & Pharmacy Systems',
+    year: '2026',
+    shortDescription: 'Real-time counter, patient queue, and appointment serial management portal built for healthcare and pharmacy desks.',
+    context: 'Busy outpatient pharmacy desks and clinics experienced severe waiting counter congestion, unpredictable doctor consultation schedules, and frustrated patients.',
     problem: 'Manual paper token systems caused chaotic queue skipping, lack of SMS waiting status updates, and inaccurate consultation duration statistics.',
     strategy: 'Designed a real-time queue management network connecting patient registration kiosks, live display boards, and doctor consultation portals via WebSockets.',
     designHighlights: [
@@ -203,17 +221,27 @@ export const PROJECTS_DATA: Project[] = [
     ],
     techStack: ['Laravel', 'WebSockets', 'React', 'MySQL', 'Twilio SMS API'],
     architectureOverview: 'Kiosk & Mobile App -> Real-time Socket Server -> Doctor Console -> Waiting Room Display TV Feed.',
-    accentColor: '#10B981'
+    accentColor: '#10B981',
+    liveUrl: 'https://serial.ferozamedicinecorner.com',
+    adminUrl: 'https://serial.ferozamedicinecorner.com',
+    demoCredentials: {
+      username: 'Super Admin',
+      password: '12345678',
+      role: 'Clinic Super Admin',
+      notes: 'Access counter management, queue calling, and pharmacy serial registers.'
+    },
+    githubUrl: 'https://github.com/beingmushfiq',
+    isRealWorldApp: true
   },
   {
     id: 'sherazi-gps',
     number: '07',
-    title: 'Sherazi GPS Tracker',
-    subtitle: 'IoT Telematics & Fleet Monitoring Platform',
+    title: 'Traccar GPS Telematics Deployment',
+    subtitle: 'Containerized Open-Source Fleet Telemetry Stack',
     category: 'Mobile & Infrastructure',
     industry: 'Automotive & Logistics',
-    year: '2024',
-    shortDescription: 'Live vehicle GPS telemetry, geofence boundary alerts, and historical route playback platform.',
+    year: '2026',
+    shortDescription: 'Containerized open-source GPS tracking stack built with Docker for automated fleet telemetry and real-time geofence alerts.',
     context: 'Fleet operators needed continuous visibility over vehicle locations, driver behavior, speed violations, and route compliance.',
     problem: 'Raw IoT GPS tracker feeds sent millions of unstructured data packets per minute, overwhelming traditional web server setups and slowing map renders.',
     strategy: 'Built a specialized telemetry ingestion pipeline parsing raw TCP/UDP hardware packets, storing geospatial coordinates in time-series database structures, and rendering vector maps.',
@@ -235,8 +263,150 @@ export const PROJECTS_DATA: Project[] = [
       'Historical route replay with playback speed control and trip metrics summary',
       'Driver behavior analytics covering over-speeding, idling, and harsh braking events'
     ],
-    techStack: ['Node.js', 'PostgreSQL / PostGIS', 'Mapbox GL', 'React', 'WebSockets'],
+    techStack: ['Node.js', 'PostgreSQL / PostGIS', 'Mapbox GL', 'React', 'WebSockets', 'Docker'],
     architectureOverview: 'Hardware GPS Tracker -> TCP Packet Listener -> PostGIS Telematics Storage -> WebSocket Broadcast -> Mapbox Vector Canvas.',
-    accentColor: '#F59E0B'
+    accentColor: '#F59E0B',
+    openSourceRepoName: 'Traccar GPS Fleet Platform Deployment',
+    githubUrl: 'https://github.com/beingmushfiq'
+  },
+  {
+    id: 'roadsafety',
+    number: '08',
+    title: 'Road Safety Movement',
+    subtitle: 'Org Management OS & Public Safety Coordination Platform',
+    category: 'Business Systems',
+    industry: 'Civic Operations & Non-Profit',
+    year: '2026',
+    shortDescription: 'Central operational platform coordinating community members, organizational logistics, and public safety initiatives.',
+    context: 'Civic advocacy organizations manage nationwide campaigns, volunteer dispatch, and safety initiatives across fragmented communication channels.',
+    problem: 'Manual paper registries and uncoordinated messaging caused severe delays in volunteer deployment and public campaign logistics during critical safety drives.',
+    strategy: 'Architected an integrated Org Management OS providing verified member directories, real-time campaign dispatch, and transparent operational logistics.',
+    designHighlights: [
+      'Verified member directory with digital role credentials and security badges',
+      'Campaign dispatch console for real-time community event alerts',
+      'High-contrast mobile interface optimized for on-the-ground volunteer coordination',
+      'Clean data views for transparent community resource tracking'
+    ],
+    engineeringHighlights: [
+      'Granular Role-Based Access Control (RBAC) with audit logging',
+      'High-throughput incident and campaign broadcast notification pipelines',
+      'Optimized relational database schema with Redis caching for instant member searches',
+      'Automated onboarding verification workflows for new civic advocates'
+    ],
+    deliveredFunctionality: [
+      'Member registration and digital ID verification portal',
+      'Campaign logistics dispatch and volunteer coordinator workflow',
+      'Public announcement and awareness drive management system',
+      'Operational impact analytics reporting for organizational governance'
+    ],
+    techStack: ['React', 'TypeScript', 'Node.js / Laravel', 'PostgreSQL', 'Tailwind CSS'],
+    architectureOverview: 'Client Web Application -> Secure API Gateway -> Relational Database & Redis Cache -> Automated Alert Dispatch Service.',
+    accentColor: '#EF4444',
+    liveUrl: 'https://roadsafetymovement.org',
+    githubUrl: 'https://github.com/beingmushfiq',
+    isRealWorldApp: true
+  },
+  {
+    id: 'speech-therapy',
+    number: '09',
+    title: 'Speech Therapy Assessment Suite',
+    subtitle: 'Clinical Diagnostic & Patient Evaluation Suite',
+    category: 'Healthcare Tech',
+    industry: 'Clinical Diagnostics & Pediatric Therapy',
+    year: '2026',
+    shortDescription: 'Clinical assessment UI, interactive developmental screening forms, and patient evaluation tools.',
+    context: 'Speech-language pathologists and pediatric therapists require structured assessment tools to evaluate communicative milestones without disrupting patient flow.',
+    problem: 'Traditional paper scorecards generated administrative overhead, manual percentile calculation errors, and delay in clinical report turnaround.',
+    strategy: 'Designed an interactive assessment suite featuring dynamic developmental screening matrices, longitudinal patient tracking, and automated clinical summaries.',
+    designHighlights: [
+      'Distraction-free clinical interface tailored for bedside and desk observations',
+      'Interactive phonology and articulation screening cards with audio prompts',
+      'Longitudinal progression timeline mapping developmental milestones over time',
+      'One-click PDF clinical report generation for parent and physician reviews'
+    ],
+    engineeringHighlights: [
+      'Reactive scoring engine calculating standardized percentiles in real time',
+      'Offline-capable client ensuring zero data loss during clinical sessions',
+      'Encrypted diagnostic data persistence adhering to strict healthcare data boundaries',
+      'Component-driven architecture for rapid customization across clinical protocols'
+    ],
+    deliveredFunctionality: [
+      'Interactive developmental milestone screening checklists and evaluation matrices',
+      'Automated standardized diagnostic scoring with real-time percentile computation',
+      'Longitudinal patient progress charts comparing session-over-session improvements',
+      'Automated clinical assessment summary export in formatted PDF format'
+    ],
+    techStack: ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
+    architectureOverview: 'Interactive React Client -> Clinical Protocol Validation Engine -> Encrypted Diagnostic Storage -> Automated PDF Generator.',
+    accentColor: '#06B6D4',
+    githubUrl: 'https://github.com/beingmushfiq',
+    openSourceRepoName: 'Speech Therapy Assessment Suite'
+  }
+];
+
+export const PROTOTYPES_DATA: PrototypeDemo[] = [
+  {
+    id: 'ngo-demo',
+    title: 'NGO Demo (DCP)',
+    url: 'https://ngodemo-dcp.vercel.app',
+    tagline: 'Donation drives, transparent fund tracking, and campaign dashboard.',
+    category: 'Social Impact',
+    tags: ['Donation Drives', 'Fund Tracking', 'Campaigns']
+  },
+  {
+    id: 'slice-mart-fms',
+    title: 'Slice Mart FMS',
+    url: 'https://slice-mart-fms.vercel.app',
+    tagline: 'Grocery and retail floor/inventory management demo.',
+    category: 'Retail & Inventory',
+    tags: ['Floor Management', 'Retail Inventory', 'POS']
+  },
+  {
+    id: 'shikkha-platform',
+    title: 'Shikkha Platform',
+    url: 'https://shikkha-school-donation-platform.vercel.app',
+    tagline: 'Crowdfunding and educational aid portal for students and community schools.',
+    category: 'EdTech & Aid',
+    tags: ['School Aid', 'Student Crowdfunding', 'Education']
+  },
+  {
+    id: 'being-the-man',
+    title: 'Being The Man',
+    url: 'https://being-the-man.vercel.app',
+    tagline: 'Minimalist lifestyle branding and personal blog layout.',
+    category: 'Editorial & Brand',
+    tags: ['Minimalist Lifestyle', 'Publication', 'Branding']
+  },
+  {
+    id: 'byte-build-it',
+    title: 'Byte Build IT',
+    url: 'https://byte-build-it.vercel.app',
+    tagline: 'Tech services and IT infrastructure consultancy site.',
+    category: 'Services & IT',
+    tags: ['IT Consultancy', 'Cloud Infrastructure', 'Services']
+  },
+  {
+    id: 'startamark',
+    title: 'Startamark',
+    url: 'https://startamark.vercel.app',
+    tagline: 'Lightweight marketing agency maintenance portfolio and client intake landing page.',
+    category: 'Marketing Tech',
+    tags: ['Client Intake', 'Agency Portfolio', 'Conversion']
+  },
+  {
+    id: 'smmp-ui',
+    title: 'SMMP UI',
+    url: 'https://smmp-ui.vercel.app',
+    tagline: 'Youth Society Organization website and management dashboard interface.',
+    category: 'Community OS',
+    tags: ['Youth Society', 'Admin Dashboard', 'Member Portal']
+  },
+  {
+    id: 'qttenzy-proto',
+    title: 'Qttenzy Attendance',
+    url: 'https://qttenzy.vercel.app',
+    tagline: 'QR-based automated geofenced attendance system that verifies check-ins within precise physical boundaries.',
+    category: 'Access Control',
+    tags: ['Dynamic QR', 'Geofencing', 'Attendance Verification']
   }
 ];

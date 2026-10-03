@@ -24,7 +24,11 @@ import { DevCenterPointLogo } from './DevCenterPointLogo';
 import { CommandPalette } from './CommandPalette';
 import { soundEngine } from '../lib/soundEngine';
 
-export const Navigation: React.FC = () => {
+interface NavigationProps {
+  onOpenSandbox?: () => void;
+}
+
+export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('capabilities');
@@ -173,7 +177,7 @@ export const Navigation: React.FC = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.98 }}
                       transition={{ duration: 0.18, ease: 'easeOut' }}
-                      className="absolute top-full left-0 mt-2 w-[480px] p-4 rounded-3xl bg-white/95 dark:bg-[#121212]/95 backdrop-blur-2xl border border-slate-200 dark:border-[#2a2a2a] shadow-2xl z-50 space-y-3"
+                      className="absolute top-full left-0 mt-2 w-120 p-4 rounded-3xl bg-white/95 dark:bg-[#121212]/95 backdrop-blur-2xl border border-slate-200 dark:border-[#2a2a2a] shadow-2xl z-50 space-y-3"
                     >
                       <div className="flex items-center justify-between px-2 pt-1">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
@@ -286,7 +290,7 @@ export const Navigation: React.FC = () => {
                       : 'bg-slate-200 dark:bg-[#282828] text-slate-600 dark:text-gray-400'
                   }`}
                 >
-                  6 Cases
+                  9 Cases
                 </span>
               </button>
 
@@ -321,7 +325,7 @@ export const Navigation: React.FC = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.98 }}
                       transition={{ duration: 0.18, ease: 'easeOut' }}
-                      className="absolute top-full left-0 mt-2 w-[440px] p-4 rounded-3xl bg-white/95 dark:bg-[#121212]/95 backdrop-blur-2xl border border-slate-200 dark:border-[#2a2a2a] shadow-2xl z-50 space-y-3"
+                      className="absolute top-full left-0 mt-2 w-110 p-4 rounded-3xl bg-white/95 dark:bg-[#121212]/95 backdrop-blur-2xl border border-slate-200 dark:border-[#2a2a2a] shadow-2xl z-50 space-y-3"
                     >
                       <div className="flex items-center justify-between px-2 pt-1">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
@@ -427,6 +431,22 @@ export const Navigation: React.FC = () => {
 
             {/* Right: Theme Toggle & Primary Action CTA */}
             <div className="flex items-center gap-3">
+              {onOpenSandbox && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    soundEngine.playModalOpen();
+                    onOpenSandbox();
+                  }}
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#1a1a1a] dark:hover:bg-[#222222] text-slate-800 dark:text-gray-200 border border-slate-200/80 dark:border-[#2e2e2e] text-xs font-mono font-bold transition-all active:scale-95 cursor-pointer group"
+                  title="Test-drive live enterprise systems"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <Zap className="w-3.5 h-3.5 text-blue-500 group-hover:scale-110 transition-transform" />
+                  <span>Live Demos</span>
+                </button>
+              )}
+
               <ThemeToggle />
 
               <div className="hidden sm:flex items-center">
@@ -511,12 +531,43 @@ export const Navigation: React.FC = () => {
               </button>
             </div>
 
+            {/* Mobile Live Demos Launcher Banner */}
+            {onOpenSandbox && (
+              <div className="pb-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    soundEngine.playModalOpen();
+                    onOpenSandbox();
+                  }}
+                  className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-blue-600/10 via-emerald-600/10 to-blue-600/10 border border-blue-500/30 text-left flex items-center justify-between cursor-pointer active:scale-98 transition-all"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-600/30">
+                      <Zap className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+                        <span>Test-Drive Live Demos</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      </div>
+                      <div className="text-[10px] text-slate-500 dark:text-gray-400">
+                        ERP, Clinic Queue, Dynamic QR & AI Studio
+                      </div>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-blue-500" />
+                </button>
+              </div>
+            )}
+
             {/* Primary Mobile Links */}
-            <div className="py-4 space-y-4">
+            <div className="py-2 space-y-3">
               <button
                 type="button"
                 onClick={() => handleNavClick('#capabilities')}
-                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-lg font-bold"
+                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-base font-bold"
               >
                 <span>Services & Capabilities</span>
                 <ArrowRight className="w-4 h-4 text-blue-500" />
@@ -525,12 +576,12 @@ export const Navigation: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleNavClick('#work')}
-                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-lg font-bold"
+                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-base font-bold"
               >
                 <span className="flex items-center gap-2">
                   <span>Selected Work</span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
-                    6 Cases
+                    9 Cases
                   </span>
                 </span>
                 <ArrowRight className="w-4 h-4 text-blue-500" />
@@ -539,7 +590,7 @@ export const Navigation: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleNavClick('#architecture')}
-                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-lg font-bold"
+                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-base font-bold"
               >
                 <span>Methodology & Architecture</span>
                 <ArrowRight className="w-4 h-4 text-blue-500" />
@@ -548,11 +599,42 @@ export const Navigation: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleNavClick('#faq')}
-                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-lg font-bold"
+                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-base font-bold"
               >
                 <span>Frequently Asked Questions</span>
                 <ArrowRight className="w-4 h-4 text-blue-500" />
               </button>
+
+              {/* External Ecosystem Links */}
+              <div className="pt-2 flex flex-wrap gap-2 text-xs">
+                <a
+                  href="https://buildwithmushfiq.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] text-slate-700 dark:text-gray-300 font-bold flex items-center gap-1.5"
+                >
+                  <span>Founder Portfolio</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-blue-500" />
+                </a>
+                <a
+                  href="https://github.com/beingmushfiq"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] text-slate-700 dark:text-gray-300 font-bold flex items-center gap-1.5"
+                >
+                  <span>GitHub</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-blue-500" />
+                </a>
+                <a
+                  href="https://devcenterpoint.ai.studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5"
+                >
+                  <span>AI Studio</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500" />
+                </a>
+              </div>
             </div>
 
             {/* Bottom Mobile CTA */}

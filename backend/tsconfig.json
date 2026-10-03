@@ -11,6 +11,8 @@
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
         "noEmit": true,
+        "typeRoots": ["./node_modules/@types"],
+        "types": ["vite/client", "node"],
         "paths": {
             "@/*": ["./resources/js/*"],
             "ziggy-js": ["./vendor/tightenco/ziggy"]

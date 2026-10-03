@@ -1,3 +1,10 @@
+export interface ProjectDemoCredentials {
+  username?: string;
+  password?: string;
+  role?: string;
+  notes?: string;
+}
+
 export interface Project {
   id: string;
   number: string;
@@ -17,6 +24,21 @@ export interface Project {
   architectureOverview: string;
   badgeText?: string;
   accentColor?: string;
+  liveUrl?: string;
+  adminUrl?: string;
+  demoCredentials?: ProjectDemoCredentials;
+  githubUrl?: string;
+  openSourceRepoName?: string;
+  isRealWorldApp?: boolean;
+}
+
+export interface PrototypeDemo {
+  id: string;
+  title: string;
+  url: string;
+  tagline: string;
+  category: string;
+  tags: string[];
 }
 
 export interface Capability {
@@ -139,6 +161,7 @@ export interface InquiryFormData {
   timeline: string;
   description: string;
   selectedTech?: string[];
+  targetKickoff?: string;
 }
 
 export interface FAQItem {

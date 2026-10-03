@@ -27,6 +27,9 @@ export interface ArchitectureNode {
   description: string;
   protocol: string;
   sla: string;
+  payloadType?: string;
+  security?: string;
+  failover?: string;
 }
 
 export interface ProjectScreenshot {
@@ -147,11 +150,11 @@ export const SIMULATED_PROJECT_ARCHIVE_DB: Record<string, ProjectDeepInsights> =
       }
     ],
     architectureFlow: [
-      { step: "01", title: "Channel Webhook Ingestion", description: "Edge gateway validates signature and pushes raw payload into ingest queue", protocol: "HTTPS / HMAC", sla: "< 15ms" },
-      { step: "02", title: "Atomic Inventory Lock", description: "Redis distributed token bucket validates SKU availability across target warehouse", protocol: "Redis TCP", sla: "< 4ms" },
-      { step: "03", title: "Courier Proximity Routing", description: "Rule engine chooses optimal carrier based on transit time and zone SLA", protocol: "Async Worker", sla: "< 45ms" },
-      { step: "04", title: "State Persistence & Ledger", description: "PostgreSQL commits transaction with immutable audit event trail", protocol: "SQL Serializable", sla: "< 12ms" },
-      { step: "05", title: "Live Operator Dispatch", description: "Warehouse picking terminals update automatically via real-time WebSocket push", protocol: "WSS / Reverb", sla: "< 25ms" }
+      { step: "01", title: "Channel Webhook Ingestion", description: "Edge gateway validates signature and pushes raw payload into ingest queue", protocol: "HTTPS / HMAC", sla: "< 15ms", payloadType: "Signed JSON Webhook (Shopify/Amazon)", security: "HMAC-SHA256 Signature Verification", failover: "Dead-Letter Queue with 5x Exponential Retry" },
+      { step: "02", title: "Atomic Inventory Lock", description: "Redis distributed token bucket validates SKU availability across target warehouse", protocol: "Redis TCP", sla: "< 4ms", payloadType: "Binary Redis Mutex Token", security: "TLS-Encrypted Redis Cluster Auth", failover: "Secondary Replica Read with Optimistic Lock" },
+      { step: "03", title: "Courier Proximity Routing", description: "Rule engine chooses optimal carrier based on transit time and zone SLA", protocol: "Async Worker", sla: "< 45ms", payloadType: "Spatial Geohash Matrix", security: "Internal VPC Isolation", failover: "Fallback Default Carrier Contract SLA" },
+      { step: "04", title: "State Persistence & Ledger", description: "PostgreSQL commits transaction with immutable audit event trail", protocol: "SQL Serializable", sla: "< 12ms", payloadType: "Normalized Relational Tuple", security: "AES-256 Data-at-Rest Encryption", failover: "Automated Multi-AZ Read Replica Failover" },
+      { step: "05", title: "Live Operator Dispatch", description: "Warehouse picking terminals update automatically via real-time WebSocket push", protocol: "WSS / Reverb", sla: "< 25ms", payloadType: "Pusher-Compatible JSON Broadcast", security: "WSS TLS 1.3 + Signed Channel Token", failover: "Client Polling Fallback (5s heartbeat)" }
     ],
     productionAuditLog: {
       lastVerified: "September 2026",
@@ -237,11 +240,11 @@ export const SIMULATED_PROJECT_ARCHIVE_DB: Record<string, ProjectDeepInsights> =
       }
     ],
     architectureFlow: [
-      { step: "01", title: "Rotating QR Projection", description: "Display terminal generates 10-second rotating encrypted HMAC token", protocol: "SHA-256 TOTP", sla: "< 5ms" },
-      { step: "02", title: "Camera Frame Optical Decode", description: "Mobile client captures token and gathers local device GPS fence bounds", protocol: "Client PWA", sla: "< 80ms" },
-      { step: "03", title: "Signature Cryptographic Verification", description: "Fastify gateway validates device signature against campus geofence", protocol: "TLS 1.3 / Fastify", sla: "< 28ms" },
-      { step: "04", title: "Time-Series Ledger Commit", description: "Attendance timestamp saved into append-only compliance store", protocol: "MongoDB Driver", sla: "< 14ms" },
-      { step: "05", title: "Haptic Confirmation", description: "User receives instant green verification status and haptic pulse", protocol: "Haptic API", sla: "< 10ms" }
+      { step: "01", title: "Rotating QR Projection", description: "Display terminal generates 10-second rotating encrypted HMAC token", protocol: "SHA-256 TOTP", sla: "< 5ms", payloadType: "Base64 Encrypted TOTP Token", security: "HMAC-SHA256 Dynamic Rolling Key", failover: "Offline Cached Token Salt Generator" },
+      { step: "02", title: "Camera Frame Optical Decode", description: "Mobile client captures token and gathers local device GPS fence bounds", protocol: "Client PWA", sla: "< 80ms", payloadType: "Camera Buffer + Sensor Geolocation", security: "Gyroscope & Biometric Client Hash", failover: "Manual One-Time Passcode Override" },
+      { step: "03", title: "Signature Cryptographic Verification", description: "Fastify gateway validates device signature against campus geofence", protocol: "TLS 1.3 / Fastify", sla: "< 28ms", payloadType: "Encrypted Attendance Attestation", security: "Public Key Hardware Attestation", failover: "Queued Asynchronous Verification Pool" },
+      { step: "04", title: "Time-Series Ledger Commit", description: "Attendance timestamp saved into append-only compliance store", protocol: "MongoDB Driver", sla: "< 14ms", payloadType: "BSON Time-Series Document", security: "WiredTiger Encrypted Storage", failover: "Local IndexedDB Buffer Sync" },
+      { step: "05", title: "Haptic Confirmation", description: "User receives instant green verification status and haptic pulse", protocol: "Haptic API", sla: "< 10ms", payloadType: "Visual & Haptic Pulse Trigger", security: "Signed Confirmation Receipt", failover: "Static Verification Screen" }
     ],
     productionAuditLog: {
       lastVerified: "August 2026",
@@ -327,11 +330,11 @@ export const SIMULATED_PROJECT_ARCHIVE_DB: Record<string, ProjectDeepInsights> =
       }
     ],
     architectureFlow: [
-      { step: "01", title: "Edge Cache Delivery", description: "Cloudflare Edge serves pre-rendered product catalog with zero origin hit", protocol: "HTTP/3", sla: "< 25ms" },
-      { step: "02", title: "GraphQL Cart Mutation", description: "Cart actions validate real-time SKU inventory via atomic state service", protocol: "GraphQL / TLS", sla: "< 40ms" },
-      { step: "03", title: "Time-Locked Checkout Session", description: "Forex rates locked for 20 minutes to prevent checkout price drift", protocol: "Redis KV", sla: "< 10ms" },
-      { step: "04", title: "Stripe Payment Intent", description: "Customer authenticates payment via native Apple Pay / Google Pay", protocol: "Stripe API", sla: "< 350ms" },
-      { step: "05", title: "Webhook ERP Broadcast", description: "Fulfillment center and ERP receive automated dispatch triggers", protocol: "Signed Webhook", sla: "< 120ms" }
+      { step: "01", title: "Edge Cache Delivery", description: "Cloudflare Edge serves pre-rendered product catalog with zero origin hit", protocol: "HTTP/3", sla: "< 25ms", payloadType: "Pre-rendered HTML / Edge KV", security: "Cloudflare Web Application Firewall", failover: "Origin Shield Stale-While-Revalidate" },
+      { step: "02", title: "GraphQL Cart Mutation", description: "Cart actions validate real-time SKU inventory via atomic state service", protocol: "GraphQL / TLS", sla: "< 40ms", payloadType: "Typed GraphQL Operation JSON", security: "JWT Bearer Token + Strict CORS", failover: "Redis In-Memory Session Storage" },
+      { step: "03", title: "Time-Locked Checkout Session", description: "Forex rates locked for 20 minutes to prevent checkout price drift", protocol: "Redis KV", sla: "< 10ms", payloadType: "Locked Forex Rate Ledger", security: "Encrypted Session Token", failover: "Central Bank Reference Rate Fallback" },
+      { step: "04", title: "Stripe Payment Intent", description: "Customer authenticates payment via native Apple Pay / Google Pay", protocol: "Stripe API", sla: "< 350ms", payloadType: "PCI-DSS Tokenized Payment Payload", security: "Stripe TLS 1.3 / PCI Level 1", failover: "Alternative Regional Card Gateway" },
+      { step: "05", title: "Webhook ERP Broadcast", description: "Fulfillment center and ERP receive automated dispatch triggers", protocol: "Signed Webhook", sla: "< 120ms", payloadType: "HMAC Signed Order Schema", security: "HMAC Shared Secret Verification", failover: "Asynchronous Dead-Letter Queue" }
     ],
     productionAuditLog: {
       lastVerified: "July 2026",
@@ -417,10 +420,11 @@ export const SIMULATED_PROJECT_ARCHIVE_DB: Record<string, ProjectDeepInsights> =
       }
     ],
     architectureFlow: [
-      { step: "01", title: "Inbound Lead Ingestion", description: "Form capture parses contact data and calculates algorithmic lead score", protocol: "HTTPS / REST", sla: "< 40ms" },
-      { step: "02", title: "Round-Robin Routing", description: "Assigns deal to optimal sales rep based on territory and current pipeline load", protocol: "Logic Engine", sla: "< 8ms" },
-      { step: "03", title: "Optimistic Kanban Update", description: "Browser moves card immediately while async mutation dispatches to server", protocol: "TanStack Mutation", sla: "< 2ms" },
-      { step: "04", title: "SSE Broadcast to Team", description: "Team members on the same deal board see card move smoothly in real time", protocol: "Server-Sent Events", sla: "< 35ms" }
+      { step: "01", title: "Inbound Lead Ingestion", description: "Form capture parses contact data and calculates algorithmic lead score", protocol: "HTTPS / REST", sla: "< 40ms", payloadType: "JSON Form Webhook Payload", security: "HMAC Digest + Cloudflare Turnstile", failover: "Ingest Buffer Queue (Kafka / Redis)" },
+      { step: "02", title: "Round-Robin Routing", description: "Assigns deal to optimal sales rep based on territory and current pipeline load", protocol: "Logic Engine", sla: "< 8ms", payloadType: "Scored Opportunity Object", security: "Role Hierarchy Auth Gate", failover: "Fallback Unassigned Pool Route" },
+      { step: "03", title: "Optimistic Kanban Update", description: "Browser moves card immediately while async mutation dispatches to server", protocol: "TanStack Mutation", sla: "< 2ms", payloadType: "Local State Cache Mutation", security: "CRDT Client-Side Sequence Lock", failover: "Automatic Rollback on Error" },
+      { step: "04", title: "SSE Broadcast to Team", description: "Team members on the same deal board see card move smoothly in real time", protocol: "Server-Sent Events", sla: "< 35ms", payloadType: "EventStream Text Protocol", security: "Signed Event Channel Token", failover: "HTTP Polling Fallback" },
+      { step: "05", title: "Activity Timeline Persistence", description: "Email threads, call notes, and status changes written to PostgreSQL search ledger", protocol: "PostgreSQL / Search", sla: "< 18ms", payloadType: "Indexed Activity Log Tuple", security: "AES-256 Storage Encryption", failover: "Asynchronous Bulk Ingest Queue" }
     ],
     productionAuditLog: {
       lastVerified: "August 2026",
@@ -506,10 +510,11 @@ export const SIMULATED_PROJECT_ARCHIVE_DB: Record<string, ProjectDeepInsights> =
       }
     ],
     architectureFlow: [
-      { step: "01", title: "Survey Skill Scoring", description: "Assessment answers mapped into standardized 200-dimensional skill vector", protocol: "Client State", sla: "< 5ms" },
-      { step: "02", title: "FastAPI Inference Gateway", description: "Payload verified and passed to in-memory XGBoost model container", protocol: "HTTPS / REST", sla: "< 25ms" },
-      { step: "03", title: "SHAP Feature Attribution", description: "TreeExplainer calculates exact mathematical contribution for each skill", protocol: "NumPy / C-Ext", sla: "< 95ms" },
-      { step: "04", title: "Interactive D3 Visualization", description: "Browser renders clear waterfall chart showing positive vs negative skill impacts", protocol: "D3 Vector Canvas", sla: "< 20ms" }
+      { step: "01", title: "Survey Skill Scoring", description: "Assessment answers mapped into standardized 200-dimensional skill vector", protocol: "Client State", sla: "< 5ms", payloadType: "Sparse 200-dim Float Vector", security: "Client In-Memory Memory Isolation", failover: "Default Median Baseline Imputation" },
+      { step: "02", title: "FastAPI Inference Gateway", description: "Payload verified and passed to in-memory XGBoost model container", protocol: "HTTPS / REST", sla: "< 25ms", payloadType: "Pydantic Serialized Array", security: "TLS 1.3 / API Token Guard", failover: "Model Replica Load Balancer" },
+      { step: "03", title: "SHAP Feature Attribution", description: "TreeExplainer calculates exact mathematical contribution for each skill", protocol: "NumPy / C-Ext", sla: "< 95ms", payloadType: "Shapley Attribution Matrix", security: "Container Sandboxed Runtime", failover: "Pre-computed Feature Importance Lookup" },
+      { step: "04", title: "Interactive D3 Visualization", description: "Browser renders clear waterfall chart showing positive vs negative skill impacts", protocol: "D3 Vector Canvas", sla: "< 20ms", payloadType: "SVG Path Coordinate Matrix", security: "Client DOM Sanitization", failover: "Standard Bar Graph Fallback" },
+      { step: "05", title: "Personalized Roadmap Export", description: "Counselor attaches notes and compiles downloadable PDF transition plan", protocol: "Async PDF Stream", sla: "< 350ms", payloadType: "Binary PDF Byte Stream", security: "Secure Short-Lived S3 Signed URL", failover: "Direct Browser Print Engine" }
     ],
     productionAuditLog: {
       lastVerified: "September 2026",
@@ -595,10 +600,11 @@ export const SIMULATED_PROJECT_ARCHIVE_DB: Record<string, ProjectDeepInsights> =
       }
     ],
     architectureFlow: [
-      { step: "01", title: "Kiosk Token Print", description: "Patient touches screen to select department and receives QR tracking slip", protocol: "Local Kiosk Hardware", sla: "< 0.8s" },
-      { step: "02", title: "Queue State Broadcast", description: "WebSocket event updates doctor desk and waiting room TV monitor", protocol: "WSS / Reverb", sla: "< 25ms" },
-      { step: "03", title: "Automated Proximity SMS", description: "When queue moves to token N-3, system sends mobile alert with live link", protocol: "Twilio REST API", sla: "< 2.5s" },
-      { step: "04", title: "Doctor Call & Chime", description: "Doctor clicks 'Next Patient' triggering audio-visual counter chime on TV", protocol: "Web Audio + Socket", sla: "< 15ms" }
+      { step: "01", title: "Kiosk Token Print", description: "Patient touches screen to select department and receives QR tracking slip", protocol: "Local Kiosk Hardware", sla: "< 0.8s", payloadType: "Thermal Print ESC/POS Command", security: "Hardware Bus Lockdown", failover: "Manual Paper Backup Sequence" },
+      { step: "02", title: "Queue State Broadcast", description: "WebSocket event updates doctor desk and waiting room TV monitor", protocol: "WSS / Reverb", sla: "< 25ms", payloadType: "Pusher Event JSON Payload", security: "WSS TLS 1.3 Encrypted Socket", failover: "Automatic SSE Long-Polling Fallback" },
+      { step: "03", title: "Automated Proximity SMS", description: "When queue moves to token N-3, system sends mobile alert with live link", protocol: "Twilio REST API", sla: "< 2.5s", payloadType: "E.164 SMS Dispatch Request", security: "Twilio Auth Token + Webhook Signature", failover: "WhatsApp Cloud API Backup" },
+      { step: "04", title: "Doctor Call & Chime", description: "Doctor clicks 'Next Patient' triggering audio-visual counter chime on TV", protocol: "Web Audio + Socket", sla: "< 15ms", payloadType: "Audio Synthesizer AudioBuffer", security: "Role-Based Token Authentication", failover: "Visual Counter Flash Notice" },
+      { step: "05", title: "Pharmacy Register Sync", description: "Prescription token routed to medication counter for fast dispensing", protocol: "REST / SQL", sla: "< 35ms", payloadType: "Encrypted Medical Serial Record", security: "HIPAA Compliant At-Rest AES-256", failover: "Local SQLite Queue Sync" }
     ],
     productionAuditLog: {
       lastVerified: "August 2026",
@@ -684,14 +690,192 @@ export const SIMULATED_PROJECT_ARCHIVE_DB: Record<string, ProjectDeepInsights> =
       }
     ],
     architectureFlow: [
-      { step: "01", title: "Hardware Packet Broadcast", description: "GPS device sends binary telemetry payload over GSM cellular network", protocol: "Raw TCP / UDP", sla: "< 50ms" },
-      { step: "02", title: "TCP Socket Parser", description: "Node daemon unpacks binary bytes into lat, long, speed, ignition, and fuel status", protocol: "Binary Buffer", sla: "< 2ms" },
-      { step: "03", title: "PostGIS Spatial Calculation", description: "Database verifies whether vehicle position intersects with customer geofence boundaries", protocol: "PostGIS ST_Contains", sla: "< 8ms" },
-      { step: "04", title: "WebSocket Live Push", description: "Updated coordinates streamed to active browser dispatcher sessions", protocol: "WSS / Socket.IO", sla: "< 20ms" },
-      { step: "05", title: "WebGL Vector Map Render", description: "Map canvas moves vehicle marker with smooth mathematical easing", protocol: "Mapbox GL Shader", sla: "< 16ms" }
+      { step: "01", title: "Hardware Packet Broadcast", description: "GPS device sends binary telemetry payload over GSM cellular network", protocol: "Raw TCP / UDP", sla: "< 50ms", payloadType: "GT06 Binary Byte Buffer", security: "Cellular APN Private Tunnel", failover: "Device Onboard Flash Memory Log" },
+      { step: "02", title: "TCP Socket Parser", description: "Node daemon unpacks binary bytes into lat, long, speed, ignition, and fuel status", protocol: "Binary Buffer", sla: "< 2ms", payloadType: "Structured Telemetry JSON", security: "IP Whitelist Firewall", failover: "Clustered Daemon Replica Pool" },
+      { step: "03", title: "PostGIS Spatial Calculation", description: "Database verifies whether vehicle position intersects with customer geofence boundaries", protocol: "PostGIS ST_Contains", sla: "< 8ms", payloadType: "WKT Geometry Polygon Query", security: "Database Network Isolation", failover: "Cached Polygon Bounding Box Check" },
+      { step: "04", title: "WebSocket Live Push", description: "Updated coordinates streamed to active browser dispatcher sessions", protocol: "WSS / Socket.IO", sla: "< 20ms", payloadType: "Delta Coordinate JSON", security: "WSS TLS 1.3 / User Session Token", failover: "Client Fallback Poll (3s)" },
+      { step: "05", title: "WebGL Vector Map Render", description: "Map canvas moves vehicle marker with smooth mathematical easing", protocol: "Mapbox GL Shader", sla: "< 16ms", payloadType: "GPU Vertex Attribute Array", security: "Client Sandbox WebGL Context", failover: "Standard 2D Canvas Marker Engine" }
     ],
     productionAuditLog: {
       lastVerified: "September 2026",
+      auditStatus: "Green • 100% Operational",
+      uptimeSLA: "99.98%"
+    }
+  },
+  roadsafety: {
+    projectId: 'roadsafety',
+    slug: 'roadsafety-movement-os',
+    clientTestimonial: {
+      quote: "DevCenterPoint created an operational backbone for our movement. Coordinating thousands of active volunteers, public safety campaigns, and community logistics used to be messy—now it runs with absolute clarity.",
+      author: "Advocacy Directorate",
+      role: "Central Operations & Logistics Lead",
+      company: "Road Safety Movement Organization"
+    },
+    executiveSummary:
+      "A centralized organizational operating system built for large-scale civic advocacy, coordinating verified member directories, real-time campaign dispatches, and volunteer field deployment.",
+    sprintDurationWeeks: 12,
+    teamSquadSize: "3 Senior Engineers • 1 Cloud Architect • 1 Product Designer",
+    challenges: [
+      {
+        title: "Volunteer Coordination Bottlenecks During Safety Drives",
+        severity: "Critical",
+        rootCause:
+          "Fragmented messaging groups and manual volunteer intake led to lost signups and delayed dispatch during urgent civic campaigns.",
+        architecturalResolution:
+          "Engineered a centralized digital intake and automated credential verification system with real-time push dispatches.",
+        codeOrPatternReference: "Role-Based Campaign Dispatch & Queue Engine"
+      },
+      {
+        title: "High-Traffic Surges During Public Awareness Drives",
+        severity: "High",
+        rootCause:
+          "Traffic spikes from social broadcasts overwhelmed un-cached relational database queries, causing slow load times for field volunteers.",
+        architecturalResolution:
+          "Implemented Redis multi-tier caching and CDN edge routing, ensuring sub-60ms response times under nationwide traffic surges.",
+        codeOrPatternReference: "Redis Response Cache + Edge Asset Distribution"
+      }
+    ],
+    deepStack: [
+      {
+        name: "React & TypeScript",
+        category: "Frontend",
+        role: "High-contrast responsive client for desktop coordinators and mobile field volunteers",
+        configOrVersion: "React 19 / TypeScript Strict",
+        rationale: "Ensures type safety across diverse member directories and logistics forms."
+      },
+      {
+        name: "Laravel & REST API Gateway",
+        category: "Backend",
+        role: "Business logic, granular RBAC, and event dispatch queues",
+        configOrVersion: "Laravel 11 / PHP 8.3",
+        rationale: "Battle-tested authorization gates and reliable asynchronous job workers."
+      },
+      {
+        name: "PostgreSQL & Redis",
+        category: "Database",
+        role: "Relational persistence with in-memory caching",
+        configOrVersion: "PostgreSQL 16 / Redis 7",
+        rationale: "Ensures ACID transactions for verified member records and sub-millisecond query caches."
+      }
+    ],
+    outcomes: [
+      {
+        metric: "Volunteer Mobilization Speed",
+        value: "< 3.5 mins",
+        baseline: "45 mins (Phone & Chat)",
+        impactDescription: "Field volunteers mobilized in minutes during critical awareness campaigns."
+      },
+      {
+        metric: "Member Directory Query Latency",
+        value: "38ms",
+        baseline: "420ms (Spreadsheets/Old DB)",
+        impactDescription: "Sub-50ms search across entire verified membership base."
+      },
+      {
+        metric: "Public System Uptime",
+        value: "99.99%",
+        baseline: "Frequent outages on drives",
+        impactDescription: "Zero downtime during viral public safety awareness events."
+      }
+    ],
+    architectureFlow: [
+      { step: "01", title: "Member Intake & Verification", description: "Volunteers submit credentials via encrypted web application", protocol: "HTTPS / TLS 1.3", sla: "< 120ms", payloadType: "Encrypted Volunteer Intake Form", security: "TLS 1.3 + CSRF Guard", failover: "Client Offline LocalStorage Queue" },
+      { step: "02", title: "API Gateway & RBAC Guard", description: "Token verification and permission validation against role hierarchy", protocol: "JWT Middleware", sla: "< 5ms", payloadType: "Signed JWT Authorization Token", security: "RS256 Public Key Verification", failover: "Stateless In-Memory Token Cache" },
+      { step: "03", title: "Campaign Dispatch Queue", description: "Automated event alerts pushed into Redis asynchronous worker queue", protocol: "Redis Queue", sla: "< 15ms", payloadType: "Serialized Campaign Event Job", security: "Isolated Redis Subnet Auth", failover: "Database Emergency Failover Queue" },
+      { step: "04", title: "Volunteer Notification Broadcast", description: "Targeted alerts sent to field coordinators based on district and role", protocol: "WebSockets / Push", sla: "< 1.5s", payloadType: "WebPush VAPID Notification", security: "VAPID Public Key Encryption", failover: "Bulk SMS Broadcast Fallback" },
+      { step: "05", title: "Operational Impact Ledger", description: "Field hours, safety checkpoints, and incident data logged immutably", protocol: "SQL Serializable", sla: "< 25ms", payloadType: "Audit Log Relational Entity", security: "Write-Once Audit Trail AES-256", failover: "Continuous WAL Replication" }
+    ],
+    productionAuditLog: {
+      lastVerified: "October 2026",
+      auditStatus: "Green • 100% Operational",
+      uptimeSLA: "99.99%"
+    }
+  },
+  'speech-therapy': {
+    projectId: 'speech-therapy',
+    slug: 'speech-therapy-assessment-suite',
+    clientTestimonial: {
+      quote: "DevCenterPoint replaced our cumbersome manual paper assessments with an intuitive, standardized digital suite. Our therapists can now focus 100% on pediatric patients while diagnostic summaries are generated automatically.",
+      author: "Clinical Director",
+      role: "Lead Speech-Language Pathologist",
+      company: "Pediatric Therapy & Clinical Diagnostics Center"
+    },
+    executiveSummary:
+      "A clinical assessment UI and diagnostic screening platform designed for pediatric speech therapists, streamlining articulation tests, phonological milestone tracking, and automated reporting.",
+    sprintDurationWeeks: 10,
+    teamSquadSize: "3 Senior Engineers • 1 Clinical Domain Specialist • 1 UX Designer",
+    challenges: [
+      {
+        title: "Cognitive Overload During Live Bedside Evaluations",
+        severity: "Critical",
+        rootCause:
+          "Complex paper scoring matrices distracted therapists from observing child behavioral cues during brief assessment windows.",
+        architecturalResolution:
+          "Engineered a distraction-free, one-touch interactive evaluation card UI with instant visual confirmation and automated percentile tabulation.",
+        codeOrPatternReference: "Low-Distraction Tablet UI with Reactive State Machine"
+      },
+      {
+        title: "Clinical Data Integrity & Connectivity Dropouts",
+        severity: "High",
+        rootCause:
+          "Therapy rooms with thick acoustic insulation suffered frequent Wi-Fi dropouts, risking loss of in-progress assessment records.",
+        architecturalResolution:
+          "Implemented offline IndexedDB client-side persistence with automated cryptographic sync upon network reconnection.",
+        codeOrPatternReference: "Offline IndexedDB + Service Worker Background Sync"
+      }
+    ],
+    deepStack: [
+      {
+        name: "React & TypeScript",
+        category: "Frontend",
+        role: "Interactive clinical assessment cards and responsive charts",
+        configOrVersion: "React 19 / TypeScript",
+        rationale: "Strict typing for clinical milestone rubrics and immediate reactivity."
+      },
+      {
+        name: "Node.js & Express",
+        category: "Backend",
+        role: "HIPAA-conscious encrypted diagnostic API and report generation engine",
+        configOrVersion: "Node.js 20 LTS",
+        rationale: "Fast, stateless scoring micro-services with streaming PDF compilation."
+      },
+      {
+        name: "PostgreSQL Encrypted Storage",
+        category: "Database",
+        role: "Patient assessment history and normative percentile datasets",
+        configOrVersion: "PostgreSQL 16 with AES-256 at rest",
+        rationale: "Ensures maximum clinical data confidentiality and auditability."
+      }
+    ],
+    outcomes: [
+      {
+        metric: "Diagnostic Report Turnaround",
+        value: "Instant (1-click)",
+        baseline: "3 to 5 business days",
+        impactDescription: "Standardized PDF assessment reports generated immediately after session."
+      },
+      {
+        metric: "Scoring Accuracy",
+        value: "100%",
+        baseline: "8% manual calculation errors",
+        impactDescription: "Automated percentile mapping eliminated human calculation mistakes."
+      },
+      {
+        metric: "Therapist Time Saved",
+        value: "45 mins/patient",
+        baseline: "60 mins manual paperwork",
+        impactDescription: "Therapists gain back hours each week for direct patient care."
+      }
+    ],
+    architectureFlow: [
+      { step: "01", title: "Touch Evaluation Input", description: "Therapist inputs observation scores on interactive test cards", protocol: "Local State", sla: "< 5ms", payloadType: "Touch Vector & Score Rubric", security: "Local Memory Sandboxing", failover: "Local Session Cache" },
+      { step: "02", title: "Offline Storage Lock", description: "Scores encrypted and written to local IndexedDB to survive connection drops", protocol: "IndexedDB", sla: "< 2ms", payloadType: "Encrypted IndexedDB Record", security: "Client-Side Web Crypto API", failover: "ServiceWorker Persistent Cache" },
+      { step: "03", title: "Normative Percentile Engine", description: "Standardized scores benchmarked against pediatric normative distributions", protocol: "WASM / JS Math Engine", sla: "< 10ms", payloadType: "Statistical Z-Score & Percentile", security: "Client Deterministic Algorithmic Bounds", failover: "Standard Fallback Lookup Matrix" },
+      { step: "04", title: "Encrypted Cloud Sync", description: "Completed evaluation uploaded to secure PostgreSQL patient registry", protocol: "TLS 1.3 / AES-256", sla: "< 150ms", payloadType: "HIPAA Compliant Patient Bundle", security: "mTLS + AES-256 Envelope Encryption", failover: "Queued Retry Worker" },
+      { step: "05", title: "Automated Clinical PDF Export", description: "Structured report compiled with progress charts and diagnostic advice", protocol: "PDF Stream", sla: "< 500ms", payloadType: "Compiled Diagnostic PDF Blob", security: "Password-Protected Medical Document", failover: "HTML Printable Summary" }
+    ],
+    productionAuditLog: {
+      lastVerified: "October 2026",
       auditStatus: "Green • 100% Operational",
       uptimeSLA: "99.98%"
     }
@@ -879,6 +1063,58 @@ export const PROJECT_SCREENSHOTS_REGISTRY: Record<string, ProjectScreenshot[]> =
       imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1800&q=85',
       badge: 'PostGIS Engine',
       category: 'Analytics',
+    },
+  ],
+  roadsafety: [
+    {
+      id: 'rs-1',
+      title: 'Nationwide Civic Campaign Dispatch & Volunteer Mobilization Console',
+      description: 'Real-time volunteer district assignment and broadcast alerts coordinating civic safety drives across 12 regional divisions.',
+      imageUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1800&q=85',
+      badge: 'Campaign OS',
+      category: 'Command Center',
+    },
+    {
+      id: 'rs-2',
+      title: 'Granular RBAC Member Directory & Encrypted Security Badges',
+      description: 'Verified volunteer directory with sub-50ms fuzzy search and digital verification credentials.',
+      imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1800&q=85',
+      badge: 'Directory & RBAC',
+      category: 'Dashboard',
+    },
+    {
+      id: 'rs-3',
+      title: 'Public Safety Initiative Impact & Field Metrics Telemetry',
+      description: 'Automated civic impact analytics dashboard aggregating volunteer hours, incident reports, and road awareness reach.',
+      imageUrl: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1800&q=85',
+      badge: 'Civic Analytics',
+      category: 'Analytics',
+    },
+  ],
+  'speech-therapy': [
+    {
+      id: 'st-1',
+      title: 'Interactive Pediatric Articulation Matrix & Diagnostic Screening Cards',
+      description: 'Low-distraction touch interface designed for child evaluations with dynamic phonological scoring rubrics.',
+      imageUrl: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1800&q=85',
+      badge: 'Diagnostic Matrix',
+      category: 'Kiosk',
+    },
+    {
+      id: 'st-2',
+      title: 'Longitudinal Patient Developmental Progress & Milestone Timeline',
+      description: 'Session-over-session developmental curves benchmarked against standardized normative pediatric percentiles.',
+      imageUrl: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1800&q=85',
+      badge: 'Clinical Timeline',
+      category: 'Analytics',
+    },
+    {
+      id: 'st-3',
+      title: '1-Click Automated Diagnostic Summary & Encrypted PDF Export',
+      description: 'Compliant clinical report compiler streaming formatted diagnosis summaries directly to parents and physicians.',
+      imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1800&q=85',
+      badge: 'HIPAA Export',
+      category: 'Dashboard',
     },
   ],
 };

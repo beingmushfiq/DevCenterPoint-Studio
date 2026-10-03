@@ -20,6 +20,8 @@ import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
 import { BackToTop } from './components/BackToTop';
 import { GlobalLoadingScreen } from './components/GlobalLoadingScreen';
+import { ClientDemoSandboxModal } from './components/ClientDemoSandboxModal';
+import { MobileBottomActionBar } from './components/MobileBottomActionBar';
 
 interface ScrollRevealSectionProps {
   children: React.ReactNode;
@@ -81,6 +83,7 @@ function HeroReveal({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const [isSiteLoaded, setIsSiteLoaded] = React.useState(false);
+  const [isSandboxOpen, setIsSandboxOpen] = React.useState(false);
 
   return (
     <HelmetProvider>
@@ -97,8 +100,8 @@ export default function App() {
             {/* Desktop Subtle Cursor Indicator */}
             <CustomCursor />
 
-            {/* Primary Fixed Navigation */}
-            <Navigation />
+            {/* Primary Fixed Navigation with Sandbox Opener */}
+            <Navigation onOpenSandbox={() => setIsSandboxOpen(true)} />
 
             {/* Main Page Content Flow with Scroll-Reveal Motion Animations */}
             <main id="main-content">
@@ -170,6 +173,15 @@ export default function App() {
 
             {/* Floating Back to Top Action Button */}
             <BackToTop />
+
+            {/* Mobile Fixed Sticky Bottom Action Bar */}
+            <MobileBottomActionBar onOpenSandbox={() => setIsSandboxOpen(true)} />
+
+            {/* Live Client Sandbox Modal */}
+            <ClientDemoSandboxModal
+              isOpen={isSandboxOpen}
+              onClose={() => setIsSandboxOpen(false)}
+            />
           </div>
         </ThemeProvider>
       </SEOProvider>

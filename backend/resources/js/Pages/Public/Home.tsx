@@ -22,6 +22,8 @@ import { Footer } from '../../Components/Footer';
 import { CustomCursor } from '../../Components/CustomCursor';
 import { BackToTop } from '../../Components/BackToTop';
 import { GlobalLoadingScreen } from '../../Components/GlobalLoadingScreen';
+import { ClientDemoSandboxModal } from '../../Components/ClientDemoSandboxModal';
+import { MobileBottomActionBar } from '../../Components/MobileBottomActionBar';
 
 interface ScrollRevealSectionProps {
   children: React.ReactNode;
@@ -75,6 +77,7 @@ function HeroReveal({ children }: { children: React.ReactNode }) {
 
 export default function Home(props: CmsData) {
   const [isSiteLoaded, setIsSiteLoaded] = React.useState(false);
+  const [isSandboxOpen, setIsSandboxOpen] = React.useState(false);
   const siteTitle = props.siteSettings?.seo_meta_title || 'DevCenterPoint Studio | Software Engineering & System Architecture';
   const siteDescription = props.siteSettings?.seo_meta_description || 'Elite software engineering consultancy specializing in scalable web systems, AI pipelines, and resilient cloud architectures.';
 
@@ -98,8 +101,8 @@ export default function Home(props: CmsData) {
               {/* Desktop Subtle Cursor Indicator */}
               <CustomCursor />
 
-              {/* Primary Fixed Navigation */}
-              <Navigation />
+              {/* Primary Fixed Navigation with Sandbox Opener */}
+              <Navigation onOpenSandbox={() => setIsSandboxOpen(true)} />
 
               {/* Main Page Content Flow with Scroll-Reveal Motion Animations */}
               <main id="main-content">
@@ -171,6 +174,15 @@ export default function Home(props: CmsData) {
 
               {/* Floating Back to Top Action Button */}
               <BackToTop />
+
+              {/* Mobile Fixed Sticky Bottom Action Bar */}
+              <MobileBottomActionBar onOpenSandbox={() => setIsSandboxOpen(true)} />
+
+              {/* Live Client Sandbox Modal */}
+              <ClientDemoSandboxModal
+                isOpen={isSandboxOpen}
+                onClose={() => setIsSandboxOpen(false)}
+              />
             </div>
           </ThemeProvider>
         </SEOProvider>

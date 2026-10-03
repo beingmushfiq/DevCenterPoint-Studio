@@ -3,6 +3,7 @@ import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { DigitalSystemMap } from './DigitalSystemMap';
 import { DevCenterPointLogo } from './DevCenterPointLogo';
+import { HeroInteractiveCanvas } from './HeroInteractiveCanvas';
 import { soundEngine } from '../lib/soundEngine';
 
 export const Hero: React.FC = () => {
@@ -40,8 +41,11 @@ export const Hero: React.FC = () => {
 
   return (
     <section id="hero" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors duration-300">
+      {/* Interactive Neural Canvas & Sound Controller */}
+      <HeroInteractiveCanvas />
+
       {/* Background Subtle Accent Lights */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-600/10 blur-[140px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-200 h-100 bg-blue-600/10 blur-[140px] rounded-full pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16">
@@ -70,7 +74,7 @@ export const Hero: React.FC = () => {
             className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[1.08] mb-6 text-slate-900 dark:text-white"
           >
             Digital products, <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-500 dark:from-white dark:via-blue-100 dark:to-blue-500">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-700 via-indigo-600 to-blue-500 dark:from-white dark:via-blue-100 dark:to-blue-500">
               engineered properly.
             </span>
           </motion.h1>
@@ -134,7 +138,7 @@ export const Hero: React.FC = () => {
                 delay: idx * 0.1,
                 ease: [0.215, 0.61, 0.355, 1]
               }}
-              className="bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2a2a2a] p-6 rounded-[2rem] hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300 shadow-lg"
+              className="bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2a2a2a] p-6 rounded-4xl hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300 shadow-lg"
             >
               <div className="text-[10px] text-slate-500 dark:text-gray-500 font-black uppercase tracking-[0.2em] mb-2">
                 {m.label}

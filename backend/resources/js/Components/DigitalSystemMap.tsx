@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Globe,
-  Smartphone,
+  Activity,
   Sparkles,
-  BarChart3,
+  ShieldCheck,
   CheckCircle2,
   ArrowRight,
   TrendingUp,
   Zap,
-  ShieldCheck,
-  Users,
   Bell,
   Check,
   MousePointerClick,
-  Laptop
+  Laptop,
+  ExternalLink,
+  Copy,
+  Key
 } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
 
@@ -26,6 +27,13 @@ interface SolutionProduct {
   tagline: string;
   icon: React.ElementType;
   mockupTitle: string;
+  liveUrl?: string;
+  adminUrl?: string;
+  demoCredentials?: {
+    user: string;
+    pass: string;
+    role?: string;
+  };
   stats: {
     label: string;
     value: string;
@@ -50,159 +58,176 @@ interface SolutionProduct {
 
 const SOLUTIONS: SolutionProduct[] = [
   {
-    id: 'saas',
-    category: 'Cloud SaaS & Web Apps',
-    badge: 'High Conversion',
-    title: 'Modern Web Platforms & SaaS',
-    tagline: 'Fast, intuitive web applications and customer portals built to turn visitors into loyal subscribers.',
+    id: 'erp',
+    category: 'Enterprise ERP & Commerce',
+    badge: 'Omnichannel Core',
+    title: 'DevCenterPoint ERP & Storefront',
+    tagline: 'Full-stack enterprise ERP integrated with an omnichannel storefront, live inventory sync, and POS sales workflows.',
     icon: Globe,
-    mockupTitle: 'AcmeCloud • Customer Growth Portal',
+    mockupTitle: 'DevCenterPoint ERP • Enterprise Control Portal',
+    liveUrl: 'https://demoerp.devcenterpoint.com',
+    adminUrl: 'https://demoerp.devcenterpoint.com/login',
+    demoCredentials: {
+      user: 'Admin',
+      pass: '12345678',
+      role: 'Enterprise Administrator'
+    },
     stats: [
-      { label: 'Active Monthly Users', value: '42,850', change: '+24% this month', trend: 'up' },
-      { label: 'Platform Uptime', value: '99.98%', change: 'Zero downtime', trend: 'up' },
-      { label: 'Avg. Page Load', value: '0.42s', change: 'Blazing fast', trend: 'up' }
+      { label: 'Active SKU Matrix', value: '18,450+', change: 'Multi-hub sync', trend: 'up' },
+      { label: 'Platform Uptime', value: '99.98%', change: 'Zero stock drift', trend: 'up' },
+      { label: 'Order Processing SLA', value: '0.38s', change: 'Redis lock engine', trend: 'up' }
     ],
     activityLogs: [
-      { time: 'Just now', event: 'Enterprise customer onboarded seamlessly', badge: 'New Client' },
-      { time: '2m ago', event: 'Automated subscription renewed via Stripe', badge: 'Billing' },
-      { time: '5m ago', event: 'Zero-downtime feature update deployed', badge: 'Cloud' }
+      { time: 'Just now', event: 'Enterprise warehouse batch dispatch completed (SKU #4892)', badge: 'Fulfillment' },
+      { time: '2m ago', event: 'Omnichannel checkout reconciled via Stripe & Gateway', badge: 'Settlement' },
+      { time: '5m ago', event: 'Multi-tier safety stock threshold auto-replenished', badge: 'Inventory' }
     ],
     businessOutcomes: {
-      speedToMarket: '6 to 8 weeks to MVP launch',
-      impact: '+38% increase in user retention',
-      security: 'Enterprise-grade data encryption'
+      speedToMarket: '6 to 8 weeks to full deployment',
+      impact: '100% elimination of double-allocations',
+      security: 'Optimistic concurrency & RBAC audit logs'
     },
     clientBenefits: [
-      'Clean, intuitive user experience designed for non-technical users',
-      'Instant loading speeds that boost SEO and sales conversions',
-      'Scales automatically from your first 100 users to over 100,000+'
+      'Unified stock visibility preventing stockouts and overselling across all sales channels',
+      'High-density order tables engineered for rapid keyboard navigation & zero fatigue',
+      'Automated courier routing rules based on proximity, stock level, and courier SLAs'
     ],
     deliverables: [
-      'Interactive Figma UI/UX designs',
-      'Production-ready modern web app',
-      'Automated cloud hosting setup',
-      '100% full intellectual property transfer'
+      'Omnichannel storefront + back-office ERP',
+      'Multi-warehouse inventory synchronization engine',
+      'Batch order manifest & shipping label generator',
+      '100% full source code repository handover'
     ],
-    sampleActionLabel: 'Simulate User Checkout',
-    sampleActionToast: '✓ Test payment processed in 38ms! User access unlocked.'
+    sampleActionLabel: 'Simulate POS Inventory Dispatch',
+    sampleActionToast: '✓ Order #DCP-8842 allocated across 3 warehouses in 34ms! Live stock locked.'
   },
   {
-    id: 'mobile',
-    category: 'Mobile & Tablet Apps',
-    badge: 'iOS & Android',
-    title: 'Sleek iOS & Android Apps',
-    tagline: 'Fluid mobile experiences designed for the palm of your hand, featuring offline sync and instant push alerts.',
-    icon: Smartphone,
-    mockupTitle: 'PulseGo • Consumer Mobile Experience',
+    id: 'healthcare',
+    category: 'Healthcare Queue & Clinics',
+    badge: 'Healthcare OS',
+    title: 'Feroza Medicine Corner Serial Manager',
+    tagline: 'Real-time patient queue, counter dispatch, and doctor appointment serial management portal built for healthcare desks.',
+    icon: Activity,
+    mockupTitle: 'Feroza Medicine Corner • Serial Manager OS',
+    liveUrl: 'https://serial.ferozamedicinecorner.com',
+    adminUrl: 'https://serial.ferozamedicinecorner.com',
+    demoCredentials: {
+      user: 'Super Admin',
+      pass: '12345678',
+      role: 'Clinic Super Admin'
+    },
     stats: [
-      { label: 'Daily Active Users', value: '18,400', change: '+31% adoption', trend: 'up' },
-      { label: 'App Store Rating', value: '4.9 ★', change: 'Over 2,400 reviews', trend: 'up' },
-      { label: 'Push Notification Open', value: '41.2%', change: '3x industry avg', trend: 'up' }
+      { label: 'Daily Patient Serials', value: '1,420+', change: 'Outpatient desks', trend: 'up' },
+      { label: 'Lobby Congestion', value: '-65%', change: 'Remote SMS tracking', trend: 'up' },
+      { label: 'Socket Broadcast', value: '22ms', change: 'Pusher / Reverb', trend: 'up' }
     ],
     activityLogs: [
-      { time: 'Just now', event: 'User completed onboarding in 45 seconds', badge: 'Engaged' },
-      { time: '1m ago', event: 'Offline order synced automatically when reconnected', badge: 'Offline' },
-      { time: '4m ago', event: 'Targeted push notification delivered to 12k users', badge: 'Push' }
+      { time: 'Just now', event: 'Patient Token #42 called to Specialist Counter 3', badge: 'Summons' },
+      { time: '1m ago', event: 'Automated SMS proximity alert sent to Token #45', badge: 'SMS Alert' },
+      { time: '4m ago', event: 'Pharmacy counter dispense verified with barcode scan', badge: 'Dispense' }
     ],
     businessOutcomes: {
-      speedToMarket: '8 to 10 weeks across iOS & Android',
-      impact: '2.5x higher daily customer engagement',
-      security: 'Biometric FaceID & Secure Keychain'
+      speedToMarket: '4 to 6 weeks for custom clinic setup',
+      impact: '65% reduction in waiting room crowd density',
+      security: 'Encrypted patient records & offline buffer'
     },
     clientBenefits: [
-      'One unified codebase that runs smoothly on both Apple and Android',
-      'Works offline and syncs seamlessly when back on WiFi or cellular',
-      'Smooth animations and gestures that feel completely natural'
+      'High-legibility waiting room TV display visible from 30+ feet away with audio cues',
+      'Patients wait comfortably in cafes or outdoors with live mobile web queue tracking',
+      'Doctor desk console enables instant 1-click patient calling, transfers, and emergency triage'
     ],
     deliverables: [
-      'Pixel-perfect iOS & Android apps',
-      'App Store & Google Play submission management',
-      'Instant push notification engine',
-      'Complete developer documentation'
+      'Patient self-service token kiosk UI & printer setup',
+      'Doctor & receptionist counter control consoles',
+      'High-contrast public display screen layout with audio chimes',
+      'Automated Twilio / SMS alert gateway integration'
     ],
-    sampleActionLabel: 'Trigger Test Push Alert',
-    sampleActionToast: '🔔 Notification sent: "Your order is ready!" (Delivered in 12ms)'
+    sampleActionLabel: 'Simulate Patient Counter Summons',
+    sampleActionToast: '🔔 Token #A-108 called! Waiting room TV screen & chime triggered in 18ms.'
   },
   {
     id: 'ai',
     category: 'AI & Smart Workflows',
-    badge: 'Intelligent Automation',
-    title: 'AI Assistants & Smart Automations',
-    tagline: 'Practical AI tools and automated workflows that eliminate repetitive manual tasks and unlock hours every week.',
+    badge: 'AI Studio Hub',
+    title: 'DevCenterPoint AI Studio',
+    tagline: 'Dedicated research & engineering hub exploring applied AI tools, explainable machine learning models, and automated enterprise workflows.',
     icon: Sparkles,
-    mockupTitle: 'CognitiveDesk • Intelligent Workflow Copilot',
+    mockupTitle: 'DevCenterPoint AI Studio • Applied AI Hub',
+    liveUrl: 'https://devcenterpoint.ai.studio',
     stats: [
-      { label: 'Weekly Hours Saved', value: '1,280 hrs', change: 'Automated workflows', trend: 'up' },
-      { label: 'Accuracy Rating', value: '99.4%', change: 'Continuous learning', trend: 'up' },
-      { label: 'Instant Query Time', value: '0.18s', change: 'Real-time assistant', trend: 'up' }
+      { label: 'Weekly Hours Saved', value: '1,480 hrs', change: 'Automated LLM pipelines', trend: 'up' },
+      { label: 'Inference Latency', value: '0.18s', change: 'FastAPI streaming', trend: 'up' },
+      { label: 'Model Precision', value: '99.4%', change: 'Domain fine-tuning', trend: 'up' }
     ],
     activityLogs: [
-      { time: 'Just now', event: 'AI categorized & answered 85 client inquiries', badge: 'Automated' },
-      { time: '3m ago', event: 'Smart summary generated for 40-page contract', badge: 'Document' },
-      { time: '6m ago', event: 'Predictive inventory alert dispatched to warehouse', badge: 'Forecast' }
+      { time: 'Just now', event: 'Autonomous webhook router parsed 120 client leads', badge: 'Agentic' },
+      { time: '3m ago', event: 'SHAP feature importance graph computed for career model', badge: 'Explainable' },
+      { time: '6m ago', event: 'Clinical screening assessment PDF compiled and dispatched', badge: 'DocGen' }
     ],
     businessOutcomes: {
-      speedToMarket: '4 to 6 weeks for AI integration',
-      impact: '65% reduction in manual data entry',
-      security: 'Zero data leakage / Private AI model'
+      speedToMarket: '3 to 5 weeks for domain AI integration',
+      impact: '65% reduction in manual data entry & triage',
+      security: 'Zero data leakage / Private dedicated inference'
     },
     clientBenefits: [
-      'Answers customer questions 24/7 with human-like understanding',
-      'Summarizes messy documents and spreadsheets in a fraction of a second',
+      'Answers customer and staff questions 24/7 with deep context understanding',
+      'Explainable AI models backed by mathematical feature attribution (SHAP)',
       'Your private business data is protected and never used to train public models'
     ],
     deliverables: [
-      'Custom trained AI assistant & smart search',
-      'Automated email & workflow triggers',
-      'Executive performance dashboard',
-      'Security audit & data privacy shield'
+      'Custom domain LLM pipeline & retrieval system (RAG)',
+      'FastAPI C-accelerated inference microservices',
+      'Automated document processing & PDF extraction engine',
+      'Monitoring, hallucination guards, and token usage optimization'
     ],
-    sampleActionLabel: 'Generate Smart AI Summary',
-    sampleActionToast: '✨ AI Insight: "3 high-priority leads detected. Auto-reply drafted."'
+    sampleActionLabel: 'Trigger AI Pipeline Inference',
+    sampleActionToast: '✨ AI Workflow executed in 140ms! Structured JSON response generated.'
   },
   {
-    id: 'dashboards',
-    category: 'Operations & Dashboards',
-    badge: 'Executive Clarity',
-    title: 'Live Operations & Business Dashboards',
-    tagline: 'Clear, real-time command centers that give business leaders full visibility into operations, revenue, and team efficiency.',
-    icon: BarChart3,
-    mockupTitle: 'NexusCommand • Enterprise Operations Portal',
+    id: 'qttenzy',
+    category: 'Dynamic QR & Geofence OS',
+    badge: 'IoT & Access',
+    title: 'Qttenzy Smart Geofenced Attendance',
+    tagline: 'QR-based automated geofenced attendance system that verifies check-ins within precise physical boundaries.',
+    icon: ShieldCheck,
+    mockupTitle: 'Qttenzy • Smart Geofence Access Portal',
+    liveUrl: 'https://qttenzy.vercel.app',
     stats: [
-      { label: 'Live Operations Tracked', value: '14,200', change: 'Real-time streaming', trend: 'up' },
-      { label: 'System Health Score', value: '100%', change: 'All systems green', trend: 'up' },
-      { label: 'Reporting Speed', value: 'Instant', change: 'No waiting for exports', trend: 'up' }
+      { label: 'Verified Check-ins', value: '38,200', change: 'Anti-spoofing enabled', trend: 'up' },
+      { label: 'Rotating QR Interval', value: '10s', change: 'HMAC-SHA256 tokens', trend: 'up' },
+      { label: 'Optical Scan Time', value: '0.45s', change: 'Instant PWA decode', trend: 'up' }
     ],
     activityLogs: [
-      { time: 'Just now', event: 'Global sales overview refreshed in real time', badge: 'Live KPI' },
-      { time: '2m ago', event: 'Automated inventory reorder sent to supplier', badge: 'Logistics' },
-      { time: '5m ago', event: 'Weekly executive summary exported to PDF', badge: 'Report' }
+      { time: 'Just now', event: 'Geofenced entrance verified within 15m radius', badge: 'Geofence' },
+      { time: '2m ago', event: 'Batch attendance ledger synced with campus server', badge: 'Ledger' },
+      { time: '5m ago', event: 'Rotating TOTP token refreshed across display terminals', badge: 'Security' }
     ],
     businessOutcomes: {
-      speedToMarket: '4 to 8 weeks for custom dashboard',
-      impact: '100% transparent operations visibility',
-      security: 'Role-based access control (RBAC)'
+      speedToMarket: '4 to 6 weeks for campus or office deployment',
+      impact: '100% elimination of proxy check-in fraud',
+      security: 'Hardware gyroscope & GPS fence validation'
     },
     clientBenefits: [
-      'Eliminates confusion by consolidating data from multiple tools into one place',
-      'Custom alerts notify leadership immediately if an anomaly occurs',
-      'Permission controls ensure staff only see what is relevant to their role'
+      'Fraud-resistant dynamic QR codes rotate every 10 seconds to stop screenshot sharing',
+      'Client-side GPS boundary checks combined with server-side IP subnet matching',
+      'Role-based dashboard tailored for administrators, supervisors, and end-users'
     ],
     deliverables: [
-      'Interactive executive dashboards',
-      'Live third-party API data sync',
-      'Automated scheduled email reports',
-      'Mobile-friendly responsive views'
+      'Dynamic rotating QR code projection display feed',
+      'Offline-capable PWA scanner client with automatic sync',
+      'Automated export of attendance records in CSV, PDF, and XLS',
+      'Granular department permission controls & shift calculation'
     ],
-    sampleActionLabel: 'Refresh Live Operations Stream',
-    sampleActionToast: '📊 Live data refreshed across all 6 business channels!'
+    sampleActionLabel: 'Simulate Geofence Check-in',
+    sampleActionToast: '📍 GPS boundary validated! Dynamic QR token decoded & verified in 42ms.'
   }
 ];
 
 export const DigitalSystemMap: React.FC = () => {
-  const [activeSolutionId, setActiveSolutionId] = useState<string>('saas');
+  const [activeSolutionId, setActiveSolutionId] = useState<string>('erp');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const activeSolution =
     SOLUTIONS.find((s) => s.id === activeSolutionId) || SOLUTIONS[0];
@@ -211,6 +236,13 @@ export const DigitalSystemMap: React.FC = () => {
     soundEngine.playTap();
     setActiveSolutionId(id);
     setToastMessage(null);
+  };
+
+  const handleCopy = (text: string, keyName: string) => {
+    soundEngine.playSuccessChime();
+    navigator.clipboard.writeText(text);
+    setCopiedKey(keyName);
+    setTimeout(() => setCopiedKey(null), 2000);
   };
 
   const handleRunSimulation = () => {
@@ -258,7 +290,7 @@ export const DigitalSystemMap: React.FC = () => {
 
       <div className="p-6 sm:p-8">
         
-        {/* Solution Tabs Selector */}
+        {/* Solution Tabs Selector (Red Box 1) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mb-8">
           {SOLUTIONS.map((item) => {
             const isSelected = item.id === activeSolutionId;
@@ -304,7 +336,7 @@ export const DigitalSystemMap: React.FC = () => {
         {/* Interactive Main Body: Preview (Left) + Value Story (Right) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          {/* Left Column: Live Realistic Product UI Mockup (7 cols) */}
+          {/* Left Column: Live Realistic Product UI Mockup (Red Box 2) */}
           <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl bg-slate-950 text-white border border-slate-800 shadow-2xl p-5 sm:p-6 overflow-hidden relative">
             
             {/* Ambient subtle glow */}
@@ -312,22 +344,80 @@ export const DigitalSystemMap: React.FC = () => {
 
             <div>
               {/* Mockup Window Navigation Bar */}
-              <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-800/80">
+              <div className="flex flex-wrap items-center justify-between pb-4 mb-4 border-b border-slate-800/80 gap-2">
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-rose-500/80"></span>
                   <span className="w-3 h-3 rounded-full bg-amber-500/80"></span>
                   <span className="w-3 h-3 rounded-full bg-emerald-500/80"></span>
-                  <span className="ml-2 text-xs font-mono font-bold text-slate-300 flex items-center gap-1.5">
-                    <Laptop className="w-3.5 h-3.5 text-blue-400" />
-                    <span>{activeSolution.mockupTitle}</span>
+                  <span className="ml-2 text-xs font-mono font-bold text-slate-300 flex items-center gap-1.5 truncate">
+                    <Laptop className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                    <span className="truncate">{activeSolution.mockupTitle}</span>
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span>Live Product Demo</span>
+                <div className="flex items-center gap-2">
+                  {activeSolution.liveUrl && (
+                    <a
+                      href={activeSolution.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white border border-blue-500/30 text-[10px] font-mono font-bold transition-all"
+                    >
+                      <span>Live System</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Live Demo</span>
+                  </div>
                 </div>
               </div>
+
+              {/* Demo Credentials Bar if available */}
+              {activeSolution.demoCredentials && (
+                <div className="p-2.5 mb-4 rounded-xl bg-slate-900/90 border border-blue-500/30 flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2">
+                    <Key className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <span className="text-[11px] font-mono text-slate-300 flex items-center gap-1.5">
+                      <span className="text-slate-400">User:</span>
+                      <span className="text-emerald-400 font-bold">{activeSolution.demoCredentials.user}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(activeSolution.demoCredentials!.user, 'user')}
+                        className="p-1 hover:text-white text-slate-400 transition-colors cursor-pointer"
+                        title="Copy Username"
+                      >
+                        {copiedKey === 'user' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      </button>
+                      <span className="text-slate-600">|</span>
+                      <span className="text-slate-400">Pass:</span>
+                      <span className="text-blue-300 font-bold">{activeSolution.demoCredentials.pass}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(activeSolution.demoCredentials!.pass, 'pass')}
+                        className="p-1 hover:text-white text-slate-400 transition-colors cursor-pointer"
+                        title="Copy Password"
+                      >
+                        {copiedKey === 'pass' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      </button>
+                    </span>
+                  </div>
+
+                  {activeSolution.adminUrl && (
+                    <a
+                      href={activeSolution.adminUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-mono font-bold transition-colors"
+                    >
+                      <span>Admin Login</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  )}
+                </div>
+              )}
 
               {/* Dynamic Stats Row inside the Mockup */}
               <div className="grid grid-cols-3 gap-3 mb-5">
@@ -469,7 +559,7 @@ export const DigitalSystemMap: React.FC = () => {
                 </div>
               </div>
 
-              {/* Why People Love Working With Us */}
+              {/* What You Get */}
               <div className="space-y-2">
                 <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-400 dark:text-gray-500">
                   What You Get

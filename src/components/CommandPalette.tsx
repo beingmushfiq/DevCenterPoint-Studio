@@ -23,7 +23,7 @@ import { soundEngine } from '../lib/soundEngine';
 export interface CommandItem {
   id: string;
   title: string;
-  category: 'Services' | 'Case Studies' | 'Methodology' | 'FAQ' | 'Actions';
+  category: 'Services' | 'Case Studies' | 'Live Systems' | 'Prototypes' | 'Methodology' | 'FAQ' | 'Actions';
   description: string;
   href?: string;
   icon: React.ElementType;
@@ -48,6 +48,71 @@ const COMMAND_ITEMS: CommandItem[] = [
     description: 'Bi-weekly architectural post-mortems and distributed systems insights',
     href: '#newsletter',
     icon: Sparkles,
+  },
+
+  // Live Systems & Verified Applications
+  {
+    id: 'live-erp',
+    title: 'DevCenterPoint ERP & Storefront (Demo)',
+    category: 'Live Systems',
+    description: 'Full-stack enterprise ERP with omnichannel storefront, POS, and inventory sync',
+    href: 'https://demoerp.devcenterpoint.com',
+    icon: Globe,
+    badge: 'Live ERP',
+  },
+  {
+    id: 'live-serial',
+    title: 'Feroza Medicine Corner Serial Manager',
+    category: 'Live Systems',
+    description: 'Real-time patient queue, appointment serial manager, and counter caller',
+    href: 'https://serial.ferozamedicinecorner.com',
+    icon: Globe,
+    badge: 'Healthcare',
+  },
+  {
+    id: 'live-roadsafety',
+    title: 'Road Safety Movement (Org Management OS)',
+    category: 'Live Systems',
+    description: 'Central operational platform coordinating members, logistics, and campaigns',
+    href: 'https://roadsafetymovement.org',
+    icon: Globe,
+    badge: 'Civic OS',
+  },
+  {
+    id: 'live-qttenzy',
+    title: 'Qttenzy Attendance System',
+    category: 'Live Systems',
+    description: 'Dynamic QR-based geofenced attendance verifying check-ins in physical bounds',
+    href: 'https://qttenzy.vercel.app',
+    icon: Smartphone,
+    badge: 'PWA',
+  },
+  {
+    id: 'live-ai-studio',
+    title: 'DevCenterPoint AI Studio',
+    category: 'Live Systems',
+    description: 'Applied AI hub exploring predictive tools, custom ML pipelines, and LLM workflows',
+    href: 'https://devcenterpoint.ai.studio',
+    icon: Cpu,
+    badge: 'AI Lab',
+  },
+  {
+    id: 'live-founder-portfolio',
+    title: 'Founder Portfolio • Mushfiq',
+    category: 'Live Systems',
+    description: 'Personal portfolio, engineering background, and systems architecture journey',
+    href: 'https://buildwithmushfiq.vercel.app',
+    icon: ExternalLink,
+    badge: 'buildwithmushfiq',
+  },
+  {
+    id: 'live-github',
+    title: 'Founder GitHub • @beingmushfiq',
+    category: 'Live Systems',
+    description: 'Open-source repositories: ERP Core, Traccar GPS, LeadLayer, and Studio',
+    href: 'https://github.com/beingmushfiq',
+    icon: ExternalLink,
+    badge: 'GitHub',
   },
 
   // Services
@@ -91,7 +156,7 @@ const COMMAND_ITEMS: CommandItem[] = [
   // Case Studies
   {
     id: 'case-ordershield',
-    title: 'OrderShield • Enterprise OMS',
+    title: 'DevCenterPoint ERP • Enterprise OMS',
     category: 'Case Studies',
     description: 'Real-time order lifecycle, multi-warehouse sync, and sub-50ms stock checks',
     href: '#work',
@@ -102,10 +167,28 @@ const COMMAND_ITEMS: CommandItem[] = [
     id: 'case-qttenzy',
     title: 'Qttenzy • Smart QR Attendance',
     category: 'Case Studies',
-    description: 'Zero-latency dynamic attendance tracking for high-security facilities',
+    description: 'Dynamic QR-based automated geofenced attendance system',
     href: '#work',
     icon: Briefcase,
     badge: 'Workplace',
+  },
+  {
+    id: 'case-roadsafety',
+    title: 'Road Safety Movement • Org Management OS',
+    category: 'Case Studies',
+    description: 'Central operational platform coordinating members, logistics, and safety',
+    href: '#work',
+    icon: Briefcase,
+    badge: 'Civic OS',
+  },
+  {
+    id: 'case-speechtherapy',
+    title: 'Speech Therapy Assessment Suite',
+    category: 'Case Studies',
+    description: 'Clinical assessment UI, interactive developmental screening forms, and tools',
+    href: '#work',
+    icon: Briefcase,
+    badge: 'Clinical Tech',
   },
   {
     id: 'case-medipulse',
@@ -237,9 +320,13 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
     soundEngine.playClick();
     onClose();
     if (item.href) {
-      const el = document.querySelector(item.href);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+      if (item.href.startsWith('http://') || item.href.startsWith('https://')) {
+        window.open(item.href, '_blank', 'noopener,noreferrer');
+      } else {
+        const el = document.querySelector(item.href);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
       }
     }
   };
@@ -313,7 +400,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
           </div>
 
           {/* Results List */}
-          <div className="max-h-[380px] overflow-y-auto p-2 space-y-1">
+          <div className="max-h-95 overflow-y-auto p-2 space-y-1">
             {filteredItems.length === 0 ? (
               <div className="py-12 text-center text-slate-500 dark:text-gray-400 text-xs">
                 No matching results found for "{query}". Try "SaaS", "Mobile", "IP", or "SLA".

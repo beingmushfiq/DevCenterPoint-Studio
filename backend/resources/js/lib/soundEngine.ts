@@ -8,10 +8,17 @@ class SoundEngine {
   private ctx: AudioContext | null = null;
   private muted: boolean = false;
 
+  private volume: number = 0.7;
+  private tonePreset: 'ethereal' | 'deep_tech' | 'cyber' = 'ethereal';
+
   constructor() {
     if (typeof window !== 'undefined') {
       const savedMute = localStorage.getItem('dcp_sound_muted');
       this.muted = savedMute === 'true';
+      const savedVol = localStorage.getItem('dcp_sound_volume');
+      if (savedVol) this.volume = parseFloat(savedVol) || 0.7;
+      const savedTone = localStorage.getItem('dcp_sound_tone') as 'ethereal' | 'deep_tech' | 'cyber';
+      if (savedTone) this.tonePreset = savedTone;
     }
   }
 
@@ -42,6 +49,69 @@ class SoundEngine {
     if (typeof window !== 'undefined') {
       localStorage.setItem('dcp_sound_muted', muted ? 'true' : 'false');
     }
+  }
+
+  public getVolume(): number {
+    return this.volume;
+  }
+
+  public setVolume(vol: number): void {
+    this.volume = Math.max(0.1, Math.min(1.0, vol));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dcp_sound_volume', this.volume.toString());
+    }
+  }
+
+  public getTonePreset(): 'ethereal' | 'deep_tech' | 'cyber' {
+    return this.tonePreset;
+  }
+
+  public setTonePreset(preset: 'ethereal' | 'deep_tech' | 'cyber'): void {
+    this.tonePreset = preset;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dcp_sound_tone', preset);
+    }
+    this.playPresetChord(preset);
+  }
+
+  /**
+   * Harmonically tuned chord playback for tone presets
+   */
+  public playPresetChord(preset: 'ethereal' | 'deep_tech' | 'cyber' = this.tonePreset): void {
+    if (this.muted) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const masterGain = ctx.createGain();
+    masterGain.gain.setValueAtTime(this.volume * 0.12, now);
+    masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+    masterGain.connect(ctx.destination);
+
+    let freqs: number[] = [523.25, 659.25, 783.99]; // C5, E5, G5
+    let type: OscillatorType = 'sine';
+
+    if (preset === 'deep_tech') {
+      freqs = [130.81, 196.0, 261.63]; // C3, G3, C4
+      type = 'triangle';
+    } else if (preset === 'cyber') {
+      freqs = [440.0, 659.25, 880.0]; // A4, E5, A5
+      type = 'sawtooth';
+    }
+
+    freqs.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now + idx * 0.04);
+      oscGain.gain.setValueAtTime(0.001, now + idx * 0.04);
+      oscGain.gain.linearRampToValueAtTime(0.4 / freqs.length, now + idx * 0.04 + 0.03);
+      oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+      osc.connect(oscGain);
+      oscGain.connect(masterGain);
+      osc.start(now + idx * 0.04);
+      osc.stop(now + 0.45);
+    });
   }
 
   public toggleMute(): boolean {

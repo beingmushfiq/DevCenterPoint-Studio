@@ -22,7 +22,14 @@ import {
   Loader2,
   Calendar,
   Users,
-  Share2
+  Share2,
+  Github,
+  Key,
+  Lock,
+  Play,
+  Activity,
+  Zap,
+  Workflow
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSEO } from './SEOHead';
@@ -57,6 +64,49 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   const [dbLatency, setDbLatency] = useState<number>(0);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [sharedSuccess, setSharedSuccess] = useState<boolean>(false);
+  const [copiedUser, setCopiedUser] = useState<boolean>(false);
+  const [copiedPass, setCopiedPass] = useState<boolean>(false);
+  const [selectedFlowNodeIndex, setSelectedFlowNodeIndex] = useState<number>(0);
+  const [isSimulatingFlow, setIsSimulatingFlow] = useState<boolean>(false);
+  const [activeSimStep, setActiveSimStep] = useState<number | null>(null);
+
+  const handleCopyText = (text: string, type: 'user' | 'pass') => {
+    soundEngine.playCopySuccess();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      if (type === 'user') {
+        setCopiedUser(true);
+        setTimeout(() => setCopiedUser(false), 2000);
+      } else {
+        setCopiedPass(true);
+        setTimeout(() => setCopiedPass(false), 2000);
+      }
+    }
+  };
+
+  const handleRunFlowSimulation = () => {
+    if (isSimulatingFlow || !deepInsights?.architectureFlow || deepInsights.architectureFlow.length === 0) return;
+    setIsSimulatingFlow(true);
+    setActiveSimStep(0);
+    setSelectedFlowNodeIndex(0);
+    soundEngine.playTap();
+
+    const flow = deepInsights.architectureFlow;
+    let step = 0;
+    const interval = setInterval(() => {
+      step++;
+      if (step < flow.length) {
+        setActiveSimStep(step);
+        setSelectedFlowNodeIndex(step);
+        soundEngine.playTap();
+      } else {
+        clearInterval(interval);
+        setIsSimulatingFlow(false);
+        setActiveSimStep(null);
+        soundEngine.playSuccessChime();
+      }
+    }, 800);
+  };
 
   // Find index for Prev / Next project navigation
   const currentIndex = project
@@ -136,6 +186,9 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   // Asynchronous query from Simulated Database
   useEffect(() => {
     let isCancelled = false;
+    setSelectedFlowNodeIndex(0);
+    setIsSimulatingFlow(false);
+    setActiveSimStep(null);
     if (project) {
       setIsLoading(true);
       queryProjectDeepInsights(project.id, 280)
@@ -248,6 +301,21 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
+
+            {/* Live App External Link (if verified deployment exists) */}
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/30 text-xs font-bold transition-all shadow-sm group cursor-pointer"
+                title="Open live verified system in new tab"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Live App</span>
+                <ExternalLink className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            )}
 
             {/* Share Case Study Button */}
             <button
@@ -451,22 +519,143 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           {activeTab === 'overview' && (
             <div className="space-y-6">
               
-              {/* Client Quote Callout */}
+              {/* Client Quote & Enterprise Endorsement Callout */}
               {deepInsights?.clientTestimonial && (
-                <div className="p-5 sm:p-6 rounded-2xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 relative">
-                  <Quote className="w-8 h-8 text-blue-500/30 absolute top-4 right-4 pointer-events-none" />
-                  <p className="text-sm sm:text-base italic text-slate-800 dark:text-gray-200 font-medium leading-relaxed pr-6">
+                <div className="p-6 rounded-2xl bg-linear-to-br from-blue-50/90 via-slate-50 to-indigo-50/40 dark:from-[#181d2c] dark:via-[#161616] dark:to-[#181818] border border-blue-200/80 dark:border-blue-900/40 relative overflow-hidden shadow-sm">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold uppercase tracking-wider">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                        Verified Enterprise Outcome
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-400 dark:text-gray-500">
+                        • Production Deployment Audit
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 text-amber-500 text-xs font-mono font-bold">
+                      <span>★★★★★</span>
+                      <span className="text-[10px] text-slate-500 dark:text-gray-400 ml-1">5.0 / 5.0</span>
+                    </div>
+                  </div>
+
+                  <Quote className="w-10 h-10 text-blue-500/20 absolute -bottom-2 right-4 pointer-events-none" />
+                  <p className="text-sm sm:text-base italic text-slate-800 dark:text-gray-100 font-medium leading-relaxed mb-4 relative z-10">
                     "{deepInsights.clientTestimonial.quote}"
                   </p>
-                  <div className="mt-3 flex items-center gap-2 text-xs">
-                    <span className="font-bold text-slate-900 dark:text-white">
-                      {deepInsights.clientTestimonial.author}
-                    </span>
-                    <span className="text-slate-400">•</span>
-                    <span className="text-slate-600 dark:text-gray-400">
-                      {deepInsights.clientTestimonial.role}, {deepInsights.clientTestimonial.company}
-                    </span>
+
+                  <div className="flex items-center gap-3 pt-3 border-t border-slate-200/80 dark:border-[#282828] relative z-10">
+                    <div className="w-9 h-9 rounded-full bg-linear-to-br from-blue-600 to-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-md shrink-0">
+                      {deepInsights.clientTestimonial.author
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')
+                        .slice(0, 2)}
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-slate-900 dark:text-white">
+                        {deepInsights.clientTestimonial.author}
+                      </div>
+                      <div className="text-[11px] font-medium text-slate-600 dark:text-gray-400">
+                        {deepInsights.clientTestimonial.role} • <span className="font-bold text-blue-600 dark:text-blue-400">{deepInsights.clientTestimonial.company}</span>
+                      </div>
+                    </div>
                   </div>
+                </div>
+              )}
+
+              {/* Verified Live Deployment & Evaluation Access Callout */}
+              {(project.liveUrl || project.demoCredentials || project.openSourceRepoName || project.githubUrl) && (
+                <div className="p-5 sm:p-6 rounded-2xl bg-linear-to-br from-slate-900 via-blue-950/40 to-slate-900 border border-blue-500/30 text-white shadow-xl relative overflow-hidden">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="space-y-1.5">
+                      <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-mono font-bold uppercase tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        <span>Active Verified Deployment</span>
+                      </div>
+                      <h4 className="text-base font-extrabold text-white">
+                        Live System Environment & Evaluation
+                      </h4>
+                      <p className="text-xs text-slate-300 leading-relaxed max-w-xl">
+                        {project.demoCredentials?.notes || 'Direct live access provided for verifying system responsiveness, counter speeds, and enterprise workflows.'}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-sans text-xs font-bold transition-all shadow-lg shadow-blue-600/30 group"
+                        >
+                          <span>Launch Live App</span>
+                          <ExternalLink className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </a>
+                      )}
+                      {project.adminUrl && project.adminUrl !== project.liveUrl && (
+                        <a
+                          href={project.adminUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-sans text-xs font-bold border border-slate-700 transition-all"
+                        >
+                          <span>Admin Portal</span>
+                          <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+                        </a>
+                      )}
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-sans text-xs font-bold border border-slate-700 transition-all"
+                        >
+                          <Github className="w-3.5 h-3.5 text-slate-300" />
+                          <span>{project.openSourceRepoName ? project.openSourceRepoName : 'GitHub'}</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Credentials pill bar if provided */}
+                  {project.demoCredentials && (
+                    <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-wrap items-center gap-3 text-xs">
+                      <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <Key className="w-3.5 h-3.5 text-blue-400" /> Demo Credentials:
+                      </span>
+                      <div className="flex items-center gap-1.5 bg-slate-950/80 px-3 py-1.5 rounded-lg border border-slate-800 font-mono text-[11px]">
+                        <span className="text-slate-400">User:</span>
+                        <span className="text-emerald-400 font-bold">{project.demoCredentials.username}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopyText(project.demoCredentials!.username || '', 'user')}
+                          className="ml-1 p-1 hover:text-white text-slate-400 transition-colors cursor-pointer"
+                          title="Copy Username"
+                        >
+                          {copiedUser ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                        </button>
+                      </div>
+                      {project.demoCredentials.password && (
+                        <div className="flex items-center gap-1.5 bg-slate-950/80 px-3 py-1.5 rounded-lg border border-slate-800 font-mono text-[11px]">
+                          <span className="text-slate-400">Pass:</span>
+                          <span className="text-blue-300 font-bold">{project.demoCredentials.password}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleCopyText(project.demoCredentials!.password!, 'pass')}
+                            className="ml-1 p-1 hover:text-white text-slate-400 transition-colors cursor-pointer"
+                            title="Copy Password"
+                          >
+                            {copiedPass ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                          </button>
+                        </div>
+                      )}
+                      {project.demoCredentials.role && (
+                        <span className="text-[10px] text-slate-400 font-sans italic">
+                          ({project.demoCredentials.role})
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -501,43 +690,179 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
               </div>
 
               {/* Interactive 5-Step System Architecture Flow */}
-              {deepInsights?.architectureFlow && (
-                <div className="p-6 rounded-2xl bg-slate-900 text-white border border-slate-800 space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-xs">
-                    <span className="flex items-center gap-2 font-bold uppercase tracking-wider text-slate-300">
-                      <Terminal className="w-4 h-4 text-blue-400" />
-                      <span>Production System Architecture Flow</span>
-                    </span>
-                    <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest">
-                      Continuous Verification
-                    </span>
+              {deepInsights?.architectureFlow && deepInsights.architectureFlow.length > 0 && (
+                <div className="p-6 rounded-3xl bg-slate-950 text-white border border-slate-800 shadow-2xl space-y-5 relative overflow-hidden">
+                  {/* Subtle Grid Ambient Background */}
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-900/15 via-transparent to-transparent pointer-events-none" />
+
+                  {/* Header Bar */}
+                  <div className="flex flex-wrap items-center justify-between pb-4 border-b border-slate-800/80 gap-3 relative z-10">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center">
+                        <Terminal className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-white">
+                            Production System Architecture Pipeline
+                          </h4>
+                          <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            {deepInsights.architectureFlow.length} Active Nodes
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 font-medium">
+                          Click any node to inspect SLA benchmarks, transport protocols, and failover topologies.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Simulation Trigger Button */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={handleRunFlowSimulation}
+                        disabled={isSimulatingFlow}
+                        className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all shadow-md cursor-pointer ${
+                          isSimulatingFlow
+                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 animate-pulse'
+                            : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30 hover:scale-[1.02] active:scale-95'
+                        }`}
+                        title="Simulate data execution flow across all pipeline nodes"
+                      >
+                        {isSimulatingFlow ? (
+                          <>
+                            <Activity className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+                            <span>Pipelining Node 0{activeSimStep! + 1}...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Play className="w-3.5 h-3.5 fill-current" />
+                            <span>Simulate Live Pipeline</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-                    {deepInsights.architectureFlow.map((node, nIdx) => (
-                      <div
-                        key={nIdx}
-                        className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 flex flex-col justify-between space-y-2 relative"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between text-[10px] font-mono text-blue-400 font-bold mb-1">
-                            <span>STEP {node.step}</span>
-                            <span className="text-slate-400">{node.sla}</span>
+                  {/* Flow Nodes Pipeline */}
+                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 relative z-10">
+                    {deepInsights.architectureFlow.map((node, nIdx) => {
+                      const isSelected = selectedFlowNodeIndex === nIdx;
+                      const isSimActive = activeSimStep === nIdx;
+                      return (
+                        <div
+                          key={nIdx}
+                          onClick={() => {
+                            soundEngine.playTap();
+                            setSelectedFlowNodeIndex(nIdx);
+                          }}
+                          className={`p-3.5 rounded-2xl transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-2 relative border text-left ${
+                            isSimActive
+                              ? 'bg-blue-900/40 border-emerald-400 shadow-lg shadow-emerald-500/20 ring-2 ring-emerald-400 scale-[1.03]'
+                              : isSelected
+                              ? 'bg-slate-900 border-blue-500 shadow-md ring-1 ring-blue-500/40'
+                              : 'bg-slate-950/70 border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60'
+                          }`}
+                        >
+                          {/* Step Header */}
+                          <div>
+                            <div className="flex items-center justify-between text-[10px] font-mono font-bold mb-1.5">
+                              <span className={isSelected || isSimActive ? 'text-blue-400' : 'text-slate-400'}>
+                                NODE {node.step}
+                              </span>
+                              <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-[9px] text-emerald-400 font-mono">
+                                {node.sla}
+                              </span>
+                            </div>
+
+                            <div className="text-xs font-black text-white leading-snug line-clamp-2">
+                              {node.title}
+                            </div>
+                            
+                            <div className="text-[11px] text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                              {node.description}
+                            </div>
                           </div>
-                          <div className="text-xs font-bold text-white leading-snug">
-                            {node.title}
-                          </div>
-                          <div className="text-[11px] text-slate-400 leading-relaxed mt-1">
-                            {node.description}
+
+                          {/* Protocol badge & selection indicator */}
+                          <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono">
+                            <span className="text-blue-300 truncate font-semibold">
+                              {node.protocol}
+                            </span>
+                            {isSelected && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                            )}
                           </div>
                         </div>
+                      );
+                    })}
+                  </div>
 
-                        <div className="pt-2 border-t border-slate-800/80 text-[10px] font-mono text-slate-400">
-                          {node.protocol}
+                  {/* Selected Node Deep Telemetry Inspector */}
+                  {deepInsights.architectureFlow[selectedFlowNodeIndex] && (
+                    <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs space-y-3 relative z-10 animate-in fade-in duration-150">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="px-2.5 py-0.5 rounded-md bg-blue-500/20 text-blue-300 font-mono font-bold text-xs">
+                            NODE {deepInsights.architectureFlow[selectedFlowNodeIndex].step} DEEP TELEMETRY
+                          </span>
+                          <h5 className="font-extrabold text-white text-sm">
+                            {deepInsights.architectureFlow[selectedFlowNodeIndex].title}
+                          </h5>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-mono text-slate-400">Target SLA:</span>
+                          <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-bold text-xs">
+                            {deepInsights.architectureFlow[selectedFlowNodeIndex].sla}
+                          </span>
                         </div>
                       </div>
-                    ))}
-                  </div>
+
+                      <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                        {deepInsights.architectureFlow[selectedFlowNodeIndex].description}
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                          <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 block font-bold">
+                            Wire Protocol & Transport
+                          </span>
+                          <span className="text-xs font-mono font-bold text-blue-400 block truncate">
+                            {deepInsights.architectureFlow[selectedFlowNodeIndex].protocol}
+                          </span>
+                          <span className="text-[10px] text-slate-400 block truncate">
+                            Payload: {deepInsights.architectureFlow[selectedFlowNodeIndex].payloadType || 'Typed JSON Event'}
+                          </span>
+                        </div>
+
+                        <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                          <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 block font-bold">
+                            Security & Encryption
+                          </span>
+                          <span className="text-xs font-mono font-bold text-emerald-400 block truncate">
+                            {deepInsights.architectureFlow[selectedFlowNodeIndex].security || 'Strict TLS 1.3 / Signature Validation'}
+                          </span>
+                          <span className="text-[10px] text-slate-400 block truncate">
+                            Cryptographic Zero-Trust verification
+                          </span>
+                        </div>
+
+                        <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                          <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 block font-bold">
+                            Failover & Redundancy
+                          </span>
+                          <span className="text-xs font-mono font-bold text-amber-400 block truncate">
+                            {deepInsights.architectureFlow[selectedFlowNodeIndex].failover || 'Dead-Letter Queue with Exponential Backoff'}
+                          </span>
+                          <span className="text-[10px] text-slate-400 block truncate">
+                            Autonomous retry & event replay
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -697,28 +1022,70 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                 {deepInsights?.outcomes.map((metric, idx) => (
                   <div
                     key={idx}
-                    className="p-5 rounded-2xl bg-slate-50 dark:bg-[#181818] border border-slate-200 dark:border-[#282828] flex flex-col justify-between space-y-3"
+                    className="p-5 rounded-2xl bg-slate-50 dark:bg-[#181818] border border-slate-200 dark:border-[#282828] flex flex-col justify-between space-y-4 hover:border-blue-500/40 transition-colors"
                   >
                     <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-gray-500 block mb-1">
-                        {metric.metric}
-                      </span>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-gray-500 block">
+                          {metric.metric}
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono text-[9px] font-bold">
+                          Verified
+                        </span>
+                      </div>
                       <div className="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400 font-mono">
                         {metric.value}
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-200 dark:border-[#282828] space-y-1">
-                      <div className="text-[10px] font-mono text-slate-400">
-                        Baseline: <strong className="text-slate-600 dark:text-gray-300">{metric.baseline}</strong>
+                    <div className="space-y-2 pt-3 border-t border-slate-200 dark:border-[#282828]">
+                      {/* Visual Delta Progress Comparison */}
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-gray-400">
+                          <span>Legacy Baseline</span>
+                          <span className="font-semibold text-slate-700 dark:text-gray-300">{metric.baseline}</span>
+                        </div>
+                        <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-[#252525] overflow-hidden">
+                          <div className="h-full bg-linear-to-r from-blue-600 to-emerald-500 rounded-full w-4/5 animate-pulse" />
+                        </div>
                       </div>
-                      <p className="text-xs text-slate-600 dark:text-gray-300 font-medium leading-relaxed">
+
+                      <p className="text-xs text-slate-600 dark:text-gray-300 font-medium leading-relaxed pt-1">
                         {metric.impactDescription}
                       </p>
                     </div>
                   </div>
                 ))}
               </div>
+
+              {/* Enterprise Production Verification Seal */}
+              {deepInsights && (
+                <div className="p-5 rounded-2xl bg-linear-to-r from-emerald-500/10 via-blue-500/5 to-slate-50 dark:from-emerald-950/20 dark:via-blue-950/20 dark:to-[#181818] border border-emerald-500/20 dark:border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                      <ShieldCheck className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h5 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white">
+                          Continuous Production Audit Certificate
+                        </h5>
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[9px] font-mono font-bold uppercase tracking-wider">
+                          Active
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-600 dark:text-gray-400 font-medium mt-0.5">
+                        Status: <strong className="text-slate-800 dark:text-gray-200">{deepInsights.productionAuditLog.auditStatus}</strong> • Last Validated: <strong className="text-slate-800 dark:text-gray-200">{deepInsights.productionAuditLog.lastVerified}</strong>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 font-mono text-xs text-emerald-600 dark:text-emerald-400 font-bold bg-white dark:bg-[#121212] px-3.5 py-2 rounded-xl border border-emerald-500/20 shadow-xs">
+                    <span>Uptime SLA:</span>
+                    <span className="text-sm font-black">{deepInsights.productionAuditLog.uptimeSLA}</span>
+                  </div>
+                </div>
+              )}
 
               {/* Squad & Delivery Timeline */}
               {deepInsights && (
@@ -728,7 +1095,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                       <Users className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-400 block">Team Composition</span>
+                      <span className="text-[10px] font-mono uppercase text-slate-400 block">Team Squad Size</span>
                       <span className="font-bold text-slate-900 dark:text-white">{deepInsights.teamSquadSize}</span>
                     </div>
                   </div>
@@ -738,7 +1105,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                       <Calendar className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-400 block">Delivery Speed</span>
+                      <span className="text-[10px] font-mono uppercase text-slate-400 block">Delivery Velocity</span>
                       <span className="font-bold text-slate-900 dark:text-white">{deepInsights.sprintDurationWeeks} Weeks from Discovery to Production</span>
                     </div>
                   </div>

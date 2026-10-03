@@ -58,6 +58,98 @@ const PROJECT_TYPE_OPTIONS: ProjectTypeOption[] = [
   },
 ];
 
+type CurrencyCode = 'USD' | 'EUR' | 'GBP' | 'BDT';
+
+interface CurrencyConfig {
+  code: CurrencyCode;
+  symbol: string;
+  name: string;
+  flag: string;
+}
+
+const CURRENCIES: Record<CurrencyCode, CurrencyConfig> = {
+  USD: { code: 'USD', symbol: '$', name: 'US Dollar', flag: '🇺🇸' },
+  EUR: { code: 'EUR', symbol: '€', name: 'Euro', flag: '🇪🇺' },
+  GBP: { code: 'GBP', symbol: '£', name: 'British Pound', flag: '🇬🇧' },
+  BDT: { code: 'BDT', symbol: '৳', name: 'BDT', flag: '🇧🇩' },
+};
+
+interface BudgetTier {
+  id: string;
+  label: string;
+  prices: Record<CurrencyCode, string>;
+  speed: string;
+  squad: string;
+  sla: string;
+  recommendedFor: string;
+}
+
+const BUDGET_TIERS: BudgetTier[] = [
+  {
+    id: 'mvp',
+    label: 'Core Launch / MVP',
+    prices: {
+      USD: '$8,000 – $15,000',
+      EUR: '€7,500 – €14,000',
+      GBP: '£6,200 – £11,700',
+      BDT: '৳9,60,000 – ৳18,00,000',
+    },
+    speed: '4 – 6 Weeks',
+    squad: '1 Principal Architect + 1 Senior Engineer',
+    sla: '99.9% Uptime Guarantee',
+    recommendedFor: 'Early-stage founders validating market fit with production-grade stability'
+  },
+  {
+    id: 'scale',
+    label: 'Growth & Scale Platform',
+    prices: {
+      USD: '$15,000 – $35,000',
+      EUR: '€14,000 – €32,500',
+      GBP: '£11,700 – £27,300',
+      BDT: '৳18,00,000 – ৳42,00,000',
+    },
+    speed: '8 – 12 Weeks',
+    squad: '1 Architect + 2 Fullstack Engineers + 1 QA Specialist',
+    sla: 'Zero-Downtime Migration & SOC2 Ready',
+    recommendedFor: 'Scaling businesses modernizing legacy workflows or launching multi-tenant apps'
+  },
+  {
+    id: 'enterprise',
+    label: 'Enterprise Distributed Core',
+    prices: {
+      USD: '$35,000 – $75,000+',
+      EUR: '€32,500 – €70,000+',
+      GBP: '£27,300 – £58,500+',
+      BDT: '৳42,00,000 – ৳90,00,000+',
+    },
+    speed: 'Phased Milestones',
+    squad: 'Dedicated Cross-Functional Squad & DevSecOps Lead',
+    sla: 'Sub-35ms Global Edge & 24/7 Dedicated On-Call',
+    recommendedFor: 'Complex omnichannel ERPs, fintech rails, or high-throughput real-time pipelines'
+  },
+  {
+    id: 'advisory',
+    label: 'Architecture RFC & Audit',
+    prices: {
+      USD: '$4,000 – $8,000',
+      EUR: '€3,700 – €7,500',
+      GBP: '£3,100 – £6,200',
+      BDT: '৳4,80,000 – ৳9,60,000',
+    },
+    speed: '1 – 2 Weeks',
+    squad: 'Principal Cloud & Security Architect',
+    sla: 'Comprehensive Blueprint & Threat Model',
+    recommendedFor: 'Teams needing external code audit, cloud cost reduction, or architectural RFC'
+  }
+];
+
+const KICKOFF_PRESETS = [
+  { id: 'immediate', label: 'Within 7 Days', note: 'Fast-track onboarding' },
+  { id: 'month', label: 'Within 30 Days', note: 'Standard Q4 roadmap' },
+  { id: 'quarter', label: 'Next Quarter', note: 'Strategic planned kickoff' },
+  { id: 'custom', label: 'Specific Date', note: 'Pick target calendar date' },
+];
+
 const TIMELINE_OPTIONS = [
   { id: '1 - 2 Months', label: 'Fast-Track (1–2 Months)', note: 'Rapid MVP or urgent sprint' },
   { id: '2 - 3 Months', label: 'Standard (2–3 Months)', note: 'Recommended production cycle' },
@@ -65,46 +157,76 @@ const TIMELINE_OPTIONS = [
 ];
 
 export const ProjectInquiryBuilder: React.FC = () => {
-  // Smart default options pre-selected for instant clarity & high conversion
-  const [formData, setFormData] = useState<InquiryFormData>({
-    name: '',
-    email: '',
-    company: '',
-    projectType: 'SaaS / Web Product',
-    timeline: '2 - 3 Months',
-    description: '',
-    selectedTech: [],
-  });
-
-  const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionSuccess, setSubmissionSuccess] = useState<{
-    id: string;
-    referenceNumber: string;
-  } | null>(null);
+  const [currency, setCurrency] = useState<CurrencyCode>('USD');
+  const [selectedTierId, setSelectedTierId] = useState<string>('scale');
+  const [kickoffPreset, setKickoffPreset] = useState<string>('month');
+  const [customKickoffDate, setCustomKickoffDate] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [submissionSuccess, setSubmissionSuccess] = useState<{ id: string; referenceNumber: string } | null>(null);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
-  const [copiedRef, setCopiedRef] = useState(false);
-
-  const handleCopyReference = (ref: string) => {
-    soundEngine.playCopySuccess();
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(ref);
-      setCopiedRef(true);
-      setTimeout(() => setCopiedRef(false), 2000);
-    }
-  };
+  const [copiedRef, setCopiedRef] = useState<boolean>(false);
 
   const triggerConfettiExplosion = () => {
     try {
       confetti({
         particleCount: 80,
         spread: 70,
-        origin: { y: 0.65 },
-        colors: ['#2563eb', '#3b82f6', '#10b981', '#60a5fa'],
-        disableForReducedMotion: true,
+        origin: { y: 0.6 },
+        colors: ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B'],
       });
     } catch {
-      // Graceful fallback
+      // Graceful fallback if confetti fails
+    }
+  };
+
+  const handleCopyReference = (refNum: string) => {
+    soundEngine.playCopySuccess();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(refNum);
+      setCopiedRef(true);
+      setTimeout(() => setCopiedRef(false), 2000);
+    }
+  };
+
+  // Smart default options pre-selected for instant clarity & high conversion
+  const [formData, setFormData] = useState<InquiryFormData>({
+    name: '',
+    email: '',
+    company: '',
+    projectType: 'SaaS / Web Product',
+    budgetRange: `Growth & Scale Platform (${BUDGET_TIERS[1].prices.USD})`,
+    timeline: '2 - 3 Months',
+    targetKickoff: 'Within 30 Days',
+    description: '',
+    selectedTech: [],
+  });
+
+  const activeTier = BUDGET_TIERS.find((t) => t.id === selectedTierId) || BUDGET_TIERS[1];
+
+  const handleCurrencyChange = (curr: CurrencyCode) => {
+    soundEngine.playTap();
+    setCurrency(curr);
+    setFormData((prev) => ({
+      ...prev,
+      budgetRange: `${activeTier.label} (${activeTier.prices[curr]})`,
+    }));
+  };
+
+  const handleTierSelect = (tier: BudgetTier) => {
+    soundEngine.playTap();
+    setSelectedTierId(tier.id);
+    setFormData((prev) => ({
+      ...prev,
+      budgetRange: `${tier.label} (${tier.prices[currency]})`,
+    }));
+  };
+
+  const handleKickoffSelect = (presetId: string, label: string) => {
+    soundEngine.playTap();
+    setKickoffPreset(presetId);
+    if (presetId !== 'custom') {
+      setFormData((prev) => ({ ...prev, targetKickoff: label }));
     }
   };
 
@@ -128,6 +250,10 @@ export const ProjectInquiryBuilder: React.FC = () => {
     setIsSubmitting(true);
     setSubmissionError(null);
 
+    const finalKickoff = kickoffPreset === 'custom' && customKickoffDate
+      ? `Target Date: ${customKickoffDate}`
+      : formData.targetKickoff || 'Within 30 Days';
+
     try {
       const result = await submitProjectInquiry({
         ...formData,
@@ -135,7 +261,8 @@ export const ProjectInquiryBuilder: React.FC = () => {
         email: formData.email.trim().toLowerCase(),
         company: formData.company?.trim() || '',
         description: formData.description.trim(),
-        budgetRange: 'Flexible',
+        budgetRange: formData.budgetRange || `${activeTier.label} (${activeTier.prices[currency]})`,
+        targetKickoff: finalKickoff,
       });
 
       setSubmissionSuccess(result);
@@ -161,12 +288,17 @@ export const ProjectInquiryBuilder: React.FC = () => {
     setSubmitted(false);
     setSubmissionSuccess(null);
     setSubmissionError(null);
+    setSelectedTierId('scale');
+    setKickoffPreset('month');
+    setCustomKickoffDate('');
     setFormData({
       name: '',
       email: '',
       company: '',
       projectType: 'SaaS / Web Product',
+      budgetRange: 'Growth & Scale Platform ($15,000 – $35,000)',
       timeline: '2 - 3 Months',
+      targetKickoff: 'Within 30 Days',
       description: '',
       selectedTech: [],
     });
@@ -179,7 +311,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
       className="py-24 bg-slate-50 dark:bg-[#0c0c0c] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#222222] relative transition-colors duration-300"
     >
       {/* Background ambient lighting */}
-      <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/5 dark:bg-blue-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
+      <div className="absolute top-1/4 right-1/4 w-125 h-125 bg-blue-600/5 dark:bg-blue-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -337,11 +469,95 @@ export const ProjectInquiryBuilder: React.FC = () => {
                 </div>
               </div>
 
-              {/* Step 2: Target Timeline */}
+              {/* Step 2: Interactive Scope & Investment Estimator */}
               <div>
-                <label className="block text-xs font-black uppercase tracking-wider text-slate-700 dark:text-gray-300 mb-2.5">
-                  2. Desired launch horizon
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-2.5">
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-wider text-slate-700 dark:text-gray-300">
+                      2. Project Scope & Investment
+                    </label>
+                    <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">
+                      Deterministic Milestone Pricing
+                    </span>
+                  </div>
+
+                  {/* Currency Selector Pill Bar */}
+                  <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2a2a2a] self-start sm:self-auto">
+                    {(Object.keys(CURRENCIES) as CurrencyCode[]).map((curr) => {
+                      const isCurrActive = currency === curr;
+                      return (
+                        <button
+                          key={curr}
+                          type="button"
+                          onClick={() => handleCurrencyChange(curr)}
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                            isCurrActive
+                              ? 'bg-blue-600 text-white shadow-xs'
+                              : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'
+                          }`}
+                        >
+                          <span>{CURRENCIES[curr].flag}</span>
+                          <span>{CURRENCIES[curr].symbol} {curr}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {BUDGET_TIERS.map((tier) => {
+                    const isSelected = selectedTierId === tier.id;
+
+                    return (
+                      <button
+                        key={tier.id}
+                        type="button"
+                        onClick={() => handleTierSelect(tier)}
+                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex flex-col justify-between space-y-2 ${
+                          isSelected
+                            ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-500 text-slate-900 dark:text-white ring-1 ring-blue-500/30'
+                            : 'bg-slate-50 dark:bg-[#1a1a1a] hover:bg-slate-100 dark:hover:bg-[#202020] text-slate-700 dark:text-gray-300 border-slate-200 dark:border-[#282828]'
+                        }`}
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="text-xs font-bold leading-tight">
+                              {tier.label}
+                            </span>
+                            <span className={`text-[10px] font-mono font-black px-2 py-0.5 rounded-full ${
+                              isSelected
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-slate-200 dark:bg-[#262626] text-slate-700 dark:text-gray-300'
+                            }`}>
+                              {tier.prices[currency]}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-slate-500 dark:text-gray-400 leading-snug line-clamp-2">
+                            {tier.recommendedFor}
+                          </p>
+                        </div>
+
+                        <div className="pt-1.5 border-t border-slate-200/60 dark:border-[#2a2a2a] flex items-center justify-between text-[10px] font-mono">
+                          <span className="text-blue-600 dark:text-blue-400 font-bold">
+                            ⏱ {tier.speed}
+                          </span>
+                          <span className="text-slate-500 dark:text-gray-400 truncate max-w-32.5">
+                            {tier.squad.split('+')[0]}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Step 3: Launch Horizon & Target Kickoff Date */}
+              <div className="space-y-3">
+                <label className="block text-xs font-black uppercase tracking-wider text-slate-700 dark:text-gray-300">
+                  3. Launch Horizon & Desired Kickoff
                 </label>
+
+                {/* Timeline Duration */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {TIMELINE_OPTIONS.map((timeline) => {
                     const isSelected = formData.timeline === timeline.id;
@@ -372,9 +588,66 @@ export const ProjectInquiryBuilder: React.FC = () => {
                     );
                   })}
                 </div>
+
+                {/* Kickoff Timing & Date Selector */}
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#181818] border border-slate-200 dark:border-[#262626] space-y-2.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-slate-800 dark:text-gray-200 flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-blue-500" />
+                      <span>Target Kickoff Schedule:</span>
+                    </span>
+                    <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                      {kickoffPreset === 'custom' && customKickoffDate ? customKickoffDate : formData.targetKickoff}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {KICKOFF_PRESETS.map((preset) => {
+                      const isSelected = kickoffPreset === preset.id;
+                      return (
+                        <button
+                          key={preset.id}
+                          type="button"
+                          onClick={() => handleKickoffSelect(preset.id, preset.label)}
+                          className={`px-3 py-2 rounded-xl text-xs font-medium border text-center transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-xs'
+                              : 'bg-white dark:bg-[#1f1f1f] text-slate-700 dark:text-gray-300 border-slate-200 dark:border-[#2c2c2c] hover:border-slate-300'
+                          }`}
+                        >
+                          <div>{preset.label}</div>
+                          <div className={`text-[9px] mt-0.5 ${isSelected ? 'text-blue-100' : 'text-slate-400'}`}>
+                            {preset.note}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {kickoffPreset === 'custom' && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="pt-2 flex items-center gap-3"
+                    >
+                      <label className="text-xs text-slate-600 dark:text-gray-400 font-medium shrink-0">
+                        Choose Date:
+                      </label>
+                      <input
+                        type="date"
+                        value={customKickoffDate}
+                        onChange={(e) => {
+                          setCustomKickoffDate(e.target.value);
+                          setFormData((prev) => ({ ...prev, targetKickoff: `Target Date: ${e.target.value}` }));
+                        }}
+                        className="px-3 py-1.5 rounded-xl bg-white dark:bg-[#202020] border border-slate-200 dark:border-[#333333] text-xs text-slate-900 dark:text-white font-mono focus:border-blue-500 outline-none"
+                      />
+                    </motion.div>
+                  )}
+                </div>
               </div>
 
-              {/* Step 3: Contact Info */}
+              {/* Step 4: Contact Info */}
               <div className="space-y-4 pt-2 border-t border-slate-200 dark:border-[#222222]">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -467,28 +740,51 @@ export const ProjectInquiryBuilder: React.FC = () => {
               </div>
             </form>
 
-            {/* Right Column: Reassurance & Next Steps (5 cols) */}
+            {/* Right Column: Reassurance & Dynamic Scope Summary (5 cols) */}
             <div className="lg:col-span-5 space-y-5">
               
-              {/* Active Selection Summary Card */}
-              <div className="p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/30 space-y-3">
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Your Scoped Engagement</span>
+              {/* Dynamic Active Selection Summary Card */}
+              <div className="p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/30 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Calculated Scope & Squad</span>
+                  </div>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-600 text-white font-bold">
+                    {activeTier.prices[currency]}
+                  </span>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 dark:text-gray-400 font-medium">Domain:</span>
+                    <span className="text-slate-500 dark:text-gray-400 font-medium">Domain Focus:</span>
                     <span className="font-bold text-slate-900 dark:text-white">{formData.projectType}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 dark:text-gray-400 font-medium">Timeline:</span>
-                    <span className="font-bold text-slate-900 dark:text-white">{formData.timeline}</span>
+                    <span className="text-slate-500 dark:text-gray-400 font-medium">Package Tier:</span>
+                    <span className="font-bold text-blue-600 dark:text-blue-400">{activeTier.label}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 dark:text-gray-400 font-medium">Assigned Lead:</span>
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">Principal Systems Architect</span>
+                    <span className="text-slate-500 dark:text-gray-400 font-medium">Sprint Velocity:</span>
+                    <span className="font-bold text-slate-900 dark:text-white">{activeTier.speed}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 dark:text-gray-400 font-medium">Dedicated Squad:</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 text-right truncate max-w-50" title={activeTier.squad}>
+                      {activeTier.squad}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 dark:text-gray-400 font-medium">SLA Commitment:</span>
+                    <span className="font-mono text-[11px] text-slate-700 dark:text-gray-300 text-right truncate max-w-50">
+                      {activeTier.sla}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs pt-1 border-t border-blue-200/50 dark:border-blue-900/30">
+                    <span className="text-slate-500 dark:text-gray-400 font-medium">Target Kickoff:</span>
+                    <span className="font-mono font-bold text-slate-900 dark:text-white">
+                      {kickoffPreset === 'custom' && customKickoffDate ? customKickoffDate : formData.targetKickoff}
+                    </span>
                   </div>
                 </div>
               </div>

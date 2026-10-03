@@ -139,6 +139,7 @@ export interface InquiryFormData {
   timeline: string;
   description: string;
   selectedTech?: string[];
+  targetKickoff?: string;
 }
 
 export interface FAQItem {

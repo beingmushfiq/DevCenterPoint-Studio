@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { PROJECTS_DATA } from '../data/projects';
-import { Project } from '../types';
+import { PROJECTS_DATA, PROTOTYPES_DATA } from '../data/projects';
+import { Project, PrototypeDemo } from '../types';
 import { CaseStudyModal } from './CaseStudyModal';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
-import { ArrowUpRight, Filter, Eye } from 'lucide-react';
+import { ArrowUpRight, Filter, Eye, ExternalLink, Copy, Check, Sparkles, Globe, Layers } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
 
 const containerVariants: Variants = {
@@ -11,8 +11,8 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.08,
+      staggerChildren: 0.1,
+      delayChildren: 0.06,
     },
   },
 };
@@ -37,8 +37,16 @@ const cardVariants: Variants = {
 export const SelectedWorkSection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [copiedProtoId, setCopiedProtoId] = useState<string | null>(null);
 
-  const categories = ['All', 'Business Systems', 'Commerce Infrastructure', 'Healthcare & Enterprise', 'AI & Intelligent Systems', 'Mobile & Infrastructure'];
+  const categories = [
+    'All',
+    'Business Systems',
+    'Commerce Infrastructure',
+    'Healthcare & Enterprise',
+    'AI & Intelligent Systems',
+    'Mobile & Infrastructure'
+  ];
 
   const filteredProjects = PROJECTS_DATA.filter((p) => {
     if (selectedCategory === 'All') return true;
@@ -49,6 +57,16 @@ export const SelectedWorkSection: React.FC = () => {
     if (selectedCategory === 'Mobile & Infrastructure') return p.category === 'Mobile & Infrastructure' || p.category === 'Mobile Platforms';
     return true;
   });
+
+  const handleCopyPrototypeUrl = (proto: PrototypeDemo, e: React.MouseEvent) => {
+    e.stopPropagation();
+    soundEngine.playCopySuccess();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(proto.url);
+      setCopiedProtoId(proto.id);
+      setTimeout(() => setCopiedProtoId(null), 2000);
+    }
+  };
 
   return (
     <section id="work" className="py-24 bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] relative transition-colors duration-300">
@@ -71,7 +89,7 @@ export const SelectedWorkSection: React.FC = () => {
             </h2>
           </div>
           <p className="text-xs text-slate-600 dark:text-gray-400 max-w-md mt-4 md:mt-0 font-bold uppercase tracking-wider">
-            Verified software systems, platforms, and intelligent tools delivered for real-world operations.
+            Verified software systems, enterprise platforms, open-source engines, and live prototypes delivered for real-world operations.
           </p>
         </motion.div>
 
@@ -133,7 +151,7 @@ export const SelectedWorkSection: React.FC = () => {
                 className="group cursor-pointer rounded-[2.5rem] bg-white dark:bg-[#161616] border border-slate-200/90 dark:border-[#262626] hover:border-blue-500/60 dark:hover:border-blue-500/60 transition-colors duration-300 p-7 sm:p-8 flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 dark:hover:shadow-blue-950/30 relative overflow-hidden"
               >
                 {/* Ambient Top-Right Spotlight Glow on Hover */}
-                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-72 h-72 bg-gradient-to-br from-blue-500/15 via-indigo-500/10 to-transparent rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-72 h-72 bg-linear-to-br from-blue-500/15 via-indigo-500/10 to-transparent rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Top Meta Bar */}
                 <div className="relative z-10">
@@ -142,7 +160,17 @@ export const SelectedWorkSection: React.FC = () => {
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500 group-hover:animate-ping" />
                       PROJECT {project.number}
                     </span>
-                    <span className="text-slate-500 dark:text-gray-400 uppercase text-[10px] tracking-wider">{project.industry} ({project.year})</span>
+                    <div className="flex items-center gap-2">
+                      {project.liveUrl && (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[9px] font-mono font-bold tracking-tight">
+                          <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+                          LIVE SYSTEM
+                        </span>
+                      )}
+                      <span className="text-slate-500 dark:text-gray-400 uppercase text-[10px] tracking-wider">
+                        {project.industry} ({project.year})
+                      </span>
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between gap-4 mb-2">
@@ -161,45 +189,6 @@ export const SelectedWorkSection: React.FC = () => {
                   <p className="text-sm text-slate-600 dark:text-gray-300 leading-relaxed mb-6 font-medium">
                     {project.shortDescription}
                   </p>
-
-                  {/* Custom Product UI Representation Wireframe Block with Hover Reveal */}
-                  <div className="w-full h-36 rounded-2xl bg-slate-900 dark:bg-[#111111] border border-slate-800 dark:border-[#262626] p-4 font-mono text-[11px] overflow-hidden mb-6 flex flex-col justify-between group-hover:border-blue-500/40 transition-all shadow-md relative">
-                    
-                    {/* Hover Reveal Centered CTA Overlay */}
-                    <div className="absolute inset-0 bg-slate-950/75 dark:bg-black/80 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center p-4 z-20">
-                      <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-sans text-xs font-black uppercase tracking-wider shadow-xl shadow-blue-600/40 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                        <span>View Case Study</span>
-                        <ArrowUpRight className="w-4 h-4" />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pb-2 border-b border-slate-800 dark:border-[#262626] text-slate-400 text-[10px] font-bold">
-                      <span className="flex items-center gap-2 text-white">
-                        <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
-                        SYSTEM_INTERFACE // {project.id.toUpperCase()}
-                      </span>
-                      <span className="text-emerald-400 dark:text-green-400 uppercase tracking-widest">VERIFIED</span>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-2 my-auto">
-                      <div className="p-2.5 rounded-xl bg-slate-800/90 dark:bg-[#1a1a1a] border border-slate-700 dark:border-[#2a2a2a]">
-                        <div className="text-[9px] text-slate-400 font-bold uppercase">LATENCY</div>
-                        <div className="text-white font-extrabold">&lt; 35ms</div>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-slate-800/90 dark:bg-[#1a1a1a] border border-slate-700 dark:border-[#2a2a2a]">
-                        <div className="text-[9px] text-slate-400 font-bold uppercase">ARCH</div>
-                        <div className="text-blue-400 font-extrabold">Resilient</div>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-slate-800/90 dark:bg-[#1a1a1a] border border-slate-700 dark:border-[#2a2a2a]">
-                        <div className="text-[9px] text-slate-400 font-bold uppercase">UPLINK</div>
-                        <div className="text-emerald-400 dark:text-green-400 font-extrabold">Active</div>
-                      </div>
-                    </div>
-
-                    <div className="text-[10px] text-slate-400 font-bold truncate">
-                      &gt; {project.deliveredFunctionality[0]}
-                    </div>
-                  </div>
                 </div>
 
                 {/* Bottom Tech Pills & Revealed 'View Case Study' CTA Button */}
@@ -224,6 +213,91 @@ export const SelectedWorkSection: React.FC = () => {
               </motion.div>
             ))}
           </AnimatePresence>
+        </motion.div>
+
+        {/* Live Concept Demos & Rapid Prototypes Showcase Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.65, ease: [0.215, 0.61, 0.355, 1] }}
+          className="mt-20 pt-16 border-t border-slate-200 dark:border-[#262626]"
+        >
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20 mb-3">
+                <Sparkles className="w-3 h-3 text-emerald-500" />
+                Live Deployments • Fast Turnaround
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
+                Live Concept Demos & Prototypes
+              </h3>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-gray-400 max-w-md font-bold uppercase tracking-wider">
+              Functional concept environments and deployed web applications demonstrating our rapid prototyping and frontend execution velocity.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {PROTOTYPES_DATA.map((proto) => {
+              const isCopied = copiedProtoId === proto.id;
+              return (
+                <div
+                  key={proto.id}
+                  className="group rounded-3xl bg-white dark:bg-[#141414] border border-slate-200/90 dark:border-[#242424] hover:border-blue-500/50 dark:hover:border-blue-500/50 p-5 flex flex-col justify-between space-y-4 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+                >
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2.5 py-0.5 rounded-full border border-blue-500/20">
+                        {proto.category}
+                      </span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Live online" />
+                    </div>
+
+                    <h4 className="text-base font-extrabold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {proto.title}
+                    </h4>
+
+                    <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
+                      {proto.tagline}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {proto.tags.map((tag, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#1e1e1e] text-[10px] font-mono text-slate-600 dark:text-gray-400"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 dark:border-[#222222] flex items-center justify-between gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => handleCopyPrototypeUrl(proto, e)}
+                      className="p-2 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] hover:bg-slate-200 dark:hover:bg-[#252525] text-slate-600 dark:text-gray-300 transition-colors cursor-pointer text-xs font-medium"
+                      title="Copy URL"
+                    >
+                      {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                    </button>
+
+                    <a
+                      href={proto.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-sans text-xs font-bold transition-all shadow-md shadow-blue-600/25 group-hover:scale-105"
+                    >
+                      <span>Launch Demo</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </motion.div>
       </div>
 
