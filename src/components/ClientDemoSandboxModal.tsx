@@ -20,7 +20,10 @@ import {
   Stethoscope,
   Sliders,
   Bell,
-  MapPin
+  MapPin,
+  Terminal,
+  Volume2,
+  Cpu
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { soundEngine } from '../lib/soundEngine';

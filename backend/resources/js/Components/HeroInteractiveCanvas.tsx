@@ -546,22 +546,19 @@ export const HeroInteractiveCanvas: React.FC = () => {
     triggerSonarPulse(x, y);
   };
 
-  // Mobile Touch Gestures
+  // Mobile Touch Gestures (never block vertical page scroll; pulse only on tap via onClick)
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (e.touches.length > 0) {
       const container = containerRef.current;
       if (!container) return;
       const rect = container.getBoundingClientRect();
       const touch = e.touches[0];
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
       mouseRef.current = {
-        x,
-        y,
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top,
         active: true,
         radius: 200
       };
-      triggerSonarPulse(x, y);
     }
   };
 
@@ -585,6 +582,7 @@ export const HeroInteractiveCanvas: React.FC = () => {
   };
 
   return (
+    <>
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
@@ -593,7 +591,7 @@ export const HeroInteractiveCanvas: React.FC = () => {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="absolute inset-0 z-0 pointer-events-auto overflow-hidden select-none cursor-crosshair touch-none"
+      className="absolute inset-0 z-0 pointer-events-auto overflow-hidden select-none cursor-crosshair touch-pan-y"
       title="Tap, click, or swipe across the canvas to interact with 3D particles & audio"
     >
       {/* 2D / 3D Neural Canvas */}
@@ -601,11 +599,12 @@ export const HeroInteractiveCanvas: React.FC = () => {
         ref={canvasRef}
         className="w-full h-full block opacity-75 dark:opacity-90 pointer-events-none"
       />
+    </div>
 
-      {/* Floating Action Pill at Top-Right (Desktop) / Header (Mobile) */}
+      {/* Studio FX control: fixed and outside the z-0 canvas stacking context, below the header, so it is always clickable */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="absolute top-5 right-5 sm:top-6 sm:right-8 z-30"
+        className="fixed top-20 right-3 sm:top-24 sm:right-8 z-50"
       >
         <AnimatePresence mode="wait">
           {!isExpanded ? (
@@ -846,6 +845,6 @@ export const HeroInteractiveCanvas: React.FC = () => {
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </>
   );
 };
