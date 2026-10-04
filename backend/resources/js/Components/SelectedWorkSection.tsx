@@ -3,7 +3,22 @@ import { PROJECTS_DATA, PROTOTYPES_DATA } from '../data/projects';
 import { Project, PrototypeDemo } from '../types';
 import { CaseStudyModal } from './CaseStudyModal';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
-import { ArrowUpRight, Filter, Eye, ExternalLink, Copy, Check, Sparkles, Globe, Layers } from 'lucide-react';
+import { 
+  ArrowUpRight, 
+  Filter, 
+  ExternalLink, 
+  Copy, 
+  Check, 
+  Sparkles, 
+  Globe, 
+  Cpu, 
+  ShieldCheck, 
+  Zap, 
+  Layers,
+  Activity,
+  Terminal,
+  Key
+} from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
 
 const containerVariants: Variants = {
@@ -11,8 +26,8 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.06,
+      staggerChildren: 0.08,
+      delayChildren: 0.04,
     },
   },
 };
@@ -20,16 +35,14 @@ const containerVariants: Variants = {
 const cardVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 35,
-    scale: 0.98,
+    y: 28,
   },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.65,
-      ease: [0.215, 0.61, 0.355, 1],
+      duration: 0.55,
+      ease: [0.16, 1, 0.3, 1],
     },
   },
 };
@@ -69,196 +82,358 @@ export const SelectedWorkSection: React.FC = () => {
   };
 
   return (
-    <section id="work" className="py-24 bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] relative transition-colors duration-300">
+    <section id="work" className="py-20 sm:py-28 bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-neutral-100 border-t border-slate-200 dark:border-neutral-800 relative transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        
+        {/* Editorial Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-8 border-b border-slate-200 dark:border-[#2a2a2a]"
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-8 border-b border-slate-200/80 dark:border-neutral-800/80 gap-6"
         >
           <div>
-            <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20 mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></span>
-              03 — Selected Work & Archives
+            <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1.5 rounded-full border border-blue-200 dark:border-blue-900/60 mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400"></span>
+              Selected Work & Deployments
             </div>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
+            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
               Engineered Products
             </h2>
           </div>
-          <p className="text-xs text-slate-600 dark:text-gray-400 max-w-md mt-4 md:mt-0 font-bold uppercase tracking-wider">
-            Verified software systems, enterprise platforms, open-source engines, and live prototypes delivered for real-world operations.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 max-w-md font-medium leading-relaxed">
+            Enterprise platforms, verified operational backends, real-time systems, and deployed live prototypes engineered with high resilience.
           </p>
         </motion.div>
 
-        {/* Category Filters */}
+        {/* Mobile Horizontal Snap-Scroll Filter Rail */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.5, ease: [0.215, 0.61, 0.355, 1] }}
-          className="flex flex-wrap items-center gap-2 mb-12"
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.45 }}
+          className="mb-10"
         >
-          <span className="text-xs font-bold text-slate-500 dark:text-gray-500 uppercase tracking-widest mr-2 flex items-center gap-1.5">
-            <Filter className="w-3.5 h-3.5" /> Domain:
-          </span>
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => {
-                soundEngine.playTap();
-                setSelectedCategory(cat);
-              }}
-              className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 border cursor-pointer ${
-                selectedCategory === cat
-                  ? 'bg-blue-600 text-white border-blue-400 shadow-lg shadow-blue-600/30 font-black'
-                  : 'bg-white dark:bg-[#1a1a1a] text-slate-700 dark:text-gray-400 border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400 shadow-sm'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
+            <span className="text-[11px] font-mono font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-wider mr-1 shrink-0 flex items-center gap-1.5">
+              <Filter className="w-3 h-3 text-blue-600 dark:text-blue-400" /> Filter:
+            </span>
+            {categories.map((cat) => {
+              const isSelected = selectedCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    soundEngine.playTap();
+                    setSelectedCategory(cat);
+                  }}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all duration-200 border cursor-pointer ${
+                    isSelected
+                      ? 'bg-blue-600 text-white border-blue-500 shadow-sm shadow-blue-600/30 font-bold'
+                      : 'bg-slate-50 dark:bg-neutral-900 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800 hover:border-slate-300 dark:hover:border-neutral-700'
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
         </motion.div>
 
-        {/* Projects Editorial Archive Grid with Staggered Entrance */}
+        {/* Editorial Projects Archive Grid */}
         <motion.div
           key={selectedCategory}
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          viewport={{ once: true, margin: '-50px' }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                variants={cardVariants}
-                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.25 } }}
-                whileHover={{
-                  y: -6,
-                  scale: 1.018,
-                  transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
-                }}
-                onMouseEnter={() => soundEngine.playTap()}
-                onClick={() => {
-                  soundEngine.playModalOpen();
-                  setActiveProject(project);
-                }}
-                className="group cursor-pointer rounded-[2.5rem] bg-white dark:bg-[#161616] border border-slate-200/90 dark:border-[#262626] hover:border-blue-500/60 dark:hover:border-blue-500/60 transition-colors duration-300 p-7 sm:p-8 flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 dark:hover:shadow-blue-950/30 relative overflow-hidden"
-              >
-                {/* Ambient Top-Right Spotlight Glow on Hover */}
-                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-72 h-72 bg-linear-to-br from-blue-500/15 via-indigo-500/10 to-transparent rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {filteredProjects.map((project, index) => {
+              const isFlagship = selectedCategory === 'All' && index === 0;
 
-                {/* Top Meta Bar */}
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-200 dark:border-[#262626] text-xs font-bold">
-                    <span className="text-blue-600 dark:text-blue-400 font-black tracking-widest uppercase text-[10px] flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 group-hover:animate-ping" />
-                      PROJECT {project.number}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      {project.liveUrl && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[9px] font-mono font-bold tracking-tight">
-                          <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                          LIVE SYSTEM
+              if (isFlagship) {
+                // Flagship Project 01: High-impact editorial hero card
+                return (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    variants={cardVariants}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    className="col-span-1 md:col-span-2 group rounded-3xl bg-slate-50/70 dark:bg-neutral-900/60 border border-slate-200 dark:border-neutral-800 hover:border-blue-500/60 dark:hover:border-blue-500/60 transition-all duration-300 p-6 sm:p-9 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 relative overflow-hidden"
+                  >
+                    {/* Top Meta Bar */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200/80 dark:border-neutral-800/80">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] font-mono font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-3 py-1 rounded-full border border-blue-200 dark:border-blue-900/60 uppercase tracking-wider">
+                          FLAGSHIP 01 // {project.industry}
+                        </span>
+                        {project.liveUrl && (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/60 text-[10px] font-mono font-bold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            LIVE PRODUCTION
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-xs font-mono text-slate-500 dark:text-neutral-400">
+                        {project.year} Release
+                      </span>
+                    </div>
+
+                    {/* Dual-Column Split on Desktop, Breathable on Mobile */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                      {/* Left: Core Narrative & Actions */}
+                      <div className="lg:col-span-7 space-y-4">
+                        <h3 
+                          onClick={() => {
+                            soundEngine.playModalOpen();
+                            setActiveProject(project);
+                          }}
+                          className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white cursor-pointer group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+                        >
+                          {project.title}
+                        </h3>
+                        <p className="text-sm font-semibold text-blue-600 dark:text-blue-400 tracking-wide uppercase">
+                          {project.subtitle}
+                        </p>
+                        <p className="text-sm sm:text-base text-slate-700 dark:text-neutral-300 leading-relaxed font-normal">
+                          {project.shortDescription}
+                        </p>
+
+                        <div className="pt-2">
+                          <p className="text-xs text-slate-500 dark:text-neutral-400 line-clamp-2 leading-relaxed">
+                            <strong className="text-slate-800 dark:text-neutral-200 font-semibold">Problem:</strong> {project.problem}
+                          </p>
+                        </div>
+
+                        {/* Tech Stack Chips */}
+                        <div className="flex flex-wrap gap-1.5 pt-2">
+                          {project.techStack.map((tech, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-800 text-slate-700 dark:text-neutral-300 text-xs font-medium border border-slate-200 dark:border-neutral-700"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex flex-wrap items-center gap-3 pt-4">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              soundEngine.playModalOpen();
+                              setActiveProject(project);
+                            }}
+                            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow-md transition-all cursor-pointer"
+                          >
+                            <span>Inspect Case Study</span>
+                            <ArrowUpRight className="w-4 h-4" />
+                          </button>
+
+                          {project.liveUrl && (
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white dark:bg-neutral-800 hover:bg-slate-100 dark:hover:bg-neutral-700 text-slate-800 dark:text-neutral-200 font-bold text-xs sm:text-sm border border-slate-200 dark:border-neutral-700 transition-all cursor-pointer"
+                            >
+                              <span>Open Live App</span>
+                              <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Right: Architectural Proof Card & Verification Benchmarks */}
+                      <div className="lg:col-span-5 bg-white dark:bg-neutral-950 rounded-2xl border border-slate-200 dark:border-neutral-800 p-5 sm:p-6 space-y-4 shadow-sm">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-neutral-900">
+                          <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-neutral-400 flex items-center gap-1.5">
+                            <Terminal className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> System Specs
+                          </span>
+                          <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                            99.98% SLA
+                          </span>
+                        </div>
+
+                        {/* Benchmarks List */}
+                        <div className="space-y-3">
+                          <div className="flex items-start gap-3">
+                            <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/60 flex items-center justify-center shrink-0 mt-0.5">
+                              <Zap className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-bold text-slate-900 dark:text-white">Sub-50ms Inventory Checks</div>
+                              <p className="text-[11px] text-slate-500 dark:text-neutral-400">Redis cache layer with optimistic concurrency lock</p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-start gap-3">
+                            <div className="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-center shrink-0 mt-0.5">
+                              <Activity className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-bold text-slate-900 dark:text-white">Real-Time WebSocket Sync</div>
+                              <p className="text-[11px] text-slate-500 dark:text-neutral-400">Zero inventory drift across distributed warehouses</p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-start gap-3">
+                            <div className="w-7 h-7 rounded-lg bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-900/60 flex items-center justify-center shrink-0 mt-0.5">
+                              <ShieldCheck className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-bold text-slate-900 dark:text-white">Audit Trail Logging</div>
+                              <p className="text-[11px] text-slate-500 dark:text-neutral-400">Strict transactional ledger on every order event</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Demo Access Pill */}
+                        {project.demoCredentials && (
+                          <div className="pt-3 border-t border-slate-100 dark:border-neutral-900">
+                            <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-neutral-900 px-3 py-2 rounded-xl border border-slate-200/80 dark:border-neutral-800">
+                              <span className="font-mono text-slate-600 dark:text-neutral-400 flex items-center gap-1.5">
+                                <Key className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+                                Demo: <code className="font-bold text-slate-800 dark:text-neutral-200">{project.demoCredentials.username}</code> / <code className="font-bold text-slate-800 dark:text-neutral-200">{project.demoCredentials.password}</code>
+                              </span>
+                              <span className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold">1-Click Test</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              }
+
+              // Standard Editorial Project Card (Projects 02–09)
+              return (
+                <motion.div
+                  key={project.id}
+                  layout
+                  variants={cardVariants}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  onClick={() => {
+                    soundEngine.playModalOpen();
+                    setActiveProject(project);
+                  }}
+                  className="group cursor-pointer rounded-3xl bg-slate-50/60 dark:bg-neutral-900/50 border border-slate-200/90 dark:border-neutral-800/80 hover:border-blue-500/50 dark:hover:border-blue-500/50 transition-all duration-300 p-6 sm:p-7 flex flex-col justify-between shadow-xs hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-1 relative overflow-hidden"
+                >
+                  {/* Card Top Meta */}
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-200/70 dark:border-neutral-800/70 text-xs">
+                      <span className="font-mono font-bold text-[10px] text-blue-600 dark:text-blue-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
+                        PROJECT {project.number}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {project.liveUrl && (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/50 text-[9px] font-mono font-bold">
+                            <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+                            LIVE
+                          </span>
+                        )}
+                        <span className="text-slate-500 dark:text-neutral-400 text-[10px] font-mono uppercase">
+                          {project.industry}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        {project.title}
+                      </h3>
+                      <div className="w-9 h-9 rounded-xl bg-white dark:bg-neutral-800 border border-slate-200 dark:border-neutral-700 flex items-center justify-center text-slate-600 dark:text-neutral-300 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all duration-200 shrink-0">
+                        <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </div>
+                    </div>
+
+                    <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-3">
+                      {project.subtitle}
+                    </p>
+
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 leading-relaxed font-normal mb-5 line-clamp-3">
+                      {project.shortDescription}
+                    </p>
+                  </div>
+
+                  {/* Card Bottom: Tech Pills & View CTA */}
+                  <div className="pt-4 border-t border-slate-200/70 dark:border-neutral-800/70 flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.techStack.slice(0, 3).map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-0.5 rounded-md bg-white dark:bg-neutral-800 text-slate-700 dark:text-neutral-300 text-[11px] font-medium border border-slate-200 dark:border-neutral-700"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.techStack.length > 3 && (
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-neutral-800 text-slate-500 dark:text-neutral-400 text-[10px] font-mono">
+                          +{project.techStack.length - 3}
                         </span>
                       )}
-                      <span className="text-slate-500 dark:text-gray-400 uppercase text-[10px] tracking-wider">
-                        {project.industry} ({project.year})
-                      </span>
                     </div>
+
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 group-hover:underline">
+                      <span>View Case Study</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </span>
                   </div>
-
-                  <div className="flex items-center justify-between gap-4 mb-2">
-                    <h3 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                      {project.title}
-                    </h3>
-                    <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-[#1f1f1f] border border-slate-200 dark:border-[#2e2e2e] flex items-center justify-center text-slate-700 dark:text-gray-400 group-hover:text-white group-hover:bg-blue-600 group-hover:border-blue-500 group-hover:scale-105 transition-all duration-300 shadow-sm group-hover:shadow-lg group-hover:shadow-blue-600/30">
-                      <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </div>
-                  </div>
-
-                  <p className="text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-3">
-                    {project.subtitle}
-                  </p>
-
-                  <p className="text-sm text-slate-600 dark:text-gray-300 leading-relaxed mb-6 font-medium">
-                    {project.shortDescription}
-                  </p>
-                </div>
-
-                {/* Bottom Tech Pills & Revealed 'View Case Study' CTA Button */}
-                <div className="pt-4 border-t border-slate-200 dark:border-[#262626] flex flex-wrap items-center justify-between gap-3 relative z-10">
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.techStack.slice(0, 4).map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 rounded-full bg-slate-100 dark:bg-[#1a1a1a] text-slate-700 dark:text-gray-300 text-[11px] font-bold border border-slate-200/80 dark:border-[#2a2a2a] group-hover:border-slate-300 dark:group-hover:border-[#333333] transition-colors"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Sophisticated Revealed Call-To-Action Button */}
-                  <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white font-black text-xs uppercase tracking-wider border border-blue-200 dark:border-blue-900/50 group-hover:border-blue-600 shadow-sm group-hover:shadow-lg group-hover:shadow-blue-600/30 transition-all duration-300 transform group-hover:translate-x-0.5">
-                    <span>View Case Study</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
 
-        {/* Live Concept Demos & Rapid Prototypes Showcase Section */}
+        {/* Live Concept Demos & Rapid Prototypes Section */}
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.65, ease: [0.215, 0.61, 0.355, 1] }}
-          className="mt-20 pt-16 border-t border-slate-200 dark:border-[#262626]"
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.55 }}
+          className="mt-20 pt-16 border-t border-slate-200/80 dark:border-neutral-800/80"
         >
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20 mb-3">
-                <Sparkles className="w-3 h-3 text-emerald-500" />
-                Live Deployments • Fast Turnaround
+              <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-900/60 mb-3">
+                <Sparkles className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                Live Environments • Fast Turnaround
               </div>
-              <h3 className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
-                Live Concept Demos & Prototypes
+              <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+                Live Concept Demos & Sandbox
               </h3>
             </div>
-            <p className="text-xs text-slate-600 dark:text-gray-400 max-w-md font-bold uppercase tracking-wider">
-              Functional concept environments and deployed web applications demonstrating our rapid prototyping and frontend execution velocity.
+            <p className="text-xs text-slate-600 dark:text-neutral-400 max-w-md font-medium leading-relaxed">
+              Explore functional environments demonstrating fast interface velocity, clean responsive mechanics, and zero-compromise frontend craft.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {PROTOTYPES_DATA.map((proto) => {
               const isCopied = copiedProtoId === proto.id;
               return (
                 <div
                   key={proto.id}
-                  className="group rounded-3xl bg-white dark:bg-[#141414] border border-slate-200/90 dark:border-[#242424] hover:border-blue-500/50 dark:hover:border-blue-500/50 p-5 flex flex-col justify-between space-y-4 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+                  className="group rounded-2xl bg-slate-50/70 dark:bg-neutral-900/50 border border-slate-200/90 dark:border-neutral-800/80 hover:border-blue-500/50 dark:hover:border-blue-500/50 p-5 flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md transition-all duration-200"
                 >
-                  <div className="space-y-2.5">
+                  <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2.5 py-0.5 rounded-full border border-blue-500/20">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-md border border-blue-200 dark:border-blue-900/50">
                         {proto.category}
                       </span>
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Live online" />
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Active demo online" />
                     </div>
 
-                    <h4 className="text-base font-extrabold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    <h4 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {proto.title}
                     </h4>
 
-                    <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
+                    <p className="text-xs text-slate-600 dark:text-neutral-400 leading-relaxed font-normal">
                       {proto.tagline}
                     </p>
 
@@ -266,7 +441,7 @@ export const SelectedWorkSection: React.FC = () => {
                       {proto.tags.map((tag, tIdx) => (
                         <span
                           key={tIdx}
-                          className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#1e1e1e] text-[10px] font-mono text-slate-600 dark:text-gray-400"
+                          className="px-2 py-0.5 rounded bg-white dark:bg-neutral-800 text-[10px] font-mono text-slate-600 dark:text-neutral-400 border border-slate-200 dark:border-neutral-700"
                         >
                           {tag}
                         </span>
@@ -274,11 +449,11 @@ export const SelectedWorkSection: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 dark:border-[#222222] flex items-center justify-between gap-2">
+                  <div className="pt-3 border-t border-slate-200/80 dark:border-neutral-800/80 flex items-center justify-between gap-2">
                     <button
                       type="button"
                       onClick={(e) => handleCopyPrototypeUrl(proto, e)}
-                      className="p-2 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] hover:bg-slate-200 dark:hover:bg-[#252525] text-slate-600 dark:text-gray-300 transition-colors cursor-pointer text-xs font-medium"
+                      className="p-2.5 rounded-xl bg-white dark:bg-neutral-800 hover:bg-slate-100 dark:hover:bg-neutral-700 text-slate-600 dark:text-neutral-300 border border-slate-200 dark:border-neutral-700 transition-colors cursor-pointer text-xs font-medium"
                       title="Copy URL"
                     >
                       {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
@@ -288,7 +463,7 @@ export const SelectedWorkSection: React.FC = () => {
                       href={proto.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-sans text-xs font-bold transition-all shadow-md shadow-blue-600/25 group-hover:scale-105"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-xs"
                     >
                       <span>Launch Demo</span>
                       <ExternalLink className="w-3 h-3" />
@@ -301,7 +476,7 @@ export const SelectedWorkSection: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Drill-down Modal with Simulated Database Deep Insights */}
+      {/* Case Study Detail Modal */}
       <CaseStudyModal
         project={activeProject}
         onClose={() => setActiveProject(null)}

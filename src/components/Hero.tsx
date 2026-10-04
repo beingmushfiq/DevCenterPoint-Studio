@@ -1,8 +1,7 @@
 import React from 'react';
-import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, MessageCircle, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { DigitalSystemMap } from './DigitalSystemMap';
-import { DevCenterPointLogo } from './DevCenterPointLogo';
 import { HeroInteractiveCanvas } from './HeroInteractiveCanvas';
 import { soundEngine } from '../lib/soundEngine';
 
@@ -15,144 +14,142 @@ export const Hero: React.FC = () => {
     }
   };
 
-  const metrics = [
+  const proofPillars = [
     {
-      label: 'Engineered Domain',
-      title: 'Full-Stack SaaS',
-      subtitle: 'Multi-Tenant Backends'
+      title: 'Full-Stack SaaS & ERP',
+      detail: 'Multi-tenant PostgreSQL backends'
     },
     {
-      label: 'AI Systems',
-      title: 'XGBoost & SHAP',
-      subtitle: 'Explainable Predictions'
+      title: 'Applied AI & Workflows',
+      detail: 'Inference pipelines & fraud scoring'
     },
     {
-      label: 'Realtime Architecture',
-      title: 'WebSockets & IoT',
-      subtitle: 'Sub-50ms Event Sync'
+      title: 'Realtime Edge Architecture',
+      detail: 'WebSockets & TOTP QR attendance'
     },
     {
-      label: 'Deployment Target',
-      title: 'Zero Downtime',
-      subtitle: 'Docker & CI/CD Pipelines',
-      badge: true
+      title: 'Zero-Downtime Deployment',
+      detail: 'Docker, CI/CD & cloud infrastructure'
     }
   ];
 
   return (
-    <section id="hero" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors duration-300">
-      {/* Interactive Neural Canvas & Sound Controller */}
+    <section id="hero" className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-white transition-colors duration-300">
+      {/* Background Interactive Neural Canvas */}
       <HeroInteractiveCanvas />
 
-      {/* Background Subtle Accent Lights */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-200 h-100 bg-blue-600/10 blur-[140px] rounded-full pointer-events-none"></div>
+      {/* Subtle Ambient Light Wash */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-160 h-80 bg-blue-600/6 dark:bg-blue-600/10 blur-[130px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16">
-          {/* Eyebrow badge with official DevCenterPoint branding */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
+          
+          {/* Editorial Eyebrow Tag */}
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }}
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2a2a2a] text-xs font-bold text-slate-700 dark:text-gray-300 mb-6 shadow-md"
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-[#181818] border border-slate-200/80 dark:border-[#262626] text-slate-600 dark:text-slate-300 text-xs font-semibold mb-6"
           >
-            <DevCenterPointLogo variant="mark-only" size="xs" />
-            <span className="font-extrabold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">
-              DevCenterPoint
-            </span>
-            <span className="text-slate-300 dark:text-gray-700">•</span>
-            <span className="text-blue-600 dark:text-blue-400 font-bold uppercase tracking-widest text-[10px]">
-              CODE . BUILD . DEPLOY . SCALE .
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
+            <span className="font-mono text-[11px] tracking-wide uppercase">
+              Engineering Studio • Custom Systems & AI
             </span>
           </motion.div>
 
-          {/* Main Headline */}
+          {/* Main Editorial Headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.215, 0.61, 0.355, 1] }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[1.08] mb-6 text-slate-900 dark:text-white"
+            transition={{ duration: 0.6, delay: 0.08 }}
+            className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-6 text-slate-950 dark:text-white"
           >
             Digital products, <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-700 via-indigo-600 to-blue-500 dark:from-white dark:via-blue-100 dark:to-blue-500">
-              engineered properly.
-            </span>
+            <span className="text-blue-600 dark:text-blue-500">engineered properly.</span>
           </motion.h1>
 
-          {/* Supporting positioning statement */}
+          {/* Supporting Statement */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.215, 0.61, 0.355, 1] }}
-            className="text-lg sm:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed font-medium mb-8"
+            transition={{ duration: 0.6, delay: 0.16 }}
+            className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-normal mb-8"
           >
-            DevCenterPoint designs and engineers software products, intelligent systems, and digital experiences built for real-world impact and business scale.
+            DevCenterPoint designs and builds scalable web platforms, cloud architecture, and intelligent systems tailored for businesses that cannot afford technical debt.
           </motion.p>
 
-          {/* CTA Group */}
+          {/* Primary Action Group */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: [0.215, 0.61, 0.355, 1] }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            transition={{ duration: 0.6, delay: 0.24 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-3"
           >
             <button
-              onClick={() => scrollToSection('work')}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-extrabold tracking-wide transition-all duration-300 shadow-xl shadow-blue-600/30 flex items-center justify-center gap-2 border border-blue-400/30 active:scale-95 cursor-pointer"
+              type="button"
+              onClick={() => scrollToSection('contact')}
+              className="w-full sm:w-auto px-7 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold tracking-tight transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
             >
-              <span>Explore Our Work</span>
-              <ArrowDownRight className="w-4 h-4" />
+              <span>Start a Project</span>
+              <ArrowUpRight className="w-4 h-4" />
             </button>
 
             <button
-              onClick={() => scrollToSection('contact')}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-white hover:bg-slate-100 dark:bg-[#1a1a1a] dark:hover:bg-[#252525] text-slate-900 dark:text-white text-sm font-extrabold tracking-wide transition-all duration-300 border border-slate-300 dark:border-[#2a2a2a] flex items-center justify-center gap-2 active:scale-95 shadow-md cursor-pointer"
+              type="button"
+              onClick={() => scrollToSection('work')}
+              className="w-full sm:w-auto px-7 py-3 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-[#1a1a1a] dark:hover:bg-[#252525] text-slate-800 dark:text-slate-200 text-sm font-semibold transition-all border border-slate-200/80 dark:border-[#2a2a2a] flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
             >
-              <span>Start a Project</span>
-              <ArrowUpRight className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span>Explore Selected Work</span>
+              <ArrowDownRight className="w-4 h-4 text-slate-500 dark:text-slate-400" />
             </button>
+
+            <a
+              href="https://wa.me/8801988383323?text=Hi%20DevCenterPoint,%20I'd%20like%20to%20discuss%20a%20project"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => soundEngine.playClick()}
+              className="w-full sm:w-auto px-4 py-3 rounded-full text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 transition-all flex items-center justify-center gap-1.5"
+            >
+              <MessageCircle className="w-3.5 h-3.5 fill-current" />
+              <span>WhatsApp Direct</span>
+            </a>
           </motion.div>
         </div>
 
         {/* Digital System Map Interactive Showcase */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-          className="mt-8"
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="mt-6"
         >
           <DigitalSystemMap />
         </motion.div>
 
-        {/* Key Metrics / Verification Ticker - Bento Grid Format */}
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {metrics.map((m, idx) => (
+        {/* Architecture & Engineering Standards (Clean 4-column strip) */}
+        <div className="mt-12 pt-10 border-t border-slate-200/70 dark:border-[#1f1f1f] grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {proofPillars.map((p, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 35 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{
-                duration: 0.6,
-                delay: idx * 0.1,
-                ease: [0.215, 0.61, 0.355, 1]
-              }}
-              className="bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2a2a2a] p-6 rounded-4xl hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300 shadow-lg"
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.08 }}
+              className="space-y-1"
             >
-              <div className="text-[10px] text-slate-500 dark:text-gray-500 font-black uppercase tracking-[0.2em] mb-2">
-                {m.label}
+              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900 dark:text-white">
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+                <span>{p.title}</span>
               </div>
-              <div className={`text-xl font-extrabold ${m.badge ? 'text-emerald-600 dark:text-green-400 flex items-center gap-1.5' : 'text-slate-900 dark:text-white'}`}>
-                {m.badge && <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span>}
-                {m.title}
-              </div>
-              <div className="text-xs text-slate-600 dark:text-gray-400 mt-1 font-medium">{m.subtitle}</div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+                {p.detail}
+              </p>
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   );
 };
-

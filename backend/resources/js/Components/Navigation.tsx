@@ -1,22 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Menu,
   X,
   ArrowUpRight,
-  ChevronDown,
   Search,
-  Command,
-  Globe,
-  Smartphone,
-  Cpu,
-  Layers,
   Zap,
-  BarChart3,
-  HelpCircle,
+  Volume2,
+  VolumeX,
+  MessageCircle,
+  Mail,
+  Github,
+  Globe,
+  ArrowRight,
   ShieldCheck,
-  Briefcase,
-  Sparkles,
-  ArrowRight
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ThemeToggle } from './ThemeToggle';
@@ -30,11 +27,10 @@ interface NavigationProps {
 
 export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('capabilities');
-  const [openDropdown, setOpenDropdown] = useState<'services' | 'methodology' | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('work');
   const [isCommandOpen, setIsCommandOpen] = useState(false);
-  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isMuted, setIsMuted] = useState(soundEngine.isSoundMuted());
 
   // Keyboard shortcut for Command Palette (⌘K or Ctrl+K)
   useEffect(() => {
@@ -51,22 +47,10 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
   // Scroll detection & active section highlighter
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      setScrolled(window.scrollY > 30);
 
-      const sectionMap: Record<string, string> = {
-        capabilities: 'services',
-        work: 'work',
-        architecture: 'methodology',
-        tech: 'methodology',
-        process: 'methodology',
-        metrics: 'methodology',
-        about: 'methodology',
-        faq: 'faq',
-        contact: 'contact',
-      };
-
-      const sections = ['capabilities', 'work', 'architecture', 'tech', 'process', 'metrics', 'about', 'faq', 'contact'];
-      const scrollPos = window.scrollY + 220;
+      const sections = ['work', 'capabilities', 'process', 'faq', 'contact'];
+      const scrollPos = window.scrollY + 180;
 
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId);
@@ -74,54 +58,47 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
           const top = el.offsetTop;
           const height = el.offsetHeight;
           if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(sectionMap[sectionId] || sectionId);
+            setActiveSection(sectionId);
             break;
           }
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleNavClick = (href: string) => {
     soundEngine.playClick();
-    setOpenDropdown(null);
-    setMobileMenuOpen(false);
+    setMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  const handleMouseEnter = (menu: 'services' | 'methodology') => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
+  const handleToggleSound = () => {
+    const nextMuted = soundEngine.toggleMute();
+    setIsMuted(nextMuted);
+    if (!nextMuted) {
+      soundEngine.playSuccessChime();
     }
-    setOpenDropdown(menu);
-  };
-
-  const handleMouseLeave = () => {
-    closeTimeoutRef.current = setTimeout(() => {
-      setOpenDropdown(null);
-    }, 150);
   };
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-200 ${
           scrolled
-            ? 'py-2.5 bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#222222] shadow-lg'
-            : 'py-4 sm:py-5 bg-transparent'
+            ? 'py-3 bg-white/90 dark:bg-[#0c0c0c]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-[#222222] shadow-xs'
+            : 'py-5 bg-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-4 h-11">
             
-            {/* Left: Brand Logo & Live Status Pill */}
+            {/* Left: Brand Emblem & Clean Wordmark */}
             <div className="flex items-center gap-3">
               <a
                 href="#"
@@ -130,350 +107,104 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
                   soundEngine.playClick();
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="flex items-center group transition-transform active:scale-95"
+                className="flex items-center group transition-transform active:scale-98"
                 aria-label="DevCenterPoint Home"
               >
                 <DevCenterPointLogo variant="horizontal" size="md" showTagline={false} />
               </a>
-
-              {/* High-trust Availability Indicator */}
-              <div className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold tracking-tight">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Available for Q4</span>
-              </div>
             </div>
 
-            {/* Center: Intuitive Dynamic Island Capsule */}
-            <nav className="hidden md:flex items-center relative bg-white/80 dark:bg-[#141414]/90 p-1.5 rounded-2xl border border-slate-200/90 dark:border-[#282828] shadow-lg backdrop-blur-xl">
-              
-              {/* 1. Services Dropdown Trigger */}
-              <div
-                className="relative"
-                onMouseEnter={() => handleMouseEnter('services')}
-                onMouseLeave={handleMouseLeave}
-              >
-                <button
-                  type="button"
-                  onClick={() => handleNavClick('#capabilities')}
-                  className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
-                    activeSection === 'services' || openDropdown === 'services'
-                      ? 'bg-blue-600 text-white shadow-md shadow-blue-600/25 font-black'
-                      : 'text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <span>Services</span>
-                  <ChevronDown
-                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      openDropdown === 'services' ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-
-                {/* Services Flyout Mega-Card */}
-                <AnimatePresence>
-                  {openDropdown === 'services' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                      transition={{ duration: 0.18, ease: 'easeOut' }}
-                      className="absolute top-full left-0 mt-2 w-120 p-4 rounded-3xl bg-white/95 dark:bg-[#121212]/95 backdrop-blur-2xl border border-slate-200 dark:border-[#2a2a2a] shadow-2xl z-50 space-y-3"
-                    >
-                      <div className="flex items-center justify-between px-2 pt-1">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
-                          Engineering Capabilities
-                        </span>
-                        <span className="text-[10px] font-mono text-slate-400">
-                          Zero-Downtime Guarantee
-                        </span>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('#capabilities')}
-                          className="p-3 rounded-2xl text-left bg-slate-50/80 dark:bg-[#1a1a1a]/80 hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-slate-200/60 dark:border-[#262626] hover:border-blue-300 dark:hover:border-blue-900/50 transition-all cursor-pointer group"
-                        >
-                          <div className="w-8 h-8 rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-                            <Globe className="w-4 h-4" />
-                          </div>
-                          <div className="text-xs font-bold text-slate-900 dark:text-white">
-                            Web & SaaS Platforms
-                          </div>
-                          <div className="text-[10px] text-slate-500 dark:text-gray-400 mt-0.5 line-clamp-1">
-                            High-converting portals & web apps
-                          </div>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('#capabilities')}
-                          className="p-3 rounded-2xl text-left bg-slate-50/80 dark:bg-[#1a1a1a]/80 hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-slate-200/60 dark:border-[#262626] hover:border-blue-300 dark:hover:border-blue-900/50 transition-all cursor-pointer group"
-                        >
-                          <div className="w-8 h-8 rounded-xl bg-purple-600/10 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-                            <Smartphone className="w-4 h-4" />
-                          </div>
-                          <div className="text-xs font-bold text-slate-900 dark:text-white">
-                            Mobile Applications
-                          </div>
-                          <div className="text-[10px] text-slate-500 dark:text-gray-400 mt-0.5 line-clamp-1">
-                            iOS & Android with offline sync
-                          </div>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('#capabilities')}
-                          className="p-3 rounded-2xl text-left bg-slate-50/80 dark:bg-[#1a1a1a]/80 hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-slate-200/60 dark:border-[#262626] hover:border-blue-300 dark:hover:border-blue-900/50 transition-all cursor-pointer group"
-                        >
-                          <div className="w-8 h-8 rounded-xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-                            <Cpu className="w-4 h-4" />
-                          </div>
-                          <div className="text-xs font-bold text-slate-900 dark:text-white">
-                            AI & Smart Workflows
-                          </div>
-                          <div className="text-[10px] text-slate-500 dark:text-gray-400 mt-0.5 line-clamp-1">
-                            Intelligent copilots & automation
-                          </div>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('#capabilities')}
-                          className="p-3 rounded-2xl text-left bg-slate-50/80 dark:bg-[#1a1a1a]/80 hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-slate-200/60 dark:border-[#262626] hover:border-blue-300 dark:hover:border-blue-900/50 transition-all cursor-pointer group"
-                        >
-                          <div className="w-8 h-8 rounded-xl bg-amber-600/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-                            <Layers className="w-4 h-4" />
-                          </div>
-                          <div className="text-xs font-bold text-slate-900 dark:text-white">
-                            Enterprise Modernization
-                          </div>
-                          <div className="text-[10px] text-slate-500 dark:text-gray-400 mt-0.5 line-clamp-1">
-                            Legacy refactoring & scaling
-                          </div>
-                        </button>
-                      </div>
-
-                      <div className="pt-2 border-t border-slate-200 dark:border-[#222222] flex items-center justify-between text-xs px-2">
-                        <span className="text-[11px] text-slate-500 dark:text-gray-400">
-                          Looking for specific stack requirements?
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('#capabilities')}
-                          className="text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
-                        >
-                          <span>Explore All 7 Services</span>
-                          <ArrowRight className="w-3 h-3" />
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* 2. Selected Work Direct Link */}
+            {/* Center: 4 Calm Editorial Navigation Links (Desktop) */}
+            <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 dark:bg-[#181818]/80 p-1 rounded-full border border-slate-200/80 dark:border-[#262626] backdrop-blur-md text-xs font-semibold">
               <button
                 type="button"
                 onClick={() => handleNavClick('#work')}
-                className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+                className={`px-4 py-1.5 rounded-full transition-all cursor-pointer ${
                   activeSection === 'work'
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/25 font-black'
-                    : 'text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
+                    ? 'bg-white dark:bg-[#252525] text-slate-950 dark:text-white font-bold shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
-                <span>Work</span>
-                <span
-                  className={`text-[9px] font-mono px-1.5 py-0.2 rounded-full ${
-                    activeSection === 'work'
-                      ? 'bg-white/20 text-white'
-                      : 'bg-slate-200 dark:bg-[#282828] text-slate-600 dark:text-gray-400'
-                  }`}
-                >
-                  9 Cases
-                </span>
+                Work
               </button>
 
-              {/* 3. Methodology Dropdown Trigger */}
-              <div
-                className="relative"
-                onMouseEnter={() => handleMouseEnter('methodology')}
-                onMouseLeave={handleMouseLeave}
+              <button
+                type="button"
+                onClick={() => handleNavClick('#capabilities')}
+                className={`px-4 py-1.5 rounded-full transition-all cursor-pointer ${
+                  activeSection === 'capabilities'
+                    ? 'bg-white dark:bg-[#252525] text-slate-950 dark:text-white font-bold shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+                }`}
               >
-                <button
-                  type="button"
-                  onClick={() => handleNavClick('#architecture')}
-                  className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
-                    activeSection === 'methodology' || openDropdown === 'methodology'
-                      ? 'bg-blue-600 text-white shadow-md shadow-blue-600/25 font-black'
-                      : 'text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <span>Methodology</span>
-                  <ChevronDown
-                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      openDropdown === 'methodology' ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
+                Services
+              </button>
 
-                {/* Methodology Flyout Mega-Card */}
-                <AnimatePresence>
-                  {openDropdown === 'methodology' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                      transition={{ duration: 0.18, ease: 'easeOut' }}
-                      className="absolute top-full left-0 mt-2 w-110 p-4 rounded-3xl bg-white/95 dark:bg-[#121212]/95 backdrop-blur-2xl border border-slate-200 dark:border-[#2a2a2a] shadow-2xl z-50 space-y-3"
-                    >
-                      <div className="flex items-center justify-between px-2 pt-1">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
-                          How We Engineer
-                        </span>
-                        <span className="text-[10px] font-mono text-slate-400">
-                          Deterministic Execution
-                        </span>
-                      </div>
+              <button
+                type="button"
+                onClick={() => handleNavClick('#process')}
+                className={`px-4 py-1.5 rounded-full transition-all cursor-pointer ${
+                  activeSection === 'process'
+                    ? 'bg-white dark:bg-[#252525] text-slate-950 dark:text-white font-bold shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+                }`}
+              >
+                Process
+              </button>
 
-                      <div className="space-y-1.5">
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('#architecture')}
-                          className="w-full p-2.5 rounded-2xl text-left hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors flex items-center gap-3 cursor-pointer group"
-                        >
-                          <div className="w-8 h-8 rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-                            <Layers className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="text-xs font-bold text-slate-900 dark:text-white">
-                              5-Layer System Architecture
-                            </div>
-                            <div className="text-[11px] text-slate-500 dark:text-gray-400 truncate">
-                              Clean boundary separation, contracts & resilience
-                            </div>
-                          </div>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('#tech')}
-                          className="w-full p-2.5 rounded-2xl text-left hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors flex items-center gap-3 cursor-pointer group"
-                        >
-                          <div className="w-8 h-8 rounded-xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                            <Zap className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="text-xs font-bold text-slate-900 dark:text-white">
-                              Technology Ecosystem Matrix
-                            </div>
-                            <div className="text-[11px] text-slate-500 dark:text-gray-400 truncate">
-                              React 19, TypeScript, Node.js, Postgres & Cloud
-                            </div>
-                          </div>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleNavClick('#process')}
-                          className="w-full p-2.5 rounded-2xl text-left hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors flex items-center gap-3 cursor-pointer group"
-                        >
-                          <div className="w-8 h-8 rounded-xl bg-purple-600/10 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
-                            <BarChart3 className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="text-xs font-bold text-slate-900 dark:text-white">
-                              6-Phase Sprint Process & Metrics
-                            </div>
-                            <div className="text-[11px] text-slate-500 dark:text-gray-400 truncate">
-                              From Discovery RFC to automated verification & launch
-                            </div>
-                          </div>
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* 4. FAQ & Principles Link */}
               <button
                 type="button"
                 onClick={() => handleNavClick('#faq')}
-                className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+                className={`px-4 py-1.5 rounded-full transition-all cursor-pointer ${
                   activeSection === 'faq'
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/25 font-black'
-                    : 'text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
+                    ? 'bg-white dark:bg-[#252525] text-slate-950 dark:text-white font-bold shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
-                <span>FAQ</span>
+                FAQ
               </button>
-
-              {/* 5. Spotlight Search (⌘K) Trigger Button */}
-              <div className="ml-1 pl-1 border-l border-slate-200 dark:border-[#2a2a2a]">
-                <button
-                  type="button"
-                  onClick={() => {
-                    soundEngine.playClick();
-                    setIsCommandOpen(true);
-                  }}
-                  className="px-2.5 py-1.5 rounded-xl text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#202020] transition-colors flex items-center gap-1.5 cursor-pointer text-xs font-medium"
-                  title="Search site (⌘K)"
-                >
-                  <Search className="w-3.5 h-3.5 text-blue-500" />
-                  <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#222222] border border-slate-200 dark:border-[#333333] text-[9px] font-mono text-slate-500 dark:text-gray-400">
-                    ⌘K
-                  </kbd>
-                </button>
-              </div>
-
             </nav>
 
-            {/* Right: Theme Toggle & Primary Action CTA */}
-            <div className="flex items-center gap-3">
-              {onOpenSandbox && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    soundEngine.playModalOpen();
-                    onOpenSandbox();
-                  }}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#1a1a1a] dark:hover:bg-[#222222] text-slate-800 dark:text-gray-200 border border-slate-200/80 dark:border-[#2e2e2e] text-xs font-mono font-bold transition-all active:scale-95 cursor-pointer group"
-                  title="Test-drive live enterprise systems"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <Zap className="w-3.5 h-3.5 text-blue-500 group-hover:scale-110 transition-transform" />
-                  <span>Live Demos</span>
-                </button>
-              )}
-
-              <ThemeToggle />
-
-              <div className="hidden sm:flex items-center">
-                <a
-                  href="#contact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick('#contact');
-                  }}
-                  className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-black tracking-wide transition-all shadow-md shadow-blue-600/25 hover:shadow-lg hover:shadow-blue-600/30 active:scale-95 cursor-pointer"
-                >
-                  <span>Start a Project</span>
-                  <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
-              </div>
-
-              {/* Mobile Hamburger Button */}
+            {/* Right: Primary CTA & Studio Menu Drawer Trigger */}
+            <div className="flex items-center gap-2.5">
+              {/* Spotlight Search (⌘K) - Minimal Icon */}
               <button
                 type="button"
                 onClick={() => {
-                  soundEngine.playMenuToggle(!mobileMenuOpen);
-                  setMobileMenuOpen(!mobileMenuOpen);
+                  soundEngine.playClick();
+                  setIsCommandOpen(true);
                 }}
-                className="md:hidden p-2 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2a2a2a] text-slate-800 dark:text-white cursor-pointer"
-                aria-label="Toggle navigation menu"
+                className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1a1a1a] transition-colors cursor-pointer text-xs"
+                title="Search site (⌘K)"
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                <Search className="w-3.5 h-3.5" />
+                <kbd className="text-[10px] font-mono opacity-60">⌘K</kbd>
+              </button>
+
+              {/* Primary Start a Project Button */}
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('#contact');
+                }}
+                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer"
+              >
+                <span>Start a Project</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+
+              {/* Minimal Menu Trigger [ ☰ ] */}
+              <button
+                type="button"
+                onClick={() => {
+                  soundEngine.playMenuToggle(!menuOpen);
+                  setMenuOpen(!menuOpen);
+                }}
+                className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-[#1a1a1a] dark:hover:bg-[#262626] border border-slate-200/80 dark:border-[#2e2e2e] text-slate-700 dark:text-slate-300 transition-colors cursor-pointer flex items-center justify-center"
+                aria-label="Toggle Studio Menu"
+              >
+                {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               </button>
             </div>
 
@@ -481,178 +212,198 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
         </div>
       </header>
 
-      {/* Spotlight Command Palette (⌘K) Modal */}
+      {/* Spotlight Command Palette (⌘K) */}
       <CommandPalette
         isOpen={isCommandOpen}
         onClose={() => setIsCommandOpen(false)}
       />
 
-      {/* Mobile Drawer */}
+      {/* Minimal Editorial Studio Menu (Full Sheet Drawer) */}
       <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="fixed inset-0 z-50 bg-white/95 dark:bg-[#0c0c0c]/95 backdrop-blur-2xl text-slate-900 dark:text-white flex flex-col justify-between p-6 overflow-y-auto md:hidden"
-          >
-            {/* Mobile Header Bar */}
-            <div className="flex items-center justify-between pb-5 border-b border-slate-200 dark:border-[#222222]">
-              <DevCenterPointLogo variant="compact" size="sm" showTagline={false} />
-              <div className="flex items-center gap-2">
-                <ThemeToggle />
-                <button
-                  type="button"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] text-slate-700 dark:text-gray-300 cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
+        {menuOpen && (
+          <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
+            {/* Backdrop Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMenuOpen(false)}
+              className="absolute inset-0 bg-slate-950/50 backdrop-blur-xs cursor-pointer"
+            />
 
-            {/* Quick Search in Mobile */}
-            <div className="py-4">
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setIsCommandOpen(true);
-                }}
-                className="w-full p-3 rounded-2xl bg-slate-100 dark:bg-[#181818] border border-slate-200 dark:border-[#282828] text-slate-500 dark:text-gray-400 flex items-center justify-between text-xs font-medium cursor-pointer"
-              >
-                <span className="flex items-center gap-2">
-                  <Search className="w-4 h-4 text-blue-500" />
-                  <span>Search site or jump to section...</span>
-                </span>
-                <kbd className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-[#252525]">
-                  ⌘K
-                </kbd>
-              </button>
-            </div>
-
-            {/* Mobile Live Demos Launcher Banner */}
-            {onOpenSandbox && (
-              <div className="pb-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    soundEngine.playModalOpen();
-                    onOpenSandbox();
-                  }}
-                  className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-blue-600/10 via-emerald-600/10 to-blue-600/10 border border-blue-500/30 text-left flex items-center justify-between cursor-pointer active:scale-98 transition-all"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-600/30">
-                      <Zap className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-                        <span>Test-Drive Live Demos</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      </div>
-                      <div className="text-[10px] text-slate-500 dark:text-gray-400">
-                        ERP, Clinic Queue, Dynamic QR & AI Studio
-                      </div>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-blue-500" />
-                </button>
-              </div>
-            )}
-
-            {/* Primary Mobile Links */}
-            <div className="py-2 space-y-3">
-              <button
-                type="button"
-                onClick={() => handleNavClick('#capabilities')}
-                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-base font-bold"
-              >
-                <span>Services & Capabilities</span>
-                <ArrowRight className="w-4 h-4 text-blue-500" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleNavClick('#work')}
-                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-base font-bold"
-              >
-                <span className="flex items-center gap-2">
-                  <span>Selected Work</span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
-                    9 Cases
+            {/* Sliding Panel */}
+            <motion.aside
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+              className="relative w-full sm:w-96 max-w-full h-full bg-white dark:bg-[#121212] text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#242424] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto"
+            >
+              {/* Panel Top Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#222222]">
+                <div className="flex items-center gap-2">
+                  <DevCenterPointLogo variant="compact" size="sm" showTagline={false} />
+                  <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono">
+                    Studio Index
                   </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen(false)}
+                  className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-[#202020] text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+                  aria-label="Close menu"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Main Navigation Links */}
+              <div className="py-6 space-y-4">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 dark:text-slate-500 font-bold block">
+                  Navigation
                 </span>
-                <ArrowRight className="w-4 h-4 text-blue-500" />
-              </button>
 
-              <button
-                type="button"
-                onClick={() => handleNavClick('#architecture')}
-                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-base font-bold"
-              >
-                <span>Methodology & Architecture</span>
-                <ArrowRight className="w-4 h-4 text-blue-500" />
-              </button>
+                <div className="space-y-1">
+                  {[
+                    { label: 'Selected Work', href: '#work', note: '9 Production Systems' },
+                    { label: 'Capabilities & Services', href: '#capabilities', note: 'Full-stack & AI' },
+                    { label: 'Sprint Methodology', href: '#process', note: 'Discovery to Deployment' },
+                    { label: 'Frequently Asked Questions', href: '#faq', note: 'Pricing, SLAs, Terms' },
+                    { label: 'Start Project Collaboration', href: '#contact', note: 'Scope & Budget Estimator' }
+                  ].map((item, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleNavClick(item.href)}
+                      className="w-full text-left p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-all flex items-center justify-between group cursor-pointer"
+                    >
+                      <div>
+                        <div className="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                          {item.label}
+                        </div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                          {item.note}
+                        </div>
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 group-hover:text-blue-600 transition-all" />
+                    </button>
+                  ))}
+                </div>
 
-              <button
-                type="button"
-                onClick={() => handleNavClick('#faq')}
-                className="w-full text-left py-2 border-b border-slate-200 dark:border-[#222222] flex items-center justify-between text-base font-bold"
-              >
-                <span>Frequently Asked Questions</span>
-                <ArrowRight className="w-4 h-4 text-blue-500" />
-              </button>
-
-              {/* External Ecosystem Links */}
-              <div className="pt-2 flex flex-wrap gap-2 text-xs">
-                <a
-                  href="https://buildwithmushfiq.vercel.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] text-slate-700 dark:text-gray-300 font-bold flex items-center gap-1.5"
-                >
-                  <span>Founder Portfolio</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-blue-500" />
-                </a>
-                <a
-                  href="https://github.com/beingmushfiq"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] text-slate-700 dark:text-gray-300 font-bold flex items-center gap-1.5"
-                >
-                  <span>GitHub</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-blue-500" />
-                </a>
-                <a
-                  href="https://devcenterpoint.ai.studio"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5"
-                >
-                  <span>AI Studio</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500" />
-                </a>
+                {/* 1-Click Sandbox Modal Launcher */}
+                {onOpenSandbox && (
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        soundEngine.playModalOpen();
+                        onOpenSandbox();
+                      }}
+                      className="w-full p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/40 text-left flex items-center justify-between cursor-pointer hover:border-blue-300 dark:hover:border-blue-800 transition-all"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0">
+                          <Zap className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+                            <span>Client Demo Sandbox</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                          </div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">
+                            ERP, Clinic Queue, Qttenzy & AI Studio
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    </button>
+                  </div>
+                )}
               </div>
-            </div>
 
-            {/* Bottom Mobile CTA */}
-            <div className="pt-4 border-t border-slate-200 dark:border-[#222222] space-y-3">
-              <button
-                type="button"
-                onClick={() => handleNavClick('#contact')}
-                className="w-full py-3.5 rounded-2xl bg-blue-600 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-blue-600/25"
-              >
-                <span>Start a Project</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </button>
+              {/* Direct Founder & WhatsApp Contact Details */}
+              <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-[#222222]">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 dark:text-slate-500 font-bold block">
+                  Direct Inquiries
+                </span>
 
-              <div className="text-center text-[11px] text-slate-500 dark:text-gray-400 font-mono">
-                🟢 Accepting Q4/Q1 Client Engagements
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {/* WhatsApp */}
+                  <a
+                    href="https://wa.me/8801988383323?text=Hi%20DevCenterPoint,%20I'd%20like%20to%20discuss%20a%20project"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => soundEngine.playClick()}
+                    className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40 text-emerald-800 dark:text-emerald-300 hover:border-emerald-300 flex items-center gap-2 font-bold transition-all"
+                  >
+                    <MessageCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <div className="truncate">
+                      <span className="block text-[9px] uppercase font-mono text-emerald-600 dark:text-emerald-400">WhatsApp</span>
+                      <span>+880 1988 383323</span>
+                    </div>
+                  </a>
+
+                  {/* Email */}
+                  <a
+                    href="mailto:contact@devcenterpoint.com"
+                    onClick={() => soundEngine.playClick()}
+                    className="p-3 rounded-2xl bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#282828] text-slate-700 dark:text-slate-200 hover:border-slate-300 flex items-center gap-2 font-bold transition-all"
+                  >
+                    <Mail className="w-4 h-4 text-blue-500 shrink-0" />
+                    <div className="truncate">
+                      <span className="block text-[9px] uppercase font-mono text-slate-400">Email</span>
+                      <span>contact@...</span>
+                    </div>
+                  </a>
+                </div>
+
+                {/* Ecosystem Links */}
+                <div className="flex items-center gap-2 text-xs">
+                  <a
+                    href="https://github.com/beingmushfiq"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-2 px-3 rounded-xl bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200/80 dark:border-[#262626] text-slate-700 dark:text-slate-300 font-semibold flex items-center justify-center gap-1.5 hover:text-slate-950 dark:hover:text-white"
+                  >
+                    <Github className="w-3.5 h-3.5" />
+                    <span>GitHub</span>
+                  </a>
+                  <a
+                    href="https://buildwithmushfiq.vercel.app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-2 px-3 rounded-xl bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200/80 dark:border-[#262626] text-slate-700 dark:text-slate-300 font-semibold flex items-center justify-center gap-1.5 hover:text-slate-950 dark:hover:text-white"
+                  >
+                    <Globe className="w-3.5 h-3.5" />
+                    <span>Founder</span>
+                  </a>
+                </div>
+
+                {/* Controls Bar: Theme Toggle & Sound Toggle */}
+                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#181818] border border-slate-200/80 dark:border-[#262626] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ThemeToggle />
+                    <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Appearance</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleToggleSound}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                      !isMuted
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-slate-200 dark:bg-[#252525] text-slate-600 dark:text-slate-400'
+                    }`}
+                  >
+                    {!isMuted ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                    <span>{!isMuted ? 'Audio On' : 'Muted'}</span>
+                  </button>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.aside>
+          </div>
         )}
       </AnimatePresence>
     </>
