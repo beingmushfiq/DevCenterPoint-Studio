@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { FAQ_DATA } from '../data/faq';
+import { PROJECTS_DATA } from '../data/projects';
 
 export interface SectionSEOMetadata {
   title: string;
@@ -12,15 +14,18 @@ export interface SectionSEOMetadata {
 export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
   hero: {
     title: 'DevCenterPoint — Digital Products, Software & Intelligent Systems',
-    description: 'DevCenterPoint designs and engineers software products, SaaS platforms, AI-powered systems, and high-performance digital architectures for real-world impact.',
+    description: 'DevCenterPoint designs and engineers mission-critical software products, scalable SaaS platforms, intelligent AI systems, and cloud infrastructure engineered for zero technical debt.',
     keywords: [
-      'software engineering',
-      'digital products',
-      'intelligent systems',
-      'SaaS platform development',
+      'software engineering studio',
+      'custom SaaS development',
+      'digital product studio',
+      'hire SaaS engineers',
+      'full stack engineering agency',
+      'intelligent systems development',
+      'cloud native architecture',
       'DevCenterPoint',
-      'cloud architecture',
-      'full stack engineering'
+      'React TypeScript engineering',
+      'Python AI backend'
     ],
     sectionName: 'Home',
     hash: '',
@@ -29,11 +34,12 @@ export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
     title: 'Product Engineering Philosophy — DevCenterPoint Systems',
     description: 'We build systems, not just screens. Explore our engineering doctrine: product strategy, high-density UI/UX, resilient full-stack backends, and explainable AI.',
     keywords: [
-      'product engineering',
-      'systems architecture',
-      'high-density UI',
-      'full stack core',
-      'engineering doctrine',
+      'product engineering doctrine',
+      'systems architecture studio',
+      'high-density UI UX',
+      'full stack core development',
+      'software craftsmanship',
+      'explainable AI engineering',
       'DevCenterPoint'
     ],
     sectionName: 'Positioning',
@@ -43,26 +49,28 @@ export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
     title: 'Engineering Capabilities & Technical Architecture — DevCenterPoint',
     description: 'Full-stack SaaS, AI/ML intelligent agents, real-time IoT architecture, and high-throughput data pipelines engineered with zero-downtime reliability.',
     keywords: [
-      'SaaS architecture',
-      'AI systems',
+      'SaaS architecture consulting',
+      'enterprise AI systems development',
       'realtime distributed systems',
-      'cloud infrastructure',
-      'data pipelines',
-      'Docker Kubernetes'
+      'cloud infrastructure DevOps',
+      'Docker Kubernetes deployment',
+      'microservices architecture',
+      'high throughput data pipelines'
     ],
     sectionName: 'Capabilities',
     hash: '#capabilities',
   },
   work: {
     title: 'Engineered Products & Selected Work Archives — DevCenterPoint',
-    description: 'Explore verified software case studies delivered by DevCenterPoint, including SaaS platforms, healthcare systems, retail commerce, and automated analytics.',
+    description: 'Explore verified production software delivered by DevCenterPoint: enterprise ERP, dynamic QR attendance, headless e-commerce, and SHAP explainable AI.',
     keywords: [
-      'case studies',
-      'engineered software',
-      'production software archives',
-      'SaaS applications',
-      'healthcare technology',
-      'enterprise software'
+      'production software case studies',
+      'enterprise ERP development',
+      'headless ecommerce architecture',
+      'dynamic QR attendance app',
+      'SHAP career predictor AI',
+      'LeadLayer CRM architecture',
+      'custom software portfolio'
     ],
     sectionName: 'Selected Work',
     hash: '#work',
@@ -71,11 +79,12 @@ export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
     title: '5-Layer System Architecture & Engineering Philosophy — DevCenterPoint',
     description: 'Deep dive into our 5-layer engineering model: UX/UI delivery, API gateway, domain core services, streaming data persistence, and cloud infrastructure.',
     keywords: [
-      '5-layer architecture',
+      '5-layer software architecture',
       'domain driven design',
-      'API gateway',
+      'API gateway design',
       'distributed data persistence',
-      'cloud engineering'
+      'PostgreSQL Redis architecture',
+      'cloud systems engineering'
     ],
     sectionName: 'Architecture',
     hash: '#architecture',
@@ -84,39 +93,39 @@ export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
     title: 'Technology Stack & Engineering Ecosystem — DevCenterPoint',
     description: 'TypeScript, React 19, Python, Node.js, Go, PostgreSQL, Redis, Docker, and AWS: our precision toolkit for resilient, scalable digital systems.',
     keywords: [
-      'tech stack',
-      'React 19',
-      'TypeScript',
-      'Node.js',
-      'Python AI',
-      'PostgreSQL',
-      'Docker infrastructure'
+      'enterprise tech stack',
+      'React 19 development',
+      'TypeScript consulting',
+      'Node.js microservices',
+      'Python FastAPI machine learning',
+      'PostgreSQL optimization',
+      'Docker cloud infrastructure'
     ],
     sectionName: 'Tech Stack',
     hash: '#tech',
   },
   process: {
     title: 'Product Lifecycle & 5-Stage Engineering Process — DevCenterPoint',
-    description: 'From requirements interrogation and architecture blueprinting to sprint cycles, load testing, and zero-downtime deployment pipelines.',
+    description: 'From requirements interrogation and architecture blueprinting to sprint cycles, Playwright automated testing, and zero-downtime deployment pipelines.',
     keywords: [
-      'agile product development',
-      'engineering lifecycle',
-      'CI/CD deployment',
-      'architecture blueprint',
-      'software testing'
+      'agile product engineering lifecycle',
+      'zero downtime deployment',
+      'automated testing Playwright CI CD',
+      'architecture blueprint RFC',
+      'enterprise software QA'
     ],
     sectionName: 'Process',
     hash: '#process',
   },
   metrics: {
     title: 'Production Efficiency & Lifecycle Verification Metrics — DevCenterPoint',
-    description: 'Quantifiable operational impact: 99.98% uptime, sub-50ms API latency, 65% faster feature velocity, and battle-tested code quality metrics.',
+    description: 'Quantifiable operational impact: 99.98% uptime, sub-50ms API latency, 65% faster feature velocity, and battle-tested code quality gates.',
     keywords: [
-      'engineering metrics',
-      'system latency',
-      'reliability uptime',
-      'performance benchmarks',
-      'software efficiency'
+      'software engineering benchmarks',
+      'sub-50ms API latency',
+      '99.98 uptime SLA',
+      'software release velocity',
+      'enterprise code quality standards'
     ],
     sectionName: 'Metrics',
     hash: '#metrics',
@@ -126,10 +135,10 @@ export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
     description: 'Founded on craftsmanship and software discipline. Learn how DevCenterPoint partners with ambitious teams to build enduring, high-impact systems.',
     keywords: [
       'about DevCenterPoint',
-      'software consultancy',
-      'engineering principles',
-      'systems engineers',
-      'digital product studio'
+      'software engineering consultancy',
+      'dedicated engineering squad',
+      'systems engineering studio',
+      'senior software architects'
     ],
     sectionName: 'About',
     hash: '#about',
@@ -138,11 +147,11 @@ export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
     title: 'Start a Project — DevCenterPoint Scope Estimator & Inquiry',
     description: 'Build your project scope, calculate timelines, and connect with DevCenterPoint engineers to architect your next digital product or enterprise system.',
     keywords: [
-      'project inquiry',
-      'software estimate',
-      'hire engineers',
-      'DevCenterPoint contact',
-      'software scope estimator'
+      'software development cost estimator',
+      'hire software development agency',
+      'SaaS project scope calculator',
+      'hire dedicated engineering squad',
+      'DevCenterPoint project inquiry'
     ],
     sectionName: 'Contact',
     hash: '#contact',
@@ -257,26 +266,134 @@ export const SEOHead: React.FC<{ meta: SectionSEOMetadata }> = ({ meta }) => {
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://devcenterpoint.com';
   const canonicalUrl = `${origin}/${meta.hash}`;
 
-  // Schema.org structured data (JSON-LD)
+  // Schema.org structured data (JSON-LD) with AEO FAQPage, GEO ProfessionalService, and SoftwareApplication items
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'Organization',
+        '@type': ['Organization', 'Corporation'],
         '@id': `${origin}/#organization`,
         name: 'DevCenterPoint',
+        alternateName: 'DevCenterPoint Studio',
         url: origin,
         logo: `${origin}/logo-mark.svg`,
+        image: `${origin}/og-image.svg`,
         description:
-          'DevCenterPoint designs and engineers software products, SaaS platforms, AI-powered systems, and digital experiences.',
+          'DevCenterPoint designs and engineers mission-critical software products, scalable SaaS platforms, intelligent AI systems, and cloud infrastructure engineered for zero technical debt.',
+        foundingLocation: {
+          '@type': 'Place',
+          name: 'Dhaka, Bangladesh',
+        },
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Dhaka',
+          addressCountry: 'BD',
+        },
+        contactPoint: {
+          '@type': 'ContactPoint',
+          telephone: '+8801988383323',
+          contactType: 'sales',
+          availableLanguage: ['English', 'Bengali'],
+        },
+        sameAs: [
+          'https://github.com/beingmushfiq',
+          'https://twitter.com/devcenterpoint',
+          'https://www.linkedin.com/company/devcenterpoint',
+        ],
         knowsAbout: [
           'Software Engineering',
-          'Full-Stack SaaS',
-          'Intelligent AI Systems',
-          'Cloud Infrastructure',
+          'Full-Stack SaaS Development',
+          'Explainable AI Systems',
+          'SHAP and Machine Learning',
+          'Cloud Infrastructure and DevOps',
+          'Docker and Kubernetes Orchestration',
           'Real-Time Distributed Architecture',
-          'Explainable AI',
+          'Enterprise ERP and POS Systems',
+          'Headless Commerce Infrastructure',
+          'TypeScript and React 19 Architecture',
         ],
+        areaServed: ['Worldwide', 'United States', 'Europe', 'Asia-Pacific'],
+      },
+      {
+        '@type': 'ProfessionalService',
+        '@id': `${origin}/#service-studio`,
+        name: 'DevCenterPoint Software Engineering Studio',
+        url: origin,
+        image: `${origin}/og-image.svg`,
+        telephone: '+8801988383323',
+        priceRange: '$$$',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Dhaka',
+          addressCountry: 'BD',
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: 23.8103,
+          longitude: 90.4125,
+        },
+        openingHoursSpecification: [
+          {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            opens: '09:00',
+            closes: '18:00',
+          },
+        ],
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'DevCenterPoint Engineering Capabilities',
+          itemListElement: [
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Product Engineering & Full-Stack SaaS',
+                description: 'Custom SaaS web applications, microservices, and high-performance API design.',
+              },
+            },
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'AI & Intelligent Systems Engineering',
+                description: 'Explainable AI pipelines, predictive machine learning, and enterprise RAG workflows.',
+              },
+            },
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Experience Design & Design Systems',
+                description: 'Accessible, high-density token-driven UI/UX design systems.',
+              },
+            },
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Custom Business Systems & ERP/POS',
+                description: 'Tailored enterprise resource planning, point of sale, and offline-first data sync.',
+              },
+            },
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Headless Commerce Infrastructure',
+                description: 'High-throughput headless e-commerce, multi-currency payment switches, and marketplaces.',
+              },
+            },
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Cloud Infrastructure & Zero-Downtime DevOps',
+                description: 'Docker, Kubernetes, automated CI/CD pipelines, and multi-region deployment automation.',
+              },
+            },
+          ],
+        },
       },
       {
         '@type': 'WebSite',
@@ -288,6 +405,11 @@ export const SEOHead: React.FC<{ meta: SectionSEOMetadata }> = ({ meta }) => {
         },
         description:
           'Digital products, software & intelligent systems engineered for real-world impact.',
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: `${origin}/?q={search_term_string}`,
+          'query-input': 'required name=search_term_string',
+        },
       },
       {
         '@type': 'WebPage',
@@ -298,6 +420,57 @@ export const SEOHead: React.FC<{ meta: SectionSEOMetadata }> = ({ meta }) => {
         isPartOf: {
           '@id': `${origin}/#website`,
         },
+        breadcrumb: {
+          '@id': `${canonicalUrl}#breadcrumbs`,
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${canonicalUrl}#breadcrumbs`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: origin,
+          },
+          ...(meta.hash
+            ? [
+                {
+                  '@type': 'ListItem',
+                  position: 2,
+                  name: meta.sectionName,
+                  item: canonicalUrl,
+                },
+              ]
+            : []),
+        ],
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${origin}/#faqpage`,
+        mainEntity: FAQ_DATA.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer,
+          },
+        })),
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${origin}/#case-studies`,
+        name: 'DevCenterPoint Production Case Studies & Applications',
+        itemListElement: PROJECTS_DATA.map((proj, idx) => ({
+          '@type': 'SoftwareApplication',
+          position: idx + 1,
+          name: proj.title,
+          applicationCategory: proj.category,
+          operatingSystem: 'Cloud / Web Browser / Mobile',
+          description: proj.shortDescription,
+          url: proj.liveUrl || `${origin}/#work`,
+        })),
       },
     ],
   };
@@ -311,8 +484,14 @@ export const SEOHead: React.FC<{ meta: SectionSEOMetadata }> = ({ meta }) => {
       <meta name="title" content={meta.title} />
       <meta name="description" content={meta.description} />
       <meta name="keywords" content={meta.keywords.join(', ')} />
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       <link rel="canonical" href={canonicalUrl} />
+
+      {/* GEO Geotargeting Meta Tags */}
+      <meta name="geo.region" content="BD-13" />
+      <meta name="geo.placename" content="Dhaka, Global" />
+      <meta name="geo.position" content="23.8103;90.4125" />
+      <meta name="ICBM" content="23.8103, 90.4125" />
 
       {/* Open Graph / Facebook / LinkedIn */}
       <meta property="og:type" content="website" />
@@ -320,14 +499,18 @@ export const SEOHead: React.FC<{ meta: SectionSEOMetadata }> = ({ meta }) => {
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:url" content={canonicalUrl} />
-      <meta property="og:image" content={`${origin}/logo-mark.svg`} />
+      <meta property="og:image" content={`${origin}/og-image.svg`} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="DevCenterPoint Digital Products & Intelligent Systems" />
 
       {/* Twitter Cards */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@devcenterpoint" />
+      <meta name="twitter:creator" content="@devcenterpoint" />
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
-      <meta name="twitter:image" content={`${origin}/logo-mark.svg`} />
+      <meta name="twitter:image" content={`${origin}/og-image.svg`} />
 
       {/* Schema.org Structured Data */}
       <script type="application/ld+json">

@@ -209,7 +209,7 @@ export const TableOfContentsDropdown: React.FC<TableOfContentsDropdownProps> = (
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.96 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute right-0 sm:right-auto sm:left-0 mt-2.5 w-[320px] sm:w-[360px] max-h-[82vh] overflow-hidden rounded-2xl bg-white/95 dark:bg-[#121212]/95 backdrop-blur-xl border border-slate-200 dark:border-[#2a2a2a] shadow-2xl z-50 flex flex-col font-sans"
+            className="absolute right-0 sm:right-auto sm:left-0 mt-2.5 w-[calc(100vw-2rem)] max-w-[360px] sm:w-[360px] max-h-[82vh] overflow-hidden rounded-2xl bg-white/95 dark:bg-[#121212]/95 backdrop-blur-xl border border-slate-200 dark:border-[#2a2a2a] shadow-2xl z-50 flex flex-col font-sans"
             role="menu"
             aria-orientation="vertical"
           >

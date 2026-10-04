@@ -8,13 +8,59 @@
     --font-mono: 'JetBrains Mono', monospace;
   }
 
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     font-family: var(--font-sans);
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
   code, pre, .font-mono {
     font-family: var(--font-mono);
   }
+
+  /* Universal element containment to prevent horizontal blowouts */
+  img, svg, video, canvas, iframe {
+    max-width: 100%;
+  }
+
+  /* Prevent unwrapped long words and URLs from causing horizontal page overflow */
+  h1, h2, h3, h4, h5, h6, p, a, button, span, li {
+    overflow-wrap: break-word;
+  }
+
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* Optimize touch feedback */
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Hide scrollbar utility for clean horizontal swipe rails */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Custom Scrollbar for Dark & Light Mode */

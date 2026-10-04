@@ -244,7 +244,7 @@ export const ProcessSection: React.FC = () => {
               {/* Scrollable Horizontal Rail */}
               <div
                 ref={timelineRailRef}
-                className="overflow-x-auto pb-4 pt-3 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700 -mx-2 px-2"
+                className="overflow-x-auto pb-4 pt-3 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700 -mx-2 px-2 overscroll-x-contain touch-pan-x"
                 style={{ scrollbarWidth: 'thin' }}
               >
                 <div className="relative min-w-[760px] lg:min-w-full">
@@ -365,7 +365,7 @@ export const ProcessSection: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.35, ease: [0.215, 0.61, 0.355, 1] }}
-                className="bg-white dark:bg-[#141414] rounded-[2.5rem] border border-slate-200 dark:border-[#252525] p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden"
+                className="bg-white dark:bg-[#141414] rounded-2xl sm:rounded-[2.5rem] border border-slate-200 dark:border-[#252525] p-4 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden"
               >
                 {/* Milestone Detail Header */}
                 <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-8 mb-8 border-b border-slate-200 dark:border-[#262626]">
@@ -407,7 +407,7 @@ export const ProcessSection: React.FC = () => {
                   </div>
 
                   {/* Impact KPI Card */}
-                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#1c1c1c] border border-slate-200 dark:border-[#2e2e2e] shrink-0 min-w-[240px]">
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#1c1c1c] border border-slate-200 dark:border-[#2e2e2e] w-full lg:w-auto shrink-0 min-w-0 lg:min-w-[240px]">
                     <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-gray-500 flex items-center gap-1.5 mb-1">
                       <Sparkles className="w-3.5 h-3.5 text-blue-500" />
                       {activeMilestone.impactKPI.label}

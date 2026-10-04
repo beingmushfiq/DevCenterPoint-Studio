@@ -254,7 +254,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose();
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 lg:p-8 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
     >
       {/* Modal Card Container */}
       <motion.div
@@ -262,7 +262,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
         transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-        className="relative w-full max-w-5xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-[#262626] rounded-3xl sm:rounded-[2.5rem] shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col text-slate-900 dark:text-white font-sans transition-colors duration-300"
+        className="relative w-full max-w-5xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-[#262626] rounded-2xl sm:rounded-[2.5rem] shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col text-slate-900 dark:text-white font-sans transition-colors duration-300"
       >
         
         {/* Top Header Bar */}
@@ -450,11 +450,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 dark:border-[#262626] pb-3">
+          <div className="flex items-center gap-1.5 sm:gap-2 border-b border-slate-200 dark:border-[#262626] pb-3 overflow-x-auto no-scrollbar sm:flex-wrap">
             <button
               type="button"
               onClick={() => handleTabChange('overview')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold shrink-0 whitespace-nowrap transition-all cursor-pointer ${
                 activeTab === 'overview'
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 font-black'
                   : 'bg-slate-100 dark:bg-[#1a1a1a] text-slate-600 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-[#252525]'
@@ -466,7 +466,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
             <button
               type="button"
               onClick={() => handleTabChange('challenges')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold shrink-0 whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'challenges'
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 font-black'
                   : 'bg-slate-100 dark:bg-[#1a1a1a] text-slate-600 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-[#252525]'
@@ -483,7 +483,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
             <button
               type="button"
               onClick={() => handleTabChange('stack')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold shrink-0 whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'stack'
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 font-black'
                   : 'bg-slate-100 dark:bg-[#1a1a1a] text-slate-600 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-[#252525]'
@@ -500,7 +500,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
             <button
               type="button"
               onClick={() => handleTabChange('outcomes')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold shrink-0 whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'outcomes'
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 font-black'
                   : 'bg-slate-100 dark:bg-[#1a1a1a] text-slate-600 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-[#252525]'

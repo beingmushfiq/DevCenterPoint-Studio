@@ -355,7 +355,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4">
+      <div className="fixed inset-0 z-50 flex items-start justify-center pt-14 sm:pt-28 px-3 sm:px-4">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -371,7 +371,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -10 }}
           transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-2xl rounded-3xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-[#282828] shadow-2xl overflow-hidden z-10"
+          className="relative w-full max-w-2xl rounded-2xl sm:rounded-3xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-[#282828] shadow-2xl overflow-hidden z-10"
         >
           {/* Search Header */}
           <div className="flex items-center px-4 py-3.5 border-b border-slate-200 dark:border-[#242424] gap-3">
@@ -383,7 +383,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search services, case studies, architecture, or FAQs..."
-              className="w-full bg-transparent text-sm sm:text-base font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 outline-none"
+              className="w-full bg-transparent text-base sm:text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 outline-none"
             />
             {query && (
               <button

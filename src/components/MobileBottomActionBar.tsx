@@ -43,7 +43,7 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
   return (
     <nav
       aria-label="Mobile Quick Actions"
-      className="md:hidden fixed bottom-3 inset-x-3 z-40 pointer-events-none animate-in slide-in-from-bottom-3 duration-300"
+      className="md:hidden fixed bottom-[max(0.75rem,env(safe-area-inset-bottom,0.75rem))] inset-x-3 z-40 pointer-events-none animate-in slide-in-from-bottom-3 duration-300"
     >
       <div className="max-w-md mx-auto pointer-events-auto p-1.5 rounded-full bg-slate-950/92 dark:bg-[#121212]/95 backdrop-blur-xl border border-slate-800/80 dark:border-[#2a2a2a] shadow-2xl flex items-center justify-between gap-1.5 text-white">
         

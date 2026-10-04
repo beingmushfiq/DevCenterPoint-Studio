@@ -508,7 +508,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
             {/* Form Builder (7 cols) */}
             <form
               onSubmit={handleSubmit}
-              className="lg:col-span-7 liquid-glass rounded-3xl p-5 sm:p-8 space-y-6 shadow-xl ring-1 ring-black/5 dark:ring-white/10"
+              className="lg:col-span-7 liquid-glass rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-6 shadow-xl ring-1 ring-black/5 dark:ring-white/10"
             >
               {/* Step 1: Product Focus */}
               <div>

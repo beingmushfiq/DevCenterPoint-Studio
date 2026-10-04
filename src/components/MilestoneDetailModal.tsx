@@ -95,13 +95,13 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose();
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 lg:p-8 bg-black/75 dark:bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-5 lg:p-8 bg-black/75 dark:bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="milestone-modal-title"
     >
       {/* Modal Card */}
-      <div className="relative w-full max-w-4xl bg-white dark:bg-[#151515] border border-slate-200 dark:border-[#2a2a2a] rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden my-4 sm:my-8 max-h-[92vh] flex flex-col text-slate-900 dark:text-white font-sans transition-colors duration-300">
+      <div className="relative w-full max-w-4xl bg-white dark:bg-[#151515] border border-slate-200 dark:border-[#2a2a2a] rounded-2xl sm:rounded-[2.5rem] shadow-2xl overflow-hidden my-4 sm:my-8 max-h-[92vh] flex flex-col text-slate-900 dark:text-white font-sans transition-colors duration-300">
         
         {/* Top Header Bar */}
         <div className="flex flex-wrap items-center justify-between p-4 sm:p-6 border-b border-slate-200 dark:border-[#242424] bg-slate-50 dark:bg-[#121212] gap-3">
@@ -154,7 +154,7 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="p-5 sm:p-8 overflow-y-auto space-y-8 flex-1 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
+        <div className="p-4 sm:p-8 overflow-y-auto space-y-6 sm:space-y-8 flex-1 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
           
           {/* Milestone Title & Summary */}
           <div>

@@ -230,7 +230,7 @@ export const NewsletterSignup: React.FC<NewsletterSignupProps> = ({
                             autoComplete="email"
                             maxLength={150}
                             required
-                            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-[#121212] border border-slate-300 dark:border-[#383838] focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 text-xs font-medium transition-all outline-none"
+                            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-[#121212] border border-slate-300 dark:border-[#383838] focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 text-base sm:text-xs font-medium transition-all outline-none"
                           />
                         </div>
                       </div>

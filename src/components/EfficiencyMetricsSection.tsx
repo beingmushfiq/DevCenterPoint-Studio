@@ -191,14 +191,14 @@ export const EfficiencyMetricsSection: React.FC = () => {
         </div>
 
         {/* Interactive Visualization Dashboard */}
-        <div className="bg-white dark:bg-[#1a1a1a] rounded-[2.5rem] border border-slate-200 dark:border-[#2a2a2a] p-6 md:p-8 shadow-2xl relative overflow-hidden font-sans">
+        <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl sm:rounded-[2.5rem] border border-slate-200 dark:border-[#2a2a2a] p-4 sm:p-6 md:p-8 shadow-2xl relative overflow-hidden font-sans">
           {/* Controls Bar: View Selector & Timeframe Filter */}
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-200 dark:border-[#2a2a2a]">
             {/* View Mode Tabs */}
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar sm:flex-wrap pb-1">
               <button
                 onClick={() => setActiveView('velocity')}
-                className={`px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                className={`px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-wider shrink-0 whitespace-nowrap transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                   activeView === 'velocity'
                     ? 'bg-blue-600 text-white border border-blue-400 shadow-md shadow-blue-600/30'
                     : 'bg-slate-100 dark:bg-[#111111] text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400'
@@ -210,7 +210,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
               <button
                 onClick={() => setActiveView('latency')}
-                className={`px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                className={`px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-wider shrink-0 whitespace-nowrap transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                   activeView === 'latency'
                     ? 'bg-blue-600 text-white border border-blue-400 shadow-md shadow-blue-600/30'
                     : 'bg-slate-100 dark:bg-[#111111] text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400'
@@ -222,7 +222,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
               <button
                 onClick={() => setActiveView('quality')}
-                className={`px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                className={`px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-wider shrink-0 whitespace-nowrap transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                   activeView === 'quality'
                     ? 'bg-blue-600 text-white border border-blue-400 shadow-md shadow-blue-600/30'
                     : 'bg-slate-100 dark:bg-[#111111] text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400'
@@ -234,7 +234,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
               <button
                 onClick={() => setActiveView('radar')}
-                className={`px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                className={`px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-wider shrink-0 whitespace-nowrap transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                   activeView === 'radar'
                     ? 'bg-blue-600 text-white border border-blue-400 shadow-md shadow-blue-600/30'
                     : 'bg-slate-100 dark:bg-[#111111] text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400'

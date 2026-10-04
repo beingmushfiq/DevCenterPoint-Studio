@@ -413,7 +413,7 @@ export const DigitalSystemMap: React.FC = () => {
     <div className="relative w-full rounded-3xl liquid-glass shadow-2xl overflow-hidden transition-all duration-300 ring-1 ring-black/5 dark:ring-white/10">
       
       {/* Top Header Banner */}
-      <div className="px-6 py-4 bg-slate-50/80 dark:bg-white/5 border-b border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 backdrop-blur-md">
+      <div className="px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50/80 dark:bg-white/5 border-b border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 backdrop-blur-md">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
           <span className="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200">
@@ -431,10 +431,10 @@ export const DigitalSystemMap: React.FC = () => {
         </div>
       </div>
 
-      <div className="p-6 sm:p-8">
+      <div className="p-3.5 sm:p-6 lg:p-8">
         
         {/* Solution Tabs Selector */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2.5 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-7 gap-2 sm:gap-2.5 mb-6 sm:mb-8">
           {SOLUTIONS.map((item) => {
             const isSelected = item.id === activeSolutionId;
             const Icon = item.icon;
@@ -563,7 +563,7 @@ export const DigitalSystemMap: React.FC = () => {
               )}
 
               {/* Dynamic Stats Row inside the Mockup */}
-              <div className="grid grid-cols-3 gap-3 mb-5">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-5">
                 {activeSolution.stats.map((stat, sIdx) => (
                   <div
                     key={sIdx}
