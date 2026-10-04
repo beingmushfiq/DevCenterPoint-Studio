@@ -17,6 +17,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../context/CmsContext';
 
 const iconMap: Record<string, React.ElementType> = {
   Code2: Code,
@@ -30,15 +31,36 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export const CapabilitiesSection: React.FC = () => {
-  const [selectedId, setSelectedId] = useState<string>(CAPABILITIES_DATA[0].id);
+  const cms = useCms();
+
+  const capabilities = (cms.capabilities && cms.capabilities.length > 0)
+    ? cms.capabilities.map((c: any, idx: number) => ({
+        id: c.slug || String(c.id),
+        number: String(idx + 1).padStart(2, '0'),
+        title: c.name,
+        tagline: c.tagline || '',
+        description: c.description,
+        keyOutputs: Array.isArray(c.key_deliverables) ? c.key_deliverables : (c.keyOutputs || []),
+        techStack: Array.isArray(c.technologies) ? c.technologies : (c.techStack || []),
+        architectureHighlights: Array.isArray(c.architecture_points) ? c.architecture_points : (c.architectureHighlights || []),
+        codeSample: c.code_snippet || c.codeSample,
+        iconName: c.icon_name || c.iconName || 'Code2',
+      }))
+    : CAPABILITIES_DATA;
+
+  const [selectedId, setSelectedId] = useState<string>(capabilities[0]?.id || '01');
   const [showCode, setShowCode] = useState<boolean>(false);
 
-  const activeCapability = CAPABILITIES_DATA.find((c) => c.id === selectedId) || CAPABILITIES_DATA[0];
+  const activeCapability = capabilities.find((c) => c.id === selectedId) || capabilities[0];
   const ActiveIcon = iconMap[activeCapability.iconName] || Code;
 
   return (
-    <section id="capabilities" className="py-20 sm:py-28 bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-neutral-100 border-t border-slate-200 dark:border-neutral-800 relative transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="capabilities" className="py-24 sm:py-32 bg-white dark:bg-[#07090e] text-slate-900 dark:text-neutral-100 border-t border-slate-200/70 dark:border-white/5 relative overflow-hidden transition-colors duration-500">
+      {/* Ambient Floating Glow Orbs */}
+      <div className="absolute top-1/4 left-10 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/10 dark:bg-purple-600/15 blur-[140px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <motion.div
@@ -46,11 +68,11 @@ export const CapabilitiesSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-8 border-b border-slate-200/80 dark:border-neutral-800/80 gap-6"
+          className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-8 border-b border-slate-200/80 dark:border-white/10 gap-6"
         >
           <div>
-            <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1.5 rounded-full border border-blue-200 dark:border-blue-900/60 mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400"></span>
+            <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 liquid-glass px-4 py-1.5 rounded-full mb-3 shadow-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse"></span>
               02 — Core Engineering Disciplines
             </div>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
@@ -65,7 +87,7 @@ export const CapabilitiesSection: React.FC = () => {
         {/* Mobile Horizontal Snap-Scroll Tabs (<lg) */}
         <div className="lg:hidden mb-6">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4">
-            {CAPABILITIES_DATA.map((item) => {
+            {capabilities.map((item) => {
               const isSelected = item.id === selectedId;
               const IconComp = iconMap[item.iconName] || Code;
 
@@ -79,8 +101,8 @@ export const CapabilitiesSection: React.FC = () => {
                   }}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold shrink-0 transition-all border cursor-pointer ${
                     isSelected
-                      ? 'bg-blue-600 text-white border-blue-500 shadow-sm shadow-blue-600/30'
-                      : 'bg-slate-50 dark:bg-neutral-900 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800'
+                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-md shadow-blue-500/25'
+                      : 'liquid-glass text-slate-700 dark:text-neutral-300'
                   }`}
                 >
                   <IconComp className="w-3.5 h-3.5" />
@@ -96,7 +118,7 @@ export const CapabilitiesSection: React.FC = () => {
           
           {/* Desktop Vertical Category Index */}
           <div className="hidden lg:block lg:col-span-5 space-y-2.5">
-            {CAPABILITIES_DATA.map((item) => {
+            {capabilities.map((item) => {
               const isSelected = item.id === selectedId;
               const IconComp = iconMap[item.iconName] || Code;
 
@@ -108,10 +130,10 @@ export const CapabilitiesSection: React.FC = () => {
                     setSelectedId(item.id);
                     setShowCode(false);
                   }}
-                  className={`w-full text-left p-4 rounded-2xl transition-all duration-200 flex items-center justify-between group border cursor-pointer ${
+                  className={`w-full text-left p-4 rounded-2xl transition-all duration-300 flex items-center justify-between group border cursor-pointer ${
                     isSelected
-                      ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-600/20 translate-x-1 font-bold'
-                      : 'bg-slate-50/70 dark:bg-neutral-900/60 text-slate-800 dark:text-neutral-200 border-slate-200/80 dark:border-neutral-800 hover:border-slate-300 dark:hover:border-neutral-700 hover:bg-slate-100 dark:hover:bg-neutral-800/80'
+                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-lg shadow-blue-500/25 translate-x-1.5 font-bold ring-1 ring-white/20'
+                      : 'liquid-glass text-slate-800 dark:text-neutral-200 hover:border-blue-500/30 hover:bg-white/80 dark:hover:bg-white/10'
                   }`}
                 >
                   <div className="flex items-center gap-3.5">
@@ -138,7 +160,7 @@ export const CapabilitiesSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-30px' }}
             transition={{ duration: 0.55 }}
-            className="lg:col-span-7 bg-slate-50/70 dark:bg-neutral-900/60 rounded-3xl border border-slate-200 dark:border-neutral-800 p-6 sm:p-8 shadow-sm relative overflow-hidden"
+            className="lg:col-span-7 liquid-glass rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden ring-1 ring-black/5 dark:ring-white/10"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -150,7 +172,7 @@ export const CapabilitiesSection: React.FC = () => {
                 className="space-y-6"
               >
                 {/* Header */}
-                <div className="flex items-center justify-between pb-5 border-b border-slate-200/80 dark:border-neutral-800/80">
+                <div className="flex items-center justify-between pb-5 border-b border-slate-200/80 dark:border-white/10">
                   <div className="flex items-center gap-3">
                     <div className="p-3 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/60">
                       <ActiveIcon className="w-5 h-5" />
@@ -181,7 +203,7 @@ export const CapabilitiesSection: React.FC = () => {
 
                 {/* Outputs & Architectural Benchmarks */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-white dark:bg-neutral-950 p-4 sm:p-5 rounded-2xl border border-slate-200/90 dark:border-neutral-800">
+                  <div className="liquid-glass p-4 sm:p-5 rounded-2xl border border-white/60 dark:border-white/10 shadow-xs">
                     <h4 className="text-[10px] font-mono font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-3">
                       Delivered Outputs
                     </h4>
@@ -195,7 +217,7 @@ export const CapabilitiesSection: React.FC = () => {
                     </ul>
                   </div>
 
-                  <div className="bg-white dark:bg-neutral-950 p-4 sm:p-5 rounded-2xl border border-slate-200/90 dark:border-neutral-800">
+                  <div className="liquid-glass p-4 sm:p-5 rounded-2xl border border-white/60 dark:border-white/10 shadow-xs">
                     <h4 className="text-[10px] font-mono font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-3">
                       Architectural Standards
                     </h4>

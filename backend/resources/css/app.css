@@ -158,3 +158,147 @@ html.light .animate-shimmer::after {
     rgba(0, 0, 0, 0)
   );
 }
+
+/* ==========================================================================
+   Liquid Glass & Light Precision System
+   ========================================================================== */
+
+@keyframes floatOrb1 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(60px, -40px) scale(1.1);
+  }
+  66% {
+    transform: translate(-40px, 50px) scale(0.95);
+  }
+}
+
+@keyframes floatOrb2 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-50px, 40px) scale(1.05);
+  }
+  66% {
+    transform: translate(40px, -30px) scale(1.15);
+  }
+}
+
+@keyframes floatOrb3 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(30px, 60px) scale(1.08);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 15px rgba(46, 74, 249, 0.4));
+  }
+  50% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 32px rgba(46, 74, 249, 0.8));
+  }
+}
+
+.animate-float-orb-1 {
+  animation: floatOrb1 18s ease-in-out infinite;
+}
+
+.animate-float-orb-2 {
+  animation: floatOrb2 22s ease-in-out infinite;
+}
+
+.animate-float-orb-3 {
+  animation: floatOrb3 26s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Adaptive Liquid Glass Panel */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+
+html.dark .liquid-glass,
+body.dark .liquid-glass {
+  background: rgba(10, 14, 23, 0.74);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+/* Floating Capsule Navigation Glass */
+.glass-pill-nav {
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+}
+
+html.dark .glass-pill-nav,
+body.dark .glass-pill-nav {
+  background: rgba(8, 12, 20, 0.84);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
+/* Signature Gradient Text */
+.text-gradient-signature {
+  background: linear-gradient(135deg, #2E4AF9 0%, #8B5CF6 50%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.dark .text-gradient-signature {
+  background: linear-gradient(135deg, #3B82F6 0%, #A855F7 50%, #22D3EE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Light Mode Soft Glow Canvas */
+.canvas-light-glow {
+  background-color: #fafbfc;
+  background-image: 
+    radial-gradient(at 10% 15%, rgba(46, 74, 249, 0.09) 0px, transparent 55%),
+    radial-gradient(at 88% 20%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 65%, rgba(6, 182, 212, 0.07) 0px, transparent 55%),
+    radial-gradient(at 15% 85%, rgba(46, 74, 249, 0.06) 0px, transparent 50%);
+}
+
+/* Dark Mode Mission Control Canvas */
+html.dark .canvas-dark-glow,
+body.dark .canvas-dark-glow {
+  background-color: #07090e;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(46, 74, 249, 0.16) 0px, transparent 55%),
+    radial-gradient(at 85% 20%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 65%, rgba(6, 182, 212, 0.10) 0px, transparent 55%),
+    radial-gradient(at 20% 85%, rgba(46, 74, 249, 0.12) 0px, transparent 50%);
+}
+
+/* Glowing Border Rim */
+.border-glow-blue {
+  box-shadow: 0 0 25px -4px rgba(46, 74, 249, 0.35);
+}
+
+html.dark .border-glow-blue {
+  box-shadow: 0 0 35px -2px rgba(46, 74, 249, 0.5);
+}
+

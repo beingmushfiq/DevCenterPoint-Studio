@@ -24,6 +24,7 @@ import { BackToTop } from '../../Components/BackToTop';
 import { GlobalLoadingScreen } from '../../Components/GlobalLoadingScreen';
 import { ClientDemoSandboxModal } from '../../Components/ClientDemoSandboxModal';
 import { MobileBottomActionBar } from '../../Components/MobileBottomActionBar';
+import { TestimonialsSection } from '../../Components/TestimonialsSection';
 
 interface ScrollRevealSectionProps {
   children: React.ReactNode;
@@ -124,6 +125,11 @@ export default function Home(props: CmsData) {
                 {/* Selected Work Archive with Drill-down Case Study Inspector */}
                 <ScrollRevealSection>
                   <SelectedWorkSection />
+                </ScrollRevealSection>
+
+                {/* Verified Enterprise Impact & Executive Testimonials */}
+                <ScrollRevealSection>
+                  <TestimonialsSection />
                 </ScrollRevealSection>
 
                 {/* Engineering Philosophy: 5-Layer System Architecture Diagram */}

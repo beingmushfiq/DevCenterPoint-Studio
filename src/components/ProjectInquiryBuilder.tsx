@@ -384,20 +384,24 @@ export const ProjectInquiryBuilder: React.FC = () => {
     <section
       id="contact"
       aria-label="Project Collaboration & Consultation"
-      className="py-16 sm:py-24 bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-neutral-100 border-t border-slate-200 dark:border-neutral-800 relative transition-colors duration-300"
+      className="py-24 sm:py-32 bg-white dark:bg-[#07090e] text-slate-900 dark:text-neutral-100 border-t border-slate-200/70 dark:border-white/5 relative overflow-hidden transition-colors duration-500"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Floating Ambient Glow Orbs */}
+      <div className="absolute top-1/4 right-10 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-10 left-10 w-96 h-96 bg-purple-500/10 dark:bg-purple-600/15 blur-[140px] rounded-full pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-10">
-          <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1.5 rounded-full border border-blue-200 dark:border-blue-900/60 mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
+        <div className="max-w-3xl mb-12">
+          <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 liquid-glass px-4 py-1.5 rounded-full mb-3 shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse" />
             <span>08 — Project Collaboration</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
             Have a product worth building? <br className="hidden sm:inline" />
-            <span className="text-blue-600 dark:text-blue-400">Let's engineer the roadmap.</span>
+            <span className="text-gradient-signature">Let's engineer the roadmap.</span>
           </h2>
 
           <p className="text-xs sm:text-base text-slate-600 dark:text-neutral-400 font-normal leading-relaxed">
@@ -504,7 +508,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
             {/* Form Builder (7 cols) */}
             <form
               onSubmit={handleSubmit}
-              className="lg:col-span-7 bg-slate-50/70 dark:bg-neutral-900/60 rounded-3xl border border-slate-200 dark:border-neutral-800 p-5 sm:p-8 space-y-6 shadow-sm"
+              className="lg:col-span-7 liquid-glass rounded-3xl p-5 sm:p-8 space-y-6 shadow-xl ring-1 ring-black/5 dark:ring-white/10"
             >
               {/* Step 1: Product Focus */}
               <div>
@@ -813,7 +817,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer min-h-13"
+                className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/35 flex items-center justify-center gap-2 cursor-pointer min-h-13 ring-1 ring-white/20 active:scale-[0.99]"
               >
                 {isSubmitting ? (
                   <>
@@ -845,7 +849,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
             <div className="lg:col-span-5 space-y-4">
               
               {/* Dynamic Scope & Squad Summary */}
-              <div className="p-5 sm:p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/70 dark:border-blue-900/40 space-y-3.5">
+              <div className="p-5 sm:p-6 rounded-3xl liquid-glass border border-blue-500/30 space-y-3.5 shadow-xl ring-1 ring-black/5 dark:ring-white/10">
                 <div className="flex items-center justify-between">
                   <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5" />

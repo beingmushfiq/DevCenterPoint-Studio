@@ -20,6 +20,7 @@ import {
   Key
 } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../context/CmsContext';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -48,9 +49,43 @@ const cardVariants: Variants = {
 };
 
 export const SelectedWorkSection: React.FC = () => {
+  const cms = useCms();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [copiedProtoId, setCopiedProtoId] = useState<string | null>(null);
+
+  const projects: Project[] = (cms.projects && cms.projects.length > 0)
+    ? cms.projects.map((p: any, idx: number) => ({
+        id: p.slug || String(p.id),
+        number: String(idx + 1).padStart(2, '0'),
+        title: p.title,
+        subtitle: p.subtitle || '',
+        category: p.category || 'Business Systems',
+        industry: p.industry || 'Technology',
+        year: p.year || '2026',
+        shortDescription: p.summary || p.shortDescription || '',
+        context: p.overview || p.context || '',
+        problem: p.problem || '',
+        strategy: p.solution || p.strategy || '',
+        designHighlights: Array.isArray(p.design_highlights) ? p.design_highlights : (p.designHighlights || []),
+        engineeringHighlights: Array.isArray(p.engineering_highlights) ? p.engineering_highlights : (p.engineeringHighlights || []),
+        deliveredFunctionality: Array.isArray(p.deliverables) ? p.deliverables : (p.deliveredFunctionality || []),
+        techStack: Array.isArray(p.stack) ? p.stack : (p.techStack || []),
+        architectureOverview: p.architecture || p.architectureOverview || '',
+        badgeText: p.badge_text || p.badgeText || 'Enterprise Production',
+        accentColor: p.accent_color || p.accentColor || '#2E4AF9',
+        liveUrl: p.live_url || p.liveUrl,
+        adminUrl: p.admin_url || p.adminUrl,
+        demoCredentials: (p.credentials_username || p.demoCredentials) ? {
+          username: p.credentials_username || p.demoCredentials?.username,
+          password: p.credentials_password || p.demoCredentials?.password,
+          role: Array.isArray(p.credentials_roles) ? p.credentials_roles[0] : (p.demoCredentials?.role || 'Admin'),
+          notes: p.demoCredentials?.notes,
+        } : undefined,
+        githubUrl: p.github_url || p.githubUrl,
+        isRealWorldApp: p.is_real_world !== undefined ? Boolean(p.is_real_world) : (p.isRealWorldApp ?? true),
+      }))
+    : PROJECTS_DATA;
 
   const categories = [
     'All',
@@ -61,7 +96,7 @@ export const SelectedWorkSection: React.FC = () => {
     'Mobile & Infrastructure'
   ];
 
-  const filteredProjects = PROJECTS_DATA.filter((p) => {
+  const filteredProjects = projects.filter((p) => {
     if (selectedCategory === 'All') return true;
     if (selectedCategory === 'Business Systems') return p.category === 'Business Systems';
     if (selectedCategory === 'Commerce Infrastructure') return p.category === 'Commerce Infrastructure';
@@ -128,10 +163,10 @@ export const SelectedWorkSection: React.FC = () => {
                     soundEngine.playTap();
                     setSelectedCategory(cat);
                   }}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all duration-200 border cursor-pointer ${
+                  className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all duration-300 border cursor-pointer ${
                     isSelected
-                      ? 'bg-blue-600 text-white border-blue-500 shadow-sm shadow-blue-600/30 font-bold'
-                      : 'bg-slate-50 dark:bg-neutral-900 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800 hover:border-slate-300 dark:hover:border-neutral-700'
+                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-md shadow-blue-500/25 font-bold'
+                      : 'liquid-glass text-slate-700 dark:text-neutral-300 hover:text-blue-600 dark:hover:text-blue-400'
                   }`}
                 >
                   {cat}
@@ -162,7 +197,7 @@ export const SelectedWorkSection: React.FC = () => {
                     layout
                     variants={cardVariants}
                     exit={{ opacity: 0, scale: 0.96 }}
-                    className="col-span-1 md:col-span-2 group rounded-3xl bg-slate-50/70 dark:bg-neutral-900/60 border border-slate-200 dark:border-neutral-800 hover:border-blue-500/60 dark:hover:border-blue-500/60 transition-all duration-300 p-6 sm:p-9 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 relative overflow-hidden"
+                    className="col-span-1 md:col-span-2 group rounded-3xl liquid-glass hover:border-blue-500/60 transition-all duration-500 p-6 sm:p-9 shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 relative overflow-hidden ring-1 ring-black/5 dark:ring-white/10"
                   >
                     {/* Top Meta Bar */}
                     <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200/80 dark:border-neutral-800/80">
@@ -321,7 +356,7 @@ export const SelectedWorkSection: React.FC = () => {
                     soundEngine.playModalOpen();
                     setActiveProject(project);
                   }}
-                  className="group cursor-pointer rounded-3xl bg-slate-50/60 dark:bg-neutral-900/50 border border-slate-200/90 dark:border-neutral-800/80 hover:border-blue-500/50 dark:hover:border-blue-500/50 transition-all duration-300 p-6 sm:p-7 flex flex-col justify-between shadow-xs hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-1 relative overflow-hidden"
+                  className="group cursor-pointer rounded-3xl liquid-glass hover:border-blue-500/50 transition-all duration-500 p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 relative overflow-hidden ring-1 ring-black/5 dark:ring-white/5"
                 >
                   {/* Card Top Meta */}
                   <div>
@@ -419,7 +454,7 @@ export const SelectedWorkSection: React.FC = () => {
               return (
                 <div
                   key={proto.id}
-                  className="group rounded-2xl bg-slate-50/70 dark:bg-neutral-900/50 border border-slate-200/90 dark:border-neutral-800/80 hover:border-blue-500/50 dark:hover:border-blue-500/50 p-5 flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md transition-all duration-200"
+                  className="group rounded-2xl liquid-glass hover:border-blue-500/50 p-5 flex flex-col justify-between space-y-4 shadow-sm hover:shadow-lg transition-all duration-300 ring-1 ring-black/5 dark:ring-white/5"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">

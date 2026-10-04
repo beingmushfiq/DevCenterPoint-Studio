@@ -89,125 +89,161 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-200 ${
-          scrolled
-            ? 'py-3 bg-white/90 dark:bg-[#0c0c0c]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-[#222222] shadow-xs'
-            : 'py-5 bg-transparent'
+        className={`fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-6xl rounded-full glass-pill-nav px-3.5 sm:px-5 py-2 transition-all duration-300 ${
+          scrolled ? 'shadow-2xl shadow-blue-900/10 dark:shadow-black/70 scale-[0.99]' : 'shadow-lg shadow-slate-200/40 dark:shadow-none'
         }`}
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4 h-11">
-            
-            {/* Left: Brand Emblem & Clean Wordmark */}
-            <div className="flex items-center gap-3">
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  soundEngine.playClick();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="flex items-center group transition-transform active:scale-98"
-                aria-label="DevCenterPoint Home"
-              >
-                <DevCenterPointLogo variant="horizontal" size="md" showTagline={false} />
-              </a>
-            </div>
+        <div className="flex items-center justify-between gap-3 h-10">
+          {/* Left: Brand Emblem & Clean Wordmark */}
+          <div className="flex items-center gap-3">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                soundEngine.playClick();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="flex items-center group transition-transform active:scale-98"
+              aria-label="DevCenterPoint Home"
+            >
+              <DevCenterPointLogo variant="horizontal" size="sm" showTagline={false} />
+            </a>
+          </div>
 
-            {/* Center: 4 Calm Editorial Navigation Links (Desktop) */}
-            <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 dark:bg-[#181818]/80 p-1 rounded-full border border-slate-200/80 dark:border-[#262626] backdrop-blur-md text-xs font-semibold">
-              <button
-                type="button"
-                onClick={() => handleNavClick('#work')}
-                className={`px-4 py-1.5 rounded-full transition-all cursor-pointer ${
-                  activeSection === 'work'
-                    ? 'bg-white dark:bg-[#252525] text-slate-950 dark:text-white font-bold shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
-                }`}
-              >
-                Work
-              </button>
+          {/* Center: Editorial Navigation Links (Desktop) */}
+          <nav className="hidden lg:flex items-center gap-1 bg-slate-100/70 dark:bg-black/30 p-1 rounded-full border border-slate-200/60 dark:border-white/5 backdrop-blur-md text-xs font-semibold">
+            <button
+              type="button"
+              onClick={() => handleNavClick('#work')}
+              className={`px-3.5 py-1 rounded-full transition-all cursor-pointer ${
+                activeSection === 'work'
+                  ? 'bg-white dark:bg-white/10 text-blue-600 dark:text-white font-bold shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+              }`}
+            >
+              Work
+            </button>
 
-              <button
-                type="button"
-                onClick={() => handleNavClick('#capabilities')}
-                className={`px-4 py-1.5 rounded-full transition-all cursor-pointer ${
-                  activeSection === 'capabilities'
-                    ? 'bg-white dark:bg-[#252525] text-slate-950 dark:text-white font-bold shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
-                }`}
-              >
-                Services
-              </button>
+            <button
+              type="button"
+              onClick={() => handleNavClick('#capabilities')}
+              className={`px-3.5 py-1 rounded-full transition-all cursor-pointer ${
+                activeSection === 'capabilities'
+                  ? 'bg-white dark:bg-white/10 text-blue-600 dark:text-white font-bold shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+              }`}
+            >
+              Capabilities
+            </button>
 
-              <button
-                type="button"
-                onClick={() => handleNavClick('#process')}
-                className={`px-4 py-1.5 rounded-full transition-all cursor-pointer ${
-                  activeSection === 'process'
-                    ? 'bg-white dark:bg-[#252525] text-slate-950 dark:text-white font-bold shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
-                }`}
-              >
-                Process
-              </button>
+            <button
+              type="button"
+              onClick={() => handleNavClick('#philosophy')}
+              className={`px-3.5 py-1 rounded-full transition-all cursor-pointer ${
+                activeSection === 'philosophy'
+                  ? 'bg-white dark:bg-white/10 text-blue-600 dark:text-white font-bold shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+              }`}
+            >
+              Architecture
+            </button>
 
-              <button
-                type="button"
-                onClick={() => handleNavClick('#faq')}
-                className={`px-4 py-1.5 rounded-full transition-all cursor-pointer ${
-                  activeSection === 'faq'
-                    ? 'bg-white dark:bg-[#252525] text-slate-950 dark:text-white font-bold shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
-                }`}
-              >
-                FAQ
-              </button>
-            </nav>
+            <button
+              type="button"
+              onClick={() => handleNavClick('#testimonials')}
+              className={`px-3.5 py-1 rounded-full transition-all cursor-pointer ${
+                activeSection === 'testimonials'
+                  ? 'bg-white dark:bg-white/10 text-blue-600 dark:text-white font-bold shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+              }`}
+            >
+              Proof
+            </button>
 
-            {/* Right: Primary CTA & Studio Menu Drawer Trigger */}
-            <div className="flex items-center gap-2.5">
-              {/* Spotlight Search (⌘K) - Minimal Icon */}
-              <button
-                type="button"
-                onClick={() => {
-                  soundEngine.playClick();
-                  setIsCommandOpen(true);
-                }}
-                className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1a1a1a] transition-colors cursor-pointer text-xs"
-                title="Search site (⌘K)"
-              >
-                <Search className="w-3.5 h-3.5" />
-                <kbd className="text-[10px] font-mono opacity-60">⌘K</kbd>
-              </button>
+            <button
+              type="button"
+              onClick={() => handleNavClick('#about')}
+              className={`px-3.5 py-1 rounded-full transition-all cursor-pointer ${
+                activeSection === 'about'
+                  ? 'bg-white dark:bg-white/10 text-blue-600 dark:text-white font-bold shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+              }`}
+            >
+              Team
+            </button>
+          </nav>
 
-              {/* Primary Start a Project Button */}
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick('#contact');
-                }}
-                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer"
-              >
-                <span>Start a Project</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
-
-              {/* Minimal Menu Trigger [ ☰ ] */}
+          {/* Right: Actions & Primary CTA */}
+          <div className="flex items-center gap-2">
+            {/* Try Live Demos Pill */}
+            {onOpenSandbox && (
               <button
                 type="button"
                 onClick={() => {
-                  soundEngine.playMenuToggle(!menuOpen);
-                  setMenuOpen(!menuOpen);
+                  soundEngine.playTap();
+                  onOpenSandbox();
                 }}
-                className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-[#1a1a1a] dark:hover:bg-[#262626] border border-slate-200/80 dark:border-[#2e2e2e] text-slate-700 dark:text-slate-300 transition-colors cursor-pointer flex items-center justify-center"
-                aria-label="Toggle Studio Menu"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 text-xs font-bold transition-all active:scale-95 cursor-pointer"
+                title="Launch Live Client Sandbox"
               >
-                {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Live Demos</span>
               </button>
-            </div>
+            )}
 
+            {/* Spotlight Search (⌘K) */}
+            <button
+              type="button"
+              onClick={() => {
+                soundEngine.playClick();
+                setIsCommandOpen(true);
+              }}
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer text-xs"
+              title="Search site (⌘K)"
+            >
+              <Search className="w-3.5 h-3.5" />
+              <kbd className="text-[10px] font-mono opacity-60">⌘K</kbd>
+            </button>
+
+            {/* Sound FX Toggle Button */}
+            <button
+              type="button"
+              onClick={handleToggleSound}
+              className="p-1.5 rounded-full text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer"
+              title={isMuted ? 'Unmute Sound Effects' : 'Mute Sound Effects'}
+              aria-label="Toggle Sound Effects"
+            >
+              {isMuted ? <VolumeX className="w-3.5 h-3.5 text-slate-400" /> : <Volume2 className="w-3.5 h-3.5 text-blue-500" />}
+            </button>
+
+            {/* Theme Toggle (Light / Dark) */}
+            <ThemeToggle />
+
+            {/* Primary Start a Project Button */}
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('#contact');
+              }}
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-linear-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-blue-600/25 active:scale-95 cursor-pointer"
+            >
+              <span>Start a Project</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+
+            {/* Minimal Menu Trigger for Mobile Drawer */}
+            <button
+              type="button"
+              onClick={() => {
+                soundEngine.playMenuToggle(!menuOpen);
+                setMenuOpen(!menuOpen);
+              }}
+              className="p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300 transition-colors cursor-pointer flex items-center justify-center lg:hidden"
+              aria-label="Toggle Studio Menu"
+            >
+              {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
           </div>
         </div>
       </header>

@@ -410,10 +410,10 @@ export const DigitalSystemMap: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full rounded-3xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-[#262626] shadow-xl overflow-hidden transition-all duration-300">
+    <div className="relative w-full rounded-3xl liquid-glass shadow-2xl overflow-hidden transition-all duration-300 ring-1 ring-black/5 dark:ring-white/10">
       
       {/* Top Header Banner */}
-      <div className="px-6 py-4 bg-slate-50 dark:bg-[#161616] border-b border-slate-200 dark:border-[#262626] flex flex-wrap items-center justify-between gap-3">
+      <div className="px-6 py-4 bg-slate-50/80 dark:bg-white/5 border-b border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 backdrop-blur-md">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
           <span className="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200">

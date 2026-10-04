@@ -8,9 +8,13 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] font-sans pt-16 pb-28 sm:pb-14 relative transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-slate-200 dark:border-[#2a2a2a]">
+    <footer className="bg-white/90 dark:bg-[#07090e] text-slate-900 dark:text-white border-t border-slate-200/70 dark:border-white/5 font-sans pt-20 pb-28 sm:pb-16 relative transition-colors duration-500 overflow-hidden">
+      {/* Floating Ambient Glow Orbs */}
+      <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-96 h-96 bg-blue-500/8 dark:bg-blue-600/12 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 right-1/3 translate-x-1/2 w-96 h-96 bg-purple-500/8 dark:bg-purple-600/12 blur-[150px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-slate-200/80 dark:border-white/10">
           {/* Brand Info & Founder */}
           <div className="md:col-span-4 space-y-4">
             <DevCenterPointLogo variant="horizontal" size="lg" showTagline={true} />

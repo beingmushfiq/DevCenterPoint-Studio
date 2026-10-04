@@ -13,12 +13,17 @@ class Inquiry extends Model
         'reference_number',
         'name',
         'email',
+        'phone',
         'company',
         'project_types',
         'budget_range',
         'timeline',
         'details',
         'status',
+        'lead_source',
+        'priority',
+        'estimated_value',
+        'target_close_date',
         'internal_notes',
         'ip_address',
         'user_agent',
@@ -26,5 +31,7 @@ class Inquiry extends Model
 
     protected $casts = [
         'project_types' => 'array',
+        'estimated_value' => 'decimal:2',
+        'target_close_date' => 'date',
     ];
 }

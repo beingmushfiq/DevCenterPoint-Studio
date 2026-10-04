@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../Context/CmsContext';
 
 interface SandboxApp {
   id: string;
@@ -179,6 +180,51 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
   isOpen,
   onClose
 }) => {
+  const cms = useCms();
+
+  const iconMap: Record<string, React.ElementType> = {
+    Globe,
+    Radio,
+    MapPin,
+    ShoppingCart,
+    Zap,
+    Heart,
+    Sparkles,
+    Layers,
+    Terminal,
+    Cpu,
+  };
+
+  const apps: SandboxApp[] = (cms.sandboxApps && cms.sandboxApps.length > 0)
+    ? cms.sandboxApps.map((dbApp: any) => {
+        const fallback = SANDBOX_APPS.find((a) => a.id === dbApp.slug);
+        return {
+          id: dbApp.slug || String(dbApp.id),
+          name: dbApp.name,
+          category: dbApp.category,
+          description: dbApp.description,
+          liveUrl: dbApp.live_url,
+          adminUrl: dbApp.admin_url || undefined,
+          badge: dbApp.badge,
+          accentColor: dbApp.accent_color?.startsWith('#')
+            ? dbApp.accent_color
+            : (fallback?.accentColor || '#2E4AF9'),
+          icon: iconMap[dbApp.icon_name] || fallback?.icon || Globe,
+          credentials: (dbApp.credentials_username || fallback?.credentials) ? {
+            username: dbApp.credentials_username || fallback?.credentials?.username || 'demo_user',
+            password: dbApp.credentials_password || fallback?.credentials?.password || 'Password123!',
+            roles: Array.isArray(dbApp.roles) && dbApp.roles.length > 0
+              ? dbApp.roles
+              : (fallback?.credentials?.roles || ['Client Auditor']),
+            notes: dbApp.credentials_notes || fallback?.credentials?.notes || 'Interactive cloud environment.',
+          } : undefined,
+          features: Array.isArray(dbApp.features) && dbApp.features.length > 0
+            ? dbApp.features
+            : (fallback?.features || ['Live Production Sandbox']),
+        };
+      })
+    : SANDBOX_APPS;
+
   const [selectedAppId, setSelectedAppId] = useState<string>('erp');
   const [selectedRole, setSelectedRole] = useState<string>('Enterprise Administrator');
   const [copiedUser, setCopiedUser] = useState<boolean>(false);
@@ -218,10 +264,10 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
   // AI Studio simulation state
   const [riskSlider, setRiskSlider] = useState<number>(28);
 
-  const selectedApp = SANDBOX_APPS.find((a) => a.id === selectedAppId) || SANDBOX_APPS[0];
+  const selectedApp = apps.find((a) => a.id === selectedAppId) || apps[0];
 
   useEffect(() => {
-    if (selectedApp.credentials) {
+    if (selectedApp.credentials && selectedApp.credentials.roles?.length > 0) {
       setSelectedRole(selectedApp.credentials.roles[0]);
     }
   }, [selectedAppId]);
@@ -360,7 +406,7 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
         <div className="p-6 sm:p-8 overflow-y-auto space-y-6 flex-1">
           {/* App Selector Tabs */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2">
-            {SANDBOX_APPS.map((app) => {
+            {apps.map((app) => {
               const isSelected = selectedAppId === app.id;
               const Icon = app.icon;
               return (

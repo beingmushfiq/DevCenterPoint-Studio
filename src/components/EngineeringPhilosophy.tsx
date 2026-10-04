@@ -56,8 +56,12 @@ export const EngineeringPhilosophy: React.FC = () => {
   const allLayersAreExpanded = ARCHITECTURE_LAYERS.every((l) => !!expandedLayerDetails[l.id]);
 
   return (
-    <section id="architecture" className="py-24 bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] relative transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="architecture" className="py-28 bg-white dark:bg-[#07090e] text-slate-900 dark:text-white border-t border-slate-200/70 dark:border-white/5 relative overflow-hidden transition-colors duration-500">
+      {/* Floating Ambient Light Glow Orbs */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-10 left-10 w-96 h-96 bg-purple-500/10 dark:bg-purple-600/15 blur-[140px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <motion.div
@@ -65,11 +69,11 @@ export const EngineeringPhilosophy: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }}
-          className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 pb-8 border-b border-slate-200 dark:border-[#2a2a2a] gap-6"
+          className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 pb-8 border-b border-slate-200/80 dark:border-white/10 gap-6"
         >
           <div>
-            <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20 mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></span>
+            <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 liquid-glass px-4 py-1.5 rounded-full mb-3 shadow-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
               04 — Engineering Architecture
             </div>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
@@ -168,8 +172,8 @@ export const EngineeringPhilosophy: React.FC = () => {
                     }}
                     className={`rounded-2xl transition-all duration-300 border overflow-hidden ${
                       isSelected
-                        ? 'bg-blue-600 text-white border-blue-400 shadow-xl shadow-blue-600/30 scale-[1.01]'
-                        : 'bg-white dark:bg-[#1a1a1a] text-slate-800 dark:text-gray-300 border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400 shadow-sm'
+                        ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-xl shadow-blue-500/25 scale-[1.01] ring-1 ring-white/20'
+                        : 'liquid-glass text-slate-800 dark:text-gray-200 hover:border-blue-400/40 shadow-xs'
                     }`}
                   >
                     {/* Primary Layer Click Target */}
@@ -304,7 +308,7 @@ export const EngineeringPhilosophy: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-            className="lg:col-span-6 bg-white dark:bg-[#1a1a1a] rounded-[2rem] border border-slate-200 dark:border-[#2a2a2a] p-6 md:p-8 shadow-2xl relative overflow-hidden font-sans"
+            className="lg:col-span-6 liquid-glass rounded-[2rem] p-6 md:p-8 shadow-2xl relative overflow-hidden font-sans ring-1 ring-black/5 dark:ring-white/10"
           >
             <AnimatePresence mode="wait">
               <motion.div

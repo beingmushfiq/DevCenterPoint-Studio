@@ -7,8 +7,10 @@ use App\Models\Faq;
 use App\Models\Milestone;
 use App\Models\PageSection;
 use App\Models\Project;
+use App\Models\SandboxApp;
 use App\Models\SiteSetting;
 use App\Models\TeamMember;
+use App\Models\Testimonial;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -650,5 +652,303 @@ class DatabaseSeeder extends Seeder
         foreach ($settings as $setting) {
             SiteSetting::updateOrCreate(['key' => $setting['key']], $setting);
         }
+
+        // 9. Client Testimonials (Corporate Social Proof & Endorsements)
+        $testimonials = [
+            [
+                'client_name' => 'Alexander Vance',
+                'client_role' => 'Chief Technology Officer',
+                'company_name' => 'Logix Global Supply Chain',
+                'avatar_url' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+                'quote' => 'DevCenterPoint architected our multi-warehouse inventory engine with zero stock drift. What used to take 15 minutes of reconciliation across 4 regional hubs now synchronizes in under 35 milliseconds.',
+                'project_reference' => 'DevCenterPoint ERP & Storefront',
+                'metric_highlight' => '100% Elimination of Double-Allocations',
+                'display_order' => 1,
+                'is_published' => true,
+            ],
+            [
+                'client_name' => 'Dr. Farhana Yasmin',
+                'client_role' => 'Director of Clinical Operations',
+                'company_name' => 'Metropolitan Healthcare Alliance',
+                'avatar_url' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+                'quote' => 'The real-time patient queue system transformed our outpatient lobby. Crowding decreased by 65%, and doctors can transfer or summon patients with 1 click across digital TV boards.',
+                'project_reference' => 'Feroza Clinic Queue & Serial Manager',
+                'metric_highlight' => '65% Reduction in Waiting Room Density',
+                'display_order' => 2,
+                'is_published' => true,
+            ],
+            [
+                'client_name' => 'Tariq Rahman',
+                'client_role' => 'Executive Director',
+                'company_name' => 'National Road Safety Movement',
+                'avatar_url' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+                'quote' => 'DevCenterPoint built our nationwide volunteer and campaign dispatch OS. During emergency highway safety drives, we mobilize 450+ verified community advocates in under 2 seconds.',
+                'project_reference' => 'Road Safety Movement',
+                'metric_highlight' => '1.2s Emergency Broadcast SLA',
+                'display_order' => 3,
+                'is_published' => true,
+            ],
+            [
+                'client_name' => 'Rachel Stern',
+                'client_role' => 'VP of Growth & Data Products',
+                'company_name' => 'Synthetix AI Ventures',
+                'avatar_url' => 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80',
+                'quote' => 'Their mastery of explainable machine learning gave our enterprise customers complete transparency. The SHAP attribution engine delivers sub-200ms FastAPI inferences reliably.',
+                'project_reference' => 'DevCenterPoint AI Studio',
+                'metric_highlight' => 'Sub-200ms Explainable Inference',
+                'display_order' => 4,
+                'is_published' => true,
+            ],
+        ];
+
+        foreach ($testimonials as $t) {
+            Testimonial::updateOrCreate(
+                ['client_name' => $t['client_name'], 'company_name' => $t['company_name']],
+                $t
+            );
+        }
+
+        // 10. Sandbox Demo Applications (7 Verified Live Environments)
+        $sandboxApps = [
+            [
+                'slug' => 'erp',
+                'name' => 'DevCenterPoint ERP & Storefront',
+                'category' => 'Enterprise Commerce & Logistics',
+                'badge' => 'Live Production Cluster',
+                'description' => 'Full-stack enterprise ERP integrated with multi-warehouse inventory, POS checkout, and dispatch queues.',
+                'live_url' => 'https://demoerp.devcenterpoint.com',
+                'admin_url' => 'https://demoerp.devcenterpoint.com/login',
+                'accent_color' => '#2E4AF9',
+                'icon_name' => 'Globe',
+                'credentials_username' => 'Admin',
+                'credentials_password' => '12345678',
+                'roles' => ['Enterprise Administrator', 'Warehouse Logistics Lead', 'POS Counter Operator'],
+                'credentials_notes' => 'Unrestricted evaluation access to order ledger, stock balancing, and sales reporting.',
+                'features' => ['Multi-Warehouse FIFO', 'Sub-35ms Inventory Sync', 'Batch Order Processing', 'Financial Reports'],
+                'stats' => [
+                    ['label' => 'Active SKU Matrix', 'value' => '18,450+', 'change' => 'Multi-hub sync'],
+                    ['label' => 'Platform Uptime', 'value' => '99.98%', 'change' => 'Zero stock drift'],
+                    ['label' => 'Order SLA', 'value' => '0.38s', 'change' => 'Redis lock engine']
+                ],
+                'activity_logs' => [
+                    ['time' => 'Just now', 'event' => 'Enterprise warehouse batch dispatch completed (SKU #4892)', 'badge' => 'Fulfillment'],
+                    ['time' => '2m ago', 'event' => 'Omnichannel checkout reconciled via Stripe & Gateway', 'badge' => 'Settlement'],
+                    ['time' => '5m ago', 'event' => 'Multi-tier safety stock threshold auto-replenished', 'badge' => 'Inventory']
+                ],
+                'business_outcomes' => [
+                    'speedToMarket' => '6 to 8 weeks to full deployment',
+                    'impact' => '100% elimination of double-allocations',
+                    'security' => 'Optimistic concurrency & RBAC audit logs'
+                ],
+                'display_order' => 1,
+                'is_active' => true,
+            ],
+            [
+                'slug' => 'roadsafety',
+                'name' => 'Road Safety Movement',
+                'category' => 'Civic Operations & Safety',
+                'badge' => 'Live Civic Portal',
+                'description' => 'Central operational platform coordinating nationwide civic campaigns, verified member directories, and public safety emergency alerts.',
+                'live_url' => 'https://roadsafetymovement.org',
+                'admin_url' => 'https://roadsafetymovement.org',
+                'accent_color' => '#EF4444',
+                'icon_name' => 'ShieldAlert',
+                'credentials_username' => 'Coordinator Demo',
+                'credentials_password' => '12345678',
+                'roles' => ['Campaign Coordinator', 'Field Dispatch Lead', 'Verified Advocate'],
+                'credentials_notes' => 'Live evaluation of emergency campaign broadcast, verified member registry, and incident dispatch.',
+                'features' => ['Verified Member Directory', 'Campaign Dispatch Console', 'Instant Incident Broadcast', 'Operational Impact Analytics'],
+                'stats' => [
+                    ['label' => 'Active Members', 'value' => '12,400+', 'change' => 'Verified advocates'],
+                    ['label' => 'Dispatch Latency', 'value' => '1.2s', 'change' => 'Emergency broadcast'],
+                    ['label' => 'Resolution Rate', 'value' => '94.8%', 'change' => 'Community response SLA']
+                ],
+                'activity_logs' => [
+                    ['time' => 'Just now', 'event' => 'Emergency highway awareness campaign dispatched to 450 volunteers', 'badge' => 'Dispatch'],
+                    ['time' => '3m ago', 'event' => 'New civic advocate identity badge verified and issued', 'badge' => 'Verified'],
+                    ['time' => '8m ago', 'event' => 'Community incident report triaged by regional coordinator', 'badge' => 'Triage']
+                ],
+                'business_outcomes' => [
+                    'speedToMarket' => '3 to 5 weeks for civic / org setup',
+                    'impact' => '90% faster emergency volunteer mobilization',
+                    'security' => 'Strict RBAC & encrypted member directory'
+                ],
+                'display_order' => 2,
+                'is_active' => true,
+            ],
+            [
+                'slug' => 'traccar',
+                'name' => 'Traccar GPS Telematics Deployment',
+                'category' => 'IoT & Fleet Telematics',
+                'badge' => 'Live Telemetry Stack',
+                'description' => 'Containerized open-source GPS tracking and telematics stack processing high-frequency hardware IoT packets with real-time geofence boundaries.',
+                'live_url' => 'https://github.com/beingmushfiq',
+                'admin_url' => null,
+                'accent_color' => '#F59E0B',
+                'icon_name' => 'Radio',
+                'credentials_username' => 'Fleet Lead',
+                'credentials_password' => '12345678',
+                'roles' => ['Fleet Supervisor', 'Route Dispatcher', 'Telematics Analyst'],
+                'credentials_notes' => 'Direct evaluation of live vehicle positions, high-frequency TCP stream, and geofence alarms.',
+                'features' => ['High-Throughput TCP Server', 'PostGIS Geospatial Queries', 'Dynamic Polygon Geofencing', 'Live WebSocket Marker Stream'],
+                'stats' => [
+                    ['label' => 'Connected Assets', 'value' => '850+ Fleet', 'change' => 'Live GPS telemetry'],
+                    ['label' => 'TCP Ingestion', 'value' => '3,200/s', 'change' => 'GT06 / J1939 streams'],
+                    ['label' => 'Spatial Precision', 'value' => '< 5 meters', 'change' => 'PostGIS polygon bounds']
+                ],
+                'activity_logs' => [
+                    ['time' => 'Just now', 'event' => 'Vehicle #F-104 entered Depot Zone Alpha (Geofence alert cleared)', 'badge' => 'Geofence'],
+                    ['time' => '2m ago', 'event' => 'Harsh braking event detected on Highway A3 — Telemetry logged', 'badge' => 'Telematics'],
+                    ['time' => '6m ago', 'event' => 'High-frequency TCP packet stream synced with PostGIS cluster', 'badge' => 'Data Stream']
+                ],
+                'business_outcomes' => [
+                    'speedToMarket' => '4 to 6 weeks for Docker fleet stack',
+                    'impact' => '32% reduction in fuel waste & unauthorized idling',
+                    'security' => 'End-to-end encrypted TCP telemetry pipeline'
+                ],
+                'display_order' => 3,
+                'is_active' => true,
+            ],
+            [
+                'slug' => 'slicemart',
+                'name' => 'Slice Mart FMS',
+                'category' => 'Retail & Inventory FMS',
+                'badge' => 'Live Retail Engine',
+                'description' => 'Grocery and retail floor management platform enabling instant barcode scanning, shelf-level stock counts, and POS inventory checkout.',
+                'live_url' => 'https://slice-mart-fms.vercel.app',
+                'admin_url' => null,
+                'accent_color' => '#10B981',
+                'icon_name' => 'ShoppingCart',
+                'credentials_username' => 'Store Manager',
+                'credentials_password' => '12345678',
+                'roles' => ['Floor Manager', 'Inventory Auditor', 'Cashier Station'],
+                'credentials_notes' => 'Full access to floor inventory scanning, aisle shelf matrix, and automated replenishment triggers.',
+                'features' => ['Multi-Shelf Inventory Mapping', 'Barcode Scanner PWA', 'Auto-Replenish Triggers', 'Cashier POS Sync'],
+                'stats' => [
+                    ['label' => 'Shelf SKUs', 'value' => '6,800+', 'change' => 'Floor inventory mapped'],
+                    ['label' => 'Scan Speed', 'value' => '180ms', 'change' => 'Camera PWA decode'],
+                    ['label' => 'Discrepancy', 'value' => '< 0.02%', 'change' => 'Real-time sync']
+                ],
+                'activity_logs' => [
+                    ['time' => 'Just now', 'event' => 'Aisle 4 shelf count updated via barcode scanner (Batch #902)', 'badge' => 'Stock Audit'],
+                    ['time' => '1m ago', 'event' => 'Cashier checkout register #2 decremented 14 item units', 'badge' => 'POS Sync'],
+                    ['time' => '5m ago', 'event' => 'Low stock safety reorder trigger dispatched to supplier portal', 'badge' => 'Auto-Order']
+                ],
+                'business_outcomes' => [
+                    'speedToMarket' => '3 to 5 weeks for store deployment',
+                    'impact' => '85% faster physical inventory audit cycles',
+                    'security' => 'Offline-first PWA with resilient cloud sync'
+                ],
+                'display_order' => 4,
+                'is_active' => true,
+            ],
+            [
+                'slug' => 'leadlayer',
+                'name' => 'LeadLayer System Architecture',
+                'category' => 'B2B Sales & Pipeline CRM',
+                'badge' => 'Automated Pipeline',
+                'description' => 'High-velocity webhook ingestion pipeline and CRM automation tool designed for automated lead qualification and round-robin sales distribution.',
+                'live_url' => 'https://github.com/beingmushfiq',
+                'admin_url' => null,
+                'accent_color' => '#8B5CF6',
+                'icon_name' => 'Layers',
+                'credentials_username' => 'Sales Director',
+                'credentials_password' => '12345678',
+                'roles' => ['Sales Director', 'Account Executive', 'Lead Qualification Agent'],
+                'credentials_notes' => 'Experience instant webhook parsing, drag-and-drop Kanban transitions, and deal velocity tracking.',
+                'features' => ['Multi-Channel Webhook Ingestion', 'Drag-and-Drop Kanban', 'SSE Real-time Deal Alerts', 'Lead Scoring Rules'],
+                'stats' => [
+                    ['label' => 'Webhooks Ingested', 'value' => '45,000+', 'change' => 'Multi-channel intake'],
+                    ['label' => 'Ingestion SLA', 'value' => '0.12s', 'change' => 'Webhook to Kanban queue'],
+                    ['label' => 'Conversion Lift', 'value' => '+38%', 'change' => 'Fast-response routing']
+                ],
+                'activity_logs' => [
+                    ['time' => 'Just now', 'event' => 'Enterprise inbound lead parsed and scored (Fit Score: 94/100)', 'badge' => 'AI Scoring'],
+                    ['time' => '2m ago', 'event' => 'Round-robin assigned lead #L-8392 to Account Exec Sarah T.', 'badge' => 'Routing'],
+                    ['time' => '7m ago', 'event' => 'Deal stage transitioned to Contract Review via Zapier webhook', 'badge' => 'Kanban']
+                ],
+                'business_outcomes' => [
+                    'speedToMarket' => '2 to 4 weeks to deploy CRM workflows',
+                    'impact' => '4x faster lead response time for sales teams',
+                    'security' => 'Encrypted OAuth2 tokens & webhook HMAC checks'
+                ],
+                'display_order' => 5,
+                'is_active' => true,
+            ],
+            [
+                'slug' => 'ngodemo',
+                'name' => 'NGO Demo (DCP)',
+                'category' => 'Social Impact & Crowdfunding',
+                'badge' => 'Civic Impact',
+                'description' => 'Donation drives, transparent fund tracking, and campaign management platform built for NGOs and civic organizations.',
+                'live_url' => 'https://ngodemo-dcp.vercel.app',
+                'admin_url' => null,
+                'accent_color' => '#EC4899',
+                'icon_name' => 'Heart',
+                'credentials_username' => 'Fund Auditor',
+                'credentials_password' => '12345678',
+                'roles' => ['Civic Campaign Lead', 'Transparent Fund Auditor', 'Volunteer Coordinator'],
+                'credentials_notes' => 'Audit public grant disbursement ledgers, live donor checkout, and verified milestone reporting.',
+                'features' => ['Transparent Fund Ledger', 'Live Donation Stream', 'Cause Campaign Manager', 'Donor Impact Analytics'],
+                'stats' => [
+                    ['label' => 'Disbursed Grants', 'value' => '$420,000+', 'change' => '100% verified trace'],
+                    ['label' => 'Audit Transparency', 'value' => '100%', 'change' => 'Public ledger verification'],
+                    ['label' => 'Donor Retention', 'value' => '88.5%', 'change' => 'Live impact reporting']
+                ],
+                'activity_logs' => [
+                    ['time' => 'Just now', 'event' => 'Emergency flood relief allocation verified and logged to public ledger', 'badge' => 'Disbursement'],
+                    ['time' => '4m ago', 'event' => 'Micro-donation of $250 reconciled via instant payment gateway', 'badge' => 'Donation'],
+                    ['time' => '9m ago', 'event' => 'Community impact photo report published to active donor feed', 'badge' => 'Story']
+                ],
+                'business_outcomes' => [
+                    'speedToMarket' => '3 to 5 weeks for civic campaign launch',
+                    'impact' => '100% transparent audit trail for every dollar',
+                    'security' => 'Cryptographic transaction ledger verification'
+                ],
+                'display_order' => 6,
+                'is_active' => true,
+            ],
+            [
+                'slug' => 'aistudio',
+                'name' => 'DevCenterPoint AI Studio',
+                'category' => 'Applied AI & Workflow Hub',
+                'badge' => 'Explainable AI',
+                'description' => 'Dedicated research & engineering hub showcasing explainable machine learning models, XGBoost inference, and workflow automation.',
+                'live_url' => 'https://devcenterpoint.ai.studio',
+                'admin_url' => null,
+                'accent_color' => '#6366F1',
+                'icon_name' => 'Sparkles',
+                'credentials_username' => 'Data Scientist',
+                'credentials_password' => '12345678',
+                'roles' => ['ML Research Lead', 'Inference Engineer', 'Workflow Auditor'],
+                'credentials_notes' => 'Test explainable SHAP feature graphs, sub-200ms FastAPI neural inference, and autonomous document extractors.',
+                'features' => ['SHAP Feature Attribution', 'Sub-200ms Inference', 'XGBoost Explainability', 'Automated Doc Extraction'],
+                'stats' => [
+                    ['label' => 'Weekly Hours Saved', 'value' => '1,480 hrs', 'change' => 'Automated LLM pipelines'],
+                    ['label' => 'Inference Latency', 'value' => '0.18s', 'change' => 'FastAPI streaming'],
+                    ['label' => 'Model Precision', 'value' => '99.4%', 'change' => 'Domain fine-tuning']
+                ],
+                'activity_logs' => [
+                    ['time' => 'Just now', 'event' => 'Autonomous webhook router parsed 120 client leads', 'badge' => 'Agentic'],
+                    ['time' => '3m ago', 'event' => 'SHAP feature importance graph computed for career model', 'badge' => 'Explainable'],
+                    ['time' => '6m ago', 'event' => 'Clinical screening assessment PDF compiled and dispatched', 'badge' => 'DocGen']
+                ],
+                'business_outcomes' => [
+                    'speedToMarket' => '3 to 5 weeks for domain AI integration',
+                    'impact' => '65% reduction in manual data entry & triage',
+                    'security' => 'Zero data leakage / Private dedicated inference'
+                ],
+                'display_order' => 7,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($sandboxApps as $app) {
+            SandboxApp::updateOrCreate(
+                ['slug' => $app['slug']],
+                $app
+            );
+        }
     }
 }
+

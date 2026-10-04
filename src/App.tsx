@@ -22,6 +22,7 @@ import { BackToTop } from './components/BackToTop';
 import { GlobalLoadingScreen } from './components/GlobalLoadingScreen';
 import { ClientDemoSandboxModal } from './components/ClientDemoSandboxModal';
 import { MobileBottomActionBar } from './components/MobileBottomActionBar';
+import { TestimonialsSection } from './components/TestimonialsSection';
 
 interface ScrollRevealSectionProps {
   children: React.ReactNode;
@@ -123,6 +124,11 @@ export default function App() {
               {/* Selected Work Archive with Drill-down Case Study Inspector */}
               <ScrollRevealSection>
                 <SelectedWorkSection />
+              </ScrollRevealSection>
+
+              {/* Verified Enterprise Impact & Executive Testimonials */}
+              <ScrollRevealSection>
+                <TestimonialsSection />
               </ScrollRevealSection>
 
               {/* Engineering Philosophy: 5-Layer System Architecture Diagram */}

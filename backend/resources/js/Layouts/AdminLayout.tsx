@@ -14,6 +14,9 @@ import {
   Menu,
   X,
   ShieldCheck,
+  Quote,
+  Terminal,
+  UserCheck,
 } from 'lucide-react';
 
 interface Props {
@@ -32,6 +35,9 @@ export default function AdminLayout({ title, children }: Props) {
     { name: 'Subscribers', href: '/admin/subscribers', icon: Users },
     { name: 'Projects CMS', href: '/admin/projects', icon: Briefcase },
     { name: 'Capabilities', href: '/admin/capabilities', icon: Wrench },
+    { name: 'Testimonials', href: '/admin/testimonials', icon: Quote },
+    { name: 'Demo Sandbox', href: '/admin/sandbox', icon: Terminal },
+    { name: 'Team Leadership', href: '/admin/team', icon: UserCheck },
     { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
     { name: 'Page Blocks', href: '/admin/sections', icon: Layers },
     { name: 'Site Settings', href: '/admin/settings', icon: Settings },

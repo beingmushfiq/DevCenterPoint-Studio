@@ -7,8 +7,10 @@ use App\Models\Faq;
 use App\Models\Milestone;
 use App\Models\PageSection;
 use App\Models\Project;
+use App\Models\SandboxApp;
 use App\Models\SiteSetting;
 use App\Models\TeamMember;
+use App\Models\Testimonial;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -39,6 +41,14 @@ class HomeController extends Controller
             ->orderBy('display_order')
             ->get();
 
+        $testimonials = Testimonial::where('is_published', true)
+            ->orderBy('display_order')
+            ->get();
+
+        $sandboxApps = SandboxApp::where('is_active', true)
+            ->orderBy('display_order')
+            ->get();
+
         $rawSections = PageSection::where('is_visible', true)->get();
         $sections = [];
         foreach ($rawSections as $section) {
@@ -54,6 +64,8 @@ class HomeController extends Controller
             'milestones' => $milestones,
             'faqs' => $faqs,
             'team' => $team,
+            'testimonials' => $testimonials,
+            'sandboxApps' => $sandboxApps,
             'pageSections' => $sections,
             'siteSettings' => $settings,
         ]);
