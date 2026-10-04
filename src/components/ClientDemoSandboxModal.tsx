@@ -6,26 +6,25 @@ import {
   Check,
   Key,
   ShieldCheck,
-  Server,
+  ShieldAlert,
+  Radio,
+  ShoppingCart,
+  Heart,
+  Globe,
   Zap,
-  Lock,
   UserCheck,
   ArrowRight,
   Sparkles,
   Layers,
   ChevronRight,
-  Play,
   RefreshCw,
-  QrCode,
-  Stethoscope,
-  Sliders,
-  Bell,
   MapPin,
   Terminal,
-  Volume2,
-  Cpu
+  Cpu,
+  Send,
+  Barcode
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { soundEngine } from '../lib/soundEngine';
 
 interface SandboxApp {
@@ -37,6 +36,7 @@ interface SandboxApp {
   adminUrl?: string;
   badge: string;
   accentColor: string;
+  icon: React.ElementType;
   credentials?: {
     username: string;
     password?: string;
@@ -56,6 +56,7 @@ const SANDBOX_APPS: SandboxApp[] = [
     adminUrl: 'https://demoerp.devcenterpoint.com/login',
     badge: 'Live Production Cluster',
     accentColor: '#2E4AF9',
+    icon: Globe,
     credentials: {
       username: 'Admin',
       password: '12345678',
@@ -65,41 +66,107 @@ const SANDBOX_APPS: SandboxApp[] = [
     features: ['Multi-Warehouse FIFO', 'Sub-35ms Inventory Sync', 'Batch Order Processing', 'Financial Reports']
   },
   {
-    id: 'serial',
-    name: 'Feroza Clinic Queue & Serial Manager',
-    category: 'Healthcare & Outpatient Systems',
-    description: 'Real-time patient queue, counter management, and doctor consultation portal with live TV feed.',
-    liveUrl: 'https://serial.ferozamedicinecorner.com',
-    adminUrl: 'https://serial.ferozamedicinecorner.com',
-    badge: 'Live Clinical Portal',
-    accentColor: '#10B981',
+    id: 'roadsafety',
+    name: 'Road Safety Movement',
+    category: 'Civic Operations & Safety',
+    description: 'Central operational platform coordinating nationwide civic campaigns, verified member directories, and public safety emergency alerts.',
+    liveUrl: 'https://roadsafetymovement.org',
+    adminUrl: 'https://roadsafetymovement.org',
+    badge: 'Live Civic Portal',
+    accentColor: '#EF4444',
+    icon: ShieldAlert,
     credentials: {
-      username: 'Super Admin',
+      username: 'Coordinator Demo',
       password: '12345678',
-      roles: ['Clinic Super Admin', 'Doctor Consultation Desk', 'Triage Reception Kiosk'],
-      notes: 'Direct evaluation of doctor patient summons, SMS waiting alerts, and live TV display chimes.'
+      roles: ['Campaign Coordinator', 'Field Dispatch Lead', 'Verified Advocate'],
+      notes: 'Live evaluation of emergency campaign broadcast, verified member registry, and incident dispatch.'
     },
-    features: ['Pusher WebSocket TV Feed', 'SMS Proximity Dispatch', 'Multi-Doctor Counter Routing', 'Audit Logs']
+    features: ['Verified Member Directory', 'Campaign Dispatch Console', 'Instant Incident Broadcast', 'Operational Impact Analytics']
   },
   {
-    id: 'qttenzy',
-    name: 'Qttenzy Attendance OS',
-    category: 'Access Control & Geofencing',
-    description: 'Zero-trust dynamic QR attendance platform featuring rotating encrypted HMAC tokens and GPS geofence bounds.',
-    liveUrl: 'https://qttenzy.vercel.app',
-    badge: 'Live PWA Scanner',
-    accentColor: '#00D084',
-    features: ['10s Rotating TOTP Tokens', 'Anti-Screenshot Protection', 'Client Gyroscope Check', 'Offline PWA Sync']
+    id: 'traccar',
+    name: 'Traccar GPS Telematics Deployment',
+    category: 'IoT & Fleet Telematics',
+    description: 'Containerized open-source GPS tracking and telematics stack processing high-frequency hardware IoT packets with real-time geofence boundaries.',
+    liveUrl: 'https://github.com/beingmushfiq',
+    badge: 'Live Telemetry Stack',
+    accentColor: '#F59E0B',
+    icon: Radio,
+    credentials: {
+      username: 'Fleet Lead',
+      password: '12345678',
+      roles: ['Fleet Supervisor', 'Route Dispatcher', 'Telematics Analyst'],
+      notes: 'Direct evaluation of live vehicle positions, high-frequency TCP stream, and geofence alarms.'
+    },
+    features: ['High-Throughput TCP Server', 'PostGIS Geospatial Queries', 'Dynamic Polygon Geofencing', 'Live WebSocket Marker Stream']
   },
   {
-    id: 'ai-studio',
+    id: 'slicemart',
+    name: 'Slice Mart FMS',
+    category: 'Retail & Inventory FMS',
+    description: 'Grocery and retail floor management platform enabling instant barcode scanning, shelf-level stock counts, and POS inventory checkout.',
+    liveUrl: 'https://slice-mart-fms.vercel.app',
+    badge: 'Live Retail Engine',
+    accentColor: '#10B981',
+    icon: ShoppingCart,
+    credentials: {
+      username: 'Store Manager',
+      password: '12345678',
+      roles: ['Floor Manager', 'Inventory Auditor', 'Cashier Station'],
+      notes: 'Full access to floor inventory scanning, aisle shelf matrix, and automated replenishment triggers.'
+    },
+    features: ['Multi-Shelf Inventory Mapping', 'Barcode Scanner PWA', 'Auto-Replenish Triggers', 'Cashier POS Sync']
+  },
+  {
+    id: 'leadlayer',
+    name: 'LeadLayer System Architecture',
+    category: 'B2B Sales & Pipeline CRM',
+    description: 'High-velocity webhook ingestion pipeline and CRM automation tool designed for automated lead qualification and round-robin sales distribution.',
+    liveUrl: 'https://github.com/beingmushfiq',
+    badge: 'Automated Pipeline',
+    accentColor: '#8B5CF6',
+    icon: Layers,
+    credentials: {
+      username: 'Sales Director',
+      password: '12345678',
+      roles: ['Sales Director', 'Account Executive', 'Lead Qualification Agent'],
+      notes: 'Experience instant webhook parsing, drag-and-drop Kanban transitions, and deal velocity tracking.'
+    },
+    features: ['Multi-Channel Webhook Ingestion', 'Drag-and-Drop Kanban', 'SSE Real-time Deal Alerts', 'Lead Scoring Rules']
+  },
+  {
+    id: 'ngodemo',
+    name: 'NGO Demo (DCP)',
+    category: 'Social Impact & Crowdfunding',
+    description: 'Donation drives, transparent fund tracking, and campaign management platform built for NGOs and civic organizations.',
+    liveUrl: 'https://ngodemo-dcp.vercel.app',
+    badge: 'Civic Impact Ledger',
+    accentColor: '#EC4899',
+    icon: Heart,
+    credentials: {
+      username: 'Fund Auditor',
+      password: '12345678',
+      roles: ['Civic Campaign Lead', 'Transparent Fund Auditor', 'Volunteer Coordinator'],
+      notes: 'Audit public grant disbursement ledgers, live donor checkout, and verified milestone reporting.'
+    },
+    features: ['Transparent Fund Ledger', 'Live Donation Stream', 'Cause Campaign Manager', 'Donor Impact Analytics']
+  },
+  {
+    id: 'aistudio',
     name: 'DevCenterPoint AI Studio',
     category: 'Applied AI & Workflow Hub',
     description: 'Dedicated studio hub showcasing explainable machine learning models, XGBoost inference, and workflow automation.',
     liveUrl: 'https://devcenterpoint.ai.studio',
-    badge: 'Dedicated AI Hub',
-    accentColor: '#8B5CF6',
-    features: ['SHAP Feature Attribution', 'Sub-200ms Inference', 'Workflow Automation', 'Interactive Visualizers']
+    badge: 'Explainable AI Hub',
+    accentColor: '#6366F1',
+    icon: Sparkles,
+    credentials: {
+      username: 'Data Scientist',
+      password: '12345678',
+      roles: ['ML Research Lead', 'Inference Engineer', 'Workflow Auditor'],
+      notes: 'Test explainable SHAP feature graphs, sub-200ms FastAPI neural inference, and autonomous document extractors.'
+    },
+    features: ['SHAP Feature Attribution', 'Sub-200ms Inference', 'XGBoost Explainability', 'Automated Doc Extraction']
   }
 ];
 
@@ -123,17 +190,33 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
   const [erpStockCount, setErpStockCount] = useState<number>(3420);
   const [erpSyncStatus, setErpSyncStatus] = useState<string>('Sync Clean • Latency 24ms');
 
-  // Clinic simulation state
-  const [clinicTicket, setClinicTicket] = useState<number>(104);
-  const [clinicCalling, setClinicCalling] = useState<boolean>(false);
+  // Road Safety simulation state
+  const [safetyDispatches, setSafetyDispatches] = useState<number>(14);
+  const [safetyVolunteers, setSafetyVolunteers] = useState<number>(450);
+  const [safetyAlertStatus, setSafetyAlertStatus] = useState<string>('Emergency Highway Safety Broadcast Sent (12 Zones)');
 
-  // Qttenzy simulation state
-  const [qrToken, setQrToken] = useState<string>('DCP-TOTP-7819');
-  const [qrSeconds, setQrSeconds] = useState<number>(9);
-  const [gpsVerified, setGpsVerified] = useState<boolean>(true);
+  // Traccar GPS Telematics simulation state
+  const [telematicsSpeed, setTelematicsSpeed] = useState<number>(72);
+  const [telematicsPings, setTelematicsPings] = useState<number>(1284);
+  const [geofenceVerified, setGeofenceVerified] = useState<boolean>(true);
+
+  // Slice Mart FMS simulation state
+  const [shelfStock, setShelfStock] = useState<number>(148);
+  const [scannedSku, setScannedSku] = useState<string>('SKU-GROC-8841');
+  const [scanCount, setScanCount] = useState<number>(39);
+
+  // LeadLayer CRM simulation state
+  const [crmLeads, setCrmLeads] = useState<number>(1240);
+  const [assignedRep, setAssignedRep] = useState<string>('Sarah Jenkins');
+  const [leadScore, setLeadScore] = useState<number>(94);
+
+  // NGO Demo simulation state
+  const [disbursedTotal, setDisbursedTotal] = useState<number>(421500);
+  const [grantCount, setGrantCount] = useState<number>(84);
+  const [blockHash, setBlockHash] = useState<string>('0x7a8f...4c19');
 
   // AI Studio simulation state
-  const [riskSlider, setRiskSlider] = useState<number>(0.28);
+  const [riskSlider, setRiskSlider] = useState<number>(28);
 
   const selectedApp = SANDBOX_APPS.find((a) => a.id === selectedAppId) || SANDBOX_APPS[0];
 
@@ -142,19 +225,6 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
       setSelectedRole(selectedApp.credentials.roles[0]);
     }
   }, [selectedAppId]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setQrSeconds((prev) => {
-        if (prev <= 1) {
-          setQrToken(`DCP-TOTP-${Math.floor(1000 + Math.random() * 9000)}`);
-          return 10;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -181,16 +251,41 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
     setErpSyncStatus(`Dispatched batch #${erpBatch + 1} • Sync Latency 19ms`);
   };
 
-  const handleSimulateClinicCall = () => {
+  const handleSimulateSafetyDispatch = () => {
     soundEngine.playSuccessChime();
-    setClinicCalling(true);
-    setClinicTicket((prev) => prev + 1);
-    setTimeout(() => setClinicCalling(false), 2000);
+    setSafetyDispatches((prev) => prev + 1);
+    setSafetyVolunteers((prev) => prev + 25);
+    setSafetyAlertStatus(`🚨 Emergency alert dispatched to ${safetyVolunteers + 25} volunteers in 1.1s`);
   };
 
-  const handleVerifyGps = () => {
+  const handleSimulateGpsPing = () => {
     soundEngine.playTap();
-    setGpsVerified(true);
+    setTelematicsPings((prev) => prev + 1);
+    setTelematicsSpeed(Math.floor(65 + Math.random() * 15));
+    setGeofenceVerified(true);
+  };
+
+  const handleSimulateBarcodeScan = () => {
+    soundEngine.playSuccessChime();
+    setScanCount((prev) => prev + 1);
+    setShelfStock((prev) => Math.max(0, prev - 1));
+    const skus = ['SKU-GROC-8841', 'SKU-DAIRY-2194', 'SKU-BEV-9932', 'SKU-SNACK-1048'];
+    setScannedSku(skus[Math.floor(Math.random() * skus.length)]);
+  };
+
+  const handleSimulateLeadIngest = () => {
+    soundEngine.playTap();
+    setCrmLeads((prev) => prev + 1);
+    const reps = ['Sarah Jenkins', 'Marcus Chen', 'Elena Rostova', 'David Miller'];
+    setAssignedRep(reps[Math.floor(Math.random() * reps.length)]);
+    setLeadScore(Math.floor(88 + Math.random() * 11));
+  };
+
+  const handleSimulateGrantAllocation = () => {
+    soundEngine.playSuccessChime();
+    setGrantCount((prev) => prev + 1);
+    setDisbursedTotal((prev) => prev + 1500);
+    setBlockHash(`0x${Math.random().toString(16).substring(2, 6)}...${Math.random().toString(16).substring(2, 6)}`);
   };
 
   const handleCopy = (text: string, type: 'user' | 'pass') => {
@@ -224,7 +319,7 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
         transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-        className="relative w-full max-w-4xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-[#262626] rounded-3xl sm:rounded-[2.5rem] shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col text-slate-900 dark:text-white font-sans"
+        className="relative w-full max-w-5xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-[#262626] rounded-3xl sm:rounded-[2.5rem] shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col text-slate-900 dark:text-white font-sans"
       >
         {/* Top Header */}
         <div className="flex items-center justify-between p-5 sm:p-6 border-b border-slate-200 dark:border-[#262626] bg-slate-50 dark:bg-[#161616]">
@@ -254,8 +349,8 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
               soundEngine.playModalClose();
               onClose();
             }}
-            className="p-2.5 rounded-xl bg-slate-200 dark:bg-[#202020] hover:bg-slate-300 dark:hover:bg-[#282828] text-slate-600 dark:text-gray-300 transition-colors cursor-pointer"
-            aria-label="Close Sandbox Launcher"
+            className="w-9 h-9 rounded-xl bg-slate-200/60 dark:bg-[#202020] hover:bg-slate-300 dark:hover:bg-[#282828] text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+            aria-label="Close modal"
           >
             <X className="w-4 h-4" />
           </button>
@@ -264,9 +359,10 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
         {/* Modal Scrollable Body */}
         <div className="p-6 sm:p-8 overflow-y-auto space-y-6 flex-1">
           {/* App Selector Tabs */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2">
             {SANDBOX_APPS.map((app) => {
               const isSelected = selectedAppId === app.id;
+              const Icon = app.icon;
               return (
                 <button
                   key={app.id}
@@ -275,26 +371,31 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
                     soundEngine.playTap();
                     setSelectedAppId(app.id);
                   }}
-                  className={`p-3.5 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between space-y-2 ${
+                  className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between space-y-2 ${
                     isSelected
                       ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-600/25 ring-2 ring-blue-500/40'
                       : 'bg-slate-50 dark:bg-[#181818] border-slate-200 dark:border-[#282828] text-slate-700 dark:text-gray-300 hover:border-slate-300 dark:hover:border-[#383838]'
                   }`}
                 >
-                  <div className="space-y-1">
-                    <span className={`text-[9px] font-mono uppercase font-bold tracking-wider block ${isSelected ? 'text-blue-100' : 'text-slate-400 dark:text-gray-500'}`}>
-                      {app.category.split('&')[0]}
-                    </span>
-                    <div className="text-xs font-black leading-snug line-clamp-2">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${isSelected ? 'bg-white/20 text-white' : 'bg-white dark:bg-[#121212] text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-[#2e2e2e]'}`}>
+                        <Icon className="w-3.5 h-3.5" />
+                      </div>
+                      <span className={`text-[8.5px] font-mono uppercase font-bold tracking-wider truncate max-w-16.25 ${isSelected ? 'text-blue-100' : 'text-slate-400 dark:text-gray-500'}`}>
+                        {app.category.split('&')[0]}
+                      </span>
+                    </div>
+                    <div className="text-[11px] font-black leading-snug line-clamp-2">
                       {app.name}
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-[10px] font-mono">
+                  <div className="flex items-center justify-between text-[10px] font-mono pt-1">
                     <span className={isSelected ? 'text-blue-200' : 'text-emerald-500 font-bold'}>
                       ● Active
                     </span>
-                    <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+                    <ChevronRight className="w-3 h-3 opacity-60" />
                   </div>
                 </button>
               );
@@ -469,8 +570,8 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
             {/* TAB CONTENT: Interactive Simulator Console */}
             {activeTab === 'simulator' && (
               <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4 font-mono">
-                {/* ERP Simulator */}
-                {selectedApp.id === 'devcenterpoint-erp' && (
+                {/* 1. ERP Simulator */}
+                {selectedApp.id === 'erp' && (
                   <div className="space-y-4">
                     <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-3">
                       <div className="flex items-center gap-2">
@@ -516,138 +617,250 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
                   </div>
                 )}
 
-                {/* Healthcare Clinic Simulator */}
-                {selectedApp.id === 'feroza-clinic' && (
+                {/* 2. Road Safety Movement Simulator */}
+                {selectedApp.id === 'roadsafety' && (
                   <div className="space-y-4">
                     <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-3">
                       <div className="flex items-center gap-2">
-                        <Volume2 className="w-4 h-4 text-emerald-400" />
-                        <span className="font-bold text-slate-200">SMART TELEMEDICINE & CLINIC QUEUE DISPLAY</span>
+                        <ShieldAlert className="w-4 h-4 text-rose-400" />
+                        <span className="font-bold text-slate-200">CIVIC SAFETY DISPATCH & ADVOCATE NETWORK</span>
                       </div>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30">
-                        WebSocket Channel #clinic-queue-01
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/30">
+                        Broadcast SLA: 1.2s
                       </span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                      <div className={`p-4 rounded-xl border transition-all ${clinicCalling ? 'bg-emerald-950/60 border-emerald-500 ring-2 ring-emerald-500/40' : 'bg-slate-900 border-slate-800'}`}>
-                        <span className="text-[10px] text-slate-400 block font-semibold">NOW CALLING</span>
-                        <div className="text-2xl font-black text-emerald-400 tracking-wider">
-                          #T-{String(clinicTicket).padStart(3, '0')}
-                        </div>
-                        <span className="text-[10px] text-slate-300 font-bold block mt-1">
-                          {clinicCalling ? '🔔 Paging Audio Chime...' : 'Consultation Room 3B'}
-                        </span>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Mobilized Volunteers</span>
+                        <span className="text-xl font-black text-rose-400">{safetyVolunteers} Advocates</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">12 Sector Hubs Ready</span>
                       </div>
-                      <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
-                        <span className="text-[10px] text-slate-400 block font-semibold">NEXT IN LINE</span>
-                        <div className="text-xl font-bold text-slate-200">
-                          #T-{String(clinicTicket + 1).padStart(3, '0')}
-                        </div>
-                        <span className="text-[9px] text-slate-500 block mt-1">Estimated Wait: ~4 mins</span>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Campaign Dispatches</span>
+                        <span className="text-xl font-black text-amber-400">{safetyDispatches} Runs</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">Emergency Push & SMS</span>
                       </div>
-                      <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
-                        <span className="text-[10px] text-slate-400 block font-semibold">EMR TELEMEDICINE STATUS</span>
-                        <div className="text-xl font-bold text-blue-400">
-                          WebRTC Online
-                        </div>
-                        <span className="text-[9px] text-slate-500 block mt-1">HIPAA Compliant Session</span>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Advocate Verification</span>
+                        <span className="text-xl font-black text-emerald-400">100% Tamper-Proof</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">Digital Security Badge</span>
                       </div>
                     </div>
 
                     <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                       <p className="text-[11px] text-slate-400 font-sans">
-                        Summon the next patient to test the synchronized audio chime & digital waiting room TV board:
+                        {safetyAlertStatus}
                       </p>
                       <button
                         type="button"
-                        onClick={handleSimulateClinicCall}
-                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
+                        onClick={handleSimulateSafetyDispatch}
+                        className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
                       >
-                        <Volume2 className="w-3.5 h-3.5" />
-                        <span>Summon Next Patient (Audio Chime)</span>
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Simulate Emergency Dispatch (+25 Volunteers)</span>
                       </button>
                     </div>
                   </div>
                 )}
 
-                {/* Qttenzy Attendance Simulator */}
-                {selectedApp.id === 'qttenzy' && (
+                {/* 3. Traccar GPS Telematics Simulator */}
+                {selectedApp.id === 'traccar' && (
                   <div className="space-y-4">
                     <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-3">
                       <div className="flex items-center gap-2">
-                        <QrCode className="w-4 h-4 text-cyan-400" />
-                        <span className="font-bold text-slate-200">TIME-BASED ROTATING QR & GEOFENCE VALIDATOR</span>
+                        <Radio className="w-4 h-4 text-amber-400" />
+                        <span className="font-bold text-slate-200">HIGH-FREQUENCY TCP TELEMETRY & POSTGIS ENGINE</span>
                       </div>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
-                        Anti-Screenshot TOTP Active
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                        {geofenceVerified ? 'Geofence Bound: Depot Zone Alpha' : 'Boundary Check Pending'}
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* Dynamic Rotating QR Representation */}
-                      <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
-                        <div className="w-20 h-20 rounded-lg bg-white p-1.5 flex flex-col items-center justify-center shrink-0 shadow-inner">
-                          <QrCode className="w-16 h-16 text-slate-950" />
-                        </div>
-                        <div className="space-y-1.5 flex-1 min-w-0">
-                          <span className="text-[9px] uppercase text-slate-400 block font-semibold">Active Rolling Hash</span>
-                          <div className="text-xs font-mono font-black text-cyan-400 truncate">
-                            {qrToken}
-                          </div>
-                          <div className="space-y-1">
-                            <div className="flex justify-between text-[9px] text-slate-400">
-                              <span>Rotating in:</span>
-                              <span className="text-cyan-300 font-bold">{qrSeconds}s</span>
-                            </div>
-                            <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                              <div
-                                className="bg-cyan-400 h-full transition-all duration-1000"
-                                style={{ width: `${(qrSeconds / 10) * 100}%` }}
-                              />
-                            </div>
-                          </div>
-                        </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Telemetry Pings Processed</span>
+                        <span className="text-xl font-black text-amber-400">{telematicsPings.toLocaleString()} pings</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">3,200 TCP packets/sec</span>
                       </div>
-
-                      {/* GPS Radius Geofence Verification */}
-                      <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col justify-between space-y-2">
-                        <div>
-                          <span className="text-[9px] uppercase text-slate-400 block font-semibold">Physical Coordinate Boundary</span>
-                          <div className="flex items-center gap-2 mt-1">
-                            <MapPin className={`w-4 h-4 ${gpsVerified ? 'text-emerald-400' : 'text-amber-400'}`} />
-                            <span className="text-xs font-bold text-slate-200">
-                              {gpsVerified ? 'Within 35m Campus Boundary (Verified)' : 'Pending Device Verification'}
-                            </span>
-                          </div>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={handleVerifyGps}
-                          className={`w-full py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                            gpsVerified
-                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                              : 'bg-cyan-600 hover:bg-cyan-500 text-white'
-                          }`}
-                        >
-                          <Check className="w-3.5 h-3.5" />
-                          <span>{gpsVerified ? '✓ Geofence Confirmed' : 'Trigger Device GPS Check'}</span>
-                        </button>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Active Fleet Vehicle Speed</span>
+                        <span className="text-xl font-black text-cyan-400">{telematicsSpeed} km/h</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">23.7806° N, 90.4193° E</span>
                       </div>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Spatial Index</span>
+                        <span className="text-xl font-black text-purple-400">PostGIS R-Tree</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">&lt; 5m polygon accuracy</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                      <p className="text-[11px] text-slate-400 font-sans">
+                        Simulate an incoming vehicle telemetry burst over raw TCP socket:
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleSimulateGpsPing}
+                        className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
+                      >
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span>Trigger Live Telematics Ping</span>
+                      </button>
                     </div>
                   </div>
                 )}
 
-                {/* AI Studio Simulator */}
-                {selectedApp.id === 'devcenterpoint-ai' && (
+                {/* 4. Slice Mart FMS Simulator */}
+                {selectedApp.id === 'slicemart' && (
                   <div className="space-y-4">
                     <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-3">
                       <div className="flex items-center gap-2">
-                        <Cpu className="w-4 h-4 text-purple-400" />
-                        <span className="font-bold text-slate-200">APPLIED AI NEURAL FRAUD SCORING INFERENCE</span>
+                        <ShoppingCart className="w-4 h-4 text-emerald-400" />
+                        <span className="font-bold text-slate-200">RETAIL FLOOR MANAGEMENT & BARCODE AUDITING</span>
+                      </div>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                        Real-time PWA Sync Clean
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Scanned SKU Item</span>
+                        <span className="text-lg font-black text-emerald-400 truncate block">{scannedSku}</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">Aisle 4 • Shelf Tier B</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Shelf Inventory Count</span>
+                        <span className="text-xl font-black text-blue-400">{shelfStock} Units</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">Min Threshold: 20 units</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Total Audits Today</span>
+                        <span className="text-xl font-black text-purple-400">{scanCount} Barcodes</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">Optical scan time: 180ms</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                      <p className="text-[11px] text-slate-400 font-sans">
+                        Scan shelf barcode to verify physical floor count against central POS database:
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleSimulateBarcodeScan}
+                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
+                      >
+                        <Barcode className="w-3.5 h-3.5" />
+                        <span>Simulate Barcode SKU Scan (-1 Unit)</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* 5. LeadLayer System Architecture Simulator */}
+                {selectedApp.id === 'leadlayer' && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-3">
+                      <div className="flex items-center gap-2">
+                        <Layers className="w-4 h-4 text-purple-400" />
+                        <span className="font-bold text-slate-200">WEBHOOK INGESTION & ROUND-ROBIN ROUTER</span>
                       </div>
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/30">
+                        Queue SLA: 0.12s
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Processed Inbound Leads</span>
+                        <span className="text-xl font-black text-purple-400">{crmLeads.toLocaleString()} Leads</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">Multi-Channel Webhooks</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Assigned Account Exec</span>
+                        <span className="text-lg font-black text-emerald-400 truncate block">{assignedRep}</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">Round-Robin Algorithm</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Lead Fit Quality</span>
+                        <span className="text-xl font-black text-blue-400">{leadScore}/100</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">Enterprise Conversion Prob</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                      <p className="text-[11px] text-slate-400 font-sans">
+                        Trigger an incoming webhook lead to test algorithmic qualification & rep allocation:
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleSimulateLeadIngest}
+                        className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
+                      >
+                        <Zap className="w-3.5 h-3.5" />
+                        <span>Simulate Webhook Ingestion</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* 6. NGO Demo Simulator */}
+                {selectedApp.id === 'ngodemo' && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-3">
+                      <div className="flex items-center gap-2">
+                        <Heart className="w-4 h-4 text-pink-400" />
+                        <span className="font-bold text-slate-200">TRANSPARENT CIVIC FUND LEDGER & ALLOCATION</span>
+                      </div>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-pink-500/10 text-pink-400 border border-pink-500/30">
+                        Public Cryptographic Proof: Clean
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Disbursed Community Grants</span>
+                        <span className="text-xl font-black text-pink-400">${disbursedTotal.toLocaleString()}</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">100% Publicly Auditable</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Completed Relief Milestones</span>
+                        <span className="text-xl font-black text-emerald-400">{grantCount} Grants</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">Clean Water Project #CW-102</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                        <span className="text-[10px] text-slate-400 block font-semibold">Cryptographic Block Hash</span>
+                        <span className="text-sm font-black text-cyan-300 font-mono block mt-1">{blockHash}</span>
+                        <span className="text-[9px] text-slate-500 block mt-1">SHA-256 Ledger Block</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                      <p className="text-[11px] text-slate-400 font-sans">
+                        Allocate a grant to community relief and verify the cryptographic public receipt:
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleSimulateGrantAllocation}
+                        className="px-4 py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
+                      >
+                        <Heart className="w-3.5 h-3.5" />
+                        <span>Allocate Transparent Grant ($1,500)</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* 7. AI Studio Simulator */}
+                {selectedApp.id === 'aistudio' && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-3">
+                      <div className="flex items-center gap-2">
+                        <Cpu className="w-4 h-4 text-indigo-400" />
+                        <span className="font-bold text-slate-200">APPLIED AI NEURAL FRAUD SCORING & SHAP INFERENCE</span>
+                      </div>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
                         Inference Latency: 14ms
                       </span>
                     </div>
@@ -655,7 +868,7 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
                     <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
                       <div className="flex justify-between text-xs">
                         <span className="text-slate-400">Anomaly Detection Confidence Threshold:</span>
-                        <span className="text-purple-300 font-bold">{riskSlider}%</span>
+                        <span className="text-indigo-300 font-bold">{riskSlider}%</span>
                       </div>
                       <input
                         type="range"
@@ -666,7 +879,7 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
                           setRiskSlider(Number(e.target.value));
                           soundEngine.playTap();
                         }}
-                        className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                        className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                       />
                       <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
                         <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
@@ -677,7 +890,7 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
                         </div>
                         <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
                           <span className="text-[9px] uppercase text-slate-500 block">Agent Execution Mode</span>
-                          <span className="text-purple-300 font-bold">Autonomous RAG Stream</span>
+                          <span className="text-indigo-300 font-bold">Autonomous RAG Stream</span>
                         </div>
                       </div>
                     </div>

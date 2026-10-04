@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Globe,
-  Activity,
+  ShieldAlert,
+  Radio,
+  ShoppingCart,
+  Layers,
+  Heart,
   Sparkles,
   ShieldCheck,
   CheckCircle2,
@@ -102,58 +106,235 @@ const SOLUTIONS: SolutionProduct[] = [
     sampleActionToast: '✓ Order #DCP-8842 allocated across 3 warehouses in 34ms! Live stock locked.'
   },
   {
-    id: 'healthcare',
-    category: 'Healthcare Queue & Clinics',
-    badge: 'Healthcare OS',
-    title: 'Feroza Medicine Corner Serial Manager',
-    tagline: 'Real-time patient queue, counter dispatch, and doctor appointment serial management portal built for healthcare desks.',
-    icon: Activity,
-    mockupTitle: 'Feroza Medicine Corner • Serial Manager OS',
-    liveUrl: 'https://serial.ferozamedicinecorner.com',
-    adminUrl: 'https://serial.ferozamedicinecorner.com',
+    id: 'roadsafety',
+    category: 'Civic Ops & Safety Platform',
+    badge: 'Civic OS',
+    title: 'Road Safety Movement',
+    tagline: 'Central operational platform coordinating nationwide civic campaigns, verified member directories, and public safety emergency alerts.',
+    icon: ShieldAlert,
+    mockupTitle: 'Road Safety Movement • Civic Coordination Portal',
+    liveUrl: 'https://roadsafetymovement.org',
+    adminUrl: 'https://roadsafetymovement.org',
     demoCredentials: {
-      user: 'Super Admin',
+      user: 'Coordinator Demo',
       pass: '12345678',
-      role: 'Clinic Super Admin'
+      role: 'Campaign Coordinator'
     },
     stats: [
-      { label: 'Daily Patient Serials', value: '1,420+', change: 'Outpatient desks', trend: 'up' },
-      { label: 'Lobby Congestion', value: '-65%', change: 'Remote SMS tracking', trend: 'up' },
-      { label: 'Socket Broadcast', value: '22ms', change: 'Pusher / Reverb', trend: 'up' }
+      { label: 'Active Members', value: '12,400+', change: 'Verified advocates', trend: 'up' },
+      { label: 'Dispatch Latency', value: '1.2s', change: 'Emergency broadcast', trend: 'up' },
+      { label: 'Resolution Rate', value: '94.8%', change: 'Community response SLA', trend: 'up' }
     ],
     activityLogs: [
-      { time: 'Just now', event: 'Patient Token #42 called to Specialist Counter 3', badge: 'Summons' },
-      { time: '1m ago', event: 'Automated SMS proximity alert sent to Token #45', badge: 'SMS Alert' },
-      { time: '4m ago', event: 'Pharmacy counter dispense verified with barcode scan', badge: 'Dispense' }
+      { time: 'Just now', event: 'Emergency highway awareness campaign dispatched to 450 volunteers', badge: 'Dispatch' },
+      { time: '3m ago', event: 'New civic advocate identity badge verified and issued', badge: 'Verified' },
+      { time: '8m ago', event: 'Community incident report triaged by regional coordinator', badge: 'Triage' }
     ],
     businessOutcomes: {
-      speedToMarket: '4 to 6 weeks for custom clinic setup',
-      impact: '65% reduction in waiting room crowd density',
-      security: 'Encrypted patient records & offline buffer'
+      speedToMarket: '3 to 5 weeks for civic / org setup',
+      impact: '90% faster emergency volunteer mobilization',
+      security: 'Strict RBAC & encrypted member directory'
     },
     clientBenefits: [
-      'High-legibility waiting room TV display visible from 30+ feet away with audio cues',
-      'Patients wait comfortably in cafes or outdoors with live mobile web queue tracking',
-      'Doctor desk console enables instant 1-click patient calling, transfers, and emergency triage'
+      'Verified member directory with digital role credentials and tamper-proof security badges',
+      'Campaign dispatch console for sub-second community broadcast alerts and volunteer mobilization',
+      'High-contrast mobile interface optimized for on-the-ground volunteer coordination'
     ],
     deliverables: [
-      'Patient self-service token kiosk UI & printer setup',
-      'Doctor & receptionist counter control consoles',
-      'High-contrast public display screen layout with audio chimes',
-      'Automated Twilio / SMS alert gateway integration'
+      'Member registration & digital ID verification portal',
+      'Real-time campaign logistics dispatch & coordinator workflow',
+      'Public announcement and incident report management engine',
+      'Operational impact analytics dashboard for organizational governance'
     ],
-    sampleActionLabel: 'Simulate Patient Counter Summons',
-    sampleActionToast: '🔔 Token #A-108 called! Waiting room TV screen & chime triggered in 18ms.'
+    sampleActionLabel: 'Dispatch Campaign Alert',
+    sampleActionToast: '🚨 Safety Alert dispatched! 450 verified community volunteers mobilized in 1.2s.'
   },
   {
-    id: 'ai',
-    category: 'AI & Smart Workflows',
-    badge: 'AI Studio Hub',
+    id: 'traccar',
+    category: 'IoT & Fleet Telematics',
+    badge: 'Fleet OS',
+    title: 'Traccar GPS Telematics Deployment',
+    tagline: 'Containerized open-source GPS tracking and telematics stack processing high-frequency hardware IoT packets with real-time geofence boundaries.',
+    icon: Radio,
+    mockupTitle: 'Traccar Telematics • Live Fleet Vector Canvas',
+    liveUrl: 'https://github.com/beingmushfiq',
+    demoCredentials: {
+      user: 'Fleet Lead',
+      pass: '12345678',
+      role: 'Fleet Supervisor'
+    },
+    stats: [
+      { label: 'Connected Assets', value: '850+ Fleet', change: 'Live GPS telemetry', trend: 'up' },
+      { label: 'TCP Packet Ingestion', value: '3,200/s', change: 'GT06 / J1939 streams', trend: 'up' },
+      { label: 'Spatial Precision', value: '< 5 meters', change: 'PostGIS polygon bounds', trend: 'up' }
+    ],
+    activityLogs: [
+      { time: 'Just now', event: 'Vehicle #F-104 entered Depot Zone Alpha (Geofence alert cleared)', badge: 'Geofence' },
+      { time: '2m ago', event: 'Harsh braking event detected on Highway A3 — Telemetry logged', badge: 'Telematics' },
+      { time: '6m ago', event: 'High-frequency TCP packet stream synced with PostGIS cluster', badge: 'Data Stream' }
+    ],
+    businessOutcomes: {
+      speedToMarket: '4 to 6 weeks for Docker fleet stack',
+      impact: '32% reduction in fuel waste & unauthorized idling',
+      security: 'End-to-end encrypted TCP telemetry pipeline'
+    },
+    clientBenefits: [
+      'Live fleet tracking map with 60fps vector canvas rendering hundreds of concurrent assets',
+      'Automated geofence boundary alerts sent instantly to dispatch supervisors via WebSockets',
+      'Historical trip playback with speed graphs, engine status, and driver safety scoring'
+    ],
+    deliverables: [
+      'Containerized Docker telematics server deployment',
+      'High-throughput TCP packet parser for automotive trackers',
+      'Interactive Mapbox vector map client with route replay',
+      'Real-time WebSocket event broadcaster and alert rules engine'
+    ],
+    sampleActionLabel: 'Simulate Telemetry Ping',
+    sampleActionToast: '📡 Telemetry Ping received! Vehicle #F-104 location & speed updated on canvas in 14ms.'
+  },
+  {
+    id: 'slicemart',
+    category: 'Retail & Inventory FMS',
+    badge: 'Retail Engine',
+    title: 'Slice Mart FMS',
+    tagline: 'Grocery and retail floor management platform enabling instant barcode scanning, shelf-level stock counts, and POS inventory checkout.',
+    icon: ShoppingCart,
+    mockupTitle: 'Slice Mart • Retail Floor & Stock Controller',
+    liveUrl: 'https://slice-mart-fms.vercel.app',
+    demoCredentials: {
+      user: 'Store Manager',
+      pass: '12345678',
+      role: 'Floor Manager'
+    },
+    stats: [
+      { label: 'Tracked Shelf SKUs', value: '6,800+', change: 'Floor inventory mapped', trend: 'up' },
+      { label: 'Barcode Scan Speed', value: '180ms', change: 'Camera PWA decode', trend: 'up' },
+      { label: 'Audit Discrepancy', value: '< 0.02%', change: 'Real-time sync', trend: 'up' }
+    ],
+    activityLogs: [
+      { time: 'Just now', event: 'Aisle 4 shelf count updated via barcode scanner (Batch #902)', badge: 'Stock Audit' },
+      { time: '1m ago', event: 'Cashier checkout register #2 decremented 14 item units', badge: 'POS Sync' },
+      { time: '5m ago', event: 'Low stock safety reorder trigger dispatched to supplier portal', badge: 'Auto-Order' }
+    ],
+    businessOutcomes: {
+      speedToMarket: '3 to 5 weeks for store deployment',
+      impact: '85% faster physical inventory audit cycles',
+      security: 'Offline-first PWA with resilient cloud sync'
+    },
+    clientBenefits: [
+      'Instant barcode camera scanning turning any smartphone or tablet into a rugged inventory terminal',
+      'Shelf-level inventory visibility preventing out-of-stock items on retail sales floors',
+      'Unified cashier POS integration ensuring zero sync latency between sales and warehouse'
+    ],
+    deliverables: [
+      'Progressive Web App (PWA) barcode scanner client',
+      'Store floor layout & multi-shelf SKU management console',
+      'Automated stock replenishment notification webhook service',
+      'Real-time POS checkout integration ledger'
+    ],
+    sampleActionLabel: 'Simulate Barcode SKU Audit',
+    sampleActionToast: '📦 Barcode #079342 scanned! Aisle 4 shelf stock confirmed & ledger synchronized in 28ms.'
+  },
+  {
+    id: 'leadlayer',
+    category: 'B2B Sales & Pipeline CRM',
+    badge: 'Automated Pipeline',
+    title: 'LeadLayer System Architecture',
+    tagline: 'High-velocity webhook ingestion pipeline and CRM automation tool designed for automated lead qualification and round-robin sales distribution.',
+    icon: Layers,
+    mockupTitle: 'LeadLayer CRM • Pipeline Automation Engine',
+    liveUrl: 'https://github.com/beingmushfiq',
+    demoCredentials: {
+      user: 'Sales Director',
+      pass: '12345678',
+      role: 'Sales Director'
+    },
+    stats: [
+      { label: 'Webhooks Ingested', value: '45,000+', change: 'Multi-channel intake', trend: 'up' },
+      { label: 'Ingestion Latency', value: '0.12s', change: 'Webhook to Kanban queue', trend: 'up' },
+      { label: 'Conversion Lift', value: '+38%', change: 'Fast-response routing', trend: 'up' }
+    ],
+    activityLogs: [
+      { time: 'Just now', event: 'Enterprise inbound lead parsed and scored (Fit Score: 94/100)', badge: 'AI Scoring' },
+      { time: '2m ago', event: 'Round-robin assigned lead #L-8392 to Account Exec Sarah T.', badge: 'Routing' },
+      { time: '7m ago', event: 'Deal stage transitioned to Contract Review via Zapier webhook', badge: 'Kanban' }
+    ],
+    businessOutcomes: {
+      speedToMarket: '2 to 4 weeks to deploy CRM workflows',
+      impact: '4x faster lead response time for sales teams',
+      security: 'Encrypted OAuth2 tokens & webhook HMAC checks'
+    },
+    clientBenefits: [
+      'Sub-second webhook intake connecting forms, landing pages, and ad channels with zero dropped leads',
+      'Intuitive drag-and-drop Kanban interface with optimistic UI updates and zero lag',
+      'Automated criteria-based and round-robin lead allocation preventing sales bottleneck'
+    ],
+    deliverables: [
+      'Multi-channel webhook receiver with HMAC signature validation',
+      'Interactive Kanban deal pipeline with custom stages',
+      'Automated email sequence and task assignment triggers',
+      'Deal velocity & sales forecasting analytics suite'
+    ],
+    sampleActionLabel: 'Simulate Inbound Lead Ingestion',
+    sampleActionToast: '⚡ New Enterprise Lead ingested via webhook! Scored 94/100 & assigned to rep in 35ms.'
+  },
+  {
+    id: 'ngodemo',
+    category: 'Social Impact & Crowdfunding',
+    badge: 'Civic Impact',
+    title: 'NGO Demo (DCP)',
+    tagline: 'Donation drives, transparent fund tracking, and campaign management platform built for NGOs and civic organizations.',
+    icon: Heart,
+    mockupTitle: 'NGO Platform • Transparent Fund Allocation Ledger',
+    liveUrl: 'https://ngodemo-dcp.vercel.app',
+    demoCredentials: {
+      user: 'Fund Auditor',
+      pass: '12345678',
+      role: 'Transparent Fund Auditor'
+    },
+    stats: [
+      { label: 'Disbursed Grants', value: '$420,000+', change: '100% verified trace', trend: 'up' },
+      { label: 'Audit Transparency', value: '100%', change: 'Public ledger verification', trend: 'up' },
+      { label: 'Donor Retention', value: '88.5%', change: 'Live impact reporting', trend: 'up' }
+    ],
+    activityLogs: [
+      { time: 'Just now', event: 'Emergency flood relief allocation verified and logged to public ledger', badge: 'Disbursement' },
+      { time: '4m ago', event: 'Micro-donation of $250 reconciled via instant payment gateway', badge: 'Donation' },
+      { time: '9m ago', event: 'Community impact photo report published to active donor feed', badge: 'Story' }
+    ],
+    businessOutcomes: {
+      speedToMarket: '3 to 5 weeks for civic campaign launch',
+      impact: '100% transparent audit trail for every dollar',
+      security: 'Cryptographic transaction ledger verification'
+    },
+    clientBenefits: [
+      'Complete public transparency that builds unbreakable donor trust and boosts repeat gifts',
+      'Integrated donation checkout supporting international cards and local mobile wallets',
+      'Automated tax receipts and personalized impact updates sent to donors on milestone completion'
+    ],
+    deliverables: [
+      'Public donation portal with multi-currency checkout',
+      'Transparent fund allocation ledger & reporting dashboard',
+      'Volunteer campaign management & event coordination suite',
+      'Automated donor receipt generation & email dispatch'
+    ],
+    sampleActionLabel: 'Simulate Transparent Grant Allocation',
+    sampleActionToast: '💙 Grant of $1,500 allocated to Community Clean Water project! Public audit ledger updated.'
+  },
+  {
+    id: 'aistudio',
+    category: 'Applied AI & Workflow Hub',
+    badge: 'Explainable AI',
     title: 'DevCenterPoint AI Studio',
-    tagline: 'Dedicated research & engineering hub exploring applied AI tools, explainable machine learning models, and automated enterprise workflows.',
+    tagline: 'Dedicated research & engineering hub showcasing explainable machine learning models, XGBoost inference, and workflow automation.',
     icon: Sparkles,
     mockupTitle: 'DevCenterPoint AI Studio • Applied AI Hub',
     liveUrl: 'https://devcenterpoint.ai.studio',
+    demoCredentials: {
+      user: 'Data Scientist',
+      pass: '12345678',
+      role: 'ML Research Lead'
+    },
     stats: [
       { label: 'Weekly Hours Saved', value: '1,480 hrs', change: 'Automated LLM pipelines', trend: 'up' },
       { label: 'Inference Latency', value: '0.18s', change: 'FastAPI streaming', trend: 'up' },
@@ -182,44 +363,6 @@ const SOLUTIONS: SolutionProduct[] = [
     ],
     sampleActionLabel: 'Trigger AI Pipeline Inference',
     sampleActionToast: '✨ AI Workflow executed in 140ms! Structured JSON response generated.'
-  },
-  {
-    id: 'qttenzy',
-    category: 'Dynamic QR & Geofence OS',
-    badge: 'IoT & Access',
-    title: 'Qttenzy Smart Geofenced Attendance',
-    tagline: 'QR-based automated geofenced attendance system that verifies check-ins within precise physical boundaries.',
-    icon: ShieldCheck,
-    mockupTitle: 'Qttenzy • Smart Geofence Access Portal',
-    liveUrl: 'https://qttenzy.vercel.app',
-    stats: [
-      { label: 'Verified Check-ins', value: '38,200', change: 'Anti-spoofing enabled', trend: 'up' },
-      { label: 'Rotating QR Interval', value: '10s', change: 'HMAC-SHA256 tokens', trend: 'up' },
-      { label: 'Optical Scan Time', value: '0.45s', change: 'Instant PWA decode', trend: 'up' }
-    ],
-    activityLogs: [
-      { time: 'Just now', event: 'Geofenced entrance verified within 15m radius', badge: 'Geofence' },
-      { time: '2m ago', event: 'Batch attendance ledger synced with campus server', badge: 'Ledger' },
-      { time: '5m ago', event: 'Rotating TOTP token refreshed across display terminals', badge: 'Security' }
-    ],
-    businessOutcomes: {
-      speedToMarket: '4 to 6 weeks for campus or office deployment',
-      impact: '100% elimination of proxy check-in fraud',
-      security: 'Hardware gyroscope & GPS fence validation'
-    },
-    clientBenefits: [
-      'Fraud-resistant dynamic QR codes rotate every 10 seconds to stop screenshot sharing',
-      'Client-side GPS boundary checks combined with server-side IP subnet matching',
-      'Role-based dashboard tailored for administrators, supervisors, and end-users'
-    ],
-    deliverables: [
-      'Dynamic rotating QR code projection display feed',
-      'Offline-capable PWA scanner client with automatic sync',
-      'Automated export of attendance records in CSV, PDF, and XLS',
-      'Granular department permission controls & shift calculation'
-    ],
-    sampleActionLabel: 'Simulate Geofence Check-in',
-    sampleActionToast: '📍 GPS boundary validated! Dynamic QR token decoded & verified in 42ms.'
   }
 ];
 
@@ -290,8 +433,8 @@ export const DigitalSystemMap: React.FC = () => {
 
       <div className="p-6 sm:p-8">
         
-        {/* Solution Tabs Selector (Red Box 1) */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mb-8">
+        {/* Solution Tabs Selector */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2.5 mb-8">
           {SOLUTIONS.map((item) => {
             const isSelected = item.id === activeSolutionId;
             const Icon = item.icon;
@@ -302,7 +445,7 @@ export const DigitalSystemMap: React.FC = () => {
                 onClick={() => handleSelectSolution(item.id)}
                 className={`p-3.5 sm:p-4 rounded-2xl text-left transition-all flex items-start gap-3 cursor-pointer border ${
                   isSelected
-                    ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-600/20 translate-y-[-2px]'
+                    ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-600/20 -translate-y-0.5'
                     : 'bg-slate-50 dark:bg-[#181818] hover:bg-slate-100 dark:hover:bg-[#202020] text-slate-800 dark:text-gray-200 border-slate-200 dark:border-[#2a2a2a]'
                 }`}
               >
