@@ -532,7 +532,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           soundEngine.playTap();
                           setFormData({ ...formData, projectType: option.id });
                         }}
-                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex items-start gap-3 min-h-[52px] ${
+                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex items-start gap-3 min-h-13 ${
                           isSelected
                             ? 'bg-blue-600 text-white border-blue-500 shadow-sm shadow-blue-600/20'
                             : 'bg-white dark:bg-neutral-950 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800 hover:border-slate-300'
@@ -582,7 +582,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           key={curr}
                           type="button"
                           onClick={() => handleCurrencyChange(curr)}
-                          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 min-h-[32px] ${
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 min-h-8 ${
                             isCurrActive
                               ? 'bg-blue-600 text-white shadow-xs'
                               : 'text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white'
@@ -605,7 +605,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
                         key={tier.id}
                         type="button"
                         onClick={() => handleTierSelect(tier)}
-                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex flex-col justify-between space-y-2 min-h-[80px] ${
+                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex flex-col justify-between space-y-2 min-h-20 ${
                           isSelected
                             ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-500 text-slate-900 dark:text-white ring-1 ring-blue-500/30'
                             : 'bg-white dark:bg-neutral-950 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800 hover:border-slate-300'
@@ -665,7 +665,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           soundEngine.playTap();
                           setFormData({ ...formData, timeline: timeline.id });
                         }}
-                        className={`p-3 rounded-2xl text-left transition-all border cursor-pointer min-h-[48px] ${
+                        className={`p-3 rounded-2xl text-left transition-all border cursor-pointer min-h-12 ${
                           isSelected
                             ? 'bg-blue-600 text-white border-blue-500 shadow-sm font-bold'
                             : 'bg-white dark:bg-neutral-950 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800 hover:border-slate-300'
@@ -702,7 +702,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           key={preset.id}
                           type="button"
                           onClick={() => handleKickoffSelect(preset.id, preset.label)}
-                          className={`px-3 py-2 rounded-xl text-xs font-medium border text-center transition-all cursor-pointer min-h-[44px] ${
+                          className={`px-3 py-2 rounded-xl text-xs font-medium border text-center transition-all cursor-pointer min-h-11 ${
                             isSelected
                               ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-xs'
                               : 'bg-slate-50 dark:bg-neutral-900 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800'
@@ -817,7 +817,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/35 flex items-center justify-center gap-2 cursor-pointer min-h-13 ring-1 ring-white/20 active:scale-[0.99]"
+                className="w-full py-4 px-6 rounded-2xl bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/35 flex items-center justify-center gap-2 cursor-pointer min-h-13 ring-1 ring-white/20 active:scale-[0.99]"
               >
                 {isSubmitting ? (
                   <>

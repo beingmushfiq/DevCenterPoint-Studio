@@ -165,7 +165,7 @@ export const SelectedWorkSection: React.FC = () => {
                   }}
                   className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all duration-300 border cursor-pointer ${
                     isSelected
-                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-md shadow-blue-500/25 font-bold'
+                      ? 'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-md shadow-blue-500/25 font-bold'
                       : 'liquid-glass text-slate-700 dark:text-neutral-300 hover:text-blue-600 dark:hover:text-blue-400'
                   }`}
                 >

@@ -647,6 +647,21 @@ class DatabaseSeeder extends Seeder
             ['key' => 'social_github', 'value' => 'https://github.com/beingmushfiq', 'group' => 'social'],
             ['key' => 'social_linkedin', 'value' => 'https://linkedin.com', 'group' => 'social'],
             ['key' => 'social_x', 'value' => 'https://x.com', 'group' => 'social'],
+            // Visual Redesign & Dynamic Hero Settings
+            ['key' => 'hero_badge_text', 'value' => 'Engineering Studio • Custom Systems & AI', 'group' => 'hero'],
+            ['key' => 'hero_headline_line1', 'value' => 'Digital products,', 'group' => 'hero'],
+            ['key' => 'hero_headline_line2_gradient', 'value' => 'engineered properly.', 'group' => 'hero'],
+            ['key' => 'hero_thesis_statement', 'value' => 'DevCenterPoint designs and builds scalable web platforms, cloud architecture, and intelligent systems tailored for businesses that cannot afford technical debt.', 'group' => 'hero'],
+            ['key' => 'hero_cta_primary_text', 'value' => 'Start a Project', 'group' => 'hero'],
+            ['key' => 'hero_cta_secondary_text', 'value' => 'Explore Selected Work', 'group' => 'hero'],
+            ['key' => 'hero_telemetry_badge1_label', 'value' => 'Cluster', 'group' => 'hero'],
+            ['key' => 'hero_telemetry_badge1_val', 'value' => '7 Nodes Active', 'group' => 'hero'],
+            ['key' => 'hero_telemetry_badge2_label', 'value' => 'Uptime SLA', 'group' => 'hero'],
+            ['key' => 'hero_telemetry_badge2_val', 'value' => '99.99%', 'group' => 'hero'],
+            ['key' => 'hero_telemetry_badge3_label', 'value' => 'Avg Latency', 'group' => 'hero'],
+            ['key' => 'hero_telemetry_badge3_val', 'value' => '12ms', 'group' => 'hero'],
+            ['key' => 'visual_liquid_orbs_enabled', 'value' => 'true', 'group' => 'atmosphere'],
+            ['key' => 'visual_radar_status', 'value' => 'OPERATIONAL // 100% HEALTH', 'group' => 'atmosphere'],
         ];
 
         foreach ($settings as $setting) {

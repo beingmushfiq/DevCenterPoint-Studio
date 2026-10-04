@@ -172,7 +172,7 @@ export const EngineeringPhilosophy: React.FC = () => {
                     }}
                     className={`rounded-2xl transition-all duration-300 border overflow-hidden ${
                       isSelected
-                        ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-xl shadow-blue-500/25 scale-[1.01] ring-1 ring-white/20'
+                        ? 'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-xl shadow-blue-500/25 scale-[1.01] ring-1 ring-white/20'
                         : 'liquid-glass text-slate-800 dark:text-gray-200 hover:border-blue-400/40 shadow-xs'
                     }`}
                   >
@@ -308,7 +308,7 @@ export const EngineeringPhilosophy: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-            className="lg:col-span-6 liquid-glass rounded-[2rem] p-6 md:p-8 shadow-2xl relative overflow-hidden font-sans ring-1 ring-black/5 dark:ring-white/10"
+            className="lg:col-span-6 liquid-glass rounded-4xl p-6 md:p-8 shadow-2xl relative overflow-hidden font-sans ring-1 ring-black/5 dark:ring-white/10"
           >
             <AnimatePresence mode="wait">
               <motion.div

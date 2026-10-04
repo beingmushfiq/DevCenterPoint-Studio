@@ -332,7 +332,7 @@ export default function TestimonialsIndex({ testimonials }: Props) {
                   <span className="text-[11px] text-slate-500">Order #{item.display_order}</span>
                 )}
                 {item.project_reference && (
-                  <span className="text-[11px] text-slate-400 truncate max-w-[200px]">{item.project_reference}</span>
+                  <span className="text-[11px] text-slate-400 truncate max-w-50">{item.project_reference}</span>
                 )}
               </div>
             </div>

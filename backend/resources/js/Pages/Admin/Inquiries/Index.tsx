@@ -243,7 +243,7 @@ export default function InquiriesIndex({ inquiries, filters }: Props) {
               });
 
               return (
-                <div key={col.key} className="bg-[#0c1017] border border-white/10 rounded-2xl p-3 flex flex-col min-w-[240px]">
+                <div key={col.key} className="bg-[#0c1017] border border-white/10 rounded-2xl p-3 flex flex-col min-w-60">
                   <div className="flex items-center justify-between pb-3 border-b border-white/10">
                     <span className="text-xs font-bold text-slate-200">{col.label}</span>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-white/5 text-slate-400">
@@ -251,7 +251,7 @@ export default function InquiriesIndex({ inquiries, filters }: Props) {
                     </span>
                   </div>
 
-                  <div className="space-y-2.5 mt-3 flex-1 overflow-y-auto max-h-[600px]">
+                  <div className="space-y-2.5 mt-3 flex-1 overflow-y-auto max-h-150">
                     {columnLeads.length === 0 ? (
                       <div className="p-4 text-center text-[11px] text-slate-600 italic">No leads in stage</div>
                     ) : (
@@ -298,85 +298,134 @@ export default function InquiriesIndex({ inquiries, filters }: Props) {
                   No leads found. Use the "+ Add Lead" button above to log one manually.
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm">
-                    <thead>
-                      <tr className="border-b border-white/10 bg-white/[0.02] text-slate-400 text-xs font-semibold uppercase">
-                        <th className="p-4">Reference</th>
-                        <th className="p-4">Lead Contact</th>
-                        <th className="p-4">Priority / Source</th>
-                        <th className="p-4">Budget / Value</th>
-                        <th className="p-4">Status</th>
-                        <th className="p-4 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5">
-                      {inquiries.data.map((item) => (
-                        <tr
-                          key={item.id}
-                          onClick={() => {
-                            setSelectedInquiry(item);
-                            setInternalNotes(item.internal_notes || '');
-                          }}
-                          className={`cursor-pointer transition-colors ${
-                            selectedInquiry?.id === item.id ? 'bg-blue-600/10' : 'hover:bg-white/[0.02]'
-                          }`}
-                        >
-                          <td className="p-4 font-mono text-xs text-blue-400 font-semibold">{item.reference_number}</td>
-                          <td className="p-4">
-                            <div className="font-semibold text-white text-sm">{item.name}</div>
-                            <div className="text-xs text-slate-400">{item.email}</div>
-                            {item.company && <div className="text-[11px] text-slate-500">{item.company}</div>}
-                          </td>
-                          <td className="p-4">
-                            <div className="flex items-center gap-1.5 mb-1">{getPriorityBadge(item.priority)}</div>
-                            <div className="text-[11px] text-slate-400">{item.lead_source || 'Website Form'}</div>
-                          </td>
-                          <td className="p-4 text-xs">
-                            <div className="text-slate-200 font-medium">{item.budget_range}</div>
-                            {item.estimated_value ? (
-                              <div className="text-emerald-400 font-mono font-semibold">${item.estimated_value.toLocaleString()}</div>
-                            ) : (
-                              <div className="text-slate-500">{item.timeline}</div>
-                            )}
-                          </td>
-                          <td className="p-4">
-                            <span
-                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                                item.status === 'new'
-                                  ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                                  : item.status === 'reviewed'
-                                  ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-                                  : item.status === 'contacted'
-                                  ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
-                                  : item.status === 'qualified'
-                                  ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
-                                  : item.status === 'proposal_sent'
-                                  ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
-                                  : item.status === 'closed_won' || item.status === 'closed'
-                                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                                  : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
-                              }`}
-                            >
-                              {item.status.replace('_', ' ')}
-                            </span>
-                          </td>
-                          <td className="p-4 text-right">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                deleteInquiry(item.id);
-                              }}
-                              className="p-1.5 text-slate-500 hover:text-rose-400 transition-colors"
-                              title="Delete Lead"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </td>
+                <div>
+                  {/* Mobile Touch Cards (< sm) */}
+                  <div className="sm:hidden p-3 space-y-3">
+                    {inquiries.data.map((item) => (
+                      <div
+                        key={item.id}
+                        onClick={() => {
+                          setSelectedInquiry(item);
+                          setInternalNotes(item.internal_notes || '');
+                        }}
+                        className={`p-4 rounded-xl border transition-all cursor-pointer ${
+                          selectedInquiry?.id === item.id ? 'bg-blue-600/15 border-blue-500' : 'bg-black/40 border-white/8 hover:border-white/20'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="font-mono text-xs font-bold text-blue-400">{item.reference_number}</span>
+                          <span
+                            className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider ${
+                              item.status === 'new'
+                                ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
+                                : item.status === 'reviewed'
+                                ? 'bg-blue-500/15 text-blue-300 border border-blue-500/30'
+                                : item.status === 'contacted'
+                                ? 'bg-purple-500/15 text-purple-300 border border-purple-500/30'
+                                : item.status === 'closed_won' || item.status === 'closed'
+                                ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+                                : 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
+                            }`}
+                          >
+                            {item.status.replace('_', ' ')}
+                          </span>
+                        </div>
+
+                        <div className="font-semibold text-white text-sm">{item.name}</div>
+                        <div className="text-xs text-slate-400 font-mono">{item.email}</div>
+                        {item.company && <div className="text-xs text-slate-500 mt-0.5">{item.company}</div>}
+
+                        <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between text-xs">
+                          <span className="text-slate-300 font-mono">{item.budget_range}</span>
+                          <span className="text-blue-400 font-semibold inline-flex items-center gap-1">
+                            Inspect Details &rarr;
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tablet & Desktop Dense Table (>= sm) */}
+                  <div className="hidden sm:block overflow-x-auto">
+                    <table className="w-full text-left text-sm">
+                      <thead>
+                        <tr className="border-b border-white/10 bg-white/2 text-slate-400 text-xs font-semibold uppercase">
+                          <th className="p-4">Reference</th>
+                          <th className="p-4">Lead Contact</th>
+                          <th className="p-4">Priority / Source</th>
+                          <th className="p-4">Budget / Value</th>
+                          <th className="p-4">Status</th>
+                          <th className="p-4 text-right">Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {inquiries.data.map((item) => (
+                          <tr
+                            key={item.id}
+                            onClick={() => {
+                              setSelectedInquiry(item);
+                              setInternalNotes(item.internal_notes || '');
+                            }}
+                            className={`cursor-pointer transition-colors ${
+                              selectedInquiry?.id === item.id ? 'bg-blue-600/10' : 'hover:bg-white/2'
+                            }`}
+                          >
+                            <td className="p-4 font-mono text-xs text-blue-400 font-semibold">{item.reference_number}</td>
+                            <td className="p-4">
+                              <div className="font-semibold text-white text-sm">{item.name}</div>
+                              <div className="text-xs text-slate-400">{item.email}</div>
+                              {item.company && <div className="text-[11px] text-slate-500">{item.company}</div>}
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-1.5 mb-1">{getPriorityBadge(item.priority)}</div>
+                              <div className="text-[11px] text-slate-400">{item.lead_source || 'Website Form'}</div>
+                            </td>
+                            <td className="p-4 text-xs">
+                              <div className="text-slate-200 font-medium">{item.budget_range}</div>
+                              {item.estimated_value ? (
+                                <div className="text-emerald-400 font-mono font-semibold">${item.estimated_value.toLocaleString()}</div>
+                              ) : (
+                                <div className="text-slate-500">{item.timeline}</div>
+                              )}
+                            </td>
+                            <td className="p-4">
+                              <span
+                                className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                  item.status === 'new'
+                                    ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                                    : item.status === 'reviewed'
+                                    ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                                    : item.status === 'contacted'
+                                    ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                                    : item.status === 'qualified'
+                                    ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+                                    : item.status === 'proposal_sent'
+                                    ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
+                                    : item.status === 'closed_won' || item.status === 'closed'
+                                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                    : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                                }`}
+                              >
+                                {item.status.replace('_', ' ')}
+                              </span>
+                            </td>
+                            <td className="p-4 text-right">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  deleteInquiry(item.id);
+                                }}
+                                className="p-1.5 text-slate-500 hover:text-rose-400 transition-colors cursor-pointer"
+                                title="Delete Lead"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </div>

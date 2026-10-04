@@ -437,6 +437,13 @@ class SoundEngine {
   }
 
   /**
+   * Alias for playSuccessChime
+   */
+  public playSuccess(): void {
+    this.playSuccessChime();
+  }
+
+  /**
    * Shimmering cascade sparkle sound for replaying celebrations
    */
   public playSparkleCelebration(): void {

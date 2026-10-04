@@ -4,8 +4,32 @@ import { motion } from 'motion/react';
 import { DigitalSystemMap } from './DigitalSystemMap';
 import { HeroInteractiveCanvas } from './HeroInteractiveCanvas';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../context/CmsContext';
 
 export const Hero: React.FC = () => {
+  const cms = useCms();
+
+  const badgeText = cms.getSetting('hero_badge_text', 'Engineering Studio • Custom Systems & AI');
+  const headlineLine1 = cms.getSetting('hero_headline_line1', 'Digital products,');
+  const headlineLine2 = cms.getSetting('hero_headline_line2_gradient', 'engineered properly.');
+  const thesis = cms.getSetting(
+    'hero_thesis_statement',
+    'DevCenterPoint designs and builds scalable web platforms, cloud architecture, and intelligent systems tailored for businesses that cannot afford technical debt.'
+  );
+  const ctaPrimary = cms.getSetting('hero_cta_primary_text', 'Start a Project');
+  const ctaSecondary = cms.getSetting('hero_cta_secondary_text', 'Explore Selected Work');
+  const tel1Label = cms.getSetting('hero_telemetry_badge1_label', 'Cluster');
+  const tel1Val = cms.getSetting('hero_telemetry_badge1_val', '7 Nodes Active');
+  const tel2Label = cms.getSetting('hero_telemetry_badge2_label', 'Uptime SLA');
+  const tel2Val = cms.getSetting('hero_telemetry_badge2_val', '99.99%');
+  const tel3Label = cms.getSetting('hero_telemetry_badge3_label', 'Avg Latency');
+  const tel3Val = cms.getSetting('hero_telemetry_badge3_val', '12ms');
+  const orbsEnabled = cms.getSetting('visual_liquid_orbs_enabled', 'true') !== 'false';
+  const whatsappNumber = cms.getSetting('whatsapp_number', '8801988383323').replace(/[^0-9]/g, '');
+  const whatsappMessage = encodeURIComponent(
+    cms.getSetting('whatsapp_prefill_message', "Hi DevCenterPoint, I'd like to discuss a project")
+  );
+
   const scrollToSection = (id: string) => {
     soundEngine.playClick();
     const el = document.getElementById(id);
@@ -43,9 +67,13 @@ export const Hero: React.FC = () => {
       <HeroInteractiveCanvas />
 
       {/* Floating Animated Liquid Gradient Light Orbs (Visual Depth & Glow) */}
-      <div className="absolute top-12 left-1/4 -translate-x-1/2 w-96 h-96 bg-blue-500/15 dark:bg-blue-600/20 blur-[130px] rounded-full pointer-events-none animate-float-orb-1" />
-      <div className="absolute top-36 right-1/4 translate-x-1/2 w-[28rem] h-[28rem] bg-purple-500/12 dark:bg-purple-600/18 blur-[150px] rounded-full pointer-events-none animate-float-orb-2" />
-      <div className="absolute top-72 left-1/2 -translate-x-1/2 w-80 h-80 bg-cyan-400/12 dark:bg-cyan-500/14 blur-[120px] rounded-full pointer-events-none animate-float-orb-3" />
+      {orbsEnabled && (
+        <>
+          <div className="absolute top-12 left-1/4 -translate-x-1/2 w-96 h-96 bg-blue-500/15 dark:bg-blue-600/20 blur-[130px] rounded-full pointer-events-none animate-float-orb-1" />
+          <div className="absolute top-36 right-1/4 translate-x-1/2 w-md h-112 bg-purple-500/12 dark:bg-purple-600/18 blur-[150px] rounded-full pointer-events-none animate-float-orb-2" />
+          <div className="absolute top-72 left-1/2 -translate-x-1/2 w-80 h-80 bg-cyan-400/12 dark:bg-cyan-500/14 blur-[120px] rounded-full pointer-events-none animate-float-orb-3" />
+        </>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
@@ -55,14 +83,14 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full liquid-glass text-slate-700 dark:text-slate-200 text-xs font-semibold mb-6 shadow-sm hover:scale-[1.02] transition-transform duration-300"
+            className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full liquid-glass text-slate-700 dark:text-slate-200 text-xs font-semibold mb-6 shadow-sm hover:scale-[1.02] transition-transform duration-300 max-w-full justify-center"
           >
-            <span className="relative flex h-2 w-2">
+            <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600 dark:bg-blue-400"></span>
             </span>
-            <span className="font-mono text-[11px] tracking-wider uppercase font-bold text-gradient-signature">
-              Engineering Studio • Custom Systems & AI
+            <span className="font-mono text-[10px] sm:text-[11px] tracking-wider uppercase font-bold text-gradient-signature truncate">
+              {badgeText}
             </span>
           </motion.div>
 
@@ -71,10 +99,10 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.08 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-6 text-slate-950 dark:text-white"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.12] mb-6 text-slate-950 dark:text-white wrap-break-word"
           >
-            Digital products, <br className="hidden sm:inline" />
-            <span className="text-gradient-signature">engineered properly.</span>
+            {headlineLine1} <br className="hidden sm:inline" />
+            <span className="text-gradient-signature">{headlineLine2}</span>
           </motion.h1>
 
           {/* Supporting Statement */}
@@ -84,7 +112,7 @@ export const Hero: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.16 }}
             className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal mb-8"
           >
-            DevCenterPoint designs and builds scalable web platforms, cloud architecture, and intelligent systems tailored for businesses that cannot afford technical debt.
+            {thesis}
           </motion.p>
 
           {/* Primary Action Group with Liquid Polish */}
@@ -98,9 +126,9 @@ export const Hero: React.FC = () => {
             <button
               type="button"
               onClick={() => scrollToSection('contact')}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white text-sm font-bold tracking-tight transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/35 flex items-center justify-center gap-2 active:scale-98 cursor-pointer ring-1 ring-white/20"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white text-sm font-bold tracking-tight transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/35 flex items-center justify-center gap-2 active:scale-98 cursor-pointer ring-1 ring-white/20"
             >
-              <span>Start a Project</span>
+              <span>{ctaPrimary}</span>
               <ArrowUpRight className="w-4 h-4" />
             </button>
 
@@ -111,13 +139,13 @@ export const Hero: React.FC = () => {
               className="w-full sm:w-auto px-6 py-3.5 rounded-full liquid-glass hover:bg-white/80 dark:hover:bg-white/10 text-slate-800 dark:text-slate-100 text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 active:scale-98 cursor-pointer shadow-sm hover:shadow-md"
             >
               <Play className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 fill-current" />
-              <span>Explore Selected Work</span>
+              <span>{ctaSecondary}</span>
               <ArrowDownRight className="w-4 h-4 text-slate-500 dark:text-slate-400" />
             </button>
 
             {/* WhatsApp Direct */}
             <a
-              href="https://wa.me/8801988383323?text=Hi%20DevCenterPoint,%20I'd%20like%20to%20discuss%20a%20project"
+              href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => soundEngine.playClick()}
@@ -137,15 +165,15 @@ export const Hero: React.FC = () => {
           >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full liquid-glass text-slate-600 dark:text-slate-300">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Cluster: 7 Nodes Active</span>
+              <span>{tel1Label}: {tel1Val}</span>
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full liquid-glass text-slate-600 dark:text-slate-300">
-              <span className="text-blue-600 dark:text-blue-400 font-bold">99.99%</span>
-              <span>Uptime SLA</span>
+              <span className="text-blue-600 dark:text-blue-400 font-bold">{tel2Val}</span>
+              <span>{tel2Label}</span>
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full liquid-glass text-slate-600 dark:text-slate-300">
-              <span className="text-purple-600 dark:text-purple-400 font-bold">12ms</span>
-              <span>Avg Latency</span>
+              <span className="text-purple-600 dark:text-purple-400 font-bold">{tel3Val}</span>
+              <span>{tel3Label}</span>
             </div>
           </motion.div>
         </div>

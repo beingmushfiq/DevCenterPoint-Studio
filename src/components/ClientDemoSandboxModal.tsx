@@ -358,32 +358,32 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
           onClose();
         }
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
         transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-        className="relative w-full max-w-5xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-[#262626] rounded-3xl sm:rounded-[2.5rem] shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col text-slate-900 dark:text-white font-sans"
+        className="relative w-full max-w-5xl bg-white dark:bg-[#121212] border-t sm:border border-slate-200 dark:border-[#262626] rounded-t-3xl sm:rounded-[2.5rem] shadow-2xl overflow-hidden h-[95vh] sm:h-auto sm:max-h-[92vh] flex flex-col text-slate-900 dark:text-white font-sans"
       >
         {/* Top Header */}
-        <div className="flex items-center justify-between p-5 sm:p-6 border-b border-slate-200 dark:border-[#262626] bg-slate-50 dark:bg-[#161616]">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200 dark:border-[#262626] bg-slate-50 dark:bg-[#161616] shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center shrink-0">
               <Zap className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white">
-                  Client Demo Sandbox Launcher
+                <h3 className="text-sm sm:text-lg font-black tracking-tight text-slate-900 dark:text-white">
+                  Client Demo Sandbox
                 </h3>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Live Verified Environments
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-gray-400 font-medium">
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-gray-400 font-medium line-clamp-1">
                 Test-drive our active enterprise systems with pre-filled administrative credentials.
               </p>
             </div>
@@ -395,7 +395,7 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
               soundEngine.playModalClose();
               onClose();
             }}
-            className="w-9 h-9 rounded-xl bg-slate-200/60 dark:bg-[#202020] hover:bg-slate-300 dark:hover:bg-[#282828] text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-200/60 dark:bg-[#202020] hover:bg-slate-300 dark:hover:bg-[#282828] text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
             aria-label="Close modal"
           >
             <X className="w-4 h-4" />
@@ -403,9 +403,9 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="p-6 sm:p-8 overflow-y-auto space-y-6 flex-1">
-          {/* App Selector Tabs */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2">
+        <div className="p-4 sm:p-8 overflow-y-auto space-y-5 sm:space-y-6 flex-1">
+          {/* App Selector Tabs (Horizontal Swipe on Mobile, Grid on Tablet/Desktop) */}
+          <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
             {apps.map((app) => {
               const isSelected = selectedAppId === app.id;
               const Icon = app.icon;
@@ -417,7 +417,7 @@ export const ClientDemoSandboxModal: React.FC<ClientDemoSandboxModalProps> = ({
                     soundEngine.playTap();
                     setSelectedAppId(app.id);
                   }}
-                  className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between space-y-2 ${
+                  className={`p-2.5 sm:p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between space-y-2 shrink-0 w-36 sm:w-auto ${
                     isSelected
                       ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-600/25 ring-2 ring-blue-500/40'
                       : 'bg-slate-50 dark:bg-[#181818] border-slate-200 dark:border-[#282828] text-slate-700 dark:text-gray-300 hover:border-slate-300 dark:hover:border-[#383838]'

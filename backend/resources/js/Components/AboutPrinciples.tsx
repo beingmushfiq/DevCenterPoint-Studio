@@ -83,7 +83,7 @@ export const AboutPrinciples: React.FC = () => {
                   onClick={() => setSelectedNum(item.number)}
                   className={`w-full text-left p-5 rounded-2xl transition-all duration-300 border flex items-center justify-between group cursor-pointer ${
                     isSelected
-                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-xl shadow-blue-500/25 translate-x-1.5 ring-1 ring-white/20'
+                      ? 'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-xl shadow-blue-500/25 translate-x-1.5 ring-1 ring-white/20'
                       : 'liquid-glass text-slate-800 dark:text-gray-300 hover:border-blue-400/40 hover:bg-white/80 dark:hover:bg-white/10 shadow-xs'
                   }`}
                 >
@@ -114,7 +114,7 @@ export const AboutPrinciples: React.FC = () => {
               </div>
 
               <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-2">{activePrinciple.title}</h3>
-              <p className="text-base text-blue-600 dark:text-blue-400 font-extrabold mb-6 uppercase tracking-wider text-xs">{activePrinciple.tagline}</p>
+              <p className="text-xs font-extrabold text-blue-600 dark:text-blue-400 mb-6 uppercase tracking-wider">{activePrinciple.tagline}</p>
 
               <p className="text-sm sm:text-base text-slate-700 dark:text-gray-300 leading-relaxed mb-8 font-medium">
                 {activePrinciple.description}

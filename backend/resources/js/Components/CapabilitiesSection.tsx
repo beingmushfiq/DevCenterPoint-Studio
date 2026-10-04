@@ -101,7 +101,7 @@ export const CapabilitiesSection: React.FC = () => {
                   }}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold shrink-0 transition-all border cursor-pointer ${
                     isSelected
-                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-md shadow-blue-500/25'
+                      ? 'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-md shadow-blue-500/25'
                       : 'liquid-glass text-slate-700 dark:text-neutral-300'
                   }`}
                 >
@@ -132,7 +132,7 @@ export const CapabilitiesSection: React.FC = () => {
                   }}
                   className={`w-full text-left p-4 rounded-2xl transition-all duration-300 flex items-center justify-between group border cursor-pointer ${
                     isSelected
-                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-lg shadow-blue-500/25 translate-x-1.5 font-bold ring-1 ring-white/20'
+                      ? 'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-lg shadow-blue-500/25 translate-x-1.5 font-bold ring-1 ring-white/20'
                       : 'liquid-glass text-slate-800 dark:text-neutral-200 hover:border-blue-500/30 hover:bg-white/80 dark:hover:bg-white/10'
                   }`}
                 >
