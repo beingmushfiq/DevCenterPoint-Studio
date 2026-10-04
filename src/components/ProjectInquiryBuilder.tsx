@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { InquiryFormData } from '../types';
 import { submitProjectInquiry } from '../lib/firebase';
@@ -20,7 +20,9 @@ import {
   Calendar,
   Lock,
   MessageSquare,
-  Users
+  Users,
+  PhoneCall,
+  ExternalLink
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -145,16 +147,18 @@ const BUDGET_TIERS: BudgetTier[] = [
 
 const KICKOFF_PRESETS = [
   { id: 'immediate', label: 'Within 7 Days', note: 'Fast-track onboarding' },
-  { id: 'month', label: 'Within 30 Days', note: 'Standard Q4 roadmap' },
-  { id: 'quarter', label: 'Next Quarter', note: 'Strategic planned kickoff' },
-  { id: 'custom', label: 'Specific Date', note: 'Pick target calendar date' },
+  { id: 'month', label: 'Within 30 Days', note: 'Standard roadmap' },
+  { id: 'quarter', label: 'Next Quarter', note: 'Strategic kickoff' },
+  { id: 'custom', label: 'Specific Date', note: 'Pick calendar date' },
 ];
 
 const TIMELINE_OPTIONS = [
-  { id: '1 - 2 Months', label: 'Fast-Track (1–2 Months)', note: 'Rapid MVP or urgent sprint' },
-  { id: '2 - 3 Months', label: 'Standard (2–3 Months)', note: 'Recommended production cycle' },
-  { id: '3+ Months', label: 'Flexible / Phased Build', note: 'Longer roadmap or enterprise scope' },
+  { id: '1 - 2 Months', label: 'Fast-Track (1–2 Mo)', note: 'Rapid MVP / sprint' },
+  { id: '2 - 3 Months', label: 'Standard (2–3 Mo)', note: 'Recommended cycle' },
+  { id: '3+ Months', label: 'Phased Build (3+ Mo)', note: 'Enterprise scope' },
 ];
+
+const DRAFT_STORAGE_KEY = 'dcp_inquiry_draft_v2';
 
 export const ProjectInquiryBuilder: React.FC = () => {
   const [currency, setCurrency] = useState<CurrencyCode>('USD');
@@ -167,16 +171,52 @@ export const ProjectInquiryBuilder: React.FC = () => {
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [copiedRef, setCopiedRef] = useState<boolean>(false);
 
+  const activeTier = BUDGET_TIERS.find((t) => t.id === selectedTierId) || BUDGET_TIERS[1];
+
+  // Smart defaults with LocalStorage restoration
+  const [formData, setFormData] = useState<InquiryFormData>(() => {
+    try {
+      const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch {
+      // Fallback
+    }
+    return {
+      name: '',
+      email: '',
+      company: '',
+      projectType: 'SaaS / Web Product',
+      budgetRange: `Growth & Scale Platform (${BUDGET_TIERS[1].prices.USD})`,
+      timeline: '2 - 3 Months',
+      targetKickoff: 'Within 30 Days',
+      description: '',
+      selectedTech: [],
+    };
+  });
+
+  // Autosave draft on change
+  useEffect(() => {
+    if (!submitted) {
+      try {
+        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(formData));
+      } catch {
+        // Ignored
+      }
+    }
+  }, [formData, submitted]);
+
   const triggerConfettiExplosion = () => {
     try {
       confetti({
-        particleCount: 80,
-        spread: 70,
+        particleCount: 60,
+        spread: 60,
         origin: { y: 0.6 },
-        colors: ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B'],
+        colors: ['#2563EB', '#10B981', '#6366F1', '#F59E0B'],
       });
     } catch {
-      // Graceful fallback if confetti fails
+      // Graceful fallback
     }
   };
 
@@ -188,21 +228,6 @@ export const ProjectInquiryBuilder: React.FC = () => {
       setTimeout(() => setCopiedRef(false), 2000);
     }
   };
-
-  // Smart default options pre-selected for instant clarity & high conversion
-  const [formData, setFormData] = useState<InquiryFormData>({
-    name: '',
-    email: '',
-    company: '',
-    projectType: 'SaaS / Web Product',
-    budgetRange: `Growth & Scale Platform (${BUDGET_TIERS[1].prices.USD})`,
-    timeline: '2 - 3 Months',
-    targetKickoff: 'Within 30 Days',
-    description: '',
-    selectedTech: [],
-  });
-
-  const activeTier = BUDGET_TIERS.find((t) => t.id === selectedTierId) || BUDGET_TIERS[1];
 
   const handleCurrencyChange = (curr: CurrencyCode) => {
     soundEngine.playTap();
@@ -254,30 +279,73 @@ export const ProjectInquiryBuilder: React.FC = () => {
       ? `Target Date: ${customKickoffDate}`
       : formData.targetKickoff || 'Within 30 Days';
 
+    const payload = {
+      ...formData,
+      name: formData.name.trim(),
+      email: formData.email.trim().toLowerCase(),
+      company: formData.company?.trim() || '',
+      description: formData.description.trim(),
+      budgetRange: formData.budgetRange || `${activeTier.label} (${activeTier.prices[currency]})`,
+      targetKickoff: finalKickoff,
+    };
+
     try {
-      const result = await submitProjectInquiry({
-        ...formData,
-        name: formData.name.trim(),
-        email: formData.email.trim().toLowerCase(),
-        company: formData.company?.trim() || '',
-        description: formData.description.trim(),
-        budgetRange: formData.budgetRange || `${activeTier.label} (${activeTier.prices[currency]})`,
-        targetKickoff: finalKickoff,
-      });
+      // 1. Attempt Laravel backend endpoint first if available
+      let result: { id: string; referenceNumber: string } | null = null;
+      try {
+        const response = await fetch('/inquiry', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({
+            name: payload.name,
+            email: payload.email,
+            company: payload.company,
+            project_types: [payload.projectType],
+            budget_range: payload.budgetRange,
+            timeline: payload.timeline,
+            details: payload.description || 'Consultation request via Project Inquiry Builder',
+            selected_tech: payload.selectedTech || [],
+          }),
+        });
+
+        if (response.ok) {
+          const json = await response.json();
+          result = {
+            id: String(json.id),
+            referenceNumber: json.reference_number || `DCP-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+          };
+        }
+      } catch {
+        // Fallback to Firebase
+      }
+
+      // 2. Fallback to Firebase Firestore if Laravel is not handling the route
+      if (!result) {
+        result = await submitProjectInquiry(payload);
+      }
 
       setSubmissionSuccess(result);
       setSubmitted(true);
+      try {
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+      } catch {
+        // Ignored
+      }
+
       soundEngine.playSuccessChime();
       soundEngine.playSparkleCelebration();
       triggerConfettiExplosion();
     } catch (err: unknown) {
       soundEngine.playTap();
-      const msg = err instanceof Error ? err.message : 'Unable to submit your inquiry at this moment.';
-      if (msg.includes('Firestore Error') || msg.startsWith('{')) {
-        setSubmissionError('Unable to transmit inquiry. Please check your connection or email hello@devcenterpoint.com.');
-      } else {
-        setSubmissionError(msg);
-      }
+      const msg = err instanceof Error ? err.message : 'Unable to transmit inquiry.';
+      setSubmissionError(
+        msg.includes('Firestore') 
+          ? 'Unable to transmit inquiry. Please reach out directly on WhatsApp (+8801988383323) or contact@devcenterpoint.com.'
+          : msg
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -296,7 +364,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
       email: '',
       company: '',
       projectType: 'SaaS / Web Product',
-      budgetRange: 'Growth & Scale Platform ($15,000 – $35,000)',
+      budgetRange: `Growth & Scale Platform (${BUDGET_TIERS[1].prices.USD})`,
       timeline: '2 - 3 Months',
       targetKickoff: 'Within 30 Days',
       description: '',
@@ -304,31 +372,36 @@ export const ProjectInquiryBuilder: React.FC = () => {
     });
   };
 
+  const whatsappChatUrl = submissionSuccess
+    ? `https://wa.me/8801988383323?text=${encodeURIComponent(
+        `Hi DevCenterPoint, I just submitted project inquiry #${submissionSuccess.referenceNumber} for ${formData.projectType}. Would love to discuss next steps!`
+      )}`
+    : `https://wa.me/8801988383323?text=${encodeURIComponent(
+        'Hi DevCenterPoint, I would like to discuss engineering a digital product.'
+      )}`;
+
   return (
     <section
       id="contact"
       aria-label="Project Collaboration & Consultation"
-      className="py-24 bg-slate-50 dark:bg-[#0c0c0c] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#222222] relative transition-colors duration-300"
+      className="py-16 sm:py-24 bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-neutral-100 border-t border-slate-200 dark:border-neutral-800 relative transition-colors duration-300"
     >
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/4 right-1/4 w-125 h-125 bg-blue-600/5 dark:bg-blue-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
-
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-12">
-          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1.5 rounded-full border border-blue-200 dark:border-blue-900/40 mb-3">
-            <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+        <div className="max-w-3xl mb-10">
+          <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1.5 rounded-full border border-blue-200 dark:border-blue-900/60 mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
             <span>08 — Project Collaboration</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
             Have a product worth building? <br className="hidden sm:inline" />
-            <span className="text-blue-600 dark:text-blue-500">Let's map out the solution.</span>
+            <span className="text-blue-600 dark:text-blue-400">Let's engineer the roadmap.</span>
           </h2>
 
-          <p className="text-sm sm:text-base text-slate-600 dark:text-gray-300 font-medium leading-relaxed">
-            Select your project focus and desired timeline below. Our principal architects will review your goals and deliver a comprehensive roadmap within 24 hours.
+          <p className="text-xs sm:text-base text-slate-600 dark:text-neutral-400 font-normal leading-relaxed">
+            Select your product focus, preferred investment tier, and target timeline. We will review your goals and deliver a verified technical roadmap within 24 hours.
           </p>
         </div>
 
@@ -337,7 +410,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/40 text-rose-700 dark:text-rose-400 flex items-center gap-3 text-xs font-semibold"
+            className="mb-8 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 text-rose-700 dark:text-rose-400 flex items-center gap-3 text-xs font-semibold"
           >
             <AlertCircle className="w-5 h-5 shrink-0" />
             <div>{submissionError}</div>
@@ -345,37 +418,37 @@ export const ProjectInquiryBuilder: React.FC = () => {
         )}
 
         {submitted && submissionSuccess ? (
-          /* High-Trust Success Card */
+          /* High-Trust Success Card with Direct WhatsApp & Booking */
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-[#141414] border border-emerald-500/30 shadow-2xl text-center max-w-2xl mx-auto space-y-6"
+            className="p-6 sm:p-10 rounded-3xl bg-slate-50/80 dark:bg-neutral-900/70 border border-emerald-500/30 shadow-xl text-center max-w-2xl mx-auto space-y-6"
           >
-            <div className="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-8 h-8" />
+            <div className="w-14 h-14 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/50 flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-7 h-7" />
             </div>
 
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-[11px] font-bold uppercase tracking-wider border border-emerald-500/20">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 font-mono text-[10px] font-bold uppercase tracking-wider border border-emerald-200 dark:border-emerald-900/50">
                 <Check className="w-3.5 h-3.5" />
                 <span>Inquiry Transmitted Successfully</span>
               </div>
 
               <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-                We've received your project brief
+                Brief Received & Assigned
               </h3>
 
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-gray-300 font-medium leading-relaxed max-w-lg mx-auto">
-                Thank you, <strong className="text-slate-900 dark:text-white">{formData.name}</strong>. A principal engineering lead will review your requirements for{' '}
-                <strong className="text-slate-900 dark:text-white">{formData.projectType}</strong> and reach out to{' '}
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 font-normal leading-relaxed max-w-lg mx-auto">
+                Thank you, <strong className="text-slate-900 dark:text-white">{formData.name}</strong>. A lead software architect is reviewing your brief for{' '}
+                <strong className="text-slate-900 dark:text-white">{formData.projectType}</strong> and will follow up with{' '}
                 <strong className="text-slate-900 dark:text-white">{formData.email}</strong> within 24 hours.
               </p>
             </div>
 
             {/* Reference ID card */}
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#282828] flex items-center justify-between max-w-md mx-auto">
+            <div className="p-4 rounded-2xl bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 flex items-center justify-between max-w-md mx-auto">
               <div className="text-left">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-gray-500 block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-neutral-500 block">
                   Project Tracking Reference
                 </span>
                 <span className="text-base font-black font-mono text-blue-600 dark:text-blue-400">
@@ -386,7 +459,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleCopyReference(submissionSuccess.referenceNumber)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#252525] border border-slate-200 dark:border-[#333333] text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#2a2a2a] transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 text-xs font-bold text-slate-700 dark:text-neutral-300 hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 {copiedRef ? (
                   <>
@@ -402,30 +475,46 @@ export const ProjectInquiryBuilder: React.FC = () => {
               </button>
             </div>
 
-            <div className="pt-2 flex justify-center">
+            {/* Action Buttons: WhatsApp Direct + Call Booking */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 max-w-md mx-auto">
+              <a
+                href={whatsappChatUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm"
+              >
+                <MessageSquare className="w-4 h-4" />
+                <span>Instant WhatsApp Chat</span>
+                <ExternalLink className="w-3 h-3 opacity-70" />
+              </a>
+
               <button
                 type="button"
                 onClick={resetForm}
-                className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-colors cursor-pointer shadow-md shadow-blue-600/20"
+                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white dark:bg-neutral-950 hover:bg-slate-100 dark:hover:bg-neutral-900 text-slate-800 dark:text-neutral-200 border border-slate-200 dark:border-neutral-800 text-xs font-bold transition-colors cursor-pointer"
               >
-                Submit Another Project Scope
+                Submit Another Inquiry
               </button>
             </div>
           </motion.div>
         ) : (
-          /* Focused, Streamlined Two-Column Layout */
+          /* Main Inquiry Form Grid */
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Left Column: Form Builder (7 cols) */}
+            {/* Form Builder (7 cols) */}
             <form
               onSubmit={handleSubmit}
-              className="lg:col-span-7 bg-white dark:bg-[#141414] rounded-3xl border border-slate-200 dark:border-[#262626] p-6 sm:p-8 space-y-6 shadow-xl"
+              className="lg:col-span-7 bg-slate-50/70 dark:bg-neutral-900/60 rounded-3xl border border-slate-200 dark:border-neutral-800 p-5 sm:p-8 space-y-6 shadow-sm"
             >
-              {/* Step 1: Project Domain Options */}
+              {/* Step 1: Product Focus */}
               <div>
-                <label className="block text-xs font-black uppercase tracking-wider text-slate-700 dark:text-gray-300 mb-2.5">
-                  1. What kind of product are you looking to build?
-                </label>
+                <div className="flex items-center justify-between mb-2.5">
+                  <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-800 dark:text-neutral-200">
+                    1. Product Focus
+                  </label>
+                  <span className="text-[10px] font-mono text-slate-400">Step 1 of 4</span>
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {PROJECT_TYPE_OPTIONS.map((option) => {
                     const isSelected = formData.projectType === option.id;
@@ -439,17 +528,17 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           soundEngine.playTap();
                           setFormData({ ...formData, projectType: option.id });
                         }}
-                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex items-start gap-3 ${
+                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex items-start gap-3 min-h-13 ${
                           isSelected
-                            ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-500 dark:border-blue-500 text-slate-900 dark:text-white ring-1 ring-blue-500/30'
-                            : 'bg-slate-50 dark:bg-[#1a1a1a] hover:bg-slate-100 dark:hover:bg-[#202020] text-slate-700 dark:text-gray-300 border-slate-200 dark:border-[#282828]'
+                            ? 'bg-blue-600 text-white border-blue-500 shadow-sm shadow-blue-600/20'
+                            : 'bg-white dark:bg-neutral-950 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800 hover:border-slate-300'
                         }`}
                       >
                         <div
                           className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
                             isSelected
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-white dark:bg-[#121212] text-slate-500 dark:text-gray-400 border border-slate-200 dark:border-[#2c2c2c]'
+                              ? 'bg-white/20 text-white'
+                              : 'bg-slate-100 dark:bg-neutral-800 text-slate-500 dark:text-neutral-400'
                           }`}
                         >
                           <IconComponent className="w-4 h-4" />
@@ -459,7 +548,9 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           <div className="text-xs font-bold leading-snug">
                             {option.label}
                           </div>
-                          <div className="text-[11px] text-slate-500 dark:text-gray-400 leading-tight mt-0.5 line-clamp-1">
+                          <div className={`text-[11px] leading-tight mt-0.5 line-clamp-1 ${
+                            isSelected ? 'text-blue-100' : 'text-slate-500 dark:text-neutral-400'
+                          }`}>
                             {option.description}
                           </div>
                         </div>
@@ -469,20 +560,17 @@ export const ProjectInquiryBuilder: React.FC = () => {
                 </div>
               </div>
 
-              {/* Step 2: Interactive Scope & Investment Estimator */}
+              {/* Step 2: Scope & Investment */}
               <div>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-2.5">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-wider text-slate-700 dark:text-gray-300">
-                      2. Project Scope & Investment
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
+                  <div className="flex items-center gap-2">
+                    <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-800 dark:text-neutral-200">
+                      2. Scope & Investment Tier
                     </label>
-                    <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">
-                      Deterministic Milestone Pricing
-                    </span>
                   </div>
 
                   {/* Currency Selector Pill Bar */}
-                  <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2a2a2a] self-start sm:self-auto">
+                  <div className="flex items-center gap-1 p-1 rounded-xl bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 self-start sm:self-auto">
                     {(Object.keys(CURRENCIES) as CurrencyCode[]).map((curr) => {
                       const isCurrActive = currency === curr;
                       return (
@@ -490,10 +578,10 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           key={curr}
                           type="button"
                           onClick={() => handleCurrencyChange(curr)}
-                          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 min-h-8 ${
                             isCurrActive
                               ? 'bg-blue-600 text-white shadow-xs'
-                              : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'
+                              : 'text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white'
                           }`}
                         >
                           <span>{CURRENCIES[curr].flag}</span>
@@ -513,10 +601,10 @@ export const ProjectInquiryBuilder: React.FC = () => {
                         key={tier.id}
                         type="button"
                         onClick={() => handleTierSelect(tier)}
-                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex flex-col justify-between space-y-2 ${
+                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex flex-col justify-between space-y-2 min-h-20 ${
                           isSelected
                             ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-500 text-slate-900 dark:text-white ring-1 ring-blue-500/30'
-                            : 'bg-slate-50 dark:bg-[#1a1a1a] hover:bg-slate-100 dark:hover:bg-[#202020] text-slate-700 dark:text-gray-300 border-slate-200 dark:border-[#282828]'
+                            : 'bg-white dark:bg-neutral-950 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800 hover:border-slate-300'
                         }`}
                       >
                         <div className="space-y-1">
@@ -524,24 +612,24 @@ export const ProjectInquiryBuilder: React.FC = () => {
                             <span className="text-xs font-bold leading-tight">
                               {tier.label}
                             </span>
-                            <span className={`text-[10px] font-mono font-black px-2 py-0.5 rounded-full ${
+                            <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-md ${
                               isSelected
                                 ? 'bg-blue-600 text-white'
-                                : 'bg-slate-200 dark:bg-[#262626] text-slate-700 dark:text-gray-300'
+                                : 'bg-slate-100 dark:bg-neutral-800 text-slate-700 dark:text-neutral-300'
                             }`}>
                               {tier.prices[currency]}
                             </span>
                           </div>
-                          <p className="text-[11px] text-slate-500 dark:text-gray-400 leading-snug line-clamp-2">
+                          <p className="text-[11px] text-slate-500 dark:text-neutral-400 leading-snug line-clamp-2">
                             {tier.recommendedFor}
                           </p>
                         </div>
 
-                        <div className="pt-1.5 border-t border-slate-200/60 dark:border-[#2a2a2a] flex items-center justify-between text-[10px] font-mono">
+                        <div className="pt-1.5 border-t border-slate-100 dark:border-neutral-800 flex items-center justify-between text-[10px] font-mono">
                           <span className="text-blue-600 dark:text-blue-400 font-bold">
                             ⏱ {tier.speed}
                           </span>
-                          <span className="text-slate-500 dark:text-gray-400 truncate max-w-32.5">
+                          <span className="text-slate-400 truncate max-w-32.5">
                             {tier.squad.split('+')[0]}
                           </span>
                         </div>
@@ -551,11 +639,14 @@ export const ProjectInquiryBuilder: React.FC = () => {
                 </div>
               </div>
 
-              {/* Step 3: Launch Horizon & Target Kickoff Date */}
+              {/* Step 3: Launch Horizon */}
               <div className="space-y-3">
-                <label className="block text-xs font-black uppercase tracking-wider text-slate-700 dark:text-gray-300">
-                  3. Launch Horizon & Desired Kickoff
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-800 dark:text-neutral-200">
+                    3. Launch Horizon & Kickoff
+                  </label>
+                  <span className="text-[10px] font-mono text-slate-400">Step 3 of 4</span>
+                </div>
 
                 {/* Timeline Duration */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -570,18 +661,16 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           soundEngine.playTap();
                           setFormData({ ...formData, timeline: timeline.id });
                         }}
-                        className={`p-3 rounded-2xl text-left transition-all border cursor-pointer ${
+                        className={`p-3 rounded-2xl text-left transition-all border cursor-pointer min-h-12 ${
                           isSelected
-                            ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-600/20 font-bold'
-                            : 'bg-slate-50 dark:bg-[#1a1a1a] hover:bg-slate-100 dark:hover:bg-[#202020] text-slate-700 dark:text-gray-300 border-slate-200 dark:border-[#282828]'
+                            ? 'bg-blue-600 text-white border-blue-500 shadow-sm font-bold'
+                            : 'bg-white dark:bg-neutral-950 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800 hover:border-slate-300'
                         }`}
                       >
-                        <div className="text-xs font-black truncate">{timeline.label}</div>
-                        <div
-                          className={`text-[10px] mt-0.5 truncate ${
-                            isSelected ? 'text-blue-100' : 'text-slate-500 dark:text-gray-400'
-                          }`}
-                        >
+                        <div className="text-xs font-bold truncate">{timeline.label}</div>
+                        <div className={`text-[10px] mt-0.5 truncate ${
+                          isSelected ? 'text-blue-100' : 'text-slate-400'
+                        }`}>
                           {timeline.note}
                         </div>
                       </button>
@@ -590,11 +679,11 @@ export const ProjectInquiryBuilder: React.FC = () => {
                 </div>
 
                 {/* Kickoff Timing & Date Selector */}
-                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#181818] border border-slate-200 dark:border-[#262626] space-y-2.5">
+                <div className="p-3.5 rounded-2xl bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 space-y-2.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-slate-800 dark:text-gray-200 flex items-center gap-1.5">
+                    <span className="font-bold text-slate-800 dark:text-neutral-200 flex items-center gap-1.5">
                       <Calendar className="w-3.5 h-3.5 text-blue-500" />
-                      <span>Target Kickoff Schedule:</span>
+                      <span>Kickoff Schedule:</span>
                     </span>
                     <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
                       {kickoffPreset === 'custom' && customKickoffDate ? customKickoffDate : formData.targetKickoff}
@@ -609,10 +698,10 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           key={preset.id}
                           type="button"
                           onClick={() => handleKickoffSelect(preset.id, preset.label)}
-                          className={`px-3 py-2 rounded-xl text-xs font-medium border text-center transition-all cursor-pointer ${
+                          className={`px-3 py-2 rounded-xl text-xs font-medium border text-center transition-all cursor-pointer min-h-11 ${
                             isSelected
                               ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-xs'
-                              : 'bg-white dark:bg-[#1f1f1f] text-slate-700 dark:text-gray-300 border-slate-200 dark:border-[#2c2c2c] hover:border-slate-300'
+                              : 'bg-slate-50 dark:bg-neutral-900 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800'
                           }`}
                         >
                           <div>{preset.label}</div>
@@ -630,7 +719,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
                       animate={{ opacity: 1, height: 'auto' }}
                       className="pt-2 flex items-center gap-3"
                     >
-                      <label className="text-xs text-slate-600 dark:text-gray-400 font-medium shrink-0">
+                      <label className="text-xs text-slate-600 dark:text-neutral-400 font-medium shrink-0">
                         Choose Date:
                       </label>
                       <input
@@ -640,82 +729,96 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           setCustomKickoffDate(e.target.value);
                           setFormData((prev) => ({ ...prev, targetKickoff: `Target Date: ${e.target.value}` }));
                         }}
-                        className="px-3 py-1.5 rounded-xl bg-white dark:bg-[#202020] border border-slate-200 dark:border-[#333333] text-xs text-slate-900 dark:text-white font-mono focus:border-blue-500 outline-none"
+                        className="px-3 py-2 rounded-xl bg-slate-50 dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 text-base sm:text-xs text-slate-900 dark:text-white font-mono focus:border-blue-500 outline-none"
                       />
                     </motion.div>
                   )}
                 </div>
               </div>
 
-              {/* Step 4: Contact Info */}
-              <div className="space-y-4 pt-2 border-t border-slate-200 dark:border-[#222222]">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Step 4: Contact Info (16px base font on mobile prevents iOS auto-zoom) */}
+              <div className="space-y-4 pt-3 border-t border-slate-200/80 dark:border-neutral-800/80">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-800 dark:text-neutral-200">
+                    4. Contact & Brief
+                  </label>
+                  <span className="text-[10px] font-mono text-slate-400">Step 4 of 4</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-gray-300 mb-1.5">
+                    <label className="block text-xs font-bold text-slate-700 dark:text-neutral-300 mb-1.5">
                       Your Name *
                     </label>
                     <input
                       type="text"
                       required
+                      autoComplete="name"
+                      autoCapitalize="words"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Alex Mercer"
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2e2e2e] text-slate-900 dark:text-white text-xs font-medium focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                      className="w-full px-4 py-3 sm:py-2.5 rounded-xl bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 text-slate-900 dark:text-white text-base sm:text-xs font-medium focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-gray-300 mb-1.5">
+                    <label className="block text-xs font-bold text-slate-700 dark:text-neutral-300 mb-1.5">
                       Work Email *
                     </label>
                     <input
                       type="email"
                       required
+                      inputMode="email"
+                      autoComplete="email"
+                      autoCapitalize="none"
+                      spellCheck={false}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="alex@company.com"
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2e2e2e] text-slate-900 dark:text-white text-xs font-medium focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                      className="w-full px-4 py-3 sm:py-2.5 rounded-xl bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 text-slate-900 dark:text-white text-base sm:text-xs font-medium focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-gray-300 mb-1.5">
-                    Company or Project Name (Optional)
+                  <label className="block text-xs font-bold text-slate-700 dark:text-neutral-300 mb-1.5">
+                    Company or Organization (Optional)
                   </label>
                   <input
                     type="text"
+                    autoComplete="organization"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    placeholder="e.g. Acme Corp or Stealth Venture"
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2e2e2e] text-slate-900 dark:text-white text-xs font-medium focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                    placeholder="e.g. Acme Health or Stealth Venture"
+                    className="w-full px-4 py-3 sm:py-2.5 rounded-xl bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 text-slate-900 dark:text-white text-base sm:text-xs font-medium focus:border-blue-500 outline-none transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-gray-300 mb-1.5">
-                    Brief Project Goals or Key Features
+                  <label className="block text-xs font-bold text-slate-700 dark:text-neutral-300 mb-1.5">
+                    Brief Project Goals & Context
                   </label>
                   <textarea
                     rows={3}
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="What are the key goals, target users, or workflows you want to implement?"
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2e2e2e] text-slate-900 dark:text-white text-xs font-medium focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-y"
+                    placeholder="What are your core objectives, workflows, or target release window?"
+                    className="w-full px-4 py-3 sm:py-2.5 rounded-xl bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 text-slate-900 dark:text-white text-base sm:text-xs font-medium focus:border-blue-500 outline-none transition-all resize-y"
                   />
                 </div>
               </div>
 
-              {/* Submit Button */}
+              {/* Submit CTA Button with Minimum 48px Touch Height */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:bg-blue-400 text-white font-black text-xs uppercase tracking-wider transition-all shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+                className="w-full py-4 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer min-h-13"
               >
                 {isSubmitting ? (
                   <>
                     <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Transmitting to Cloud...</span>
+                    <span>Transmitting Brief...</span>
                   </>
                 ) : (
                   <>
@@ -725,63 +828,55 @@ export const ProjectInquiryBuilder: React.FC = () => {
                 )}
               </button>
 
-              <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-slate-500 dark:text-gray-400 font-medium pt-1">
+              <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-slate-500 dark:text-neutral-400 font-medium pt-1">
                 <span className="flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>Confidentiality Guaranteed</span>
+                  <span>Strict NDA Protected</span>
                 </span>
                 <span>•</span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-blue-500" />
                   <span>24-Hour Review Turnaround</span>
                 </span>
-                <span>•</span>
-                <span>Zero Obligation</span>
               </div>
             </form>
 
-            {/* Right Column: Reassurance & Dynamic Scope Summary (5 cols) */}
-            <div className="lg:col-span-5 space-y-5">
+            {/* Right Column: Reassurance & Scope Summary (5 cols) */}
+            <div className="lg:col-span-5 space-y-4">
               
-              {/* Dynamic Active Selection Summary Card */}
-              <div className="p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/30 space-y-4">
+              {/* Dynamic Scope & Squad Summary */}
+              <div className="p-5 sm:p-6 rounded-3xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/70 dark:border-blue-900/40 space-y-3.5">
                 <div className="flex items-center justify-between">
-                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
+                  <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5" />
-                    <span>Calculated Scope & Squad</span>
+                    <span>Calculated Scope</span>
                   </div>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-600 text-white font-bold">
+                  <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-blue-600 text-white font-bold">
                     {activeTier.prices[currency]}
                   </span>
                 </div>
 
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 dark:text-gray-400 font-medium">Domain Focus:</span>
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 dark:text-neutral-400">Domain:</span>
                     <span className="font-bold text-slate-900 dark:text-white">{formData.projectType}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 dark:text-gray-400 font-medium">Package Tier:</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 dark:text-neutral-400">Tier:</span>
                     <span className="font-bold text-blue-600 dark:text-blue-400">{activeTier.label}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 dark:text-gray-400 font-medium">Sprint Velocity:</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 dark:text-neutral-400">Sprint Speed:</span>
                     <span className="font-bold text-slate-900 dark:text-white">{activeTier.speed}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 dark:text-gray-400 font-medium">Dedicated Squad:</span>
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400 text-right truncate max-w-50" title={activeTier.squad}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 dark:text-neutral-400">Squad:</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 text-right truncate max-w-44">
                       {activeTier.squad}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 dark:text-gray-400 font-medium">SLA Commitment:</span>
-                    <span className="font-mono text-[11px] text-slate-700 dark:text-gray-300 text-right truncate max-w-50">
-                      {activeTier.sla}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs pt-1 border-t border-blue-200/50 dark:border-blue-900/30">
-                    <span className="text-slate-500 dark:text-gray-400 font-medium">Target Kickoff:</span>
+                  <div className="flex items-center justify-between pt-1 border-t border-blue-200/60 dark:border-blue-900/40">
+                    <span className="text-slate-500 dark:text-neutral-400">Target Kickoff:</span>
                     <span className="font-mono font-bold text-slate-900 dark:text-white">
                       {kickoffPreset === 'custom' && customKickoffDate ? customKickoffDate : formData.targetKickoff}
                     </span>
@@ -790,51 +885,45 @@ export const ProjectInquiryBuilder: React.FC = () => {
               </div>
 
               {/* What Happens Next Card */}
-              <div className="p-6 rounded-3xl bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#262626] shadow-md space-y-4">
-                <div className="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
+              <div className="p-5 sm:p-6 rounded-3xl bg-slate-50/70 dark:bg-neutral-900/60 border border-slate-200 dark:border-neutral-800 space-y-3.5">
+                <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-blue-500" />
-                  <span>What happens after you submit?</span>
+                  <span>Review Process</span>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                       1
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-slate-900 dark:text-white">
-                        Direct Technical Feasibility Review
-                      </div>
-                      <div className="text-[11px] text-slate-500 dark:text-gray-400 leading-snug mt-0.5">
-                        A senior engineer analyzes your product requirements and drafts an initial architecture sketch.
+                      <div className="text-xs font-bold text-slate-900 dark:text-white">Technical Feasibility Check</div>
+                      <div className="text-[11px] text-slate-500 dark:text-neutral-400 leading-snug mt-0.5">
+                        A senior engineer analyzes your brief and sketches an initial architecture.
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                       2
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-slate-900 dark:text-white">
-                        Confidential 30-Minute Discovery
-                      </div>
-                      <div className="text-[11px] text-slate-500 dark:text-gray-400 leading-snug mt-0.5">
-                        A conversational deep-dive to align on user journeys, edge cases, and delivery milestones.
+                      <div className="text-xs font-bold text-slate-900 dark:text-white">30-Min Discovery Call</div>
+                      <div className="text-[11px] text-slate-500 dark:text-neutral-400 leading-snug mt-0.5">
+                        Deep-dive into edge cases, third-party integrations, and timeline gates.
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                       3
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-slate-900 dark:text-white">
-                        Deterministic Sprint Roadmap
-                      </div>
-                      <div className="text-[11px] text-slate-500 dark:text-gray-400 leading-snug mt-0.5">
-                        Receive a clear phase-by-phase delivery plan with non-negotiable verification gates.
+                      <div className="text-xs font-bold text-slate-900 dark:text-white">Deterministic Sprint Plan</div>
+                      <div className="text-[11px] text-slate-500 dark:text-neutral-400 leading-snug mt-0.5">
+                        Receive a milestone delivery agreement with fixed deliverables and SLA.
                       </div>
                     </div>
                   </div>
@@ -842,18 +931,14 @@ export const ProjectInquiryBuilder: React.FC = () => {
               </div>
 
               {/* Guarantees Box */}
-              <div className="p-5 rounded-3xl bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#262626] space-y-2.5">
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-200">
+              <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 space-y-2">
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-neutral-300">
                   <Lock className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                  <span>Strict Mutual NDA & IP Protection</span>
+                  <span>Strict Mutual NDA & IP Ownership Guarantee</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-200">
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-neutral-300">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                   <span>100% Repository & Infrastructure Handover</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-200">
-                  <Users className="w-3.5 h-3.5 text-purple-500 shrink-0" />
-                  <span>Speak Directly With Principal Engineers</span>
                 </div>
               </div>
 

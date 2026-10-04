@@ -100,7 +100,7 @@ export const FAQSection: React.FC = () => {
       className="py-24 bg-white dark:bg-[#0c0c0c] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#222222] relative transition-colors duration-300"
     >
       {/* Decorative ambient aura */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-600/5 dark:bg-blue-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-175 h-87.5 bg-blue-600/5 dark:bg-blue-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -161,7 +161,7 @@ export const FAQSection: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             
             {/* Category Filter Buttons */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
               {FAQ_CATEGORIES.map((cat) => {
                 const isSelected = selectedCategory === cat;
                 const count =
@@ -173,7 +173,7 @@ export const FAQSection: React.FC = () => {
                   <button
                     key={cat}
                     onClick={() => handleCategorySelect(cat)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
                       isSelected
                         ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20'
                         : 'bg-slate-100 dark:bg-[#181818] hover:bg-slate-200 dark:hover:bg-[#222222] text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-[#282828]'
@@ -216,7 +216,7 @@ export const FAQSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Search Input Bar */}
+          {/* Search Input Bar (16px base font on mobile prevents iOS zoom) */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 dark:text-gray-500">
               <Search className="w-4 h-4" />
@@ -225,8 +225,8 @@ export const FAQSection: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search questions (e.g., 'IP ownership', 'sprint cadence', 'SLA', 'legacy codebase')..."
-              className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-50 dark:bg-[#151515] border border-slate-200 dark:border-[#2b2b2b] focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 text-xs font-medium transition-all outline-none"
+              placeholder="Search questions (e.g., 'IP ownership', 'sprint cadence', 'SLA')..."
+              className="w-full pl-10 pr-10 py-3 sm:py-2.5 rounded-xl bg-slate-50 dark:bg-[#151515] border border-slate-200 dark:border-[#2b2b2b] focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 text-base sm:text-xs font-medium transition-all outline-none min-h-12"
             />
             {searchQuery && (
               <button

@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] font-sans pt-16 pb-12 relative transition-colors duration-300">
+    <footer className="bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] font-sans pt-16 pb-28 sm:pb-14 relative transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-slate-200 dark:border-[#2a2a2a]">
           {/* Brand Info & Founder */}
@@ -21,7 +21,7 @@ export const Footer: React.FC = () => {
 
             <div className="pt-2 flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-green-400">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-ping shadow-[0_0_8px_#22c55e]"></span>
-              <span className="uppercase tracking-widest text-[10px]">ALL SYSTEMS OPERATIONAL</span>
+              <span className="uppercase tracking-widest text-[10px]">ALL SYSTEMS OPERATIONAL (2026)</span>
             </div>
 
             {/* Founder & Open-Source Badges */}
@@ -154,6 +154,17 @@ export const Footer: React.FC = () => {
               <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
               <a href="mailto:contact@devcenterpoint.com" className="hover:text-blue-600 dark:hover:text-white transition-colors">
                 contact@devcenterpoint.com
+              </a>
+            </div>
+            <div className="flex items-center gap-2 pt-0.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              <a
+                href="https://wa.me/8801988383323?text=Hi%20DevCenterPoint,%20I%20would%20like%20to%20discuss%20engineering%20a%20digital%20product."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-600 dark:text-emerald-400 hover:underline transition-colors"
+              >
+                WhatsApp: +880 1988 383323
               </a>
             </div>
             <div className="pt-2 text-[11px] text-slate-500 dark:text-gray-400 font-mono">
