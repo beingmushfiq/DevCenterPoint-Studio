@@ -19,7 +19,7 @@
   <img src="https://img.shields.io/badge/React-19.0-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React 19" />
   <img src="https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript 5.8" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-v4.1-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS v4" />
-  <img src="https://img.shields.io/badge/Vite-6.2-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 6" />
+  <img src="https://img.shields.io/badge/Vite-6.4-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 6" />
   <img src="https://img.shields.io/badge/Laravel-11-FF2D20?style=flat-square&logo=laravel&logoColor=white" alt="Laravel 11" />
   <img src="https://img.shields.io/badge/Inertia.js-v2.0-9553E9?style=flat-square&logo=inertia&logoColor=white" alt="Inertia.js" />
   <img src="https://img.shields.io/badge/Framer_Motion-12+-0055FF?style=flat-square&logo=framer&logoColor=white" alt="Framer Motion" />
@@ -29,15 +29,17 @@
 
 ## 📌 Overview
 
-**DevCenterPoint Studio** is the flagship engineering showcase, architecture catalog, and client engagement platform for **DevCenterPoint**—a custom software engineering firm founded by [Mushfiq](https://buildwithmushfiq.vercel.app). 
+**DevCenterPoint Studio** is the flagship engineering showcase, architecture catalog, and client engagement platform for **DevCenterPoint**—a custom software engineering firm founded by [Mushfiq](https://buildwithmushfiq.vercel.app).
 
 Built with state-of-the-art web technologies (React 19, TypeScript, Tailwind CSS v4, Motion, and an accompanying Laravel 11 / Inertia CMS backend), the platform delivers a high-density, interactive experience featuring:
+
+- **Liquid Glass & Atmospheric Light Aesthetic**: Ultra-modern frosted glassmorphism, dynamic floating liquid light orbs, neural canvas background, and dual light/dark themes.
+- **Interactive Multi-App Client Sandbox**: 7 embedded, live interactive demo applications featuring custom simulated runtime states and live test workflows.
+- **Omnichannel Headless CMS & Mission Control**: Full Laravel 11 Inertia admin command center with live visual preview cards, CRM lead management, and granular content controls.
+- **Omnichannel Mobile-First Responsiveness**: 100% responsive from 320px (iPhone SE) to 4K displays with hybrid adaptive data views (touch cards on mobile, dense tables on desktop).
 - **Verified Enterprise Deployments**: Real-time production systems accessible with evaluation credentials.
-- **Simulated Database & Architecture Explorer**: Low-latency benchmarks, technical failure modes, stack trade-offs, and architecture nodes for each project.
-- **Applied AI Research Hub**: Dedicated integration with [devcenterpoint.ai.studio](https://devcenterpoint.ai.studio).
-- **Live Prototypes & Micro-SaaS Showcases**: 8 live concept applications covering logistics, healthtech, education, and community management.
 - **Global Command Palette**: Instant keyboard navigation (`Cmd+K` / `Ctrl+K`) with live system shortcuts and fuzzy search.
-- **Custom Web Audio Synthesizer**: Haptic acoustic micro-feedback engineered via the Web Audio API.
+- **Custom Web Audio Synthesizer**: Zero-asset haptic acoustic micro-feedback engineered via the Web Audio API with tone presets (`ethereal`, `deep_tech`, `cyber`).
 
 ---
 
@@ -45,81 +47,79 @@ Built with state-of-the-art web technologies (React 19, TypeScript, Tailwind CSS
 
 | Platform | Domain / URL | Category | Evaluation Credentials |
 | :--- | :--- | :--- | :--- |
-| **DevCenterPoint ERP & Storefront** | [demoerp.devcenterpoint.com](https://demoerp.devcenterpoint.com) | Omnichannel Commerce & ERP | **User:** `Admin`<br>**Pass:** `12345678` |
-| **Feroza Medicine Corner Serial Manager** | [serial.ferozamedicinecorner.com](https://serial.ferozamedicinecorner.com) | Healthcare Counter & Queue OS | **User:** `Super Admin`<br>**Pass:** `12345678` |
+| **DevCenterPoint ERP & Storefront** | [demoerp.devcenterpoint.com](https://demoerp.devcenterpoint.com) | Omnichannel Commerce & ERP | User: `Admin`<br>Pass: `12345678` |
+| **Feroza Medicine Corner Serial Manager** | [serial.ferozamedicinecorner.com](https://serial.ferozamedicinecorner.com) | Healthcare Counter & Queue OS | User: `Super Admin`<br>Pass: `12345678` |
 | **Road Safety Movement** | [roadsafetymovement.org](https://roadsafetymovement.org) | Civic Org Management OS | Public Access / Production |
 | **Qttenzy Smart Attendance** | [qttenzy.vercel.app](https://qttenzy.vercel.app) | Geofenced Dynamic QR Access | Live Evaluation |
 | **DevCenterPoint AI Studio** | [devcenterpoint.ai.studio](https://devcenterpoint.ai.studio) | Applied AI & Automated Workflows | Public Research Hub |
 
 ---
 
-## 📦 Key Open-Source Repositories
+## 🧪 Interactive Client Demo Sandbox (7 Live Applications)
 
-Explore the core codebases and open-source infrastructure created by Mushfiq on [GitHub](https://github.com/beingmushfiq):
+The interactive sandbox modal provides immediate, hands-on simulation of seven flagship systems:
 
-- **DevCenterPoint Studio** — Core web architecture and front-facing engineering platform.
-- **Omnichannel E-Commerce & ERP Core** — End-to-end multi-tier commerce engine handling catalogs, variant matrixing, and back-office order processing.
-- **Speech Therapy Assessment Suite** — Clinical assessment UI, interactive developmental screening forms, and patient evaluation tools.
-- **LeadLayer System Architecture** — Multi-channel webhook ingestion pipeline and CRM automation tool designed for outbound lead processing.
-- **Traccar GPS Fleet Platform Deployment** — Containerized open-source GPS tracking stack built with Docker for automated fleet telemetry.
-
----
-
-## 🧪 Live Concept Demos & Prototypes
-
-Eight responsive concept demos built and deployed across specialized industry verticals:
-
-| Prototype | Live URL | Core Focus |
-| :--- | :--- | :--- |
-| **NGO Demo (DCP)** | [ngodemo-dcp.vercel.app](https://ngodemo-dcp.vercel.app) | Transparent donation drives, fund tracking, and campaign dashboard. |
-| **Slice Mart FMS** | [slice-mart-fms.vercel.app](https://slice-mart-fms.vercel.app) | Grocery and retail floor/inventory management demo. |
-| **Shikkha Platform** | [shikkha-school-donation-platform.vercel.app](https://shikkha-school-donation-platform.vercel.app) | Educational aid and crowdfunding portal for community schools. |
-| **Being The Man** | [being-the-man.vercel.app](https://being-the-man.vercel.app) | Minimalist lifestyle publication and personal branding layout. |
-| **Byte Build IT** | [byte-build-it.vercel.app](https://byte-build-it.vercel.app) | IT consultancy, managed cloud infrastructure, and enterprise services. |
-| **Startamark** | [startamark.vercel.app](https://startamark.vercel.app) | Lightweight marketing agency portfolio and client intake landing page. |
-| **SMMP UI** | [smmp-ui.vercel.app](https://smmp-ui.vercel.app) | Youth Society Organization portal and admin dashboard interface. |
-| **Qttenzy** | [qttenzy.vercel.app](https://qttenzy.vercel.app) | QR-based automated geofenced attendance verifying check-ins in physical bounds. |
+1. **DevCenterPoint ERP & POS**: Omnichannel retail ledger, inventory matrix, order tracking, and SKU dispatching.
+2. **Healthcare Queue OS**: Patient check-in token management, live counter assignment, and real-time wait telemetry.
+3. **Road Safety Movement OS**: Citizen incident dispatch, verification pipelines, and civic status updates.
+4. **Qttenzy QR Attendance**: Real-time geofenced QR token regeneration and attendance check-in simulator.
+5. **LeadLayer CRM Pipeline**: Inbound webhook payload inspection, qualification scoring, and lead dispatch.
+6. **Fleet Logistics & Telemetry**: GPS vehicle coordinates, fuel consumption curves, and driver duty hours.
+7. **Speech Therapy Assessment**: Pediatric clinical screening form, milestones assessment, and progress metrics.
 
 ---
 
-## 🏛️ Architecture & Tech Stack
+## 🎛️ CMS & Mission Control Gateway
 
-```
+The platform includes a dedicated, responsive enterprise CMS built with Laravel 11 and Inertia.js React:
+
+- **Mission Control Login Gateway** (`/login`): Atmospheric liquid glass auth interface with password reveal, ambient orb light fields, and a 1-click demo login helper (`admin@devcenterpoint.com` / `admin12345`).
+- **Command Center Dashboard** (`/admin/dashboard`): Real-time system heartbeat, KPI statistics (Leads, Subscribers, Case Studies, Capabilities), and recent inquiry feeds.
+- **Inquiries & Leads CRM** (`/admin/inquiries`): Stage Kanban pipeline, manual lead creator modal, stage progression triggers, and internal audit notes.
+- **Hero & Atmosphere Studio** (`/admin/settings`): Live interactive preview card reflecting changes to hero badges, 2-line gradient headlines, thesis copy, and action CTAs in real time.
+- **Dynamic Content Modules**: Full CRUD management for Projects, Capabilities, Team Members, FAQs, Testimonials, and Custom Sections.
+
+---
+
+## 🏛️ Architecture & Directory Structure
+
+```text
 DevCenterPoint-Studio/
 ├── src/                          # Standalone SPA Frontend (React 19 + TypeScript + Vite)
 │   ├── components/               # UI Design System & Component Library
-│   │   ├── CaseStudyModal.tsx    # In-depth architectural case studies & live creds
+│   │   ├── ClientDemoSandboxModal.tsx  # 7-in-1 interactive sandbox application simulator
 │   │   ├── CommandPalette.tsx    # Cmd+K fuzzy keyboard navigation
+│   │   ├── Hero.tsx              # Liquid glass hero with animated light orbs & canvas
 │   │   ├── Navigation.tsx        # Responsive desktop capsule & mobile drawer
 │   │   ├── SelectedWorkSection.tsx # Flagship work cards + Prototype showcase
 │   │   └── ...
+│   ├── context/                  # Client React Context (Theme, Audio, CMS hydration)
 │   ├── data/                     # Data stores & simulated databases
 │   │   ├── projects.ts           # Case studies & live prototype registries
 │   │   └── simulatedProjectDb.ts # Technical benchmarks, SLAs, and architecture flows
-│   ├── lib/                      # Audio synthesizer, Firebase, and utilities
+│   ├── lib/                      # Audio synthesizer, sound engine, and utilities
 │   └── types.ts                  # Domain TypeScript interfaces
 ├── backend/                      # Laravel 11 + Inertia CMS & Admin Platform
 │   ├── app/                      # Controllers, Models, Middleware, and Policies
 │   ├── database/                 # Migrations & DatabaseSeeder with ecosystem data
-│   ├── resources/js/             # Inertia React 19 Client components
+│   ├── resources/js/             # Inertia React 19 Admin & Client components
+│   │   ├── Components/           # Shared high-density components (1:1 parity with src/)
+│   │   ├── Layouts/              # AdminLayout & GuestLayout shells
+│   │   ├── Pages/                # Admin views (Dashboard, Inquiries, Settings, etc.)
+│   │   └── lib/                  # Backend audio engine & client helpers
 │   └── routes/                   # Web, API, and Authenticated Admin routes
-└── docs/                         # AI & Developer Knowledge Base
+└── docs/                         # Comprehensive engineering specs & implementation plans
 ```
-
-### Core Technologies
-- **Frontend SPA**: React 19, TypeScript 5.8, Vite 6, Tailwind CSS v4, Motion / Framer Motion, Lucide Icons, Recharts.
-- **Backend Admin (Inertia)**: Laravel 11, PHP 8.3+, Inertia.js 2, PostgreSQL / SQLite, Redis, WebSockets.
-- **Acoustic Feedback**: Web Audio API oscillator synthesis (zero external audio file dependencies).
-- **SEO & Meta**: `react-helmet-async` with OpenGraph and JSON-LD structured schemas.
 
 ---
 
 ## ⚡ Quickstart & Local Development
 
 ### Prerequisites
+
 - **Node.js** `>= 20.x`
 - **npm** or **bun**
-- **PHP** `>= 8.2` & **Composer** *(Optional, for backend Laravel CMS)*
+- **PHP** `>= 8.2` & **Composer** *(Required for Laravel CMS backend)*
 
 ### 1. Running the Root Frontend (Vite + React 19)
 
@@ -135,9 +135,9 @@ npm install
 npm run dev
 ```
 
-The application will be live at `http://localhost:3000` (or `http://localhost:5173`).
+The application will be live at `http://localhost:5173` (or `http://localhost:3000`).
 
-### 2. Available Scripts (Root)
+### Available Scripts (Root)
 
 | Command | Action |
 | :--- | :--- |
@@ -146,7 +146,9 @@ The application will be live at `http://localhost:3000` (or `http://localhost:51
 | `npm run preview` | Preview production build locally. |
 | `npm run lint` | Run strict TypeScript compiler verification (`tsc --noEmit`). |
 
-### 3. Running the Full-Stack Laravel Backend (Optional)
+---
+
+### 2. Running the Full-Stack Laravel Backend & CMS
 
 ```bash
 cd backend
@@ -161,19 +163,29 @@ npm install
 cp .env.example .env
 php artisan key:generate
 
-# Run migrations and seed ecosystem data
+# Run migrations and seed database (includes admin account & initial content)
 php artisan migrate --seed
 
-# Run dev servers
+# Launch Laravel backend server (Terminal 1)
 php artisan serve
+
+# Launch Inertia Vite dev server (Terminal 2)
 npm run dev
 ```
+
+- **Frontend / Inertia App**: `http://localhost:8000`
+- **Mission Control Login**: `http://localhost:8000/login`
+- **Admin Dashboard**: `http://localhost:8000/admin/dashboard`
+- **Default Admin Credentials**:
+  - **Email**: `admin@devcenterpoint.com`
+  - **Password**: `admin12345`
 
 ---
 
 ## ⌨️ Command Palette Navigation
 
 Press <kbd>Cmd</kbd> + <kbd>K</kbd> (Mac) or <kbd>Ctrl</kbd> + <kbd>K</kbd> (Windows/Linux) anywhere on the site to trigger the Command Palette:
+
 - **`erp`** → Launch DevCenterPoint ERP Demo
 - **`serial`** → Open Feroza Medicine Corner Serial Manager
 - **`roadsafety`** → Open Road Safety Movement OS
