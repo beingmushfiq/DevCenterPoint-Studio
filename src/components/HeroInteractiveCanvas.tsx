@@ -601,40 +601,61 @@ export const HeroInteractiveCanvas: React.FC = () => {
       />
     </div>
 
-      {/* Studio FX control: fixed and outside the z-0 canvas stacking context, below the header, so it is always clickable */}
+      {/* Studio FX control: anchored inside the Hero so it scrolls naturally with the canvas and NEVER distracts the rest of the site */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="fixed top-20 right-3 sm:top-24 sm:right-8 z-50"
+        className="absolute top-20 right-3 sm:top-24 sm:right-8 z-30 pointer-events-auto"
       >
         <AnimatePresence mode="wait">
           {!isExpanded ? (
-            /* Compact Collapsed Action Button */
-            <motion.button
+            /* Creative Interactive Canvas Physics Capsule */
+            <motion.div
               key="collapsed-pill"
               initial={{ opacity: 0, scale: 0.9, y: -5 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: -5 }}
               transition={{ duration: 0.2 }}
-              type="button"
-              onClick={() => {
-                soundEngine.playTap();
-                setIsExpanded(true);
-              }}
-              className="group inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-white/90 dark:bg-[#161616]/90 backdrop-blur-md border border-slate-200/90 dark:border-[#2a2a2a] shadow-xl hover:border-blue-500/50 hover:shadow-blue-500/10 text-xs font-mono font-bold text-slate-800 dark:text-gray-200 cursor-pointer transition-all duration-200 active:scale-95"
-              title="Open Studio FX & 3D Canvas Presets"
+              className="inline-flex items-center p-1 rounded-full bg-white/80 dark:bg-[#141414]/80 backdrop-blur-md border border-slate-200/80 dark:border-[#2a2a2a] shadow-lg hover:shadow-xl hover:border-blue-500/40 transition-all duration-200"
             >
-              <div className="flex items-center gap-0.5">
-                <span className={`w-1 h-3 rounded-full bg-blue-500 ${!isMuted ? 'animate-pulse' : 'opacity-40'}`} />
-                <span className={`w-1 h-4 rounded-full bg-indigo-500 ${!isMuted ? 'animate-bounce' : 'opacity-40'}`} style={{ animationDelay: '0.15s' }} />
-                <span className={`w-1 h-2 rounded-full bg-cyan-400 ${!isMuted ? 'animate-pulse' : 'opacity-40'}`} style={{ animationDelay: '0.3s' }} />
-              </div>
+              {/* Quick Cycle Mode Button */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const modes: CanvasMode[] = ['mesh', 'particles', 'vortex', 'matrix', 'nebula'];
+                  const nextIdx = (modes.indexOf(mode) + 1) % modes.length;
+                  handleModeChange(modes[nextIdx]);
+                }}
+                className="group/cycle inline-flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-[#202020] text-xs font-mono font-bold text-slate-800 dark:text-neutral-200 transition-colors cursor-pointer"
+                title="Click to cycle next 3D canvas mood"
+              >
+                <div className="flex items-center gap-0.5">
+                  <span className={`w-1 h-3 rounded-full bg-blue-500 transition-all ${!isMuted ? 'animate-pulse' : 'opacity-40'}`} />
+                  <span className={`w-1 h-2 rounded-full bg-indigo-500 transition-all ${!isMuted ? 'animate-pulse' : 'opacity-40'}`} />
+                </div>
+                <span className="text-[10px] text-slate-400 font-normal hidden sm:inline">3D Mood:</span>
+                <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 group-hover/cycle:underline capitalize">
+                  {mode === 'particles' ? 'Swarm' : mode}
+                </span>
+                <span className="text-[10px] text-slate-400 group-hover/cycle:text-blue-500 transition-transform group-hover/cycle:rotate-45">✦</span>
+              </button>
 
-              <span className="text-[11px] font-black tracking-tight">Studio FX</span>
+              <div className="w-px h-4 bg-slate-200 dark:bg-[#282828] mx-0.5" />
 
-              <span className="px-1.5 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[9px] uppercase font-bold">
-                {mode}
-              </span>
-            </motion.button>
+              {/* Sliders Drawer Opener */}
+              <button
+                type="button"
+                onClick={() => {
+                  soundEngine.playTap();
+                  setIsExpanded(true);
+                }}
+                className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-[#202020] text-slate-500 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                title="Tune Canvas Physics & Audio"
+                aria-label="Open Studio FX Settings"
+              >
+                <Sliders className="w-3.5 h-3.5" />
+              </button>
+            </motion.div>
           ) : (
             /* Expanded Glassmorphic Studio Control Drawer: Responsive Bottom Sheet on Mobile, Floating Card on Desktop */
             <>

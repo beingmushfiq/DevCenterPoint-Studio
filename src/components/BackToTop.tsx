@@ -55,7 +55,7 @@ export const BackToTop: React.FC = () => {
           animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
           exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8, y: 16 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40"
+          className="fixed bottom-24 right-4 sm:bottom-8 sm:right-8 z-40"
         >
           <div className="relative group">
             {/* Tooltip hint */}
