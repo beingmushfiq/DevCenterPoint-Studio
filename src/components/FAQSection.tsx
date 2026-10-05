@@ -97,7 +97,7 @@ export const FAQSection: React.FC = () => {
     <section
       id="faq"
       aria-label="Frequently Asked Questions"
-      className="py-24 bg-white dark:bg-[#0c0c0c] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#222222] relative transition-colors duration-300"
+      className="py-24 bg-white dark:bg-[#0c0c0c] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#222222] relative overflow-hidden transition-colors duration-300"
     >
       {/* Decorative ambient aura */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-175 h-87.5 bg-blue-600/5 dark:bg-blue-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />

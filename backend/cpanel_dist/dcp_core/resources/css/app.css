@@ -1,0 +1,304 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Custom Scrollbar for Dark & Light Mode */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.dark ::-webkit-scrollbar-track,
+body.dark ::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+html.light ::-webkit-scrollbar-track,
+body.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+html.dark ::-webkit-scrollbar-thumb,
+body.dark ::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+html.light ::-webkit-scrollbar-thumb,
+body.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Dedicated modal and container scrollbar styling consistent with global theme */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+html.dark .custom-scrollbar,
+body.dark .custom-scrollbar {
+  scrollbar-color: #2a2a2a #121212;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 9999px;
+}
+
+html.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: #141414;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+  border: 1.5px solid #f1f5f9;
+}
+
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border: 1.5px solid #141414;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Bento Grid overlay helper */
+html.dark .bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+html.light .bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.bg-radial-gradient {
+  background: radial-gradient(circle at 50% 20%, rgba(37, 99, 235, 0.18) 0%, transparent 65%);
+}
+
+/* Smooth motion utilities */
+.transition-editorial {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Noise overlay texture */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+}
+
+/* Skeleton Loading Shimmer Keyframes */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.08) 20%,
+    rgba(255, 255, 255, 0.18) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 1.8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.light .animate-shimmer::after {
+  background-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0.04) 20%,
+    rgba(0, 0, 0, 0.08) 60%,
+    rgba(0, 0, 0, 0)
+  );
+}
+
+/* ==========================================================================
+   Liquid Glass & Light Precision System
+   ========================================================================== */
+
+@keyframes floatOrb1 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(60px, -40px) scale(1.1);
+  }
+  66% {
+    transform: translate(-40px, 50px) scale(0.95);
+  }
+}
+
+@keyframes floatOrb2 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-50px, 40px) scale(1.05);
+  }
+  66% {
+    transform: translate(40px, -30px) scale(1.15);
+  }
+}
+
+@keyframes floatOrb3 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(30px, 60px) scale(1.08);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 15px rgba(46, 74, 249, 0.4));
+  }
+  50% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 32px rgba(46, 74, 249, 0.8));
+  }
+}
+
+.animate-float-orb-1 {
+  animation: floatOrb1 18s ease-in-out infinite;
+}
+
+.animate-float-orb-2 {
+  animation: floatOrb2 22s ease-in-out infinite;
+}
+
+.animate-float-orb-3 {
+  animation: floatOrb3 26s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Adaptive Liquid Glass Panel */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+
+html.dark .liquid-glass,
+body.dark .liquid-glass {
+  background: rgba(10, 14, 23, 0.74);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+/* Floating Capsule Navigation Glass */
+.glass-pill-nav {
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+}
+
+html.dark .glass-pill-nav,
+body.dark .glass-pill-nav {
+  background: rgba(8, 12, 20, 0.84);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
+/* Signature Gradient Text */
+.text-gradient-signature {
+  background: linear-gradient(135deg, #2E4AF9 0%, #8B5CF6 50%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.dark .text-gradient-signature {
+  background: linear-gradient(135deg, #3B82F6 0%, #A855F7 50%, #22D3EE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Light Mode Soft Glow Canvas */
+.canvas-light-glow {
+  background-color: #fafbfc;
+  background-image: 
+    radial-gradient(at 10% 15%, rgba(46, 74, 249, 0.09) 0px, transparent 55%),
+    radial-gradient(at 88% 20%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 65%, rgba(6, 182, 212, 0.07) 0px, transparent 55%),
+    radial-gradient(at 15% 85%, rgba(46, 74, 249, 0.06) 0px, transparent 50%);
+}
+
+/* Dark Mode Mission Control Canvas */
+html.dark .canvas-dark-glow,
+body.dark .canvas-dark-glow {
+  background-color: #07090e;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(46, 74, 249, 0.16) 0px, transparent 55%),
+    radial-gradient(at 85% 20%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 65%, rgba(6, 182, 212, 0.10) 0px, transparent 55%),
+    radial-gradient(at 20% 85%, rgba(46, 74, 249, 0.12) 0px, transparent 50%);
+}
+
+/* Glowing Border Rim */
+.border-glow-blue {
+  box-shadow: 0 0 25px -4px rgba(46, 74, 249, 0.35);
+}
+
+html.dark .border-glow-blue {
+  box-shadow: 0 0 35px -2px rgba(46, 74, 249, 0.5);
+}
+
