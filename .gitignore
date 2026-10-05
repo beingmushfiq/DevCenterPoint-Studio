@@ -9,3 +9,10 @@ coverage/
 
 # Playwright browser binaries (local headless diagnostics only)
 .pw-browsers/
+
+# Firebase project config — contains a live API key. Keep local, never commit.
+firebase-applet-config.json
+
+# Generated cPanel upload archives (rebuilt by the deploy scripts)
+backend/cpanel_dist/
+dist-cpanel.zip
