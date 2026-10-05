@@ -25,7 +25,13 @@
 /public/storage
 /storage/*.key
 /storage/pail
+# Composer dependencies are committed on purpose: the cPanel host may not have
+# Composer available, and public_html/index.php hard-requires
+# ../dcp_core/vendor/autoload.php. Rebuild with:
+#   composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 /vendor
+!/vendor/
+!/vendor/**
 _ide_helper.php
 Homestead.json
 Homestead.yaml

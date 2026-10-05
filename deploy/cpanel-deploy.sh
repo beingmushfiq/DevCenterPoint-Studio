@@ -136,6 +136,18 @@ for item in artisan composer.json composer.lock .env.production.example; do
   fi
 done
 
+# Composer dependencies. vendor/ IS committed to the repository because the
+# cPanel host may not ship a Composer binary, and $WEBROOT/index.php
+# hard-requires "$CORE/vendor/autoload.php". Synced as a whole tree (its own
+# call so the storage-oriented --exclude flags above do not strip package
+# internals such as a vendored `app/` or `logs/` directory).
+if [ -d "$APP_SRC/vendor" ]; then
+  sync_tree "$APP_SRC/vendor/" "$CORE/vendor/" --delete
+  ok "synced vendor/ ($(find "$CORE/vendor" -type f | wc -l | tr -d ' ') files)"
+else
+  warn "vendor/ missing from the repository - the host will need Composer to install it"
+fi
+
 # ------------------------------------------------------------------------------
 # 2. Ensure writable runtime directories exist
 # ------------------------------------------------------------------------------
