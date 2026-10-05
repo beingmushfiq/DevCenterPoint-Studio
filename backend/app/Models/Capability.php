@@ -17,6 +17,8 @@ class Capability extends Model
         'icon_name',
         'features',
         'technologies',
+        'architecture_points',
+        'code_snippet',
         'display_order',
         'is_active',
     ];
@@ -24,6 +26,7 @@ class Capability extends Model
     protected $casts = [
         'features' => 'array',
         'technologies' => 'array',
+        'architecture_points' => 'array',
         'is_active' => 'boolean',
     ];
 }

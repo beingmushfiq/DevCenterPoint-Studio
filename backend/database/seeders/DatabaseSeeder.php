@@ -49,6 +49,38 @@ class DatabaseSeeder extends Seeder
                     'Legacy System Modernization',
                 ],
                 'technologies' => ['React', 'Next.js', 'TypeScript', 'Node.js', 'Laravel', 'PostgreSQL', 'Redis'],
+                'architecture_points' => [
+                    'Clean Architecture / Hexagonal Service Layering',
+                    'Strict API Contract Definitions (OpenAPI / TypeSpec)',
+                    'Sub-100ms Server Response Targets',
+                    'Comprehensive Automated Test Suites',
+                ],
+                'code_snippet' => <<<'CODE'
+// Example: Atomic Transaction Handler with Optimistic Locking
+export async function processOrderTx(orderData: OrderPayload) {
+  return await db.transaction(async (trx) => {
+    const stock = await trx('inventory')
+      .where({ sku: orderData.sku })
+      .forUpdate()
+      .first();
+
+    if (!stock || stock.available < orderData.qty) {
+      throw new InsufficientStockError(orderData.sku);
+    }
+
+    await trx('inventory')
+      .where({ sku: orderData.sku })
+      .decrement('available', orderData.qty);
+
+    const [order] = await trx('orders')
+      .insert({ ...orderData, status: 'CONFIRMED' })
+      .returning('*');
+
+    await dispatchWebhook('order.created', order);
+    return order;
+  });
+}
+CODE,
                 'display_order' => 1,
                 'is_active' => true,
             ],
@@ -65,6 +97,29 @@ class DatabaseSeeder extends Seeder
                     'Automated Data Ingestion Pipelines',
                 ],
                 'technologies' => ['Python', 'XGBoost', 'SHAP', 'PyTorch', 'FastAPI', 'Gemini API', 'PostgreSQL / pgvector'],
+                'architecture_points' => [
+                    'Containerized ML Inference Micro-services',
+                    'Sub-200ms API Response Benchmarks',
+                    'Auditable Feature Contribution Breakdown',
+                    'Automated Model Retraining Pipelines',
+                ],
+                'code_snippet' => <<<'CODE'
+# Python FastAPI Inference Endpoint with SHAP Explainability
+@app.post("/api/v1/predict-career")
+async function predict_career(applicant: ApplicantPayload):
+    features_df = prepare_features(applicant)
+    prob = model.predict_proba(features_df)[0][1]
+    
+    # Generate SHAP values for explainability
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(features_df)
+    
+    return {
+        "score": float(prob),
+        "prediction": "RECOMMENDED" if prob > 0.65 else "REVIEW",
+        "top_factors": format_shap_factors(shap_values[0], features_df.columns)
+    }
+CODE,
                 'display_order' => 2,
                 'is_active' => true,
             ],
@@ -81,6 +136,24 @@ class DatabaseSeeder extends Seeder
                     'Accessibility Audits (WCAG 2.1 AA)',
                 ],
                 'technologies' => ['Figma', 'Tailwind CSS', 'Framer Motion', 'Radix UI', 'CSS Architecture'],
+                'architecture_points' => [
+                    'Token-Driven Design Systems',
+                    'Strict Spatial Grid & Typography Scales',
+                    'Dark & Light Mode Contrast Verification',
+                    'Zero Layout Shift (CLS < 0.05)',
+                ],
+                'code_snippet' => <<<'CODE'
+/* Design System Token Contract */
+:root {
+  --color-brand-primary: #2E4AF9;
+  --color-surface-dark: #000F26;
+  --color-surface-card: #0B1220;
+  --color-text-primary: #EEF1F5;
+  --color-text-muted: #7C8493;
+  --radius-card: 12px;
+  --transition-editorial: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+CODE,
                 'display_order' => 3,
                 'is_active' => true,
             ],
@@ -97,6 +170,23 @@ class DatabaseSeeder extends Seeder
                     'Inventory & Warehouse Management (WMS)',
                 ],
                 'technologies' => ['Laravel', 'React', 'MySQL', 'PostgreSQL', 'Redis', 'WebSockets'],
+                'architecture_points' => [
+                    'Role-Based Access Control (RBAC) Matrices',
+                    'Immutable Financial & Transaction Audit Logs',
+                    'Offline-First Sync Protocols',
+                    'Custom Printable Invoice & Label Engines',
+                ],
+                'code_snippet' => <<<'CODE'
+// Role-Based Access Control Guard
+public function handle($request, Closure $next, ...$permissions)
+{
+    $user = $request->user();
+    if (!$user || !$user->hasAnyPermission($permissions)) {
+        return response()->json(['error' => 'Forbidden: Unauthorized System Action'], 403);
+    }
+    return $next($request);
+}
+CODE,
                 'display_order' => 4,
                 'is_active' => true,
             ],
@@ -113,6 +203,28 @@ class DatabaseSeeder extends Seeder
                     'Automated Invoicing & Subscription Billing',
                 ],
                 'technologies' => ['Next.js', 'Node.js', 'GraphQL', 'Stripe API', 'PostgreSQL', 'Redis'],
+                'architecture_points' => [
+                    'Sub-second Storefront Page Load Speed',
+                    'PSSI-DSS Compliant Payment Tokenization',
+                    'High-Concurrency Inventory Reservation',
+                    'Dynamic Multi-Currency & Tax Calculation',
+                ],
+                'code_snippet' => <<<'CODE'
+// Stripe Webhook Idempotency & Order Fulfill Handler
+export async function handleStripeWebhook(event: Stripe.Event) {
+  if (event.type === 'payment_intent.succeeded') {
+    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+    const orderId = paymentIntent.metadata.orderId;
+    
+    // Idempotent processing check
+    const processed = await redis.get(`evt:${event.id}`);
+    if (processed) return;
+
+    await markOrderAsPaid(orderId, paymentIntent.id);
+    await redis.set(`evt:${event.id}`, '1', 'EX', 86400);
+  }
+}
+CODE,
                 'display_order' => 5,
                 'is_active' => true,
             ],
@@ -129,6 +241,26 @@ class DatabaseSeeder extends Seeder
                     'Automated SMS & Remote Queue Trackers',
                 ],
                 'technologies' => ['Laravel', 'React', 'WebSockets', 'MySQL', 'Twilio API', 'Pusher'],
+                'architecture_points' => [
+                    'Sub-Second Real-Time Display Sync',
+                    'HIPAA-Compliant Data Security Patterns',
+                    'Fail-Safe Queue Recovery Protocols',
+                    'High-Legibility Public Screen Views',
+                ],
+                'code_snippet' => <<<'CODE'
+// Real-Time Queue Broadcast Service
+public function callNextToken($counterId, $doctorId) {
+    $token = QueueToken::where('doctor_id', $doctorId)
+        ->where('status', 'WAITING')
+        ->orderBy('serial_number', 'asc')
+        ->firstOrFail();
+
+    $token->update(['status' => 'IN_CONSULTATION', 'counter_id' => $counterId]);
+    
+    broadcast(new TokenCalledEvent($token))->toOthers();
+    return $token;
+}
+CODE,
                 'display_order' => 6,
                 'is_active' => true,
             ],
@@ -145,6 +277,27 @@ class DatabaseSeeder extends Seeder
                     'Mobile Push Notification Infrastructure',
                 ],
                 'technologies' => ['React Native', 'TypeScript', 'PWA', 'Mapbox GL', 'Firebase Cloud Messaging'],
+                'architecture_points' => [
+                    '60 FPS UI Animation Benchmarks',
+                    'Encrypted On-Device Local SQLite Storage',
+                    'Background Geolocation & Tracking Protocols',
+                    'Low Battery & Bandwidth Optimization',
+                ],
+                'code_snippet' => <<<'CODE'
+// React Native Geofence Background Tracking Hook
+export function useBackgroundLocation(geofenceBounds: Polygon) {
+  useEffect(() => {
+    const watchId = Location.watchPositionAsync(
+      { accuracy: Location.Accuracy.High, distanceInterval: 10 },
+      (loc) => {
+        const isInside = checkPointInPolygon(loc.coords, geofenceBounds);
+        if (isInside) triggerGeofenceAlert('ENTRY', loc.coords);
+      }
+    );
+    return () => watchId.then(w => w.remove());
+  }, [geofenceBounds]);
+}
+CODE,
                 'display_order' => 7,
                 'is_active' => true,
             ],
@@ -161,6 +314,30 @@ class DatabaseSeeder extends Seeder
                     'Database Backup & Recovery Strategies',
                 ],
                 'technologies' => ['Docker', 'Nginx', 'Linux', 'GitHub Actions', 'AWS / Cloudflare', 'PostgreSQL'],
+                'architecture_points' => [
+                    'Zero-Downtime Blue/Green Deployments',
+                    'Automated SSL Certificate Renewal',
+                    'Real-Time Health Monitoring & Alerts',
+                    'Strict Firewall & DDoS Protection Layers',
+                ],
+                'code_snippet' => <<<'CODE'
+# GitHub Actions CI/CD Production Build Pipeline
+name: Production Deployment Pipeline
+on:
+  push:
+    branches: [ main ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker Container
+        run: docker build -t app-prod:${{ github.sha }} .
+      - name: Run Automated Test Suite
+        run: docker run app-prod:${{ github.sha }} npm test
+      - name: Zero-Downtime Rollout
+        run: ./scripts/deploy-blue-green.sh ${{ github.sha }}
+CODE,
                 'display_order' => 8,
                 'is_active' => true,
             ],

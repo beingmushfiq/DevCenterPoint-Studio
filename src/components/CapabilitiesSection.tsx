@@ -37,10 +37,10 @@ export const CapabilitiesSection: React.FC = () => {
     ? cms.capabilities.map((c: any, idx: number) => ({
         id: c.slug || String(c.id),
         number: String(idx + 1).padStart(2, '0'),
-        title: c.name,
+        title: c.title || c.name,
         tagline: c.tagline || '',
         description: c.description,
-        keyOutputs: Array.isArray(c.key_deliverables) ? c.key_deliverables : (c.keyOutputs || []),
+        keyOutputs: Array.isArray(c.features) ? c.features : (c.keyOutputs || []),
         techStack: Array.isArray(c.technologies) ? c.technologies : (c.techStack || []),
         architectureHighlights: Array.isArray(c.architecture_points) ? c.architecture_points : (c.architectureHighlights || []),
         codeSample: c.code_snippet || c.codeSample,

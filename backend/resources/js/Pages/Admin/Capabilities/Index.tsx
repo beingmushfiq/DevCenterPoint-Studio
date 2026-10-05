@@ -12,6 +12,8 @@ interface Capability {
   icon_name: string;
   features: string[];
   technologies: string[];
+  architecture_points: string[] | null;
+  code_snippet: string | null;
   display_order: number;
   is_active: boolean;
 }
@@ -29,6 +31,8 @@ export default function CapabilitiesIndex({ capabilities }: Props) {
     icon_name: 'Code2',
     features: ['Feature 1', 'Feature 2'],
     technologies: ['React', 'Laravel'],
+    architecture_points: [] as string[],
+    code_snippet: '',
     display_order: 1,
     is_active: true,
   });
@@ -42,6 +46,8 @@ export default function CapabilitiesIndex({ capabilities }: Props) {
       icon_name: cap.icon_name,
       features: cap.features || [],
       technologies: cap.technologies || [],
+      architecture_points: cap.architecture_points || [],
+      code_snippet: cap.code_snippet || '',
       display_order: cap.display_order,
       is_active: cap.is_active,
     });
@@ -156,6 +162,35 @@ export default function CapabilitiesIndex({ capabilities }: Props) {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">
+                    Architectural Standards <span className="text-slate-500 font-normal">(one per line)</span>
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={formData.architecture_points.join('\n')}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        architecture_points: e.target.value.split('\n').map((l) => l.trim()).filter(Boolean),
+                      })
+                    }
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500 font-mono text-[11px]"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">
+                    Code Snippet <span className="text-slate-500 font-normal">(optional)</span>
+                  </label>
+                  <textarea
+                    rows={6}
+                    value={formData.code_snippet}
+                    onChange={(e) => setFormData({ ...formData, code_snippet: e.target.value })}
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500 font-mono text-[11px]"
                   />
                 </div>
 

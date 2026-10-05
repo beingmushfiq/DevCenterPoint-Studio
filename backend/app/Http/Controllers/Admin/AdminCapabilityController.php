@@ -35,6 +35,8 @@ class AdminCapabilityController extends Controller
             'icon_name' => 'required|string|max:100',
             'features' => 'required|array',
             'technologies' => 'required|array',
+            'architecture_points' => 'nullable|array',
+            'code_snippet' => 'nullable|string',
             'display_order' => 'integer',
             'is_active' => 'boolean',
         ]);
