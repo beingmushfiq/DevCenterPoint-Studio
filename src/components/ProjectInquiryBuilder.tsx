@@ -76,26 +76,21 @@ const CURRENCIES: Record<CurrencyCode, CurrencyConfig> = {
   BDT: { code: 'BDT', symbol: '৳', name: 'BDT', flag: '🇧🇩' },
 };
 
-interface BudgetTier {
+interface ScopeTier {
   id: string;
   label: string;
-  prices: Record<CurrencyCode, string>;
+  badge: string;
   speed: string;
   squad: string;
   sla: string;
   recommendedFor: string;
 }
 
-const BUDGET_TIERS: BudgetTier[] = [
+const SCOPE_TIERS: ScopeTier[] = [
   {
     id: 'mvp',
     label: 'Core Launch / MVP',
-    prices: {
-      USD: '$8,000 – $15,000',
-      EUR: '€7,500 – €14,000',
-      GBP: '£6,200 – £11,700',
-      BDT: '৳9,60,000 – ৳18,00,000',
-    },
+    badge: 'Rapid Validation',
     speed: '4 – 6 Weeks',
     squad: '1 Principal Architect + 1 Senior Engineer',
     sla: '99.9% Uptime Guarantee',
@@ -104,12 +99,7 @@ const BUDGET_TIERS: BudgetTier[] = [
   {
     id: 'scale',
     label: 'Growth & Scale Platform',
-    prices: {
-      USD: '$15,000 – $35,000',
-      EUR: '€14,000 – €32,500',
-      GBP: '£11,700 – £27,300',
-      BDT: '৳18,00,000 – ৳42,00,000',
-    },
+    badge: 'Dedicated Squad',
     speed: '8 – 12 Weeks',
     squad: '1 Architect + 2 Fullstack Engineers + 1 QA Specialist',
     sla: 'Zero-Downtime Migration & SOC2 Ready',
@@ -118,12 +108,7 @@ const BUDGET_TIERS: BudgetTier[] = [
   {
     id: 'enterprise',
     label: 'Enterprise Distributed Core',
-    prices: {
-      USD: '$35,000 – $75,000+',
-      EUR: '€32,500 – €70,000+',
-      GBP: '£27,300 – £58,500+',
-      BDT: '৳42,00,000 – ৳90,00,000+',
-    },
+    badge: 'Mission Critical',
     speed: 'Phased Milestones',
     squad: 'Dedicated Cross-Functional Squad & DevSecOps Lead',
     sla: 'Sub-35ms Global Edge & 24/7 Dedicated On-Call',
@@ -132,12 +117,7 @@ const BUDGET_TIERS: BudgetTier[] = [
   {
     id: 'advisory',
     label: 'Architecture RFC & Audit',
-    prices: {
-      USD: '$4,000 – $8,000',
-      EUR: '€3,700 – €7,500',
-      GBP: '£3,100 – £6,200',
-      BDT: '৳4,80,000 – ৳9,60,000',
-    },
+    badge: 'Executive Advisory',
     speed: '1 – 2 Weeks',
     squad: 'Principal Cloud & Security Architect',
     sla: 'Comprehensive Blueprint & Threat Model',
@@ -161,7 +141,6 @@ const TIMELINE_OPTIONS = [
 const DRAFT_STORAGE_KEY = 'dcp_inquiry_draft_v2';
 
 export const ProjectInquiryBuilder: React.FC = () => {
-  const [currency, setCurrency] = useState<CurrencyCode>('USD');
   const [selectedTierId, setSelectedTierId] = useState<string>('scale');
   const [kickoffPreset, setKickoffPreset] = useState<string>('month');
   const [customKickoffDate, setCustomKickoffDate] = useState<string>('');
@@ -171,7 +150,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [copiedRef, setCopiedRef] = useState<boolean>(false);
 
-  const activeTier = BUDGET_TIERS.find((t) => t.id === selectedTierId) || BUDGET_TIERS[1];
+  const activeTier = SCOPE_TIERS.find((t) => t.id === selectedTierId) || SCOPE_TIERS[1];
 
   // Smart defaults with LocalStorage restoration
   const [formData, setFormData] = useState<InquiryFormData>(() => {
@@ -188,7 +167,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
       email: '',
       company: '',
       projectType: 'SaaS / Web Product',
-      budgetRange: `Growth & Scale Platform (${BUDGET_TIERS[1].prices.USD})`,
+      budgetRange: `${SCOPE_TIERS[1].label} (${SCOPE_TIERS[1].badge})`,
       timeline: '2 - 3 Months',
       targetKickoff: 'Within 30 Days',
       description: '',
@@ -229,21 +208,12 @@ export const ProjectInquiryBuilder: React.FC = () => {
     }
   };
 
-  const handleCurrencyChange = (curr: CurrencyCode) => {
-    soundEngine.playTap();
-    setCurrency(curr);
-    setFormData((prev) => ({
-      ...prev,
-      budgetRange: `${activeTier.label} (${activeTier.prices[curr]})`,
-    }));
-  };
-
-  const handleTierSelect = (tier: BudgetTier) => {
+  const handleTierSelect = (tier: ScopeTier) => {
     soundEngine.playTap();
     setSelectedTierId(tier.id);
     setFormData((prev) => ({
       ...prev,
-      budgetRange: `${tier.label} (${tier.prices[currency]})`,
+      budgetRange: `${tier.label} (${tier.badge})`,
     }));
   };
 
@@ -285,7 +255,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
       email: formData.email.trim().toLowerCase(),
       company: formData.company?.trim() || '',
       description: formData.description.trim(),
-      budgetRange: formData.budgetRange || `${activeTier.label} (${activeTier.prices[currency]})`,
+      budgetRange: formData.budgetRange || `${activeTier.label} (${activeTier.badge})`,
       targetKickoff: finalKickoff,
     };
 
@@ -564,40 +534,19 @@ export const ProjectInquiryBuilder: React.FC = () => {
                 </div>
               </div>
 
-              {/* Step 2: Scope & Investment */}
+              {/* Step 2: Scope & Delivery Velocity */}
               <div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
                   <div className="flex items-center gap-2">
                     <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-800 dark:text-neutral-200">
-                      2. Scope & Investment Tier
+                      2. Engagement Scope & Delivery Velocity
                     </label>
                   </div>
-
-                  {/* Currency Selector Pill Bar */}
-                  <div className="flex items-center gap-1 p-1 rounded-xl bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 self-start sm:self-auto">
-                    {(Object.keys(CURRENCIES) as CurrencyCode[]).map((curr) => {
-                      const isCurrActive = currency === curr;
-                      return (
-                        <button
-                          key={curr}
-                          type="button"
-                          onClick={() => handleCurrencyChange(curr)}
-                          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 min-h-8 ${
-                            isCurrActive
-                              ? 'bg-blue-600 text-white shadow-xs'
-                              : 'text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white'
-                          }`}
-                        >
-                          <span>{CURRENCIES[curr].flag}</span>
-                          <span>{CURRENCIES[curr].symbol} {curr}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
+                  <span className="text-[10px] font-mono text-slate-400">Step 2 of 4</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {BUDGET_TIERS.map((tier) => {
+                  {SCOPE_TIERS.map((tier) => {
                     const isSelected = selectedTierId === tier.id;
 
                     return (
@@ -605,13 +554,13 @@ export const ProjectInquiryBuilder: React.FC = () => {
                         key={tier.id}
                         type="button"
                         onClick={() => handleTierSelect(tier)}
-                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex flex-col justify-between space-y-2 min-h-20 ${
+                        className={`p-3.5 rounded-2xl text-left transition-all border cursor-pointer flex flex-col justify-between space-y-2.5 min-h-20 ${
                           isSelected
                             ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-500 text-slate-900 dark:text-white ring-1 ring-blue-500/30'
                             : 'bg-white dark:bg-neutral-950 text-slate-700 dark:text-neutral-300 border-slate-200 dark:border-neutral-800 hover:border-slate-300'
                         }`}
                       >
-                        <div className="space-y-1">
+                        <div className="space-y-1.5">
                           <div className="flex items-center justify-between gap-1">
                             <span className="text-xs font-bold leading-tight">
                               {tier.label}
@@ -621,7 +570,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-slate-100 dark:bg-neutral-800 text-slate-700 dark:text-neutral-300'
                             }`}>
-                              {tier.prices[currency]}
+                              {tier.badge}
                             </span>
                           </div>
                           <p className="text-[11px] text-slate-500 dark:text-neutral-400 leading-snug line-clamp-2">
@@ -629,11 +578,11 @@ export const ProjectInquiryBuilder: React.FC = () => {
                           </p>
                         </div>
 
-                        <div className="pt-1.5 border-t border-slate-100 dark:border-neutral-800 flex items-center justify-between text-[10px] font-mono">
-                          <span className="text-blue-600 dark:text-blue-400 font-bold">
+                        <div className="pt-2 border-t border-slate-100 dark:border-neutral-800 flex items-center justify-between text-[10px] font-mono">
+                          <span className="text-blue-600 dark:text-blue-400 font-bold flex items-center gap-1">
                             ⏱ {tier.speed}
                           </span>
-                          <span className="text-slate-400 truncate max-w-32.5">
+                          <span className="text-slate-400 truncate max-w-36 font-medium">
                             {tier.squad.split('+')[0]}
                           </span>
                         </div>

@@ -6,6 +6,7 @@ use App\Models\Capability;
 use App\Models\Faq;
 use App\Models\Milestone;
 use App\Models\PageSection;
+use App\Models\Plan;
 use App\Models\Project;
 use App\Models\SandboxApp;
 use App\Models\SiteSetting;
@@ -662,6 +663,9 @@ class DatabaseSeeder extends Seeder
             ['key' => 'hero_telemetry_badge3_val', 'value' => '12ms', 'group' => 'hero'],
             ['key' => 'visual_liquid_orbs_enabled', 'value' => 'true', 'group' => 'atmosphere'],
             ['key' => 'visual_radar_status', 'value' => 'OPERATIONAL // 100% HEALTH', 'group' => 'atmosphere'],
+            ['key' => 'show_pricing_on_site', 'value' => 'false', 'group' => 'commercial'],
+            ['key' => 'pricing_section_heading', 'value' => 'Transparent Engineering Engagements', 'group' => 'commercial'],
+            ['key' => 'pricing_section_subheading', 'value' => 'Predictable milestones, dedicated senior squads, and zero-compromise system architecture.', 'group' => 'commercial'],
         ];
 
         foreach ($settings as $setting) {
@@ -962,6 +966,135 @@ class DatabaseSeeder extends Seeder
             SandboxApp::updateOrCreate(
                 ['slug' => $app['slug']],
                 $app
+            );
+        }
+
+        // 11. Plans & Pricing Packages (CMS Managed - Default Unpublished)
+        $plans = [
+            [
+                'slug' => 'core-launch-mvp',
+                'name' => 'Core Launch / MVP',
+                'badge' => 'Rapid Validation',
+                'tagline' => 'High-velocity MVP execution for ambitious founders',
+                'description' => 'Fast-track prototype engineered with production-grade architecture, strict TypeScript schemas, and automated CI/CD pipeline.',
+                'pricing_model' => 'fixed',
+                'price_usd' => '$8,000 – $15,000',
+                'price_eur' => '€7,500 – €14,000',
+                'price_gbp' => '£6,200 – £11,700',
+                'price_bdt' => '৳9,60,000 – ৳18,00,000',
+                'billing_period' => 'per project',
+                'timeline_estimate' => '4 – 6 Weeks',
+                'squad_composition' => '1 Principal Architect + 1 Senior Engineer',
+                'sla_commitment' => '99.9% Uptime Guarantee',
+                'recommended_for' => 'Early-stage founders validating market fit with production-grade stability',
+                'features' => [
+                    'Production React/Next.js/Inertia Frontend',
+                    'Relational Database Schema & Migrations',
+                    'Authentication & Role-Based Access Control',
+                    'Automated CI/CD Deployment Pipeline',
+                    'Complete Source Code & IP Handover'
+                ],
+                'cta_text' => 'Inquire for MVP Scope',
+                'cta_action' => 'contact',
+                'display_order' => 1,
+                'is_featured' => false,
+                'is_published' => false, // Hidden by default
+            ],
+            [
+                'slug' => 'growth-scale-platform',
+                'name' => 'Growth & Scale Platform',
+                'badge' => 'Dedicated Squad',
+                'tagline' => 'Engineered for modernizing systems and scaling multi-tenant apps',
+                'description' => 'Dedicated fullstack squad embedded into your roadmap for rapid feature velocity, event queues, and zero downtime releases.',
+                'pricing_model' => 'milestone',
+                'price_usd' => '$15,000 – $35,000',
+                'price_eur' => '€14,000 – €32,500',
+                'price_gbp' => '£11,700 – £27,300',
+                'price_bdt' => '৳18,00,000 – ৳42,00,000',
+                'billing_period' => 'phased milestone',
+                'timeline_estimate' => '8 – 12 Weeks',
+                'squad_composition' => '1 Architect + 2 Fullstack Engineers + 1 QA Specialist',
+                'sla_commitment' => 'Zero-Downtime Migration & SOC2 Ready',
+                'recommended_for' => 'Scaling businesses modernizing legacy workflows or launching multi-tenant apps',
+                'features' => [
+                    'High-Throughput Distributed Architecture',
+                    'Multi-Tenant Database Isolation',
+                    'Event-Driven Background Queues (Redis/RabbitMQ)',
+                    'Full End-to-End Test Suite (Playwright & Jest)',
+                    'Automated Zero-Downtime Deployments',
+                    'Dedicated Slack/Jira Integration'
+                ],
+                'cta_text' => 'Inquire for Growth Squad',
+                'cta_action' => 'contact',
+                'display_order' => 2,
+                'is_featured' => true,
+                'is_published' => false, // Hidden by default
+            ],
+            [
+                'slug' => 'enterprise-distributed-core',
+                'name' => 'Enterprise Distributed Core',
+                'badge' => 'Mission Critical',
+                'tagline' => 'High-concurrency systems, fintech rails, and omnichannel ERPs',
+                'description' => 'Mission-critical distributed systems engineered for multi-region resilience, double-entry financial ledgers, and sub-35ms edge latency.',
+                'pricing_model' => 'milestone',
+                'price_usd' => '$35,000 – $75,000+',
+                'price_eur' => '€32,500 – €70,000+',
+                'price_gbp' => '£27,300 – £58,500+',
+                'price_bdt' => '৳42,00,000 – ৳90,00,000+',
+                'billing_period' => 'custom roadmap',
+                'timeline_estimate' => 'Phased Milestones',
+                'squad_composition' => 'Dedicated Cross-Functional Squad & DevSecOps Lead',
+                'sla_commitment' => 'Sub-35ms Global Edge & 24/7 Dedicated On-Call',
+                'recommended_for' => 'Complex omnichannel ERPs, fintech rails, or high-throughput real-time pipelines',
+                'features' => [
+                    'Multi-Region Distributed Cloud Topology',
+                    'Fintech-Grade Double-Entry Transaction Ledger',
+                    'Sub-35ms Edge Cache & Real-Time Sync',
+                    'OWASP Level 3 & ISO/SOC2 Compliance Audits',
+                    '24/7 Priority Incident Escalation & SLO Monitoring',
+                    'Full Systems Architecture RFC & Team Training'
+                ],
+                'cta_text' => 'Inquire for Enterprise Core',
+                'cta_action' => 'contact',
+                'display_order' => 3,
+                'is_featured' => false,
+                'is_published' => false, // Hidden by default
+            ],
+            [
+                'slug' => 'architecture-rfc-advisory',
+                'name' => 'Architecture RFC & Audit',
+                'badge' => 'Executive Advisory',
+                'tagline' => 'High-leverage system audits, cloud cost optimization, and advisory',
+                'description' => 'Targeted surgical audit of codebases, databases, and cloud infrastructure to eliminate latency, security risks, and inflated cloud bills.',
+                'pricing_model' => 'fixed',
+                'price_usd' => '$4,000 – $8,000',
+                'price_eur' => '€3,700 – €7,500',
+                'price_gbp' => '£3,100 – £6,200',
+                'price_bdt' => '৳4,80,000 – ৳9,60,000',
+                'billing_period' => 'one-time audit',
+                'timeline_estimate' => '1 – 2 Weeks',
+                'squad_composition' => 'Principal Cloud & Security Architect',
+                'sla_commitment' => 'Comprehensive Blueprint & Threat Model',
+                'recommended_for' => 'Teams needing external code audit, cloud cost reduction, or architectural RFC',
+                'features' => [
+                    'Complete Repository & Infrastructure Security Audit',
+                    'Database Query Bottleneck & Index Optimization',
+                    'Cloud Bill Reduction (Target 30–50% Savings)',
+                    'Formal RFC Architecture Document & Presentation',
+                    'Actionable Technical Debt Elimination Matrix'
+                ],
+                'cta_text' => 'Book Architecture Audit',
+                'cta_action' => 'contact',
+                'display_order' => 4,
+                'is_featured' => false,
+                'is_published' => false, // Hidden by default
+            ],
+        ];
+
+        foreach ($plans as $plan) {
+            Plan::updateOrCreate(
+                ['slug' => $plan['slug']],
+                $plan
             );
         }
     }

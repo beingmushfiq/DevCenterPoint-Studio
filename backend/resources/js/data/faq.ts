@@ -31,7 +31,7 @@ export const FAQ_DATA: FAQItem[] = [
       'We support three primary commercial structures tailored to your operational velocity: (1) Dedicated Engineering Squads—an integrated cross-functional team of senior engineers, an architect, and a delivery lead dedicated exclusively to your roadmap; (2) Fixed-Scope Milestone Deliverables—guaranteed-budget execution with deterministic phase sign-offs; and (3) Strategic Architecture Advisory / Fractional CTO—high-leverage systems audits, technology selection, and technical leadership.',
     highlights: [
       'Dedicated Agile Squads embedded directly into your Slack & Jira',
-      'Milestone-bound delivery tranches with deterministic pricing',
+      'Milestone-bound delivery tranches with deterministic deliverables',
       'Fractional CTO & Systems Advisory for high-scale planning'
     ]
   },

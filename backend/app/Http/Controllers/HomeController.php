@@ -6,6 +6,7 @@ use App\Models\Capability;
 use App\Models\Faq;
 use App\Models\Milestone;
 use App\Models\PageSection;
+use App\Models\Plan;
 use App\Models\Project;
 use App\Models\SandboxApp;
 use App\Models\SiteSetting;
@@ -58,6 +59,13 @@ class HomeController extends Controller
 
         $settings = SiteSetting::pluck('value', 'key');
 
+        $plans = [];
+        if (($settings['show_pricing_on_site'] ?? 'false') === 'true') {
+            $plans = Plan::where('is_published', true)
+                ->orderBy('display_order')
+                ->get();
+        }
+
         return Inertia::render('Public/Home', [
             'capabilities' => $capabilities,
             'projects' => $projects,
@@ -66,6 +74,7 @@ class HomeController extends Controller
             'team' => $team,
             'testimonials' => $testimonials,
             'sandboxApps' => $sandboxApps,
+            'plans' => $plans,
             'pageSections' => $sections,
             'siteSettings' => $settings,
         ]);

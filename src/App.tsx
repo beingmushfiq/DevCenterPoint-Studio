@@ -15,6 +15,7 @@ import { EfficiencyMetricsSection } from './components/EfficiencyMetricsSection'
 import { AboutPrinciples } from './components/AboutPrinciples';
 import { FAQSection } from './components/FAQSection';
 import { ProjectInquiryBuilder } from './components/ProjectInquiryBuilder';
+import { PlansPricingSection } from './components/PlansPricingSection';
 import { NewsletterSignup } from './components/NewsletterSignup';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
@@ -159,6 +160,11 @@ export default function App() {
               {/* Frequently Asked Questions: Engineering Process & Engagement Models */}
               <ScrollRevealSection>
                 <FAQSection />
+              </ScrollRevealSection>
+
+              {/* Dynamic Plans & Pricing Section (Disabled on public site by default) */}
+              <ScrollRevealSection>
+                <PlansPricingSection isVisible={false} />
               </ScrollRevealSection>
 
               {/* Interactive Project Scope Estimator & Contact Form */}

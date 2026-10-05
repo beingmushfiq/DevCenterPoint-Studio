@@ -305,8 +305,8 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
                     { label: 'Selected Work', href: '#work', note: '9 Production Systems' },
                     { label: 'Capabilities & Services', href: '#capabilities', note: 'Full-stack & AI' },
                     { label: 'Sprint Methodology', href: '#process', note: 'Discovery to Deployment' },
-                    { label: 'Frequently Asked Questions', href: '#faq', note: 'Pricing, SLAs, Terms' },
-                    { label: 'Start Project Collaboration', href: '#contact', note: 'Scope & Budget Estimator' }
+                    { label: 'Frequently Asked Questions', href: '#faq', note: 'Engagements, SLAs, Terms' },
+                    { label: 'Start Project Collaboration', href: '#contact', note: 'Scope & Architecture Estimator' }
                   ].map((item, idx) => (
                     <button
                       key={idx}

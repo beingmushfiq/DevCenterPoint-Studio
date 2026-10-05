@@ -17,6 +17,7 @@ import { EfficiencyMetricsSection } from '../../Components/EfficiencyMetricsSect
 import { AboutPrinciples } from '../../Components/AboutPrinciples';
 import { FAQSection } from '../../Components/FAQSection';
 import { ProjectInquiryBuilder } from '../../Components/ProjectInquiryBuilder';
+import { PlansPricingSection } from '../../Components/PlansPricingSection';
 import { NewsletterSignup } from '../../Components/NewsletterSignup';
 import { Footer } from '../../Components/Footer';
 import { CustomCursor } from '../../Components/CustomCursor';
@@ -161,6 +162,18 @@ export default function Home(props: CmsData) {
                 <ScrollRevealSection>
                   <FAQSection />
                 </ScrollRevealSection>
+
+                {/* Dynamically Published Plans & Pricing (Controlled by CMS toggle) */}
+                {props.plans && props.plans.length > 0 && props.siteSettings?.show_pricing_on_site === 'true' && (
+                  <ScrollRevealSection>
+                    <PlansPricingSection
+                      plans={props.plans}
+                      isVisible={true}
+                      heading={props.siteSettings?.pricing_section_heading || 'Transparent Engineering Engagements'}
+                      subheading={props.siteSettings?.pricing_section_subheading || 'Predictable milestones, dedicated senior squads, and zero-compromise system architecture.'}
+                    />
+                  </ScrollRevealSection>
+                )}
 
                 {/* Interactive Project Scope Estimator & Contact Form */}
                 <ScrollRevealSection>

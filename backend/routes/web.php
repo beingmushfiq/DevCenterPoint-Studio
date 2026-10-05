@@ -50,6 +50,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/capabilities', [\App\Http\Controllers\Admin\AdminCapabilityController::class, 'index'])->name('capabilities.index');
     Route::put('/capabilities/{capability}', [\App\Http\Controllers\Admin\AdminCapabilityController::class, 'update'])->name('capabilities.update');
     
+    // Plans & Pricing Packages CMS
+    Route::get('/plans', [\App\Http\Controllers\Admin\AdminPlanController::class, 'index'])->name('plans.index');
+    Route::post('/plans', [\App\Http\Controllers\Admin\AdminPlanController::class, 'store'])->name('plans.store');
+    Route::put('/plans/{plan}', [\App\Http\Controllers\Admin\AdminPlanController::class, 'update'])->name('plans.update');
+    Route::delete('/plans/{plan}', [\App\Http\Controllers\Admin\AdminPlanController::class, 'destroy'])->name('plans.destroy');
+    Route::patch('/plans/{plan}/publish', [\App\Http\Controllers\Admin\AdminPlanController::class, 'togglePublish'])->name('plans.publish');
+    Route::post('/plans/site-pricing', [\App\Http\Controllers\Admin\AdminPlanController::class, 'toggleSitePricing'])->name('plans.site_pricing');
+
     // FAQs CMS
     Route::get('/faqs', [\App\Http\Controllers\Admin\AdminFaqController::class, 'index'])->name('faqs.index');
     Route::post('/faqs', [\App\Http\Controllers\Admin\AdminFaqController::class, 'store'])->name('faqs.store');
