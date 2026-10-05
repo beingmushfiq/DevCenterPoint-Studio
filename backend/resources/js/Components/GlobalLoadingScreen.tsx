@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../Context/ThemeContext';
 
 export type LoadingViewMode = 'spinner' | 'skeleton';
 

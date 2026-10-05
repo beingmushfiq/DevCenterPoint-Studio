@@ -1,6 +1,6 @@
 import React from 'react';
 import { Sun, Moon, Volume2, VolumeX } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../Context/ThemeContext';
 import { motion } from 'framer-motion';
 
 export const ThemeToggle: React.FC<{ className?: string }> = ({ className = '' }) => {

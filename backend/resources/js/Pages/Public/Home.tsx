@@ -83,6 +83,8 @@ export default function Home(props: CmsData) {
   const siteTitle = props.siteSettings?.seo_meta_title || 'DevCenterPoint Studio | Software Engineering & System Architecture';
   const siteDescription = props.siteSettings?.seo_meta_description || 'Elite software engineering consultancy specializing in scalable web systems, AI pipelines, and resilient cloud architectures.';
 
+  const handleMountComplete = React.useCallback(() => setIsSiteLoaded(true), []);
+
   return (
     <HelmetProvider>
       <Head>
@@ -93,13 +95,9 @@ export default function Home(props: CmsData) {
         <SEOProvider>
           <ThemeProvider>
             {/* Global Initial Mounting Screen & Skeleton Loader */}
-            <GlobalLoadingScreen onMountComplete={() => setIsSiteLoaded(true)} />
+            <GlobalLoadingScreen onMountComplete={handleMountComplete} />
 
-            <div
-              className={`min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white font-sans antialiased relative selection:bg-blue-600 selection:text-white transition-opacity duration-300 ${
-                isSiteLoaded ? 'opacity-100' : 'opacity-0 pointer-events-none'
-              }`}
-            >
+            <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white font-sans antialiased relative selection:bg-blue-600 selection:text-white">
               {/* Desktop Subtle Cursor Indicator */}
               <CustomCursor />
 

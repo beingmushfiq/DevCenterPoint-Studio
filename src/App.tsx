@@ -86,19 +86,16 @@ function HeroReveal({ children }: { children: React.ReactNode }) {
 export default function App() {
   const [isSiteLoaded, setIsSiteLoaded] = React.useState(false);
   const [isSandboxOpen, setIsSandboxOpen] = React.useState(false);
+  const handleMountComplete = React.useCallback(() => setIsSiteLoaded(true), []);
 
   return (
     <HelmetProvider>
       <SEOProvider>
         <ThemeProvider>
           {/* Global Initial Mounting Screen & Skeleton Loader */}
-          <GlobalLoadingScreen onMountComplete={() => setIsSiteLoaded(true)} />
+          <GlobalLoadingScreen onMountComplete={handleMountComplete} />
 
-          <div
-            className={`min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white font-sans antialiased relative selection:bg-blue-600 selection:text-white transition-opacity duration-300 ${
-              isSiteLoaded ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-          >
+          <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white font-sans antialiased relative selection:bg-blue-600 selection:text-white">
             {/* Desktop Subtle Cursor Indicator */}
             <CustomCursor />
 

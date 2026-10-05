@@ -60,22 +60,6 @@ const PROJECT_TYPE_OPTIONS: ProjectTypeOption[] = [
   },
 ];
 
-type CurrencyCode = 'USD' | 'EUR' | 'GBP' | 'BDT';
-
-interface CurrencyConfig {
-  code: CurrencyCode;
-  symbol: string;
-  name: string;
-  flag: string;
-}
-
-const CURRENCIES: Record<CurrencyCode, CurrencyConfig> = {
-  USD: { code: 'USD', symbol: '$', name: 'US Dollar', flag: '🇺🇸' },
-  EUR: { code: 'EUR', symbol: '€', name: 'Euro', flag: '🇪🇺' },
-  GBP: { code: 'GBP', symbol: '£', name: 'British Pound', flag: '🇬🇧' },
-  BDT: { code: 'BDT', symbol: '৳', name: 'BDT', flag: '🇧🇩' },
-};
-
 interface ScopeTier {
   id: string;
   label: string;
@@ -334,7 +318,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
       email: '',
       company: '',
       projectType: 'SaaS / Web Product',
-      budgetRange: `Growth & Scale Platform (${BUDGET_TIERS[1].prices.USD})`,
+      budgetRange: `${SCOPE_TIERS[1].label} (${SCOPE_TIERS[1].badge})`,
       timeline: '2 - 3 Months',
       targetKickoff: 'Within 30 Days',
       description: '',
@@ -804,8 +788,8 @@ export const ProjectInquiryBuilder: React.FC = () => {
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>Calculated Scope</span>
                   </div>
-                  <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-blue-600 text-white font-bold">
-                    {activeTier.prices[currency]}
+                  <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-blue-600/10 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300 font-bold border border-blue-500/20">
+                    {activeTier.badge}
                   </span>
                 </div>
 

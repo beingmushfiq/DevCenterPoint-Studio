@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { soundEngine } from '../lib/soundEngine';
-import { ShutterTransitionOverlay } from '../components/ShutterTransitionOverlay';
+import { ShutterTransitionOverlay } from '../Components/ShutterTransitionOverlay';
 
 type Theme = 'dark' | 'light';
 
