@@ -90,6 +90,13 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/settings', [\App\Http\Controllers\Admin\AdminSettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [\App\Http\Controllers\Admin\AdminSettingController::class, 'update'])->name('settings.update');
 
+    // Header & Footer Appearance (raw code editing restricted to superadmins)
+    Route::get('/appearance', [\App\Http\Controllers\Admin\AdminAppearanceController::class, 'index'])->name('appearance.index');
+    Route::post('/appearance', [\App\Http\Controllers\Admin\AdminAppearanceController::class, 'update'])->name('appearance.update');
+    Route::middleware('superadmin')->group(function () {
+        Route::post('/appearance/override', [\App\Http\Controllers\Admin\AdminAppearanceController::class, 'saveOverride'])->name('appearance.override');
+    });
+
     // Media Upload
     Route::post('/media/upload', [\App\Http\Controllers\Admin\AdminMediaController::class, 'upload'])->name('media.upload');
 });

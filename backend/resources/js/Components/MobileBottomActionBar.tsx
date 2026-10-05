@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUpRight, MessageCircle, Zap } from 'lucide-react';
+import { ArrowUpRight, MessageCircle, Zap, Calendar } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../Context/CmsContext';
 
 interface MobileBottomActionBarProps {
   onOpenSandbox?: () => void;
@@ -9,7 +10,15 @@ interface MobileBottomActionBarProps {
 export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
   onOpenSandbox
 }) => {
+  const cms = useCms();
   const [visible, setVisible] = useState(true);
+
+  const bookingUrl = cms.getSetting('booking_url', 'https://cal.com/devcenterpoint');
+  const bookingLabel = cms.getSetting('booking_cta_label', 'Book a Meeting');
+  const whatsappNumber = cms.getSetting('whatsapp_number', '+8801988383323').replace(/[^0-9]/g, '');
+  const whatsappMessage = encodeURIComponent(
+    cms.getSetting('whatsapp_prefill_message', "Hi DevCenterPoint, I'd like to discuss a project")
+  );
 
   // Auto-hide bottom bar when user reaches the contact section or bottom of page
   useEffect(() => {
@@ -49,7 +58,7 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
         
         {/* Direct WhatsApp Instant Consultation */}
         <a
-          href="https://wa.me/8801988383323?text=Hi%20DevCenterPoint,%20I'd%20like%20to%20discuss%20a%20project"
+          href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => soundEngine.playClick()}
@@ -59,6 +68,21 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
           <MessageCircle className="w-3.5 h-3.5 fill-current" />
           <span>WhatsApp</span>
         </a>
+
+        {/* Book a Meeting (Cal.com) */}
+        {bookingUrl && (
+          <a
+            href={bookingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => soundEngine.playClick()}
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-all active:scale-95"
+            title={bookingLabel}
+          >
+            <Calendar className="w-3.5 h-3.5" />
+            <span>Book</span>
+          </a>
+        )}
 
         {/* 1-Click Live Demos Sandbox Modal */}
         {onOpenSandbox && (

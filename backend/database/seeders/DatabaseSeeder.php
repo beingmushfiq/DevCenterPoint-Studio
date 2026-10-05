@@ -623,6 +623,27 @@ class DatabaseSeeder extends Seeder
                     'copyright_text' => '© ' . date('Y') . ' DevCenterPoint Studio. All rights reserved.',
                 ]),
             ],
+            // Appearance: Raw HTML/CSS/JS region overrides (disabled by default)
+            [
+                'section_key' => 'appearance',
+                'block_key' => 'header_override',
+                'content' => json_encode([
+                    'html' => '',
+                    'css' => '',
+                    'js' => '',
+                    'mode' => 'off',
+                ]),
+            ],
+            [
+                'section_key' => 'appearance',
+                'block_key' => 'footer_override',
+                'content' => json_encode([
+                    'html' => '',
+                    'css' => '',
+                    'js' => '',
+                    'mode' => 'off',
+                ]),
+            ],
         ];
 
         foreach ($blocks as $block) {
@@ -666,6 +687,54 @@ class DatabaseSeeder extends Seeder
             ['key' => 'show_pricing_on_site', 'value' => 'false', 'group' => 'commercial'],
             ['key' => 'pricing_section_heading', 'value' => 'Transparent Engineering Engagements', 'group' => 'commercial'],
             ['key' => 'pricing_section_subheading', 'value' => 'Predictable milestones, dedicated senior squads, and zero-compromise system architecture.', 'group' => 'commercial'],
+            // Appearance: Header / Footer Templates & Booking CTA
+            ['key' => 'header_template', 'value' => 'glass-pill', 'group' => 'appearance'],
+            ['key' => 'footer_template', 'value' => 'four-column', 'group' => 'appearance'],
+            ['key' => 'booking_url', 'value' => 'https://cal.com/devcenterpoint', 'group' => 'appearance'],
+            ['key' => 'booking_cta_label', 'value' => 'Book a Meeting', 'group' => 'appearance'],
+            ['key' => 'booking_in_header', 'value' => 'true', 'group' => 'appearance'],
+            ['key' => 'booking_in_footer', 'value' => 'true', 'group' => 'appearance'],
+            ['key' => 'header_nav_links', 'value' => json_encode([
+                ['label' => 'Work', 'href' => '#work'],
+                ['label' => 'Capabilities', 'href' => '#capabilities'],
+                ['label' => 'Architecture', 'href' => '#philosophy'],
+                ['label' => 'Proof', 'href' => '#testimonials'],
+                ['label' => 'Team', 'href' => '#about'],
+            ]), 'group' => 'appearance'],
+            ['key' => 'header_drawer_links', 'value' => json_encode([
+                ['label' => 'Selected Work', 'href' => '#work', 'note' => '9 Production Systems'],
+                ['label' => 'Capabilities & Services', 'href' => '#capabilities', 'note' => 'Full-stack & AI'],
+                ['label' => 'Sprint Methodology', 'href' => '#process', 'note' => 'Discovery to Deployment'],
+                ['label' => 'Frequently Asked Questions', 'href' => '#faq', 'note' => 'Engagements, SLAs, Terms'],
+                ['label' => 'Start Project Collaboration', 'href' => '#contact', 'note' => 'Scope & Architecture Estimator'],
+            ]), 'group' => 'appearance'],
+            ['key' => 'footer_columns', 'value' => json_encode([
+                [
+                    'title' => 'Navigation',
+                    'links' => [
+                        ['label' => 'Capabilities', 'href' => '#capabilities'],
+                        ['label' => 'Selected Work', 'href' => '#work'],
+                        ['label' => 'Architecture', 'href' => '#architecture'],
+                        ['label' => 'Tech Ecosystem', 'href' => '#tech'],
+                        ['label' => 'Lifecycle Process', 'href' => '#process'],
+                        ['label' => 'Principles', 'href' => '#about'],
+                        ['label' => 'FAQ & Engagement', 'href' => '#faq'],
+                        ['label' => 'Start Project', 'href' => '#contact'],
+                    ],
+                ],
+            ]), 'group' => 'appearance'],
+            ['key' => 'footer_ecosystem_links', 'value' => json_encode([
+                ['label' => 'Engineering Studio', 'href' => 'https://devcenterpoint.com', 'note' => 'devcenterpoint.com'],
+                ['label' => 'AI Applied Studio', 'href' => 'https://devcenterpoint.ai.studio', 'note' => 'devcenterpoint.ai', 'accent' => 'emerald'],
+                ['label' => 'Enterprise ERP Demo', 'href' => 'https://demoerp.devcenterpoint.com', 'note' => 'demoerp', 'accent' => 'blue'],
+                ['label' => 'Healthcare Serial Manager', 'href' => 'https://serial.ferozamedicinecorner.com', 'note' => 'serial', 'accent' => 'emerald'],
+                ['label' => 'Road Safety Movement', 'href' => 'https://roadsafetymovement.org', 'note' => 'roadsafety'],
+                ['label' => 'Qttenzy Smart Attendance', 'href' => 'https://qttenzy.vercel.app', 'note' => 'qttenzy'],
+            ]), 'group' => 'appearance'],
+            ['key' => 'footer_bio', 'value' => 'DevCenterPoint is a custom software engineering studio building cloud architectures, high-performance web systems, and applied AI workflows.', 'group' => 'appearance'],
+            ['key' => 'footer_status_label', 'value' => 'ALL SYSTEMS OPERATIONAL (2026)', 'group' => 'appearance'],
+            ['key' => 'footer_tagline', 'value' => 'Designed with intent. Engineered with purpose.', 'group' => 'appearance'],
+            ['key' => 'footer_copyright_text', 'value' => '', 'group' => 'appearance'],
         ];
 
         foreach ($settings as $setting) {

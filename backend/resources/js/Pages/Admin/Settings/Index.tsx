@@ -539,13 +539,18 @@ export default function SettingsIndex({ settings }: Props) {
 
                 <div className="sm:col-span-2">
                   <label className="text-slate-400 font-semibold block mb-1">Booking / Cal.com URL</label>
-                  <input
-                    type="url"
-                    value={formData['booking_url']}
-                    onChange={(e) => handleChange('booking_url', e.target.value)}
-                    placeholder="https://cal.com/devcenterpoint"
-                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
-                  />
+                  <div className="flex items-center gap-2 p-2.5 bg-black/20 border border-white/10 rounded-xl">
+                    <span className="text-xs text-slate-300 font-mono truncate flex-1">
+                      {formData['booking_url'] || 'https://cal.com/devcenterpoint'}
+                    </span>
+                    <a
+                      href="/admin/appearance"
+                      className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-400 hover:text-blue-300 shrink-0"
+                    >
+                      <span>Edit in Appearance</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

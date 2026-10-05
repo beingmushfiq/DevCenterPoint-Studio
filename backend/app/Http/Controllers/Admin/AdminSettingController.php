@@ -12,6 +12,26 @@ use Inertia\Response;
 class AdminSettingController extends Controller
 {
     /**
+     * Keys owned by AdminAppearanceController — excluded here to avoid clobbering.
+     */
+    private const APPEARANCE_KEYS = [
+        'header_template',
+        'footer_template',
+        'booking_url',
+        'booking_cta_label',
+        'booking_in_header',
+        'booking_in_footer',
+        'header_nav_links',
+        'header_drawer_links',
+        'footer_columns',
+        'footer_ecosystem_links',
+        'footer_bio',
+        'footer_status_label',
+        'footer_tagline',
+        'footer_copyright_text',
+    ];
+
+    /**
      * Display a listing of site settings and SEO metadata.
      */
     public function index(): Response
@@ -28,7 +48,7 @@ class AdminSettingController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
-        $data = $request->except(['_token', '_method']);
+        $data = $request->except(['_token', '_method', ...self::APPEARANCE_KEYS]);
 
         foreach ($data as $key => $value) {
             SiteSetting::updateOrCreate(

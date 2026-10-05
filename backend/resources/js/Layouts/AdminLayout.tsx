@@ -18,6 +18,7 @@ import {
   Terminal,
   UserCheck,
   CreditCard,
+  Palette,
 } from 'lucide-react';
 
 interface Props {
@@ -42,6 +43,7 @@ export default function AdminLayout({ title, children }: Props) {
     { name: 'Team Leadership', href: '/admin/team', icon: UserCheck },
     { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
     { name: 'Page Blocks', href: '/admin/sections', icon: Layers },
+    { name: 'Appearance', href: '/admin/appearance', icon: Palette },
     { name: 'Site Settings', href: '/admin/settings', icon: Settings },
   ];
 

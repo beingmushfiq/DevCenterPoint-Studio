@@ -5,7 +5,7 @@ import { Head } from '@inertiajs/react';
 import { ThemeProvider } from '../../Context/ThemeContext';
 import { CmsProvider, CmsData } from '../../Context/CmsContext';
 import { SEOProvider } from '../../Components/SEOHead';
-import { Navigation } from '../../Components/Navigation';
+import { SiteHeader } from '../../Components/SiteHeader';
 import { Hero } from '../../Components/Hero';
 import { Positioning } from '../../Components/Positioning';
 import { CapabilitiesSection } from '../../Components/CapabilitiesSection';
@@ -19,7 +19,7 @@ import { FAQSection } from '../../Components/FAQSection';
 import { ProjectInquiryBuilder } from '../../Components/ProjectInquiryBuilder';
 import { PlansPricingSection } from '../../Components/PlansPricingSection';
 import { NewsletterSignup } from '../../Components/NewsletterSignup';
-import { Footer } from '../../Components/Footer';
+import { SiteFooter } from '../../Components/SiteFooter';
 import { CustomCursor } from '../../Components/CustomCursor';
 import { BackToTop } from '../../Components/BackToTop';
 import { GlobalLoadingScreen } from '../../Components/GlobalLoadingScreen';
@@ -102,7 +102,7 @@ export default function Home(props: CmsData) {
               <CustomCursor />
 
               {/* Primary Fixed Navigation with Sandbox Opener */}
-              <Navigation onOpenSandbox={() => setIsSandboxOpen(true)} />
+              <SiteHeader onOpenSandbox={() => setIsSandboxOpen(true)} />
 
               {/* Main Page Content Flow with Scroll-Reveal Motion Animations */}
               <main id="main-content">
@@ -186,7 +186,7 @@ export default function Home(props: CmsData) {
 
               {/* Editorial Footer */}
               <ScrollRevealSection yOffset={24}>
-                <Footer />
+                <SiteFooter />
               </ScrollRevealSection>
 
               {/* Floating Back to Top Action Button */}

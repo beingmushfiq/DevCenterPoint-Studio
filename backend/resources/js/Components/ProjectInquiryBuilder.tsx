@@ -25,6 +25,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useCms } from '../Context/CmsContext';
 
 interface ProjectTypeOption {
   id: string;
@@ -125,6 +126,7 @@ const TIMELINE_OPTIONS = [
 const DRAFT_STORAGE_KEY = 'dcp_inquiry_draft_v2';
 
 export const ProjectInquiryBuilder: React.FC = () => {
+  const cms = useCms();
   const [selectedTierId, setSelectedTierId] = useState<string>('scale');
   const [kickoffPreset, setKickoffPreset] = useState<string>('month');
   const [customKickoffDate, setCustomKickoffDate] = useState<string>('');
@@ -334,6 +336,9 @@ export const ProjectInquiryBuilder: React.FC = () => {
         'Hi DevCenterPoint, I would like to discuss engineering a digital product.'
       )}`;
 
+  const bookingUrl = cms.getSetting('booking_url', 'https://cal.com/devcenterpoint');
+  const bookingLabel = cms.getSetting('booking_cta_label', 'Book a Meeting');
+
   return (
     <section
       id="contact"
@@ -435,6 +440,19 @@ export const ProjectInquiryBuilder: React.FC = () => {
 
             {/* Action Buttons: WhatsApp Direct + Call Booking */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 max-w-md mx-auto">
+              {bookingUrl && (
+                <a
+                  href={bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-sm"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>{bookingLabel}</span>
+                  <ExternalLink className="w-3 h-3 opacity-70" />
+                </a>
+              )}
+
               <a
                 href={whatsappChatUrl}
                 target="_blank"

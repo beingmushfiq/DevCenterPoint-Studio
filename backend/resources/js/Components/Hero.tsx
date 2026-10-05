@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDownRight, ArrowUpRight, MessageCircle, ShieldCheck, Sparkles, Activity, Cpu, Play } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, MessageCircle, ShieldCheck, Sparkles, Activity, Cpu, Play, Calendar } from 'lucide-react';
 import { motion } from 'motion/react';
 import { DigitalSystemMap } from './DigitalSystemMap';
 import { HeroInteractiveCanvas } from './HeroInteractiveCanvas';
@@ -29,6 +29,8 @@ export const Hero: React.FC = () => {
   const whatsappMessage = encodeURIComponent(
     cms.getSetting('whatsapp_prefill_message', "Hi DevCenterPoint, I'd like to discuss a project")
   );
+  const bookingUrl = cms.getSetting('booking_url', 'https://cal.com/devcenterpoint');
+  const bookingLabel = cms.getSetting('booking_cta_label', 'Book a Meeting');
 
   const scrollToSection = (id: string) => {
     soundEngine.playClick();
@@ -142,6 +144,20 @@ export const Hero: React.FC = () => {
               <span>{ctaSecondary}</span>
               <ArrowDownRight className="w-4 h-4 text-slate-500 dark:text-slate-400" />
             </button>
+
+            {/* Book a Meeting (Cal.com) */}
+            {bookingUrl && (
+              <a
+                href={bookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => soundEngine.playClick()}
+                className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
+              >
+                <Calendar className="w-4 h-4" />
+                <span>{bookingLabel}</span>
+              </a>
+            )}
 
             {/* WhatsApp Direct */}
             <a

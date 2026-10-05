@@ -1,3 +1,7 @@
+@php
+    $dcpHeadScripts = \App\Models\SiteSetting::where('key', 'custom_head_scripts')->value('value');
+    $dcpBodyScripts = \App\Models\SiteSetting::where('key', 'custom_body_scripts')->value('value');
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -10,6 +14,9 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <!-- Custom Head Scripts (CMS) -->
+        {!! $dcpHeadScripts !!}
+
         <!-- Scripts -->
         @routes
         @viteReactRefresh
@@ -18,5 +25,8 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+
+        <!-- Custom Body Scripts (CMS) -->
+        {!! $dcpBodyScripts !!}
     </body>
 </html>
