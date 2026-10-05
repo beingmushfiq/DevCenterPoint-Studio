@@ -39,20 +39,35 @@ warn() { printf "${C_WARN}    ! %s${C_RESET}\n" "$1"; }
 fail() { printf "${C_ERR}    x %s${C_RESET}\n" "$1" >&2; }
 
 # Resolve a usable PHP CLI binary (cPanel hosts vary a lot).
+# Many cPanel hosts put a *CGI* build first on PATH. Running artisan through it
+# emits HTTP headers and silently drops the command name, so every candidate is
+# verified to be the `cli` SAPI before being accepted.
+is_php_cli() {
+  local bin
+  bin="$(command -v "$1" 2>/dev/null)" || return 1
+  [ -x "$bin" ] || return 1
+  [ "$("$bin" -r 'echo PHP_SAPI;' 2>/dev/null)" = "cli" ]
+}
+
 detect_php() {
-  if command -v php >/dev/null 2>&1; then
-    command -v php
-    return 0
-  fi
+  local candidate
   for candidate in \
-    /usr/local/bin/php \
-    /usr/bin/php \
+    php \
+    ea-php85 \
+    ea-php84 \
+    ea-php83 \
+    /usr/local/bin/ea-php85 \
+    /usr/local/bin/ea-php84 \
+    /usr/local/bin/ea-php83 \
+    /opt/cpanel/ea-php85/root/usr/bin/php \
     /opt/cpanel/ea-php84/root/usr/bin/php \
     /opt/cpanel/ea-php83/root/usr/bin/php \
-    /opt/cpanel/ea-php82/root/usr/bin/php
+    /opt/cpanel/ea-php82/root/usr/bin/php \
+    /usr/local/bin/php \
+    /usr/bin/php
   do
-    if [ -x "$candidate" ]; then
-      echo "$candidate"
+    if is_php_cli "$candidate"; then
+      command -v "$candidate" 2>/dev/null || echo "$candidate"
       return 0
     fi
   done

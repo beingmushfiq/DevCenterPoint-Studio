@@ -105,6 +105,26 @@ php artisan route:cache
 php artisan view:cache
 ```
 
+> **Trap: `php` may resolve to a CGI build, not the CLI.**
+> On many cPanel hosts the first `php` on `PATH` is the CGI/FastCGI binary. Running
+> artisan through it prints HTTP headers (such as `Content-type: text/html`) and the
+> **full command list instead of executing your command** — it silently drops the
+> arguments. Check with:
+> ```bash
+> php -i | grep -i "Server API"     # must say: Command Line Interface
+> ```
+> If it says `CGI/FastCGI`, call the CLI binary explicitly:
+> ```bash
+> /opt/cpanel/ea-php84/root/usr/bin/php artisan migrate --force
+> ```
+> or make it permanent for the session:
+> ```bash
+> alias php=/opt/cpanel/ea-php84/root/usr/bin/php
+> ```
+> The deploy script auto-detects a CLI build and skips CGI binaries, but manual
+> commands in this guide still depend on your shell resolving `php` correctly.
+
+
 ---
 
 ## Method 3: Automatic Deployment via cPanel Git Version Control (Recommended for the Laravel app)
@@ -166,9 +186,12 @@ repository and runs the deployment tasks automatically on every push you deploy.
    ```
 4. **Set the domain document root**: cPanel → *Domains* → `devcenterpoint.com` →
    document root `public_html`.
-5. **Add the scheduler cron** (cPanel → *Cron Jobs*):
+5. **Add the scheduler cron** (cPanel → *Cron Jobs*). Use the **CLI** PHP binary —
+   a CGI binary will fail silently. Run `which -a php` and pick the one whose
+   `php -i | grep -i "Server API"` reports `Command Line Interface`, e.g.
+   `/opt/cpanel/ea-php84/root/usr/bin/php`:
    ```cron
-   * * * * * cd /home/devcente/dcp_core && /usr/local/bin/php artisan schedule:run >> /dev/null 2>&1
+   * * * * * cd /home/devcente/dcp_core && /opt/cpanel/ea-php84/root/usr/bin/php artisan schedule:run >> /dev/null 2>&1
    ```
 
 > **First-deploy seeding:** after migrating, the deploy script counts rows in the `users`
