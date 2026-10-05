@@ -205,7 +205,7 @@ export const ProjectScreenshotCarousel: React.FC<ProjectScreenshotCarouselProps>
       </div>
 
       {/* Thumbnails Row */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
         {screenshots.map((shot, idx) => {
           const isActive = idx === currentIndex;
           return (
