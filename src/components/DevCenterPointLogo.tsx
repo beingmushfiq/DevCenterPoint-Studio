@@ -165,8 +165,7 @@ export const DevCenterPointLogo: React.FC<DevCenterPointLogoProps> = ({
         <LogoMark />
         <div className="flex flex-col">
           <span className={`font-black tracking-tight leading-none ${currentSize.text}`}>
-            <span className="text-blue-600 dark:text-blue-500">DevCenter</span>
-            <span className="text-[#0E131F] dark:text-white">Point</span>
+            <span className="text-blue-600 dark:text-blue-500">DevCenter</span><span className="text-[#0E131F] dark:text-white">Point</span>
           </span>
           {showTagline && (
             <span className="text-[7.5px] font-bold text-slate-500 dark:text-slate-400 tracking-[0.2em] uppercase mt-1">
@@ -185,8 +184,7 @@ export const DevCenterPointLogo: React.FC<DevCenterPointLogoProps> = ({
         <LogoMark customSize={size === 'xl' ? 96 : 84} />
         <div className="mt-4">
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight">
-            <span className="text-blue-600 dark:text-blue-500">DevCenter</span>
-            <span className="text-[#0E131F] dark:text-white">Point</span>
+            <span className="text-blue-600 dark:text-blue-500">DevCenter</span><span className="text-[#0E131F] dark:text-white">Point</span>
           </h2>
           {showTagline && (
             <p className="mt-2 text-xs sm:text-sm font-black tracking-[0.28em] text-slate-700 dark:text-slate-300 uppercase">
@@ -203,10 +201,11 @@ export const DevCenterPointLogo: React.FC<DevCenterPointLogoProps> = ({
     <div className={`flex items-center gap-3.5 group cursor-pointer ${className}`}>
       <LogoMark />
       <div className="flex flex-col">
-        <div className={`font-black tracking-tight leading-none flex items-center gap-1.5 ${currentSize.text}`}>
-          <span className="text-blue-600 dark:text-blue-500">DevCenter</span>
-          <span className="text-[#0E131F] dark:text-white">Point</span>
-          <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10B981] ml-0.5"></span>
+        <div className={`font-black tracking-tight leading-none flex items-center ${currentSize.text}`}>
+          <span className="inline-flex items-baseline">
+            <span className="text-blue-600 dark:text-blue-500">DevCenter</span><span className="text-[#0E131F] dark:text-white">Point</span>
+          </span>
+          <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10B981] ml-1.5"></span>
         </div>
         {showTagline && (
           <span className={`font-black tracking-[0.24em] text-slate-700 dark:text-slate-400 uppercase mt-1 ${currentSize.sub}`}>
