@@ -127,7 +127,8 @@ export const BreadcrumbNavigation: React.FC = () => {
       for (const section of SECTION_REGISTRY) {
         const el = document.getElementById(section.id);
         if (el) {
-          const top = el.offsetTop;
+          // Scroll-reveal wrappers apply transforms, which break offsetTop.
+          const top = el.getBoundingClientRect().top + scrollY;
           const height = el.offsetHeight;
           if (scrollPos >= top && scrollPos < top + height) {
             matchedSectionId = section.id;

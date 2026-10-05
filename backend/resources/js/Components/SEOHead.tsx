@@ -68,6 +68,19 @@ export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
     sectionName: 'Selected Work',
     hash: '#work',
   },
+  testimonials: {
+    title: 'Verified Client Proof & Testimonials — DevCenterPoint',
+    description: 'Read verified endorsements and measurable outcomes from the CTOs and product leaders whose platforms DevCenterPoint has engineered.',
+    keywords: [
+      'client testimonials',
+      'software case study proof',
+      'enterprise endorsements',
+      'verified engineering outcomes',
+      'DevCenterPoint clients'
+    ],
+    sectionName: 'Proof',
+    hash: '#testimonials',
+  },
   architecture: {
     title: '5-Layer System Architecture & Engineering Philosophy — DevCenterPoint',
     description: 'Deep dive into our 5-layer engineering model: UX/UI delivery, API gateway, domain core services, streaming data persistence, and cloud infrastructure.',
@@ -148,7 +161,53 @@ export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
     sectionName: 'Contact',
     hash: '#contact',
   },
+  faq: {
+    title: 'Engagements, SLAs & Terms — DevCenterPoint FAQ',
+    description: 'Answers on engagement models, delivery guarantees, service-level agreements, and how DevCenterPoint scopes and runs engineering partnerships.',
+    keywords: [
+      'software engagement models',
+      'development SLA',
+      'engineering terms',
+      'DevCenterPoint FAQ',
+      'project delivery guarantees'
+    ],
+    sectionName: 'FAQ',
+    hash: '#faq',
+  },
+  newsletter: {
+    title: 'Engineering Dispatch Newsletter — DevCenterPoint',
+    description: 'Join the DevCenterPoint dispatch for systems architecture notes, applied AI patterns, and lessons from production software delivery.',
+    keywords: [
+      'engineering newsletter',
+      'software architecture insights',
+      'applied AI newsletter',
+      'DevCenterPoint dispatch',
+      'developer updates'
+    ],
+    sectionName: 'Newsletter',
+    hash: '#newsletter',
+  },
 };
+
+/**
+ * Canonical order of on-page segments. Navigation targets, the scroll spy, and
+ * section SEO metadata all derive from this list so they cannot drift apart.
+ */
+export const SECTION_ORDER: Array<keyof typeof SECTION_METADATA> = [
+  'hero',
+  'positioning',
+  'capabilities',
+  'work',
+  'testimonials',
+  'architecture',
+  'tech',
+  'process',
+  'metrics',
+  'about',
+  'faq',
+  'contact',
+  'newsletter',
+];
 
 interface SEOOverride {
   title?: string;
@@ -173,19 +232,6 @@ export const SEOProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Scroll detection to update active section metadata dynamically
   useEffect(() => {
-    const sectionIds = [
-      'hero',
-      'positioning',
-      'capabilities',
-      'work',
-      'architecture',
-      'tech',
-      'process',
-      'metrics',
-      'about',
-      'contact',
-    ];
-
     let ticking = false;
 
     const onScroll = () => {
@@ -193,12 +239,14 @@ export const SEOProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         window.requestAnimationFrame(() => {
           const scrollPos = window.scrollY + 240;
 
-          // Determine current section in viewport
-          for (let i = sectionIds.length - 1; i >= 0; i--) {
-            const id = sectionIds[i];
+          // Determine current section in viewport. Sections are wrapped in
+          // scroll-reveal motion containers whose transforms make offsetTop
+          // unreliable, so measure against the document instead.
+          for (let i = SECTION_ORDER.length - 1; i >= 0; i--) {
+            const id = SECTION_ORDER[i];
             const el = document.getElementById(id);
             if (el) {
-              const top = el.offsetTop;
+              const top = el.getBoundingClientRect().top + window.scrollY;
               if (scrollPos >= top) {
                 setActiveSection(id);
                 break;

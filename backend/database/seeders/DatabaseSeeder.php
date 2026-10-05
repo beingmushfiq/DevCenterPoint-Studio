@@ -697,9 +697,9 @@ class DatabaseSeeder extends Seeder
             ['key' => 'header_nav_links', 'value' => json_encode([
                 ['label' => 'Work', 'href' => '#work'],
                 ['label' => 'Capabilities', 'href' => '#capabilities'],
-                ['label' => 'Architecture', 'href' => '#philosophy'],
+                ['label' => 'Architecture', 'href' => '#architecture'],
                 ['label' => 'Proof', 'href' => '#testimonials'],
-                ['label' => 'Team', 'href' => '#about'],
+                ['label' => 'Process', 'href' => '#process'],
             ]), 'group' => 'appearance'],
             ['key' => 'header_drawer_links', 'value' => json_encode([
                 ['label' => 'Selected Work', 'href' => '#work', 'note' => '9 Production Systems'],

@@ -29,9 +29,9 @@ export interface HeaderData {
 const DEFAULT_NAV_LINKS: NavLink[] = [
   { label: 'Work', href: '#work' },
   { label: 'Capabilities', href: '#capabilities' },
-  { label: 'Architecture', href: '#philosophy' },
+  { label: 'Architecture', href: '#architecture' },
   { label: 'Proof', href: '#testimonials' },
-  { label: 'Team', href: '#about' },
+  { label: 'Process', href: '#process' },
 ];
 
 const DEFAULT_DRAWER_LINKS: NavLink[] = [
@@ -64,7 +64,7 @@ export function useHeaderData(): HeaderData {
   const bookingUrl = cms.getSetting('booking_url', 'https://cal.com/devcenterpoint');
 
   return {
-    brandName: cms.getSetting('site_name', 'DevCenterPoint Studio'),
+    brandName: cms.getSetting('site_name', 'DevCenterPoint'),
     navLinks: navLinks.length > 0 ? navLinks : DEFAULT_NAV_LINKS,
     bookingUrl,
     bookingLabel: cms.getSetting('booking_cta_label', 'Book a Meeting'),
