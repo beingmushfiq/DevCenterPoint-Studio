@@ -217,8 +217,21 @@ Then in cPanel → **Git Version Control** → select the repository:
 
 The deploy script performs, in order: sync app files → ensure storage dirs → `composer install`
 (best effort) → publish `build/` + entrypoint files → create the `storage` symlink → bootstrap
-`.env` (first run only) → generate `APP_KEY` → `migrate --force` → seed only when the database
-is empty → re-cache config/routes/views.
+`.env` (first run only) → **reconcile the database config** → generate `APP_KEY` →
+`migrate --force` → seed only when the database is empty → re-cache config/routes/views.
+
+> **Database self-heal.** On every deploy the script checks `DB_CONNECTION` in
+> `~/dcp_core/.env` and switches it to `sqlite` when it is anything else, sets
+> `DB_DATABASE` to the absolute path `~/dcp_core/database/database.sqlite`, and creates
+> that file if missing. Only those two keys are touched — `APP_KEY`, `MAIL_*`, and
+> everything else are left byte-identical, and a second run changes nothing. This exists
+> because a leftover MySQL config (e.g. a password containing `#`, which dotenv treats as
+> the start of a comment, silently truncating it) previously caused an unrecoverable
+> HTTP 500 on every request.
+>
+> **`pdo_sqlite` is a hard requirement.** The deploy aborts with a clear message if the
+> resolved PHP CLI lacks it. Enable it in cPanel → *MultiPHP INI Editor*, or check with
+> `php -m | grep -i pdo_sqlite`.
 
 > **Note:** `backend/public/build` is committed on purpose (see `backend/.gitignore`), because the
 > Git-driven deploy ships assets directly from the repository.

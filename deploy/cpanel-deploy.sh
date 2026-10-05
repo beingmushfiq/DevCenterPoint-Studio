@@ -98,6 +98,29 @@ sync_file() {
 }
 
 # ------------------------------------------------------------------------------
+# dotenv helpers — read and set a single key while leaving the rest of the file
+# (APP_KEY, MAIL_*, everything) completely intact.
+# ------------------------------------------------------------------------------
+env_get() {
+  local file="$1" key="$2"
+  [ -f "$file" ] || return 1
+  # `|` as the delimiter so values containing `/` (paths) survive.
+  sed -n "s|^${key}=||p" "$file" | tail -n 1
+}
+
+# Replaces `KEY=...` in place, or appends it when absent. Written via awk so
+# backslashes, `&`, and `/` in the value need no escaping.
+env_set() {
+  local file="$1" key="$2" value="$3"
+  [ -f "$file" ] || return 1
+  awk -v k="$key" -v v="$value" '
+    $0 ~ "^" k "=" { print k "=" v; found = 1; next }
+    { print }
+    END { if (!found) print k "=" v }
+  ' "$file" > "$file.tmp" && mv -f "$file.tmp" "$file"
+}
+
+# ------------------------------------------------------------------------------
 # 0. Pre-flight
 # ------------------------------------------------------------------------------
 step "Pre-flight checks"
@@ -107,6 +130,17 @@ step "Pre-flight checks"
 PHP_BIN=""
 if PHP_BIN="$(detect_php)"; then
   ok "PHP CLI: $PHP_BIN ($("$PHP_BIN" -r 'echo PHP_VERSION;' 2>/dev/null))"
+
+  # SQLite is the production database, so the PDO driver is a hard requirement.
+  # Without it Laravel throws "could not find driver" on the first request.
+  if "$PHP_BIN" -m 2>/dev/null | grep -qi '^pdo_sqlite'; then
+    ok "pdo_sqlite available"
+  else
+    fail "pdo_sqlite is NOT enabled for this PHP build."
+    fail "Enable it in cPanel > MultiPHP INI Editor > 'extension=pdo_sqlite', or"
+    fail "switch the account to a PHP version that ships it, then re-deploy."
+    exit 1
+  fi
 else
   PHP_BIN=""
   warn "No PHP CLI found on PATH; artisan tasks will be skipped."
@@ -295,12 +329,48 @@ else
     if [ -n "$ENV_TEMPLATE" ]; then
       cp -f "$ENV_TEMPLATE" "$CORE/.env"
       ok "created .env from $(basename "$ENV_TEMPLATE")"
-      warn "fill in MAIL_* in $CORE/.env if needed, then re-deploy to run migrations"
     else
       warn "no .env template found - create $CORE/.env manually"
     fi
   else
     ok ".env already present (left untouched)"
+  fi
+
+  # ---------------------------------------------------------------------------
+  # 6a-bis. Reconcile the database config.
+  #     An existing .env may still point at MySQL with credentials that are
+  #     stale (a `#` in a password truncates it, producing "Access denied").
+  #     SQLite needs no credentials, so switching is safe and idempotent.
+  #     Only DB_CONNECTION / DB_DATABASE are touched; every other key,
+  #     including APP_KEY and MAIL_*, is left exactly as it was.
+  # ---------------------------------------------------------------------------
+  if [ -f "$CORE/.env" ]; then
+    SQLITE_FILE="$CORE/database/database.sqlite"
+    CURRENT_DRIVER="$(env_get "$CORE/.env" DB_CONNECTION || true)"
+
+    if [ "$CURRENT_DRIVER" != "sqlite" ]; then
+      mkdir -p "$CORE/database"
+      env_set "$CORE/.env" DB_CONNECTION sqlite
+      env_set "$CORE/.env" DB_DATABASE "$SQLITE_FILE"
+      # The old DB_HOST/DB_USERNAME/DB_PASSWORD lines are left in place: they are
+      # inert while the driver is sqlite, and keeping them makes a switch back to
+      # MySQL a one-line change.
+      warn "switched DB_CONNECTION '$CURRENT_DRIVER' -> 'sqlite' in .env"
+    fi
+
+    # An absolute DB_DATABASE is required; a relative path resolves unpredictably
+    # under cPanel's document-root / CLI working-directory split.
+    DB_PATH_NOW="$(env_get "$CORE/.env" DB_DATABASE || true)"
+    case "$DB_PATH_NOW" in
+      /*) ok "DB_DATABASE=$DB_PATH_NOW" ;;
+      *)  env_set "$CORE/.env" DB_DATABASE "$SQLITE_FILE"
+          ok "DB_DATABASE set to $SQLITE_FILE" ;;
+    esac
+
+    # Create the database file up front so the very first request never 500s on
+    # a missing file, even before `migrate` has a chance to run.
+    [ -f "$SQLITE_FILE" ] || { touch "$SQLITE_FILE"; ok "created database.sqlite"; }
+    chmod u+rw "$SQLITE_FILE" 2>/dev/null || true
   fi
 
   run_artisan() { ( cd "$CORE" && "$PHP_BIN" artisan "$@" ); }
