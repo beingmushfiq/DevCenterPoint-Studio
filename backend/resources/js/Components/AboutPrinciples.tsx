@@ -3,6 +3,7 @@ import { PRINCIPLES_DATA } from '../data/about';
 import { Quote, Sparkles, CheckCircle2, Users, Github, Linkedin, Twitter } from 'lucide-react';
 import { DevCenterPointLogo } from './DevCenterPointLogo';
 import { useCms } from '../Context/CmsContext';
+import { SectionState } from './SectionState';
 
 const DEFAULT_TEAM = [
   {
@@ -152,6 +153,13 @@ export const AboutPrinciples: React.FC = () => {
             </p>
           </div>
 
+          {teamMembers.length === 0 ? (
+            <SectionState
+              variant="empty"
+              title="Team profiles coming soon"
+              description="Our leadership profiles are being published right now. Please check back shortly."
+            />
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {teamMembers.map((member: any) => (
               <div
@@ -219,6 +227,7 @@ export const AboutPrinciples: React.FC = () => {
               </div>
             ))}
           </div>
+          )}
         </div>
       </div>
     </section>

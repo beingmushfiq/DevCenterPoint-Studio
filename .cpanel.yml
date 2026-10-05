@@ -1,0 +1,21 @@
+---
+# ==============================================================================
+# cPanel Git Version Control — deployment tasks
+# ==============================================================================
+# cPanel clones the repository into:  ~/repositories/DevCenterPoint-Studio
+# and runs the tasks below from that working copy on every
+# "Update from Remote" / "Deploy HEAD Commit" action.
+#
+# Target host layout (home directory /home/devcente):
+#   ~/dcp_core       -> private Laravel application (not web-served)
+#   ~/public_html    -> web root for devcenterpoint.com
+#
+# All real work lives in deploy/cpanel-deploy.sh so the logic is testable,
+# reviewable and version controlled. Keep this file thin.
+# ==============================================================================
+
+deployment:
+  tasks:
+    - export REPO="$HOME/repositories/DevCenterPoint-Studio"
+    - cd "$REPO"
+    - bash deploy/cpanel-deploy.sh

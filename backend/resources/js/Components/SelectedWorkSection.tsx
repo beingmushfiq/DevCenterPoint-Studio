@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
 import { useCms } from '../Context/CmsContext';
+import { SectionState } from './SectionState';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -54,8 +55,10 @@ export const SelectedWorkSection: React.FC = () => {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [copiedProtoId, setCopiedProtoId] = useState<string | null>(null);
 
-  const projects: Project[] = (cms.projects && cms.projects.length > 0)
-    ? cms.projects.map((p: any, idx: number) => ({
+  const hasCmsProjects = Array.isArray(cms.projects);
+
+  const projects: Project[] = (hasCmsProjects && cms.projects!.length > 0)
+    ? cms.projects!.map((p: any, idx: number) => ({
         id: p.slug || String(p.id),
         number: String(idx + 1).padStart(2, '0'),
         title: p.title,
@@ -85,7 +88,7 @@ export const SelectedWorkSection: React.FC = () => {
         githubUrl: p.github_url || p.githubUrl,
         isRealWorldApp: p.is_real_world !== undefined ? Boolean(p.is_real_world) : (p.isRealWorldApp ?? true),
       }))
-    : PROJECTS_DATA;
+    : (hasCmsProjects ? [] : PROJECTS_DATA);
 
   const categories = [
     'All',
@@ -177,6 +180,19 @@ export const SelectedWorkSection: React.FC = () => {
         </motion.div>
 
         {/* Editorial Projects Archive Grid */}
+        {filteredProjects.length === 0 ? (
+          <SectionState
+            variant="empty"
+            title={projects.length === 0 ? 'Selected work is being published' : 'No projects in this category yet'}
+            description={
+              projects.length === 0
+                ? 'Case studies are being prepared for publication. Please check back shortly.'
+                : 'We have not published a project under this category yet. Explore the full archive instead.'
+            }
+            actionLabel={projects.length === 0 ? undefined : 'Show All Projects'}
+            onAction={projects.length === 0 ? undefined : () => setSelectedCategory('All')}
+          />
+        ) : (
         <motion.div
           key={selectedCategory}
           variants={containerVariants}
@@ -424,6 +440,7 @@ export const SelectedWorkSection: React.FC = () => {
             })}
           </AnimatePresence>
         </motion.div>
+        )}
 
         {/* Live Concept Demos & Rapid Prototypes Section */}
         <motion.div

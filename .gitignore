@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Playwright browser binaries (local headless diagnostics only)
+.pw-browsers/

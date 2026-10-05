@@ -70,7 +70,7 @@ export const Hero: React.FC = () => {
       {orbsEnabled && (
         <>
           <div className="absolute top-12 left-1/4 -translate-x-1/2 w-96 h-96 bg-blue-500/15 dark:bg-blue-600/20 blur-[130px] rounded-full pointer-events-none animate-float-orb-1" />
-          <div className="absolute top-36 right-1/4 translate-x-1/2 w-md h-112 bg-purple-500/12 dark:bg-purple-600/18 blur-[150px] rounded-full pointer-events-none animate-float-orb-2" />
+          <div className="absolute top-36 right-1/4 translate-x-1/4 w-72 h-72 sm:w-96 sm:h-96 bg-purple-500/12 dark:bg-purple-600/18 blur-[150px] rounded-full pointer-events-none animate-float-orb-2" />
           <div className="absolute top-72 left-1/2 -translate-x-1/2 w-80 h-80 bg-cyan-400/12 dark:bg-cyan-500/14 blur-[120px] rounded-full pointer-events-none animate-float-orb-3" />
         </>
       )}

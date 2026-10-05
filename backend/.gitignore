@@ -14,7 +14,12 @@
 /.zed
 /auth.json
 /node_modules
+# Production build output is committed on purpose: cPanel Git Version Control
+# deploys straight from the repository, so the compiled assets must travel with
+# the code. Use `git add -f` semantics via the negation below.
 /public/build
+!/public/build/
+!/public/build/**
 /public/fonts-manifest.dev.json
 /public/hot
 /public/storage

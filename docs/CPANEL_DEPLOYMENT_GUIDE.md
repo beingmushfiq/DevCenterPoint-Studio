@@ -95,6 +95,79 @@ php artisan view:cache
 
 ---
 
+## Method 3: Automatic Deployment via cPanel Git Version Control (Recommended for the Laravel app)
+
+This is the primary, repeatable deployment path for **devcenterpoint.com**. cPanel clones the
+repository and runs the deployment tasks automatically on every push you deploy.
+
+### Target Directory Layout (`/home/devcente`)
+
+```
+/home/devcente/
+├── repositories/
+│   └── DevCenterPoint-Studio/     # cPanel Git working clone (private)
+├── dcp_core/                      # PRIVATE Laravel application (not web-served)
+└── public_html/                   # WEB ROOT for devcenterpoint.com
+    ├── build/                     # compiled Vite assets
+    ├── storage -> ../dcp_core/storage/app/public
+    ├── index.php -> ../dcp_core
+    ├── .htaccess
+    ├── favicon.ico
+    └── robots.txt
+```
+
+> `dcp_core` is deliberately outside `public_html` so `.env`, `vendor/`, `storage/` and logs are
+> never web-accessible.
+
+### Deployment Artifacts (in the repository)
+
+| File | Role |
+| :--- | :--- |
+| `.cpanel.yml` | cPanel task definition — `cd`s into the clone and runs the deploy script |
+| `deploy/cpanel-deploy.sh` | Server-side, idempotent deploy: sync app → `dcp_core`, publish assets → `public_html`, composer, artisan |
+| `deploy/prepare-deploy.ps1` | Local pre-flight: builds the Vite assets and stages them for commit |
+
+### One-Time cPanel Setup
+
+1. **Create the repository** in cPanel → *Files* → **Git Version Control** → *Create*:
+   - Clone URL: `https://github.com/beingmushfiq/DevCenterPoint-Studio.git`
+   - Repository Path: `repositories/DevCenterPoint-Studio` (cPanel fills this in)
+   - Branch: `main`
+2. **Create the private app directory**: `~/dcp_core` (File Manager → New Folder).
+3. **Create the `.env`** at `~/dcp_core/.env` from `backend/.env.example` and set `APP_KEY`,
+   `APP_URL=https://devcenterpoint.com`, and the MySQL credentials. (The deploy script never
+   overwrites `.env`.)
+4. **Set the domain document root**: cPanel → *Domains* → `devcenterpoint.com` →
+   document root `public_html`.
+5. **Add the scheduler cron** (cPanel → *Cron Jobs*):
+   ```cron
+   * * * * * cd /home/devcente/dcp_core && /usr/local/bin/php artisan schedule:run >> /dev/null 2>&1
+   ```
+
+### Every Deployment
+
+Locally, run the pre-flight and push:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File deploy/prepare-deploy.ps1
+git commit -m "build: refresh production assets"
+git push origin main
+```
+
+Then in cPanel → **Git Version Control** → select the repository:
+
+1. **Update from Remote** (pulls the latest commit).
+2. **Deploy HEAD Commit** (runs `.cpanel.yml` → `deploy/cpanel-deploy.sh`).
+
+The deploy script performs, in order: sync app files → ensure storage dirs → `composer install`
+(best effort) → publish `build/` + entrypoint files → create the `storage` symlink → run
+`migrate --force` and re-cache config/routes/views.
+
+> **Note:** `backend/public/build` is committed on purpose (see `backend/.gitignore`), because the
+> Git-driven deploy ships assets directly from the repository.
+
+---
+
 ## Post-Deployment Verification Checklist
 
 | Test Item | Expected Result | Status |

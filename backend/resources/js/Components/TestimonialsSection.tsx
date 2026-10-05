@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Quote, Star, Building2, CheckCircle2, TrendingUp, ShieldCheck } from 'lucide-react';
 import { useCms } from '../Context/CmsContext';
+import { SectionState } from './SectionState';
 
 interface TestimonialItem {
   id?: number;
@@ -61,9 +62,11 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
 
 export const TestimonialsSection: React.FC = () => {
   const cms = useCms();
-  const rawTestimonials = (cms.testimonials && cms.testimonials.length > 0)
-    ? cms.testimonials.filter((t) => t.is_published !== false)
-    : DEFAULT_TESTIMONIALS;
+  const hasCmsTestimonials = Array.isArray(cms.testimonials);
+
+  const rawTestimonials = (hasCmsTestimonials && cms.testimonials!.length > 0)
+    ? cms.testimonials!.filter((t) => t.is_published !== false)
+    : (hasCmsTestimonials ? [] : DEFAULT_TESTIMONIALS);
 
   const title = cms.getSetting('testimonials_heading', 'Verified Enterprise Impact & Leadership Endorsements');
   const subtitle = cms.getSetting(
@@ -93,6 +96,13 @@ export const TestimonialsSection: React.FC = () => {
         </div>
 
         {/* Testimonial Cards Grid */}
+        {rawTestimonials.length === 0 ? (
+          <SectionState
+            variant="empty"
+            title="Client endorsements coming soon"
+            description="We are collecting verified feedback from the engineering leaders we work with. New endorsements will appear here shortly."
+          />
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {rawTestimonials.map((item, index) => (
             <motion.div
@@ -156,6 +166,7 @@ export const TestimonialsSection: React.FC = () => {
             </motion.div>
           ))}
         </div>
+        )}
 
         {/* Enterprise Logos / Trust Banner */}
         <div className="mt-16 pt-12 border-t border-slate-200/60 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">

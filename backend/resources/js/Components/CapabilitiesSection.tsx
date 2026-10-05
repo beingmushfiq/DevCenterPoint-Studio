@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CAPABILITIES_DATA } from '../data/capabilities';
+import { Capability } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ArrowRight, 
@@ -18,6 +19,7 @@ import {
 } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
 import { useCms } from '../Context/CmsContext';
+import { SectionState } from './SectionState';
 
 const iconMap: Record<string, React.ElementType> = {
   Code2: Code,
@@ -33,8 +35,10 @@ const iconMap: Record<string, React.ElementType> = {
 export const CapabilitiesSection: React.FC = () => {
   const cms = useCms();
 
-  const capabilities = (cms.capabilities && cms.capabilities.length > 0)
-    ? cms.capabilities.map((c: any, idx: number) => ({
+  const hasCmsCapabilities = Array.isArray(cms.capabilities);
+
+  const capabilities: Capability[] = (hasCmsCapabilities && cms.capabilities!.length > 0)
+    ? cms.capabilities!.map((c: any, idx: number) => ({
         id: c.slug || String(c.id),
         number: String(idx + 1).padStart(2, '0'),
         title: c.name,
@@ -46,12 +50,27 @@ export const CapabilitiesSection: React.FC = () => {
         codeSample: c.code_snippet || c.codeSample,
         iconName: c.icon_name || c.iconName || 'Code2',
       }))
-    : CAPABILITIES_DATA;
+    : (hasCmsCapabilities ? [] : CAPABILITIES_DATA);
 
   const [selectedId, setSelectedId] = useState<string>(capabilities[0]?.id || '01');
   const [showCode, setShowCode] = useState<boolean>(false);
 
   const activeCapability = capabilities.find((c) => c.id === selectedId) || capabilities[0];
+
+  if (capabilities.length === 0 || !activeCapability) {
+    return (
+      <section id="capabilities" className="py-24 sm:py-32 bg-white dark:bg-[#07090e] text-slate-900 dark:text-neutral-100 border-t border-slate-200/70 dark:border-white/5 relative overflow-hidden transition-colors duration-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <SectionState
+            variant="empty"
+            title="Capabilities are being curated"
+            description="Our engineering disciplines are being published right now. Please check back shortly, or reach out to discuss your project directly."
+          />
+        </div>
+      </section>
+    );
+  }
+
   const ActiveIcon = iconMap[activeCapability.iconName] || Code;
 
   return (
