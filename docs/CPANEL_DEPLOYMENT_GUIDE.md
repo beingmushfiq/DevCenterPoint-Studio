@@ -87,12 +87,8 @@ In cPanel File Manager:
    APP_DEBUG=false
    APP_URL=https://devcenterpoint.com
 
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=devcente_studio
-   DB_USERNAME=devcente_studiousr
-   DB_PASSWORD=YourSecurePassword
+   DB_CONNECTION=sqlite
+   DB_DATABASE=/home/devcente/dcp_core/database/database.sqlite
    ```
 
 ### Step 3: Run Database Migrations
@@ -100,10 +96,18 @@ In cPanel **Terminal** (or via SSH):
 ```bash
 cd /home/username/dcp_core
 php artisan migrate --force
+php artisan db:seed --force   # first deploy only (creates admin user + CMS content)
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 ```
+
+> **SQLite notes.** The database is a single file at
+> `~/dcp_core/database/database.sqlite`, created automatically by
+> `migrate --force`. Keep `DB_DATABASE` as an **absolute path**. Include
+> `~/dcp_core/database/` in your cPanel backups — it holds all site data.
+> Requires the `pdo_sqlite` extension; verify with
+> `php -m | grep -i sqlite` (you need both `pdo_sqlite` and `sqlite3`).
 
 > **Trap: `php` may resolve to a CGI build, not the CLI.**
 > On many cPanel hosts the first `php` on `PATH` is the CGI/FastCGI binary. Running
@@ -167,8 +171,9 @@ repository and runs the deployment tasks automatically on every push you deploy.
    - Branch: `main`
 2. **Create the private app directory**: `~/dcp_core` (File Manager → New Folder).
 3. **Create the `.env`** at `~/dcp_core/.env`. The deploy script copies
-   `backend/.env.production.example` there automatically on the first run; you then fill in
-   `DB_PASSWORD` and the `MAIL_*` credentials and re-deploy. The script generates `APP_KEY`
+   `backend/.env.production.example` there automatically on the first run. The
+   **SQLite database needs no credentials**, so the only values you may want to set are
+   the `MAIL_*` entries. The script generates `APP_KEY`
    for you and **never overwrites an existing `.env`**.
    ```env
    APP_NAME="DevCenterPoint"
@@ -177,12 +182,8 @@ repository and runs the deployment tasks automatically on every push you deploy.
    APP_DEBUG=false
    APP_URL=https://devcenterpoint.com
 
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=devcente_studio
-   DB_USERNAME=devcente_studiousr
-   DB_PASSWORD=<your MySQL password>
+   DB_CONNECTION=sqlite
+   DB_DATABASE=/home/devcente/dcp_core/database/database.sqlite
    ```
 4. **Set the domain document root**: cPanel → *Domains* → `devcenterpoint.com` →
    document root `public_html`.

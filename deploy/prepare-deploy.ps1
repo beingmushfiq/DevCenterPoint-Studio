@@ -89,8 +89,8 @@ Write-Host ""
 Write-Host "  3. First-time server setup (once only):" -ForegroundColor Yellow
 Write-Host "       - The deploy script copies backend\.env.production.example to" -ForegroundColor Gray
 Write-Host "         ~/dcp_core/.env on first run and generates APP_KEY for you." -ForegroundColor Gray
-Write-Host "       - Fill in DB_PASSWORD and MAIL_* in ~/dcp_core/.env, then re-deploy." -ForegroundColor Gray
-Write-Host "         (DB: devcente_studio / devcente_studiousr on 127.0.0.1)" -ForegroundColor Gray
+Write-Host "       - Set MAIL_* in ~/dcp_core/.env if you want outbound email, then" -ForegroundColor Gray
+Write-Host "         re-deploy. (DB is SQLite: ~/dcp_core/database/database.sqlite)" -ForegroundColor Gray
 Write-Host "       - Set the document root of devcenterpoint.com to ~/public_html" -ForegroundColor Gray
 Write-Host "       - The seed runs only when the users table is empty; change the" -ForegroundColor Gray
 Write-Host "         admin@devcenterpoint.com password right after the first deploy." -ForegroundColor Gray

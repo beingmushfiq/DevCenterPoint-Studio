@@ -123,6 +123,14 @@ ok "Web root   : $WEBROOT"
 # ------------------------------------------------------------------------------
 step "Syncing Laravel application into $CORE"
 
+# The live SQLite database holds the entire site's data. Preserve it across the
+# sync: rsync gets an --exclude below, but the `cp` fallback ignores excludes.
+SQLITE_BACKUP=""
+if [ -f "$CORE/database/database.sqlite" ]; then
+  SQLITE_BACKUP="$(mktemp)"
+  cp -f "$CORE/database/database.sqlite" "$SQLITE_BACKUP"
+fi
+
 # Directories that make up the application code.
 for item in app bootstrap config database resources routes storage; do
   if [ -d "$APP_SRC/$item" ]; then
@@ -133,7 +141,9 @@ for item in app bootstrap config database resources routes storage; do
       --exclude '/framework/sessions/' \
       --exclude '/framework/views/' \
       --exclude '/logs/' \
-      --exclude '/app/'
+      --exclude '/app/' \
+      --exclude '*.sqlite' \
+      --exclude '*.sqlite-*'
     ok "synced $item/"
   else
     warn "missing $item/ (skipped)"
@@ -150,6 +160,16 @@ for item in artisan composer.json composer.lock .env.production.example; do
     warn "missing $item (skipped)"
   fi
 done
+
+# Restore the live SQLite database that was preserved before the sync. Done with
+# the WAL sidecars removed so the restored file is read from a clean state.
+if [ -n "$SQLITE_BACKUP" ]; then
+  mkdir -p "$CORE/database"
+  cp -f "$SQLITE_BACKUP" "$CORE/database/database.sqlite"
+  rm -f "$CORE/database/database.sqlite-wal" "$CORE/database/database.sqlite-shm"
+  rm -f "$SQLITE_BACKUP"
+  ok "preserved live database.sqlite across sync"
+fi
 
 # Composer dependencies. vendor/ IS committed to the repository because the
 # cPanel host may not ship a Composer binary, and $WEBROOT/index.php
@@ -275,7 +295,7 @@ else
     if [ -n "$ENV_TEMPLATE" ]; then
       cp -f "$ENV_TEMPLATE" "$CORE/.env"
       ok "created .env from $(basename "$ENV_TEMPLATE")"
-      warn "fill in DB_PASSWORD / MAIL_* in $CORE/.env, then re-deploy to run migrations"
+      warn "fill in MAIL_* in $CORE/.env if needed, then re-deploy to run migrations"
     else
       warn "no .env template found - create $CORE/.env manually"
     fi
