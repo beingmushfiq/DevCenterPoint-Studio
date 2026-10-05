@@ -115,27 +115,37 @@ DevCenterPoint-Studio/
 
 ## ⚡ Quickstart & Local Development
 
+> **Which app is the real site?** This repo contains **two** React apps. Only one is deployed.
+>
+> | | Root (`src/`) | **`backend/` ← production** |
+> | :--- | :--- | :--- |
+> | Port | 3000 (`npm run dev`) | 8000 (Laravel) + 5173 (Vite HMR) |
+> | Data | Hardcoded in `src/data/` | Database, editable via CMS |
+> | CMS / admin | none | `/admin` |
+> | Deployed by | nothing (design reference) | `.cpanel.yml` → `deploy/cpanel-deploy.sh` |
+>
+> `devcenterpoint.com` runs the **`backend/` Laravel + Inertia app**. The root `src/` app is a
+> legacy standalone SPA kept as a **design reference only** — running it locally shows how the
+> sections are meant to look, but it has no CMS. Always run the **`backend/`** app for real work.
+> See [docs/CPANEL_DEPLOYMENT_GUIDE.md](docs/CPANEL_DEPLOYMENT_GUIDE.md) for the deployment details.
+
 ### Prerequisites
 
 - **Node.js** `>= 20.x`
 - **npm** or **bun**
 - **PHP** `>= 8.2` & **Composer** *(Required for Laravel CMS backend)*
 
-### 1. Running the Root Frontend (Vite + React 19)
+### 1. Running the Root Frontend (Vite + React 19) — design reference only
 
 ```bash
-# Clone the repository
-git clone https://github.com/beingmushfiq/DevCenterPoint-Studio.git
-cd DevCenterPoint-Studio
-
 # Install frontend dependencies
 npm install
 
-# Start development server
+# Start development server (port 3000)
 npm run dev
 ```
 
-The application will be live at `http://localhost:5173` (or `http://localhost:3000`).
+The reference app will be live at `http://localhost:3000`.
 
 ### Available Scripts (Root)
 

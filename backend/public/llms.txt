@@ -1,0 +1,33 @@
+# DevCenterPoint
+
+> DevCenterPoint is a digital product and systems engineering studio designing and developing full-stack SaaS platforms, AI-powered intelligent systems, cloud-native infrastructure, and high-performance business applications.
+
+## Core Capabilities
+- [Product Engineering](https://devcenterpoint.com/#capabilities): Full-stack SaaS, modern web applications, high-performance REST/GraphQL APIs, microservices, and legacy modernization.
+- [AI & Intelligent Systems](https://devcenterpoint.com/#capabilities): Practical machine learning, SHAP/LIME explainability, LLM API integration, RAG workflows, predictive data ingestion.
+- [Experience Design](https://devcenterpoint.com/#capabilities): Token-driven design systems, high-density interfaces, WCAG 2.1 AA accessibility, zero layout shift (CLS < 0.05).
+- [Business Systems](https://devcenterpoint.com/#capabilities): Custom ERP, POS, B2B CRM, inventory/WMS, immutable audit logs, offline-first sync.
+- [Commerce Infrastructure](https://devcenterpoint.com/#capabilities): Headless e-commerce, multi-vendor marketplaces, Stripe payment gateway switches, sub-second checkout speeds.
+- [Cloud & DevOps](https://devcenterpoint.com/#capabilities): Kubernetes, Docker, automated CI/CD pipelines, zero-downtime blue/green and canary deployments.
+
+## Verified Production Metrics
+- Uptime SLA: 99.98% production availability
+- API Latency Target: <50ms server response
+- Code Quality Gates: 100% strict TypeScript compilation with zero `any` exemptions
+- Feature Velocity: 65% faster time-to-market via modular architecture
+
+## Case Studies
+- [MediTrack OS](https://devcenterpoint.com/#work): Clinical workflow and patient triage platform serving 140+ clinics with sub-100ms load times and HIPAA-grade encryption.
+- [Apex Logistics Cloud](https://devcenterpoint.com/#work): Real-time freight dispatch and telematics engine tracking 12,000+ active fleet units with sub-second WebSocket telemetry.
+- [OmniPay Gateway](https://devcenterpoint.com/#work): Multi-currency fintech payment switch processing $4.2M+ monthly transaction volume with zero-loss atomic idempotency.
+- [AuraRetail Commerce](https://devcenterpoint.com/#work): Enterprise headless marketplace achieving 99/100 Lighthouse performance and sub-800ms international checkouts.
+
+## Commercial Engagement Models
+- Dedicated Engineering Squads: Cross-functional senior engineers, software architect, and delivery lead embedded into your workflows.
+- Fixed-Scope Milestone Tranches: Guaranteed-budget execution with deterministic phase sign-offs.
+- Fractional CTO & Systems Advisory: High-leverage architecture audits, technology selection, and technical leadership.
+
+## Full Context & Links
+- [Complete Context](https://devcenterpoint.com/llms-full.txt): Comprehensive technical specifications and deep engineering details.
+- [Interactive Project Estimator](https://devcenterpoint.com/#contact): Calculate budget and timeline estimates for custom software projects.
+- [Engineering FAQ](https://devcenterpoint.com/#faq): Architectural governance, IP ownership transfer, and SLA terms.

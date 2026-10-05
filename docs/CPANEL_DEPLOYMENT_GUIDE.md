@@ -4,24 +4,36 @@ This guide details the complete deployment workflow for **DevCenterPoint** on cP
 
 ---
 
-## Deployment Architecture Overview
-
-Two pre-packaged, zero-configuration deployment archives are available depending on your infrastructure preference:
-
-### Option 1: Standalone React High-Performance SPA (Recommended)
-- **Deployment Archive**: `dist-cpanel.zip` (in project root)
-- **Target Location**: `/public_html`
-- **Features**: Ultra-fast static serving, Apache `.htaccess` with Gzip compression, immutable caching for hashed assets, security headers, and full SPA routing fallback for direct URLs.
-
-### Option 2: Full-Stack Laravel + Inertia CMS & CRM
-- **Deployment Archives**:
-  1. `backend/cpanel_dist/dcp_core.zip` → Upload to `/home/username/dcp_core` (outside web root for maximum security)
-  2. `backend/cpanel_dist/public_html.zip` → Extract into `/home/username/public_html`
-- **Features**: Includes the Admin CMS dashboard (`/admin`), dynamic lead capture (`/inquiry`), newsletter subscriptions (`/newsletter`), and MySQL database persistence.
+> **NOTE — canonical deployment method.** The production site for `devcenterpoint.com` is the
+> **full-stack Laravel + Inertia app** (`backend/`), deployed automatically via **cPanel Git Version
+> Control** using `.cpanel.yml` → `deploy/cpanel-deploy.sh`.
+> That is the only method that keeps the CMS, inquiries, newsletter, and header/footer templates online.
+>
+> The manual upload methods below are **legacy** and are retained for reference only. In particular,
+> the standalone SPA archive (`dist-cpanel.zip`) is **no longer the recommended path** — the root
+> `src/` app is a design reference; it has no CMS and would take `/admin` and the form endpoints offline.
 
 ---
 
-## Method 1: Deploying the Standalone SPA (Fastest & Simplest)
+## Deployment Architecture Overview
+
+Two deployment shapes exist in this repository:
+
+### Canonical: Full-Stack Laravel + Inertia CMS (Git-driven, recommended)
+- **Deployment method**: cPanel **Git Version Control** running `.cpanel.yml` → `deploy/cpanel-deploy.sh`
+- **Target Layout**:
+  1. `~/dcp_core` → private Laravel application (outside the web root)
+  2. `~/public_html` → web root for `devcenterpoint.com`
+- **Features**: Admin CMS dashboard (`/admin`), customizable header/footer templates, dynamic lead capture, newsletter subscriptions, and database persistence.
+
+### Legacy: Standalone React SPA (manual upload)
+- **Deployment Archive**: `dist-cpanel.zip` (built from the root `src/` app)
+- **Target Location**: `/public_html`
+- **Features**: Static serving only — no CMS, no admin, no form persistence.
+
+---
+
+## Method 1: Deploying the Standalone SPA (Legacy)
 
 ### Step 1: Upload Archive to cPanel
 1. Log in to your **cPanel** account.

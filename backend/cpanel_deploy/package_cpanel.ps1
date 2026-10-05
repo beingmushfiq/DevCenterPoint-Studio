@@ -40,11 +40,16 @@ Copy-Item -Recurse -Force (Join-Path $PSScriptRoot "..\public\build") (Join-Path
 Copy-Item -Force (Join-Path $PSScriptRoot "index.php") (Join-Path $tempPublic "index.php")
 Copy-Item -Force (Join-Path $PSScriptRoot ".htaccess") (Join-Path $tempPublic ".htaccess")
 $publicRoot = Join-Path $PSScriptRoot "..\public"
-if (Test-Path (Join-Path $publicRoot "favicon.ico")) {
-    Copy-Item -Force (Join-Path $publicRoot "favicon.ico") (Join-Path $tempPublic "favicon.ico")
-}
-if (Test-Path (Join-Path $publicRoot "robots.txt")) {
-    Copy-Item -Force (Join-Path $publicRoot "robots.txt") (Join-Path $tempPublic "robots.txt")
+$staticAssets = @(
+    "favicon.ico", "favicon.svg", "robots.txt", "sitemap.xml", "llms.txt", "llms-full.txt",
+    "logo.svg", "logo-horizontal.svg", "logo-mark.svg", "logo-mark-white.svg", "og-image.svg",
+    "google3dd4624b67199596.html"
+)
+foreach ($asset in $staticAssets) {
+    $src = Join-Path $publicRoot $asset
+    if (Test-Path $src) {
+        Copy-Item -Force $src (Join-Path $tempPublic $asset)
+    }
 }
 
 Write-Host ">>> [4/4] Creating ZIP archives for cPanel upload..." -ForegroundColor Cyan
