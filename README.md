@@ -150,6 +150,10 @@ The application will be live at `http://localhost:5173` (or `http://localhost:30
 
 ### 2. Running the Full-Stack Laravel Backend & CMS
 
+**Prerequisites:** PHP 8.5+, Composer, Node.js 20+ and npm.
+
+**First-time setup** (run once, from `backend/`):
+
 ```bash
 cd backend
 
@@ -160,25 +164,62 @@ composer install
 npm install
 
 # Setup environment
-cp .env.example .env
+cp .env.example .env        # Windows PowerShell: Copy-Item .env.example .env
 php artisan key:generate
 
-# Run migrations and seed database (includes admin account & initial content)
-php artisan migrate --seed
+# Create the SQLite database file (if missing) and run migrations + seed
+php artisan migrate --seed  # seeds admin account, CMS content, appearance settings
+```
 
-# Launch Laravel backend server (Terminal 1)
-php artisan serve
+**Run the app** — two terminals, both from `backend/`:
 
-# Launch Inertia Vite dev server (Terminal 2)
+```bash
+# Terminal 1 — Laravel (API + server-side rendering)
+php artisan serve --host=127.0.0.1 --port=8000
+
+# Terminal 2 — Vite dev server (HMR for React/Inertia assets)
 npm run dev
 ```
 
-- **Frontend / Inertia App**: `http://localhost:8000`
-- **Mission Control Login**: `http://localhost:8000/login`
-- **Admin Dashboard**: `http://localhost:8000/admin/dashboard`
-- **Default Admin Credentials**:
-  - **Email**: `admin@devcenterpoint.com`
-  - **Password**: `admin12345`
+> **Windows / CI note:** `laravel-vite-plugin` refuses to start the HMR server when it detects a
+> CI-like environment and exits with *"You should not run the Vite HMR server in CI environments."*
+> Bypass the guard for local development with:
+>
+> ```powershell
+> $env:LARAVEL_BYPASS_ENV_CHECK=1; npm run dev
+> ```
+>
+> On macOS/Linux: `LARAVEL_BYPASS_ENV_CHECK=1 npm run dev`
+
+**Local endpoints**
+
+| Service | URL |
+| :--- | :--- |
+| Frontend / Inertia App | `http://127.0.0.1:8000` |
+| Mission Control Login | `http://127.0.0.1:8000/login` |
+| Admin Dashboard | `http://127.0.0.1:8000/admin/dashboard` |
+| Vite HMR server | `http://localhost:5173` |
+
+**Database:** SQLite at `backend/database/database.sqlite` (`DB_CONNECTION=sqlite` in `.env`).
+Migrations and seeders have already been run in this workspace.
+
+**Default Admin Credentials** (verified via `Hash::check` against the seeded user):
+
+- **Email**: `admin@devcenterpoint.com`
+- **Password**: `admin12345`
+- **Role**: `superadmin` (required to edit raw HTML/CSS/JS overrides under `/admin/appearance`)
+
+#### Currently Running (verified)
+
+Both dev servers are live and serving the app:
+
+- **Laravel** — `http://127.0.0.1:8000` → `/login` returns `200` (HTML renders). Started with
+  `php artisan serve --host=127.0.0.1 --port=8000`.
+- **Vite** — `http://localhost:5173` → `/@vite/client` returns `200` and the `@vite/client` script is
+  injected into the served HTML, so HMR is wired up. Started with
+  `$env:LARAVEL_BYPASS_ENV_CHECK=1; npm run dev`.
+
+To stop both servers, press <kbd>Ctrl</kbd> + <kbd>C</kbd> in each terminal.
 
 ---
 
