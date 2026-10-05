@@ -6,6 +6,8 @@ coverage/
 *.log
 .env*
 !.env.example
+# Production template ships with the code (contains no secrets).
+!.env.production.example
 
 # Playwright browser binaries (local headless diagnostics only)
 .pw-browsers/

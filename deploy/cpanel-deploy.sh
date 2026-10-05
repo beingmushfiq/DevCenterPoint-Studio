@@ -125,8 +125,9 @@ for item in app bootstrap config database resources routes storage; do
   fi
 done
 
-# Top-level files.
-for item in artisan composer.json; do
+# Top-level files. composer.lock travels with the code so `composer install`
+# resolves the exact dependency versions that were tested locally.
+for item in artisan composer.json composer.lock .env.production.example; do
   if [ -f "$APP_SRC/$item" ]; then
     sync_file "$APP_SRC/$item" "$CORE/$item"
     ok "synced $item"
@@ -230,19 +231,79 @@ fi
 step "Running Artisan tasks"
 if [ -z "$PHP_BIN" ]; then
   warn "skipped - no PHP CLI available"
-elif [ ! -f "$CORE/.env" ]; then
-  warn "skipped - $CORE/.env does not exist yet. Create it from .env.example, then re-deploy."
 else
+  # ---------------------------------------------------------------------------
+  # 6a. Bootstrap .env on the very first deploy
+  #     Prefers .env.production.example; never overwrites an existing .env.
+  # ---------------------------------------------------------------------------
+  if [ ! -f "$CORE/.env" ]; then
+    ENV_TEMPLATE=""
+    if [ -f "$CORE/.env.production.example" ]; then
+      ENV_TEMPLATE="$CORE/.env.production.example"
+    elif [ -f "$APP_SRC/.env.example" ]; then
+      ENV_TEMPLATE="$APP_SRC/.env.example"
+      sync_file "$APP_SRC/.env.example" "$CORE/.env.example"
+    fi
+
+    if [ -n "$ENV_TEMPLATE" ]; then
+      cp -f "$ENV_TEMPLATE" "$CORE/.env"
+      ok "created .env from $(basename "$ENV_TEMPLATE")"
+      warn "fill in DB_PASSWORD / MAIL_* in $CORE/.env, then re-deploy to run migrations"
+    else
+      warn "no .env template found - create $CORE/.env manually"
+    fi
+  else
+    ok ".env already present (left untouched)"
+  fi
+
   run_artisan() { ( cd "$CORE" && "$PHP_BIN" artisan "$@" ); }
 
+  # ---------------------------------------------------------------------------
+  # 6b. Ensure APP_KEY exists (required for encryption / sessions)
+  # ---------------------------------------------------------------------------
+  if [ -f "$CORE/.env" ]; then
+    if grep -q '^APP_KEY=$' "$CORE/.env" || ! grep -q '^APP_KEY=base64:' "$CORE/.env"; then
+      if run_artisan key:generate --force >/dev/null 2>&1; then
+        ok "APP_KEY generated"
+      else
+        warn "could not generate APP_KEY - run 'php artisan key:generate' manually"
+      fi
+    else
+      ok "APP_KEY already set"
+    fi
+  fi
+
+  # ---------------------------------------------------------------------------
+  # 6c. Clear stale caches before migrating
+  # ---------------------------------------------------------------------------
   run_artisan config:clear >/dev/null 2>&1 || true
   run_artisan route:clear  >/dev/null 2>&1 || true
   run_artisan view:clear   >/dev/null 2>&1 || true
   run_artisan cache:clear  >/dev/null 2>&1 || true
   ok "caches cleared"
 
+  # ---------------------------------------------------------------------------
+  # 6d. Migrate, then seed ONLY when the database is empty.
+  #     This gives a fresh server its CMS content and admin user without ever
+  #     resetting the admin password on subsequent deploys.
+  # ---------------------------------------------------------------------------
   if run_artisan migrate --force; then
     ok "migrations applied"
+
+    # `|| true` keeps `set -e`/`pipefail` from aborting the deploy if tinker
+    # cannot reach the database; the empty result is handled below.
+    USER_COUNT="$(run_artisan tinker --execute='echo App\Models\User::count();' 2>/dev/null | tr -cd '0-9' || true)"
+    if [ "$USER_COUNT" = "0" ]; then
+      if run_artisan db:seed --force; then
+        ok "database seeded with initial CMS content"
+      else
+        warn "db:seed failed - run 'php artisan db:seed --force' manually"
+      fi
+    elif [ -n "$USER_COUNT" ]; then
+      ok "database already seeded ($USER_COUNT users) - seed skipped"
+    else
+      warn "could not read the user count - seed skipped (run db:seed manually if needed)"
+    fi
   else
     warn "migrations reported an issue (check the database connection in .env)"
   fi
