@@ -655,7 +655,7 @@ class DatabaseSeeder extends Seeder
 
         // 8. Site Settings & SEO
         $settings = [
-            ['key' => 'site_name', 'value' => 'DevCenterPoint Studio', 'group' => 'general'],
+            ['key' => 'site_name', 'value' => 'DevCenterPoint', 'group' => 'general'],
             ['key' => 'contact_email', 'value' => 'studio@devcenterpoint.com', 'group' => 'general'],
             ['key' => 'founder_name', 'value' => 'Mushfiq', 'group' => 'general'],
             ['key' => 'founder_portfolio', 'value' => 'https://buildwithmushfiq.vercel.app', 'group' => 'general'],
@@ -664,8 +664,8 @@ class DatabaseSeeder extends Seeder
             ['key' => 'serial_manager_url', 'value' => 'https://serial.ferozamedicinecorner.com', 'group' => 'general'],
             ['key' => 'roadsafety_url', 'value' => 'https://roadsafetymovement.org', 'group' => 'general'],
             ['key' => 'sound_enabled_default', 'value' => 'true', 'group' => 'general'],
-            ['key' => 'seo_meta_title', 'value' => 'DevCenterPoint Studio | Software Engineering & System Architecture', 'group' => 'seo'],
-            ['key' => 'seo_meta_description', 'value' => 'Elite software engineering consultancy founded by Mushfiq specializing in scalable web systems, AI pipelines, and resilient cloud architectures.', 'group' => 'seo'],
+            ['key' => 'seo_meta_title', 'value' => 'DevCenterPoint — Digital Products, Software & Intelligent Systems', 'group' => 'seo'],
+            ['key' => 'seo_meta_description', 'value' => 'DevCenterPoint designs and engineers mission-critical software products, scalable SaaS platforms, intelligent AI systems, and cloud infrastructure engineered for zero technical debt and real-world impact.', 'group' => 'seo'],
             ['key' => 'social_github', 'value' => 'https://github.com/beingmushfiq', 'group' => 'social'],
             ['key' => 'social_linkedin', 'value' => 'https://linkedin.com', 'group' => 'social'],
             ['key' => 'social_x', 'value' => 'https://x.com', 'group' => 'social'],

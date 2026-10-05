@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight, ChevronDown, Search } from 'lucide-react';
 import { ThemeToggle } from '../ThemeToggle';
+import { SoundToggle } from '../SoundToggle';
 import { DevCenterPointLogo } from '../DevCenterPointLogo';
 import { CommandPalette } from '../CommandPalette';
 import { BookingCta } from '../BookingCta';
@@ -127,12 +128,14 @@ export const HeaderMegaMenu: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) =
                   soundEngine.playClick();
                   setIsCommandOpen(true);
                 }}
-                className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer text-xs"
-                title="Search site (⌘K)"
+                className="hidden md:flex items-center justify-center w-9 h-9 rounded-full border border-slate-300 dark:border-white/15 bg-white dark:bg-[#1a1a1a] text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#252525] hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer active:scale-95"
+                aria-label="Search site"
+                title="Search site"
               >
                 <Search className="w-4 h-4" />
-                <kbd className="text-[10px] font-mono opacity-60">⌘K</kbd>
               </button>
+
+              <SoundToggle />
 
               <ThemeToggle />
 

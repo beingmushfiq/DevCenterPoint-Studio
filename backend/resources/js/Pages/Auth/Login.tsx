@@ -46,7 +46,7 @@ export default function Login({
 
     return (
         <GuestLayout>
-            <Head title="Admin Login | DevCenterPoint Studio" />
+            <Head title="Admin Login | DevCenterPoint" />
 
             {/* Quick Demo Helper Pill */}
             <div className="mb-6 p-3 rounded-2xl bg-blue-500/10 border border-blue-500/25 flex items-center justify-between gap-3 text-xs">

@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Volume2, VolumeX, Sparkles, Zap, X, Sliders, Layers, Eye, Compass } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../Context/CmsContext';
+import { useTheme } from '../Context/ThemeContext';
 
 export type CanvasMode = 'mesh' | 'particles' | 'vortex' | 'matrix' | 'nebula';
 
@@ -48,19 +50,24 @@ export const HeroInteractiveCanvas: React.FC = () => {
   const particlesRef = useRef<Particle[]>([]);
   const animFrameIdRef = useRef<number | null>(null);
 
+  const cms = useCms();
+  const { isSoundMuted: isMuted, toggleSound } = useTheme();
+
   const [mode, setMode] = useState<CanvasMode>('mesh');
-  const [isMuted, setIsMuted] = useState<boolean>(soundEngine.isSoundMuted());
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [particleSpeed, setParticleSpeed] = useState<number>(1);
   const [tonePreset, setTonePreset] = useState<'ethereal' | 'deep_tech' | 'cyber'>(soundEngine.getTonePreset());
   const [volumeLevel, setVolumeLevel] = useState<number>(soundEngine.getVolume());
 
+  // The floating 3D Mood / Studio FX capsule is a power-user control; hidden from the
+  // public site unless explicitly enabled from the CMS.
+  const moodControlEnabled = cms.getSetting('show_hero_canvas_controls', 'false') === 'true';
+
   // Toggle Sound FX
   const handleToggleSound = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const newMuted = soundEngine.toggleMute();
-    setIsMuted(newMuted);
-    if (!newMuted) {
+    toggleSound();
+    if (isMuted) {
       soundEngine.playPresetChord(tonePreset);
     }
   };
@@ -604,7 +611,9 @@ export const HeroInteractiveCanvas: React.FC = () => {
       {/* Studio FX control: anchored inside the Hero so it scrolls naturally with the canvas and NEVER distracts the rest of the site */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="absolute top-20 right-3 sm:top-24 sm:right-8 z-30 pointer-events-auto"
+        className={`absolute top-20 right-3 sm:top-24 sm:right-8 z-30 pointer-events-auto ${
+          moodControlEnabled ? '' : 'hidden'
+        }`}
       >
         <AnimatePresence mode="wait">
           {!isExpanded ? (

@@ -38,7 +38,7 @@ type SettingsTab = 'brand' | 'hero' | 'seo' | 'banner' | 'social' | 'scripts';
 
 export default function SettingsIndex({ settings }: Props) {
   const initialData: Record<string, string> = {
-    site_name: 'DevCenterPoint Studio',
+    site_name: 'DevCenterPoint',
     contact_email: 'contact@devcenterpoint.com',
     whatsapp_number: '+8801988383323',
     whatsapp_prefill_message: 'Hi DevCenterPoint, I would like to discuss engineering a digital product.',
@@ -60,10 +60,13 @@ export default function SettingsIndex({ settings }: Props) {
     hero_telemetry_badge3_val: '12ms',
     visual_liquid_orbs_enabled: 'true',
     visual_radar_status: 'OPERATIONAL // 100% HEALTH',
+    // Developer / Demo Controls (hidden from the public site by default)
+    show_loading_preview_toggle: 'false',
+    show_hero_canvas_controls: 'false',
     // SEO & Announcements
-    seo_meta_title: 'DevCenterPoint Studio | Software Engineering & System Architecture',
-    seo_meta_description: 'Elite software engineering consultancy specializing in scalable web systems, AI pipelines, and resilient cloud architectures.',
-    seo_meta_keywords: 'software engineering, enterprise web systems, AI pipelines, full stack development, cloud architecture',
+    seo_meta_title: 'DevCenterPoint — Digital Products, Software & Intelligent Systems',
+    seo_meta_description: 'DevCenterPoint designs and engineers mission-critical software products, scalable SaaS platforms, intelligent AI systems, and cloud infrastructure engineered for zero technical debt and real-world impact.',
+    seo_meta_keywords: 'DevCenterPoint, software engineering studio, custom SaaS development, AI intelligent systems, enterprise software, full stack engineering, React TypeScript, Python AI, cloud architecture, microservices, zero downtime deployment',
     seo_canonical_url: 'https://devcenterpoint.com',
     seo_og_image: '/og-image.png',
     aeo_system_summary: 'DevCenterPoint Studio is a software engineering and system architecture consultancy founded by Mushfiq. Core capabilities include full-stack SaaS, AI/ML pipelines, real-time telemetry, and resilient cloud systems.',
@@ -456,6 +459,36 @@ export default function SettingsIndex({ settings }: Props) {
                   />
                   <p className="text-[11px] text-slate-500 mt-1">
                     Displayed inside the pill in the floating capsule navigation bar.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Preview Loader Debug Widget</label>
+                  <select
+                    value={formData['show_loading_preview_toggle']}
+                    onChange={(e) => handleChange('show_loading_preview_toggle', e.target.value)}
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="false">Hidden (Recommended for Production)</option>
+                    <option value="true">Visible (Replay Loading Screen Trigger)</option>
+                  </select>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Developer tool that lets visitors replay the spinner/skeleton loading screen. Keep hidden on the live site.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Hero 3D Mood Canvas Controls</label>
+                  <select
+                    value={formData['show_hero_canvas_controls']}
+                    onChange={(e) => handleChange('show_hero_canvas_controls', e.target.value)}
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="false">Hidden (Recommended for Production)</option>
+                    <option value="true">Visible (Mesh / Nodes / Shutter Studio FX)</option>
+                  </select>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Floating capsule to switch the hero background canvas mode and tone presets. Intended for previewing only.
                   </p>
                 </div>
               </div>

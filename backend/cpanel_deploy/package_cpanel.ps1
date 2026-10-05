@@ -41,8 +41,8 @@ Copy-Item -Force (Join-Path $PSScriptRoot "index.php") (Join-Path $tempPublic "i
 Copy-Item -Force (Join-Path $PSScriptRoot ".htaccess") (Join-Path $tempPublic ".htaccess")
 $publicRoot = Join-Path $PSScriptRoot "..\public"
 $staticAssets = @(
-    "favicon.ico", "favicon.svg", "robots.txt", "sitemap.xml", "llms.txt", "llms-full.txt",
-    "logo.svg", "logo-horizontal.svg", "logo-mark.svg", "logo-mark-white.svg", "og-image.svg",
+    "favicon.ico", "favicon.svg", "apple-touch-icon.png", "robots.txt", "sitemap.xml", "llms.txt", "llms-full.txt",
+    "logo.svg", "logo-horizontal.svg", "logo-mark.svg", "logo-mark-white.svg", "og-image.svg", "og-image.png",
     "google3dd4624b67199596.html"
 )
 foreach ($asset in $staticAssets) {

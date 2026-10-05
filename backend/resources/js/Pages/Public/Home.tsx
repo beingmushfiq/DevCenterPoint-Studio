@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { HelmetProvider } from 'react-helmet-async';
-import { Head } from '@inertiajs/react';
 import { ThemeProvider } from '../../Context/ThemeContext';
 import { CmsProvider, CmsData } from '../../Context/CmsContext';
 import { SEOProvider } from '../../Components/SEOHead';
@@ -80,17 +79,11 @@ function HeroReveal({ children }: { children: React.ReactNode }) {
 export default function Home(props: CmsData) {
   const [isSiteLoaded, setIsSiteLoaded] = React.useState(false);
   const [isSandboxOpen, setIsSandboxOpen] = React.useState(false);
-  const siteTitle = props.siteSettings?.seo_meta_title || 'DevCenterPoint Studio | Software Engineering & System Architecture';
-  const siteDescription = props.siteSettings?.seo_meta_description || 'Elite software engineering consultancy specializing in scalable web systems, AI pipelines, and resilient cloud architectures.';
 
   const handleMountComplete = React.useCallback(() => setIsSiteLoaded(true), []);
 
   return (
     <HelmetProvider>
-      <Head>
-        <title>{siteTitle}</title>
-        <meta name="description" content={siteDescription} />
-      </Head>
       <CmsProvider value={props}>
         <SEOProvider>
           <ThemeProvider>

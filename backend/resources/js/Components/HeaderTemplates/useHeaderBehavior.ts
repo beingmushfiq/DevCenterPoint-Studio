@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { soundEngine } from '../../lib/soundEngine';
+import { useTheme } from '../../Context/ThemeContext';
 
 export function useHeaderBehavior() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('work');
-  const [isMuted, setIsMuted] = useState(soundEngine.isSoundMuted());
+  const { isSoundMuted: isMuted, toggleSound } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,11 +46,7 @@ export function useHeaderBehavior() {
   };
 
   const handleToggleSound = () => {
-    const nextMuted = soundEngine.toggleMute();
-    setIsMuted(nextMuted);
-    if (!nextMuted) {
-      soundEngine.playSuccessChime();
-    }
+    toggleSound();
   };
 
   return {

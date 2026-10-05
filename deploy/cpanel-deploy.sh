@@ -197,9 +197,9 @@ done
 
 # Static site assets served straight from the web root (logos, favicon, SEO files).
 # These are referenced by absolute URL (e.g. /logo-horizontal.svg) in the React components.
-for entry in favicon.ico favicon.svg robots.txt sitemap.xml llms.txt llms-full.txt \
-             logo.svg logo-horizontal.svg logo-mark.svg logo-mark-white.svg og-image.svg \
-             google3dd4624b67199596.html; do
+for entry in favicon.ico favicon.svg apple-touch-icon.png robots.txt sitemap.xml llms.txt llms-full.txt \
+             logo.svg logo-horizontal.svg logo-mark.svg logo-mark-white.svg \
+             og-image.svg og-image.png google3dd4624b67199596.html; do
   if [ -f "$APP_SRC/public/$entry" ]; then
     sync_file "$APP_SRC/public/$entry" "$WEBROOT/$entry"
     ok "copied $entry"

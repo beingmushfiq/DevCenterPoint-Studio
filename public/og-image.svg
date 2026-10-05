@@ -72,6 +72,6 @@
   <!-- Bottom Details -->
   <line x1="350" y1="530" x2="850" y2="530" stroke="#1E293B" stroke-width="1" />
   <text x="600" y="565" text-anchor="middle" font-family="'IBM Plex Sans', sans-serif" font-size="16" fill="#64748B">
-    High-Performance Architecture &middot; Cloud Engineering &middot; 3D Storytelling
+    High-Performance Architecture &#183; Cloud Engineering &#183; 3D Storytelling
   </text>
 </svg>

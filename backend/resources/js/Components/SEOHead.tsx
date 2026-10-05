@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useCms } from '../Context/CmsContext';
 
 export interface SectionSEOMetadata {
   title: string;
@@ -168,6 +169,7 @@ const SEOContext = createContext<SEOContextType | undefined>(undefined);
 export const SEOProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [customSEO, setCustomSEO] = useState<SEOOverride | null>(null);
+  const cms = useCms();
 
   // Scroll detection to update active section metadata dynamically
   useEffect(() => {
@@ -218,12 +220,22 @@ export const SEOProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const baseMeta = SECTION_METADATA[activeSection] || SECTION_METADATA.hero;
 
+  // The hero (top-of-page) metadata is owned by the CMS so the configured site
+  // title/description actually win over the built-in section defaults.
+  const isHero = activeSection === 'hero' && !customSEO;
+  const cmsKeywords = cms.getSetting('seo_meta_keywords', '')
+    .split(',')
+    .map((k) => k.trim())
+    .filter(Boolean);
+
   const currentMeta: SectionSEOMetadata = {
-    title: customSEO?.title || baseMeta.title,
-    description: customSEO?.description || baseMeta.description,
-    keywords: customSEO?.keywords || baseMeta.keywords,
+    title: customSEO?.title || (isHero ? cms.getSetting('seo_meta_title', baseMeta.title) : baseMeta.title),
+    description:
+      customSEO?.description ||
+      (isHero ? cms.getSetting('seo_meta_description', baseMeta.description) : baseMeta.description),
+    keywords: customSEO?.keywords || (isHero && cmsKeywords.length ? cmsKeywords : baseMeta.keywords),
     sectionName: baseMeta.sectionName,
-    hash: customSEO?.canonicalPath || baseMeta.hash,
+    hash: customSEO?.canonicalPath || (isHero ? '' : baseMeta.hash),
   };
 
   return (
@@ -235,7 +247,12 @@ export const SEOProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         currentMeta,
       }}
     >
-      <SEOHead meta={currentMeta} />
+      <SEOHead
+        meta={currentMeta}
+        siteName={cms.getSetting('site_name', 'DevCenterPoint')}
+        ogImage={cms.getSetting('seo_og_image', '/og-image.png')}
+        canonicalBase={cms.getSetting('seo_canonical_url', '')}
+      />
       {children}
     </SEOContext.Provider>
   );
@@ -253,9 +270,17 @@ export const useSEO = () => {
  * React Helmet Component to dynamically manage HTML head elements
  * for SEO, OpenGraph cards, Twitter cards, and Schema.org JSON-LD.
  */
-export const SEOHead: React.FC<{ meta: SectionSEOMetadata }> = ({ meta }) => {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://devcenterpoint.com';
+export const SEOHead: React.FC<{
+  meta: SectionSEOMetadata;
+  siteName?: string;
+  ogImage?: string;
+  canonicalBase?: string;
+}> = ({ meta, siteName = 'DevCenterPoint', ogImage = '/og-image.png', canonicalBase = '' }) => {
+  const origin =
+    canonicalBase || (typeof window !== 'undefined' ? window.location.origin : 'https://devcenterpoint.com');
   const canonicalUrl = `${origin}/${meta.hash}`;
+  // Scrapers cannot resolve relative image paths, so always emit an absolute URL.
+  const ogImageUrl = /^https?:\/\//.test(ogImage) ? ogImage : `${origin}/${ogImage.replace(/^\//, '')}`;
 
   // Schema.org structured data (JSON-LD)
   const jsonLd = {
@@ -264,7 +289,7 @@ export const SEOHead: React.FC<{ meta: SectionSEOMetadata }> = ({ meta }) => {
       {
         '@type': 'Organization',
         '@id': `${origin}/#organization`,
-        name: 'DevCenterPoint',
+        name: siteName,
         url: origin,
         logo: `${origin}/logo-mark.svg`,
         description:
@@ -282,7 +307,7 @@ export const SEOHead: React.FC<{ meta: SectionSEOMetadata }> = ({ meta }) => {
         '@type': 'WebSite',
         '@id': `${origin}/#website`,
         url: origin,
-        name: 'DevCenterPoint',
+        name: siteName,
         publisher: {
           '@id': `${origin}/#organization`,
         },
@@ -316,18 +341,20 @@ export const SEOHead: React.FC<{ meta: SectionSEOMetadata }> = ({ meta }) => {
 
       {/* Open Graph / Facebook / LinkedIn */}
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="DevCenterPoint" />
+      <meta property="og:site_name" content={siteName} />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:url" content={canonicalUrl} />
-      <meta property="og:image" content={`${origin}/logo-mark.svg`} />
+      <meta property="og:image" content={ogImageUrl} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
 
       {/* Twitter Cards */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@devcenterpoint" />
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
-      <meta name="twitter:image" content={`${origin}/logo-mark.svg`} />
+      <meta name="twitter:image" content={ogImageUrl} />
 
       {/* Schema.org Structured Data */}
       <script type="application/ld+json">

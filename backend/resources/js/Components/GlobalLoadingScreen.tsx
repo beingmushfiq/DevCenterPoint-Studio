@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useTheme } from '../Context/ThemeContext';
+import { useCms } from '../Context/CmsContext';
 
 export type LoadingViewMode = 'spinner' | 'skeleton';
 
@@ -23,7 +24,8 @@ interface GlobalLoadingScreenProps {
    */
   defaultView?: LoadingViewMode;
   /**
-   * Floating preview trigger to replay loading screen
+   * Floating preview trigger to replay loading screen.
+   * When omitted, falls back to the CMS setting `show_loading_preview_toggle`.
    */
   allowPreviewToggle?: boolean;
 }
@@ -33,10 +35,15 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
   onMountComplete,
   minDuration = 1100,
   defaultView = 'spinner',
-  allowPreviewToggle = true,
+  allowPreviewToggle,
 }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const cms = useCms();
+
+  // Dev-only debug switch: hidden from the public site unless enabled in the CMS.
+  const showPreviewToggle =
+    allowPreviewToggle ?? cms.getSetting('show_loading_preview_toggle', 'false') === 'true';
 
   const [internalIsMounting, setInternalIsMounting] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -419,7 +426,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
       </AnimatePresence>
 
       {/* Floating Preview Switcher (Allows user to inspect either mode easily) */}
-      {allowPreviewToggle && !isVisible && (
+      {showPreviewToggle && !isVisible && (
         <div className="fixed bottom-5 left-5 z-40">
           <div
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border shadow-lg backdrop-blur-md text-xs font-sans transition-colors ${
