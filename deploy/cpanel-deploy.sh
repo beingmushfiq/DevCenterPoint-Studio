@@ -184,6 +184,26 @@ for item in app bootstrap config database resources routes storage; do
   fi
 done
 
+# public/ must exist inside $CORE as well as $WEBROOT.
+# `@vite` resolves the manifest with public_path(), which is anchored to the app
+# root ($CORE/public), NOT the web root. Publishing build/ to $WEBROOT alone
+# leaves that path missing, so Laravel throws ViteManifestNotFoundException and
+# every page returns HTTP 500. $WEBROOT serves the files; $CORE/public satisfies
+# the framework's path lookup.
+if [ -d "$APP_SRC/public" ]; then
+  sync_tree "$APP_SRC/public/" "$CORE/public/" \
+    --exclude '/hot' \
+    --exclude '/storage' \
+    --exclude '*.sqlite' \
+    --exclude '*.sqlite-*'
+  # A stray `hot` file makes Vite assume a dev server is running and emit
+  # localhost URLs. It is gitignored, but strip it defensively.
+  rm -f "$CORE/public/hot"
+  ok "synced public/ into app root (manifest at \$CORE/public/build)"
+else
+  warn "missing public/ (skipped)"
+fi
+
 # Top-level files. composer.lock travels with the code so `composer install`
 # resolves the exact dependency versions that were tested locally.
 for item in artisan composer.json composer.lock .env.production.example; do
@@ -287,6 +307,21 @@ for entry in favicon.ico favicon.svg apple-touch-icon.png robots.txt sitemap.xml
     ok "copied $entry"
   fi
 done
+
+# Fail fast on the two conditions that produce an unreadable HTTP 500.
+# `@vite` aborts the whole request when the manifest is unreadable, so catching
+# it here turns a silent outage into an explicit deploy error.
+MANIFEST_CORE="$CORE/public/build/manifest.json"
+if [ ! -f "$MANIFEST_CORE" ]; then
+  fail "Vite manifest missing at $MANIFEST_CORE"
+  fail "Without it every page returns HTTP 500 (ViteManifestNotFoundException)."
+  exit 1
+fi
+if [ ! -r "$MANIFEST_CORE" ]; then
+  fail "Vite manifest is not readable: $MANIFEST_CORE"
+  exit 1
+fi
+ok "Vite manifest present: $MANIFEST_CORE"
 
 # ------------------------------------------------------------------------------
 # 5. Public storage symlink (media/uploads)
