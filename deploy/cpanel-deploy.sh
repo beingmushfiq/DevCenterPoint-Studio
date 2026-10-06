@@ -225,16 +225,30 @@ if [ -n "$SQLITE_BACKUP" ]; then
   ok "preserved live database.sqlite across sync"
 fi
 
-# Composer dependencies. vendor/ IS committed to the repository because the
-# cPanel host may not ship a Composer binary, and $WEBROOT/index.php
-# hard-requires "$CORE/vendor/autoload.php". Synced as a whole tree (its own
-# call so the storage-oriented --exclude flags above do not strip package
-# internals such as a vendored `app/` or `logs/` directory).
+# ------------------------------------------------------------------------------
+# 1b. Apply uploaded archives (vendor/ + compiled assets)
+#     The repository ships source only. The bulky generated trees
+#     (backend/vendor and backend/public/build) arrive as the archives
+#     ~/cpanel_uploads/dcp_core.zip and public_html.zip, produced locally by:
+#       backend/cpanel_deploy/package_cpanel.ps1
+#     The applier is non-destructive: it never touches ~/dcp_core/.env, the live
+#     SQLite database, or runtime storage.
+# ------------------------------------------------------------------------------
+step "Applying uploaded archives (if any)"
+REPO="$REPO" CORE="$CORE" WEBROOT="$WEBROOT" bash "$REPO/deploy/apply-uploads.sh" \
+  || warn "apply-uploads.sh reported an issue - continuing with repo-provided files"
+
+# Composer dependencies. $WEBROOT/index.php hard-requires
+# "$CORE/vendor/autoload.php", so vendor/ must be present. It normally arrives
+# inside dcp_core.zip (applied above); a committed vendor/ is still honoured for
+# backwards compatibility.
 if [ -d "$APP_SRC/vendor" ]; then
-  sync_tree "$APP_SRC/vendor/" "$CORE/vendor/" --delete
-  ok "synced vendor/ ($(find "$CORE/vendor" -type f | wc -l | tr -d ' ') files)"
+  sync_tree "$APP_SRC/vendor/" "$CORE/vendor/"
+  ok "synced vendor/ from the repository ($(find "$CORE/vendor" -type f | wc -l | tr -d ' ') files)"
+elif [ -f "$CORE/vendor/autoload.php" ]; then
+  ok "vendor/ already present from the uploaded archive ($(find "$CORE/vendor" -type f | wc -l | tr -d ' ') files)"
 else
-  warn "vendor/ missing from the repository - the host will need Composer to install it"
+  warn "vendor/ missing - upload dcp_core.zip to ~/cpanel_uploads, or commit vendor/, or install Composer"
 fi
 
 # ------------------------------------------------------------------------------
@@ -283,9 +297,11 @@ fi
 step "Publishing public assets to $WEBROOT"
 if [ -d "$APP_SRC/public/build" ]; then
   sync_tree "$APP_SRC/public/build/" "$WEBROOT/build/" --delete
-  ok "build/ assets published"
+  ok "build/ assets published from the repository"
+elif [ -f "$WEBROOT/build/manifest.json" ]; then
+  ok "build/ assets already present from public_html.zip"
 else
-  warn "backend/public/build not found - did you commit the built assets?"
+  warn "no compiled assets found - upload public_html.zip to ~/cpanel_uploads, or run the local packager"
 fi
 
 for entry in index.php .htaccess; do

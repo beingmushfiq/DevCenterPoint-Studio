@@ -160,8 +160,10 @@ repository and runs the deployment tasks automatically on every push you deploy.
 | File | Role |
 | :--- | :--- |
 | `.cpanel.yml` | cPanel task definition — `cd`s into the clone and runs the deploy script |
-| `deploy/cpanel-deploy.sh` | Server-side, idempotent deploy: sync app → `dcp_core`, publish assets → `public_html`, composer, artisan |
-| `deploy/prepare-deploy.ps1` | Local pre-flight: builds the Vite assets and stages them for commit |
+| `deploy/cpanel-deploy.sh` | Server-side, idempotent deploy: sync app → `dcp_core`, apply uploaded archives, publish assets → `public_html`, composer, artisan |
+| `deploy/apply-uploads.sh` | Server-side: extracts the uploaded ZIPs into `~/dcp_core` and `~/public_html` (never touches `.env`, the SQLite DB, or runtime storage) |
+| `deploy/prepare-deploy.ps1` | Local pre-flight: runs the packager and prints the upload/deploy checklist |
+| `backend/cpanel_deploy/package_cpanel.ps1` | Local packager: builds the Vite assets and produces `dcp_core.zip` + `public_html.zip` |
 
 ### One-Time cPanel Setup
 
@@ -202,23 +204,49 @@ repository and runs the deployment tasks automatically on every push you deploy.
 
 ### Every Deployment
 
-Locally, run the pre-flight and push:
+The repository ships **source code only** — `backend/vendor/` and `backend/public/build/` are
+**not** committed. They travel as two ZIP archives produced locally by the packager:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File deploy/prepare-deploy.ps1
-git commit -m "build: refresh production assets"
-git push origin main
 ```
 
-Then in cPanel → **Git Version Control** → select the repository:
+That builds the Vite assets and writes:
 
-1. **Update from Remote** (pulls the latest commit).
-2. **Deploy HEAD Commit** (runs `.cpanel.yml` → `deploy/cpanel-deploy.sh`).
+| Archive | Extract target on the server |
+| :--- | :--- |
+| `backend/cpanel_dist/dcp_core.zip` | `~/dcp_core` (app code + `vendor/`) |
+| `backend/cpanel_dist/public_html.zip` | `~/public_html` (`build/`, `index.php`, `.htaccess`, static assets) |
 
-The deploy script performs, in order: sync app files → ensure storage dirs → `composer install`
-(best effort) → publish `build/` + entrypoint files → create the `storage` symlink → bootstrap
-`.env` (first run only) → **reconcile the database config** → generate `APP_KEY` →
-`migrate --force` → seed only when the database is empty → re-cache config/routes/views.
+Then:
+
+1. **Upload both ZIPs** to `~/cpanel_uploads/` on the server (cPanel → *File Manager* →
+   navigate to your home directory → create `cpanel_uploads` if it does not exist → *Upload*).
+   Keep the file names exactly `dcp_core.zip` and `public_html.zip`.
+2. Push the source changes (if any) and, in cPanel → **Git Version Control**, click
+   **Update from Remote**, then **Deploy HEAD Commit**.
+
+The deploy script order is: sync app files → preserve the live SQLite DB → **apply the uploaded
+archives** (`deploy/apply-uploads.sh`) → ensure storage dirs → `composer install` (best effort) →
+publish `build/` + entrypoint files → create the `storage` symlink → bootstrap `.env`
+(first run only) → **reconcile the database config** → generate `APP_KEY` → `migrate --force` →
+seed only when the database is empty → re-cache config/routes/views.
+
+> **Uploaded archives are optional but expected.** With no ZIPs in `~/cpanel_uploads/`, the
+> applier simply reports "nothing to do" and the deploy continues with whatever is already on the
+> server (or a repo-provided `vendor/`). Upload fresh ZIPs whenever `composer.lock` or the
+> frontend source changes.
+
+> **Why ZIPs instead of committing the trees?** `vendor/` is ~27 MB and `build/` is ~2 MB of
+> content-hashed output — committing them bloats every clone and every diff. They are regenerated
+> deterministically from `composer.lock` and the frontend source, so they ship as throwaway
+> artifacts instead.
+>
+> **The applier is non-destructive.** `deploy/apply-uploads.sh` never overwrites
+> `~/dcp_core/.env`, never replaces the live `database.sqlite`, and writes nothing into runtime
+> storage (`logs/`, `framework/cache/`, `sessions/`, `views/`). It also mirrors `~/public_html/build/`
+> into `~/dcp_core/public/build/`, because `@vite` resolves the manifest relative to the app root —
+> without that mirror every page would throw `ViteManifestNotFoundException` (HTTP 500).
 
 > **Database self-heal.** On every deploy the script checks `DB_CONNECTION` in
 > `~/dcp_core/.env` and switches it to `sqlite` when it is anything else, sets
@@ -233,8 +261,9 @@ The deploy script performs, in order: sync app files → ensure storage dirs →
 > resolved PHP CLI lacks it. Enable it in cPanel → *MultiPHP INI Editor*, or check with
 > `php -m | grep -i pdo_sqlite`.
 
-> **Note:** `backend/public/build` is committed on purpose (see `backend/.gitignore`), because the
-> Git-driven deploy ships assets directly from the repository.
+> **Note:** `backend/vendor/` and `backend/public/build/` are **not** committed (see
+> `backend/.gitignore`). They are produced locally by `backend/cpanel_deploy/package_cpanel.ps1`
+> and uploaded as `dcp_core.zip` / `public_html.zip`.
 
 ---
 
