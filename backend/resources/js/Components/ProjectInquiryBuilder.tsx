@@ -445,7 +445,7 @@ export const ProjectInquiryBuilder: React.FC = () => {
                   href={bookingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-sm"
+                  className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-amber-950 text-xs font-bold transition-all shadow-sm"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>{bookingLabel}</span>

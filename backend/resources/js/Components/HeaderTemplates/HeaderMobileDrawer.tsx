@@ -105,7 +105,7 @@ export const HeaderMobileDrawer: React.FC<HeaderMobileDrawerProps> = ({
                   <BookingCta
                     url={header.bookingUrl}
                     label={header.bookingLabel}
-                    variant="primary"
+                    variant="amber"
                     size="lg"
                     className="w-full"
                   />

@@ -44,7 +44,7 @@ export const FooterCompactRow: React.FC = () => {
                 href={footer.bookingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-amber-950 text-[11px] font-bold transition-colors"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 <span>{footer.bookingLabel}</span>

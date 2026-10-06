@@ -152,7 +152,7 @@ export const Hero: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => soundEngine.playClick()}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-amber-500/12 hover:bg-amber-500/22 text-amber-700 dark:text-amber-400 border border-amber-500/35 text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
               >
                 <Calendar className="w-4 h-4" />
                 <span>{bookingLabel}</span>

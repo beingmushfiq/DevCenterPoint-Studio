@@ -80,7 +80,7 @@ export const HeaderSolidBar: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) =
                 <BookingCta
                   url={header.bookingUrl}
                   label={header.bookingLabel}
-                  variant="ghost"
+                  variant="secondary"
                   size="sm"
                   className="hidden sm:inline-flex"
                 />

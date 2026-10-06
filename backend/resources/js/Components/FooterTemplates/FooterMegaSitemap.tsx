@@ -40,7 +40,7 @@ export const FooterMegaSitemap: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
+            <div className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-600 dark:text-amber-400">
               Book a Discovery Call
             </div>
             <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
@@ -51,7 +51,7 @@ export const FooterMegaSitemap: React.FC = () => {
                 href={footer.bookingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-blue-600/25"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-amber-950 text-xs font-bold transition-all shadow-md shadow-amber-500/25"
               >
                 <Calendar className="w-4 h-4" />
                 <span>{footer.bookingLabel}</span>

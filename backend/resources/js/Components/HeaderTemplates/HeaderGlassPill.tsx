@@ -120,7 +120,7 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
               <BookingCta
                 url={header.bookingUrl}
                 label={header.bookingLabel}
-                variant="ghost"
+                variant="secondary"
                 size="sm"
                 className="hidden xl:inline-flex"
               />

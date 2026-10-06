@@ -76,7 +76,7 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => soundEngine.playClick()}
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-all active:scale-95"
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/35 text-xs font-bold transition-all active:scale-95"
             title={bookingLabel}
           >
             <Calendar className="w-3.5 h-3.5" />
