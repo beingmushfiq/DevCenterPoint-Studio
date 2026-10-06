@@ -105,7 +105,11 @@
         <!-- Scripts -->
         @routes
         @viteReactRefresh
-        @vite(['resources/js/app.tsx', "resources/js/Pages/{$page['component']}.tsx"])
+        {{-- Only the entry is referenced: pages are resolved at runtime by
+             app.tsx via import.meta.glob, so a per-page manifest lookup is both
+             redundant and fragile (a page whose chunk is hoisted into a shared
+             chunk disappears from the manifest and makes @vite abort with a 500). --}}
+        @vite(['resources/js/app.tsx'])
         @inertiaHead
     </head>
     <body class="bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-white antialiased selection:bg-blue-600 selection:text-white font-sans overflow-x-hidden w-full max-w-full min-h-screen">
