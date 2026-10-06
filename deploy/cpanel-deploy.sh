@@ -229,8 +229,8 @@ fi
 # 1b. Apply uploaded archives (vendor/ + compiled assets)
 #     The repository ships source only. The bulky generated trees
 #     (backend/vendor and backend/public/build) arrive as the archives
-#     ~/cpanel_uploads/dcp_core.zip and public_html.zip, produced locally by:
-#       backend/cpanel_deploy/package_cpanel.ps1
+#     ~/cpanel_uploads/vendor.zip and public_html.zip, produced locally by:
+#       backend/cpanel_deploy/package_cpanel.ps1 -Target All
 #     The applier is non-destructive: it never touches ~/dcp_core/.env, the live
 #     SQLite database, or runtime storage.
 # ------------------------------------------------------------------------------
@@ -240,7 +240,7 @@ REPO="$REPO" CORE="$CORE" WEBROOT="$WEBROOT" bash "$REPO/deploy/apply-uploads.sh
 
 # Composer dependencies. $WEBROOT/index.php hard-requires
 # "$CORE/vendor/autoload.php", so vendor/ must be present. It normally arrives
-# inside dcp_core.zip (applied above); a committed vendor/ is still honoured for
+# inside vendor.zip (applied above); a committed vendor/ is still honoured for
 # backwards compatibility.
 if [ -d "$APP_SRC/vendor" ]; then
   sync_tree "$APP_SRC/vendor/" "$CORE/vendor/"
@@ -248,7 +248,7 @@ if [ -d "$APP_SRC/vendor" ]; then
 elif [ -f "$CORE/vendor/autoload.php" ]; then
   ok "vendor/ already present from the uploaded archive ($(find "$CORE/vendor" -type f | wc -l | tr -d ' ') files)"
 else
-  warn "vendor/ missing - upload dcp_core.zip to ~/cpanel_uploads, or commit vendor/, or install Composer"
+  warn "vendor/ missing - upload vendor.zip to ~/cpanel_uploads, or commit vendor/, or install Composer"
 fi
 
 # ------------------------------------------------------------------------------

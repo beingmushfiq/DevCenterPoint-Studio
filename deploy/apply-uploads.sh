@@ -4,13 +4,16 @@
 # ==============================================================================
 # Applies the ZIPs produced by backend/cpanel_deploy/package_cpanel.ps1:
 #
-#   ~/cpanel_uploads/dcp_core.zip     -> extracted into ~/dcp_core
 #   ~/cpanel_uploads/public_html.zip  -> extracted into ~/public_html
+#   ~/cpanel_uploads/vendor.zip       -> extracted into ~/dcp_core/vendor
 #
 # WHY THIS EXISTS
 # The repository no longer commits backend/vendor or backend/public/build (they
 # are re-created locally by the packager and shipped as these archives). Git
 # carries source only; this script lands the bulky generated trees on the server.
+#
+# Backend/content-only changes (app/, config/, routes/, database/) travel via
+# Git and are synced by cpanel-deploy.sh - they need NO archive.
 #
 # SAFETY GUARANTEES
 #   * Never overwrites ~/dcp_core/.env            (production secrets preserved)
@@ -100,30 +103,25 @@ mkdir -p "$UPLOADS" "$CORE" "$WEBROOT"
 APPLIED=0
 
 # ------------------------------------------------------------------------------
-# dcp_core.zip -> ~/dcp_core   (preserve .env, sqlite DB, runtime storage)
+# vendor.zip -> ~/dcp_core/vendor   (Composer dependencies)
 # ------------------------------------------------------------------------------
-CORE_ZIP="$UPLOADS/dcp_core.zip"
-if [ -f "$CORE_ZIP" ]; then
+# vendor/ is the only bulky generated tree that lives inside the app root. The
+# archive is packed from backend/vendor, so its entries are already relative to
+# the vendor directory (autoload.php, composer/, laravel/, ...).
+VENDOR_ZIP="$UPLOADS/vendor.zip"
+if [ -f "$VENDOR_ZIP" ]; then
   STAGE="$(mktemp -d)"
-  if extract_zip "$CORE_ZIP" "$STAGE"; then
-    # Translate the psql-style *.php excludes into rsync --exclude switches.
-    publish_tree "$STAGE/" "$CORE/" \
-      --exclude '/.env' \
-      --exclude '/.env.*' \
-      --exclude '/database/*.sqlite' \
-      --exclude '/database/*.sqlite-*' \
-      --exclude '/storage/logs/' \
-      --exclude '/storage/framework/cache/' \
-      --exclude '/storage/framework/sessions/' \
-      --exclude '/storage/framework/views/'
-    ok "dcp_core.zip applied -> $CORE"
+  if extract_zip "$VENDOR_ZIP" "$STAGE"; then
+    mkdir -p "$CORE/vendor"
+    publish_tree "$STAGE/" "$CORE/vendor/" --delete
+    ok "vendor.zip applied -> $CORE/vendor"
     APPLIED=$((APPLIED + 1))
   else
-    fail "could not extract $CORE_ZIP (need unzip, PHP ZipArchive, or python3)"
+    fail "could not extract $VENDOR_ZIP (need unzip, PHP ZipArchive, or python3)"
   fi
   rm -rf "$STAGE"
 else
-  warn "dcp_core.zip not found (skipped)"
+  warn "vendor.zip not found (skipped)"
 fi
 
 # ------------------------------------------------------------------------------
@@ -154,7 +152,7 @@ else
 fi
 
 if [ "$APPLIED" -eq 0 ]; then
-  warn "no archives applied (upload dcp_core.zip / public_html.zip and re-run)"
+  warn "no archives applied (upload public_html.zip and/or vendor.zip and re-run)"
   exit 0
 fi
 

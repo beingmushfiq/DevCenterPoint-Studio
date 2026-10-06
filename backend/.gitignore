@@ -15,8 +15,8 @@
 /auth.json
 /node_modules
 # Production build output and Composer dependencies are NOT committed. They are
-# regenerated locally by backend/cpanel_deploy/package_cpanel.ps1 and shipped to
-# the server as ~/cpanel_uploads/public_html.zip and dcp_core.zip. Git carries
+# regenerated locally by backend/cpanel_deploy/package_cpanel.ps1 and uploaded to
+# the server as ~/cpanel_uploads/public_html.zip and vendor.zip. Git carries
 # source code only, which keeps the repository small.
 /public/build
 /public/fonts-manifest.dev.json
