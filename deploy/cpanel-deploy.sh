@@ -489,6 +489,12 @@ else
     else
       warn "SolutionProductSeeder failed - run 'php artisan db:seed --class=SolutionProductSeeder --force' manually"
     fi
+
+    if run_artisan db:seed --class=ProjectSeeder --force; then
+      ok "portfolio projects seeded"
+    else
+      warn "ProjectSeeder failed - run 'php artisan db:seed --class=ProjectSeeder --force' manually"
+    fi
   else
     warn "migrations reported an issue (check the database connection in .env)"
   fi

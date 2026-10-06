@@ -13,9 +13,9 @@ Allow: /sitemap.xml
 Allow: /llms.txt
 Allow: /llms-full.txt
 Disallow: /admin/
+Disallow: /super-admin/login
 Disallow: /dashboard
 Disallow: /profile
-Disallow: /login
 Disallow: /register
 Disallow: /forgot-password
 Disallow: /reset-password

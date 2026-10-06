@@ -1,0 +1,281 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Project;
+use Illuminate\Database\Seeder;
+
+class ProjectSeeder extends Seeder
+{
+    /**
+     * Seed the public "Case Studies & Portfolio" projects.
+     *
+     * Idempotent: every row is matched on its slug and updated in place, so this
+     * is safe to re-run on every deploy. It exists as a separate seeder (rather
+     * than living inside DatabaseSeeder) so the deploy script can top up newly
+     * added projects on an already-populated production database WITHOUT
+     * re-running the full DatabaseSeeder, which would reset the admin password.
+     */
+    public function run(): void
+    {
+        $projects = [
+            [
+                'slug' => 'ordershield',
+                'title' => 'DevCenterPoint ERP & Storefront',
+                'tagline' => 'Omnichannel E-Commerce & Enterprise ERP Core',
+                'category' => 'Business Systems',
+                'client' => 'Omnichannel Enterprise Systems',
+                'year' => '2026',
+                'duration' => '14 Weeks',
+                'overview' => 'Full-stack enterprise ERP integrated with an omnichannel storefront, inventory workflows, and sales management.',
+                'problem' => 'Existing legacy systems produced frequent double-allocation errors during peak load, with latency in stock updates exceeding 15 minutes across distributed inventory locations.',
+                'solution' => 'Engineered an event-driven architecture with strict transactional locks and atomic inventory updates, paired with a high-density, low-latency operational dashboard.',
+                'metrics' => [
+                    ['label' => 'Order Processing Latency', 'value' => '-72%'],
+                    ['label' => 'Allocation Errors', 'value' => '0%'],
+                    ['label' => 'Throughput Surge Capacity', 'value' => '10x'],
+                ],
+                'tech_stack' => ['Laravel', 'React', 'PostgreSQL', 'Redis', 'WebSockets', 'Tailwind CSS'],
+                'thumbnail_url' => 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+                'hero_image_url' => 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1920&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'live_url' => 'https://demoerp.devcenterpoint.com',
+                'github_url' => 'https://github.com/beingmushfiq',
+                'is_featured' => true,
+                'display_order' => 1,
+                'is_published' => true,
+            ],
+            [
+                'slug' => 'qttenzy',
+                'title' => 'Qttenzy',
+                'tagline' => 'Smart QR Geofenced Attendance Platform',
+                'category' => 'Healthcare & Enterprise',
+                'client' => 'Apex EduTech & Enterprise Campuses',
+                'year' => '2026',
+                'duration' => '10 Weeks',
+                'overview' => 'QR-based automated geofenced attendance system that verifies check-ins within precise physical boundaries.',
+                'problem' => 'Static QR codes were easily copied or shared remotely via messaging apps, bypassing attendance validity and skewing compliance logs.',
+                'solution' => 'Developed a time-sensitive dynamic QR code generation engine with encrypted device signatures, anti-spoofing geolocation bounds, and real-time verification.',
+                'metrics' => [
+                    ['label' => 'Proxy Fraud Rate', 'value' => '0%'],
+                    ['label' => 'Check-in Speed', 'value' => '< 1.2s'],
+                    ['label' => 'Monthly Active Users', 'value' => '45,000+'],
+                ],
+                'tech_stack' => ['React Native', 'Node.js', 'TypeScript', 'MongoDB', 'PWA', 'Tailwind CSS'],
+                'thumbnail_url' => 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80',
+                'hero_image_url' => 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1920&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'live_url' => 'https://qttenzy.vercel.app',
+                'github_url' => 'https://github.com/beingmushfiq',
+                'is_featured' => true,
+                'display_order' => 2,
+                'is_published' => true,
+            ],
+            [
+                'slug' => 'commercecore',
+                'title' => 'CommerceCore',
+                'tagline' => 'Modular Headless E-Commerce Engine',
+                'category' => 'Commerce Infrastructure',
+                'client' => 'Verve Retailers International',
+                'year' => '2026',
+                'duration' => '16 Weeks',
+                'overview' => 'Headless commerce backend, multi-currency checkout, and customizable product catalog architecture.',
+                'problem' => 'Slow page render speeds directly impacted conversion rates, while rigid database schemas made complex variant management painful.',
+                'solution' => 'Architected a headless, API-first commerce engine decoupling storefront presentation from transaction logic, backed by a flexible JSON schema for dynamic product attributes.',
+                'metrics' => [
+                    ['label' => 'Storefront Load Time', 'value' => '420ms'],
+                    ['label' => 'Checkout Conversion', 'value' => '+28%'],
+                    ['label' => 'Catalog SKUs Handled', 'value' => '250,000+'],
+                ],
+                'tech_stack' => ['Next.js', 'Node.js', 'PostgreSQL', 'Stripe API', 'GraphQL', 'Docker'],
+                'thumbnail_url' => 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+                'hero_image_url' => 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1920&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'live_url' => 'https://commercecore.devcenterpoint.com',
+                'github_url' => 'https://github.com/beingmushfiq',
+                'is_featured' => true,
+                'display_order' => 3,
+                'is_published' => true,
+            ],
+            [
+                'slug' => 'shap-career',
+                'title' => 'SHAP Career Predictor',
+                'tagline' => 'Explainable AI Career Forecasting Engine',
+                'category' => 'AI & Intelligent Systems',
+                'client' => 'Workforce Intelligence Institute',
+                'year' => '2026',
+                'duration' => '12 Weeks',
+                'overview' => 'Machine learning skill analysis and career path prediction model backed by SHAP feature explainability.',
+                'problem' => 'Traditional predictive models acted as unexplainable black boxes, leading to low trust from career counselors who required clear rationale behind recommendations.',
+                'solution' => 'Implemented an XGBoost classification pipeline paired with SHAP (SHapley Additive exPlanations) values to render transparent, human-interpretable feature importance charts.',
+                'metrics' => [
+                    ['label' => 'Prediction Accuracy', 'value' => '94.2%'],
+                    ['label' => 'Explainability Latency', 'value' => '< 180ms'],
+                    ['label' => 'User Trust Score', 'value' => '4.9 / 5.0'],
+                ],
+                'tech_stack' => ['Python', 'XGBoost', 'SHAP', 'FastAPI', 'React', 'Tailwind CSS'],
+                'thumbnail_url' => 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+                'hero_image_url' => 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'live_url' => 'https://shap.devcenterpoint.com',
+                'github_url' => 'https://github.com/beingmushfiq',
+                'is_featured' => true,
+                'display_order' => 4,
+                'is_published' => true,
+            ],
+            [
+                'slug' => 'clinic-queue',
+                'title' => 'Feroza Medicine Corner Serial Manager',
+                'tagline' => 'Real-Time Healthcare Counter & Queue Management Portal',
+                'category' => 'Healthcare Tech',
+                'client' => 'Feroza Medicine Corner & Clinic Desks',
+                'year' => '2026',
+                'duration' => '8 Weeks',
+                'overview' => 'Real-time counter, patient queue, and appointment serial management portal built for healthcare and pharmacy desks.',
+                'problem' => 'Manual paper token systems caused chaotic queue skipping, lack of SMS waiting status updates, and inaccurate consultation duration statistics.',
+                'solution' => 'Designed a real-time queue management network connecting patient registration kiosks, live display boards, and doctor consultation portals via WebSockets.',
+                'metrics' => [
+                    ['label' => 'Wait Room Congestion', 'value' => '-54%'],
+                    ['label' => 'Counter Turnaround', 'value' => '+32%'],
+                    ['label' => 'Display Sync Lag', 'value' => '< 50ms'],
+                ],
+                'tech_stack' => ['Laravel', 'WebSockets', 'React', 'MySQL', 'Twilio SMS API'],
+                'thumbnail_url' => 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
+                'hero_image_url' => 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1920&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'live_url' => 'https://serial.ferozamedicinecorner.com',
+                'github_url' => 'https://github.com/beingmushfiq',
+                'is_featured' => true,
+                'display_order' => 5,
+                'is_published' => true,
+            ],
+            [
+                'slug' => 'sherazi-gps',
+                'title' => 'Traccar GPS Telematics Deployment',
+                'tagline' => 'Containerized Open-Source Fleet Telemetry Stack',
+                'category' => 'Mobile & Infrastructure',
+                'client' => 'Fleet Logistics Network',
+                'year' => '2026',
+                'duration' => '18 Weeks',
+                'overview' => 'Containerized open-source GPS tracking stack built with Docker for automated fleet telemetry and real-time geofence alerts.',
+                'problem' => 'Raw IoT GPS tracker feeds sent millions of unstructured data packets per minute, overwhelming traditional web server setups and slowing map renders.',
+                'solution' => 'Built a specialized telemetry ingestion pipeline parsing raw TCP/UDP hardware packets, storing geospatial coordinates in time-series database structures, and rendering vector maps.',
+                'metrics' => [
+                    ['label' => 'Telematics Ingestion Rate', 'value' => '100k/sec'],
+                    ['label' => 'Geofence Alert Speed', 'value' => '< 2s'],
+                    ['label' => 'Fleet Fuel Savings', 'value' => '19.4%'],
+                ],
+                'tech_stack' => ['Node.js', 'PostgreSQL / PostGIS', 'Mapbox GL', 'React', 'WebSockets', 'Docker'],
+                'thumbnail_url' => 'https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=1200&q=80',
+                'hero_image_url' => 'https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=1920&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'live_url' => 'https://gps.devcenterpoint.com',
+                'github_url' => 'https://github.com/beingmushfiq',
+                'is_featured' => false,
+                'display_order' => 6,
+                'is_published' => true,
+            ],
+            [
+                'slug' => 'roadsafety',
+                'title' => 'Road Safety Movement',
+                'tagline' => 'Org Management OS & Public Safety Platform',
+                'category' => 'Business Systems',
+                'client' => 'Road Safety Movement Organization',
+                'year' => '2026',
+                'duration' => '12 Weeks',
+                'overview' => 'Central operational platform coordinating community members, organizational logistics, and public safety initiatives.',
+                'problem' => 'Disparate communication channels and manual member registration spreadsheets hindered volunteer mobilization during public safety drives.',
+                'solution' => 'Architected an integrated Org Management OS providing verified member directories, real-time campaign dispatch, and volunteer coordination logistics.',
+                'metrics' => [
+                    ['label' => 'Volunteer Mobilization', 'value' => '< 3.5m'],
+                    ['label' => 'Directory Search Speed', 'value' => '38ms'],
+                    ['label' => 'Campaign Uptime', 'value' => '99.99%'],
+                ],
+                'tech_stack' => ['Laravel', 'React', 'TypeScript', 'MySQL', 'Tailwind CSS'],
+                'thumbnail_url' => 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1200&q=80',
+                'hero_image_url' => 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1920&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'live_url' => 'https://roadsafetymovement.org',
+                'github_url' => 'https://github.com/beingmushfiq',
+                'is_featured' => true,
+                'display_order' => 7,
+                'is_published' => true,
+            ],
+            [
+                'slug' => 'speech-therapy',
+                'title' => 'Speech Therapy Assessment Suite',
+                'tagline' => 'Clinical Diagnostic & Patient Evaluation Suite',
+                'category' => 'Healthcare Tech',
+                'client' => 'Pediatric Therapy & Clinical Diagnostics Center',
+                'year' => '2026',
+                'duration' => '10 Weeks',
+                'overview' => 'Clinical assessment UI, interactive developmental screening forms, and patient evaluation tools.',
+                'problem' => 'Traditional paper protocols generated heavy administrative burden and delayed diagnostic report turnaround for pediatric patients.',
+                'solution' => 'Designed an interactive assessment suite featuring dynamic developmental screening matrices, longitudinal patient tracking, and automated clinical summaries.',
+                'metrics' => [
+                    ['label' => 'Report Generation', 'value' => 'Instant'],
+                    ['label' => 'Scoring Accuracy', 'value' => '100%'],
+                    ['label' => 'Time Saved per Patient', 'value' => '45 mins'],
+                ],
+                'tech_stack' => ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
+                'thumbnail_url' => 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
+                'hero_image_url' => 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1920&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'live_url' => 'https://github.com/beingmushfiq',
+                'github_url' => 'https://github.com/beingmushfiq',
+                'is_featured' => false,
+                'display_order' => 8,
+                'is_published' => true,
+            ],
+            [
+                'slug' => 'kothalipi',
+                'title' => 'KothaLipi AI Engine',
+                'tagline' => 'Bengali Voice, Vision & Writing Intelligence Workspace',
+                'category' => 'AI & Intelligent Systems',
+                'client' => 'DevCenterPoint Bengali Language AI Initiative',
+                'year' => '2026',
+                'duration' => '12 Weeks',
+                'overview' => 'Production-grade multimodal Bengali intelligence workspace unifying regional voice transcription, historical manuscript OCR, and Bangla Academy-standard writing.',
+                'problem' => 'Off-the-shelf speech and OCR models mishandle Bengali regional dialects and frequently drop or split complex conjunct ligatures (যুক্তবর্ণ) such as ক্ষ, জ্ঞ, and হ্ম, while producing text that violates Bangla Academy orthography.',
+                'solution' => 'Engineered a multimodal workspace pairing React 19 with a Gemini-powered Express pipeline, isolating four specialized modules — Voice to Text, Vision OCR, Writing Studio, and Cloud Archive — behind a bilingual context engine.',
+                'metrics' => [
+                    ['label' => 'Regional Dialects Supported', 'value' => '4 Native'],
+                    ['label' => 'Conjunct Preservation', 'value' => '100%'],
+                    ['label' => 'Orthography Standard', 'value' => 'Promito'],
+                ],
+                'tech_stack' => ['React 19', 'TypeScript', 'Vite 8', 'Tailwind CSS v4', 'Express', 'Firebase', 'Google GenAI'],
+                'thumbnail_url' => 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=KothaLipi%20Bengali%20AI%20workspace%20web%20app%20UI%2C%20light%20cream%20background%2C%20top%20navigation%20with%20teal%20logo%20and%20Bengali%20script%20text%2C%20tabs%20for%20Vision%20OCR%2C%20Writing%20Studio%2C%20Voice%20to%20Text%2C%20History%2C%20module%20header%20Bangla%20Scanned%20Document%20OCR%2C%20upload%20document%20and%20start%20OCR%20teal%20buttons%2C%20sample%20document%20chips%2C%20split%20panel%20layout%20showing%20a%20scanned%20old%20Bengali%20newspaper%20gazette%20on%20the%20left%20and%20extracted%20Bengali%20text%20panel%20on%20the%20right%2C%20deep%20teal%20emerald%20accents%2C%20clean%20minimal%20professional%20SaaS%20dashboard&image_size=landscape_16_9',
+                'hero_image_url' => 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=KothaLipi%20Bengali%20AI%20workspace%20web%20app%20UI%2C%20light%20cream%20background%2C%20top%20navigation%20with%20teal%20logo%20and%20Bengali%20script%20text%2C%20tabs%20for%20Vision%20OCR%2C%20Writing%20Studio%2C%20Voice%20to%20Text%2C%20History%2C%20module%20header%20Bangla%20Scanned%20Document%20OCR%2C%20upload%20document%20and%20start%20OCR%20teal%20buttons%2C%20sample%20document%20chips%2C%20split%20panel%20layout%20showing%20a%20scanned%20old%20Bengali%20newspaper%20gazette%20on%20the%20left%20and%20extracted%20Bengali%20text%20panel%20on%20the%20right%2C%20deep%20teal%20emerald%20accents%2C%20clean%20minimal%20professional%20SaaS%20dashboard&image_size=landscape_16_9',
+                'gallery' => [
+                    'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=KothaLipi%20Bengali%20AI%20workspace%20web%20app%20UI%2C%20light%20cream%20background%2C%20top%20navigation%20with%20teal%20logo%20and%20Bengali%20script%20text%2C%20tabs%20for%20Vision%20OCR%2C%20Writing%20Studio%2C%20Voice%20to%20Text%2C%20History%2C%20module%20header%20Bangla%20Scanned%20Document%20OCR%2C%20upload%20document%20and%20start%20OCR%20teal%20buttons%2C%20sample%20document%20chips%2C%20split%20panel%20layout%20showing%20a%20scanned%20old%20Bengali%20newspaper%20gazette%20on%20the%20left%20and%20extracted%20Bengali%20text%20panel%20on%20the%20right%2C%20deep%20teal%20emerald%20accents%2C%20clean%20minimal%20professional%20SaaS%20dashboard&image_size=landscape_16_9',
+                ],
+                'live_url' => 'https://kothalipi.devcenterpoint.com',
+                'github_url' => 'https://github.com/beingmushfiq/KothaLipi-AI',
+                'is_featured' => false,
+                'display_order' => 9,
+                'is_published' => true,
+            ],
+        ];
+
+        foreach ($projects as $project) {
+            Project::updateOrCreate(['slug' => $project['slug']], $project);
+        }
+    }
+}

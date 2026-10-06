@@ -376,7 +376,7 @@ export const PROJECTS_DATA: Project[] = [
     architectureOverview: 'React 19 + Vite PWA Client -> /api/* Reverse Proxy -> Express + @google/genai Pipeline -> Firebase Firestore & Google Auth Archive.',
     accentColor: '#0F766E',
     liveUrl: 'https://kothalipi.devcenterpoint.com',
-    githubUrl: 'https://github.com/beingmushfiq',
+    githubUrl: 'https://github.com/beingmushfiq/KothaLipi-AI',
     openSourceRepoName: 'KothaLipi-AI',
     isRealWorldApp: true
   }

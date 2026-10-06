@@ -121,7 +121,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                   }
             }
             /* 100% Solid Opaque Background: Completely eliminates any site bleed or watermark */
-            className={`fixed inset-0 z-[99999] flex flex-col justify-center items-center overflow-hidden transition-colors duration-300 select-none ${
+            className={`fixed inset-0 z-99999 flex flex-col justify-center items-center overflow-hidden transition-colors duration-300 select-none ${
               isDark
                 ? 'bg-[#070b14] text-white'
                 : 'bg-[#f8fafc] text-slate-900'
@@ -186,17 +186,24 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                         : 'bg-white border border-slate-200/90 shadow-[0_12px_32px_-4px_rgba(37,99,235,0.16),0_4px_12px_rgba(0,0,0,0.04)]'
                     }`}
                   >
-                    {/* Backlight halo glow (static for crisp, light rendering) */}
-                    <div
+                    {/* Backlight halo glow with organic breathing pulse */}
+                    <motion.div
+                      animate={shouldReduceMotion ? { opacity: 0.35, scale: 1 } : {
+                        opacity: isDark ? [0.3, 0.75, 0.35, 0.65, 0.3, 0.3] : [0.25, 0.6, 0.3, 0.5, 0.25, 0.25],
+                        scale: [0.95, 1.12, 0.98, 1.07, 0.95, 0.95],
+                      }}
+                      transition={shouldReduceMotion ? undefined : { duration: 2.0, repeat: Infinity, ease: 'easeInOut', times: [0, 0.14, 0.28, 0.42, 0.58, 1] }}
                       className={`absolute inset-0 rounded-2xl blur-md pointer-events-none transition-colors ${
                         isDark
-                          ? 'bg-gradient-to-tr from-blue-600/30 to-sky-400/25'
-                          : 'bg-gradient-to-tr from-blue-500/15 to-sky-300/20'
+                          ? 'bg-linear-to-tr from-blue-600/30 to-sky-400/25'
+                          : 'bg-linear-to-tr from-blue-500/15 to-sky-300/20'
                       }`}
                     />
 
-                    {/* Highly visible vector logo emblem */}
-                    <div
+                    {/* Highly visible vector logo emblem with organic heartbeat scaling */}
+                    <motion.div
+                      animate={shouldReduceMotion ? { scale: 1 } : { scale: [1, 1.08, 0.98, 1.05, 1, 1] }}
+                      transition={shouldReduceMotion ? undefined : { duration: 2.0, repeat: Infinity, ease: 'easeInOut', times: [0, 0.14, 0.28, 0.42, 0.58, 1] }}
                       className={`relative z-10 shrink-0 flex items-center justify-center ${
                         isDark
                           ? 'filter drop-shadow-[0_2px_8px_rgba(37,99,235,0.45)]'
@@ -312,7 +319,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                           <path d="M 12 -9 L 18 0 L 12 9" />
                         </g>
                       </svg>
-                    </div>
+                    </motion.div>
                   </motion.div>
                 </div>
 
@@ -343,8 +350,8 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                   <div
                     className={`h-full rounded-full ${
                       isDark
-                        ? 'bg-gradient-to-r from-blue-500 via-sky-400 to-blue-400 shadow-[0_0_12px_rgba(56,189,248,0.5)]'
-                        : 'bg-gradient-to-r from-blue-600 via-sky-500 to-blue-500 shadow-[0_0_10px_rgba(37,99,235,0.3)]'
+                        ? 'bg-linear-to-r from-blue-500 via-sky-400 to-blue-400 shadow-[0_0_12px_rgba(56,189,248,0.5)]'
+                        : 'bg-linear-to-r from-blue-600 via-sky-500 to-blue-500 shadow-[0_0_10px_rgba(37,99,235,0.3)]'
                     }`}
                     style={{
                       width: `${progress}%`,

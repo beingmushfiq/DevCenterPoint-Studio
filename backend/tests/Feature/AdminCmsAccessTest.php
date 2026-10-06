@@ -13,7 +13,7 @@ class AdminCmsAccessTest extends TestCase
     public function test_guests_cannot_access_admin_dashboard(): void
     {
         $response = $this->get('/admin/dashboard');
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/super-admin/login');
     }
 
     public function test_authenticated_admin_can_access_admin_dashboard(): void

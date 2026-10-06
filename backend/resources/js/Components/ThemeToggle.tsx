@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../Context/ThemeContext';
 import { motion } from 'framer-motion';
@@ -6,10 +6,23 @@ import { motion } from 'framer-motion';
 export const ThemeToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Hand the button's on-screen centre to the theme engine so the circular
+  // reveal grows out of the toggle itself.
+  const handleToggle = () => {
+    const rect = buttonRef.current?.getBoundingClientRect();
+    toggleTheme(
+      rect
+        ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+        : undefined,
+    );
+  };
 
   return (
     <button
-      onClick={toggleTheme}
+      ref={buttonRef}
+      onClick={handleToggle}
       className={`relative w-9 h-9 rounded-full transition-all duration-300 border flex items-center justify-center cursor-pointer group active:scale-95 ${
         isDark
           ? 'bg-[#1a1a1a] hover:bg-[#252525] border-[#2a2a2a] text-amber-400 hover:border-amber-500/40 shadow-md'
