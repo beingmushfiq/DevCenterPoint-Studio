@@ -144,10 +144,13 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
                 soundEngine.playMenuToggle(!menuOpen);
                 setMenuOpen(!menuOpen);
               }}
-              className="p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300 transition-colors cursor-pointer flex items-center justify-center lg:hidden"
+              className="inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300 transition-colors cursor-pointer lg:hidden"
               aria-label="Toggle Studio Menu"
             >
               {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              <span className="hidden min-[380px]:inline text-xs font-bold">
+                {menuOpen ? 'Close' : 'Menu'}
+              </span>
             </button>
           </div>
         </div>
