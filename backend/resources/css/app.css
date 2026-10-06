@@ -371,12 +371,14 @@ body.dark .glass-pill-nav {
 /* Signature Gradient Text */
 .text-gradient-signature {
   background: linear-gradient(135deg, #2E4AF9 0%, #8B5CF6 50%, #06B6D4 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 html.dark .text-gradient-signature {
   background: linear-gradient(135deg, #3B82F6 0%, #A855F7 50%, #22D3EE 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
