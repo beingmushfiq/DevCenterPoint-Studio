@@ -10,7 +10,14 @@ interface Props {
 export default function UnsubscribeSuccess({ email, success }: Props) {
   return (
     <div className="min-h-screen bg-[#050505] text-slate-100 flex items-center justify-center p-6">
-      <Head title="Newsletter Unsubscribe | DevCenterPoint" />
+      <Head title="Newsletter Unsubscribe | DevCenterPoint">
+        <meta
+          name="description"
+          content="Manage your DevCenterPoint newsletter subscription."
+        />
+        {/* Tokenised, account-specific page — never index. */}
+        <meta name="robots" content="noindex, follow" />
+      </Head>
 
       <div className="max-w-md w-full bg-[#0d0d0d] border border-white/10 rounded-2xl p-8 text-center shadow-2xl">
         {success ? (

@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>404 — Page Not Found | DevCenterPoint</title>
+    <meta name="description" content="The page you requested could not be found. Return to DevCenterPoint Studio to explore our software engineering capabilities and selected work.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="{{ url('/') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,700,800,900&display=swap" rel="stylesheet">
     <style>

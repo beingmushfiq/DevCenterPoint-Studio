@@ -49,7 +49,10 @@ export default function AdminLayout({ title, children }: Props) {
 
   return (
     <div className="min-h-screen bg-[#06080e] text-slate-100 flex flex-col md:flex-row antialiased font-sans relative overflow-hidden">
-      <Head title={title ? `${title} | DevCenterPoint CMS` : 'DevCenterPoint CMS'} />
+      <Head title={title ? `${title} | DevCenterPoint CMS` : 'DevCenterPoint CMS'}>
+        {/* The whole admin surface is private; keep it out of every index. */}
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
 
       {/* Ambient Blurred Atmosphere Behind Admin Panel */}
       <div className="fixed top-0 right-1/4 w-lg h-128 bg-blue-600/8 blur-[160px] rounded-full pointer-events-none z-0" />

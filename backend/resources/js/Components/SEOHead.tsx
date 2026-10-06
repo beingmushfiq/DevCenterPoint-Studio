@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useCms } from '../Context/CmsContext';
+import { useCms, CmsContextValue } from '../Context/CmsContext';
 
 export interface SectionSEOMetadata {
   title: string;
@@ -300,6 +300,7 @@ export const SEOProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         siteName={cms.getSetting('site_name', 'DevCenterPoint')}
         ogImage={cms.getSetting('seo_og_image', '/og-image.png')}
         canonicalBase={cms.getSetting('seo_canonical_url', '')}
+        cms={cms}
       />
       {children}
     </SEOContext.Provider>
@@ -323,57 +324,204 @@ export const SEOHead: React.FC<{
   siteName?: string;
   ogImage?: string;
   canonicalBase?: string;
-}> = ({ meta, siteName = 'DevCenterPoint', ogImage = '/og-image.png', canonicalBase = '' }) => {
+  cms?: CmsContextValue;
+}> = ({ meta, siteName = 'DevCenterPoint', ogImage = '/og-image.png', canonicalBase = '', cms }) => {
   const origin =
     canonicalBase || (typeof window !== 'undefined' ? window.location.origin : 'https://devcenterpoint.com');
   const canonicalUrl = `${origin}/${meta.hash}`;
   // Scrapers cannot resolve relative image paths, so always emit an absolute URL.
   const ogImageUrl = /^https?:\/\//.test(ogImage) ? ogImage : `${origin}/${ogImage.replace(/^\//, '')}`;
 
-  // Schema.org structured data (JSON-LD)
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Organization',
-        '@id': `${origin}/#organization`,
-        name: siteName,
-        url: origin,
-        logo: `${origin}/logo-mark.svg`,
-        description:
-          'DevCenterPoint designs and engineers software products, SaaS platforms, AI-powered systems, and digital experiences.',
-        knowsAbout: [
-          'Software Engineering',
-          'Full-Stack SaaS',
-          'Intelligent AI Systems',
-          'Cloud Infrastructure',
-          'Real-Time Distributed Architecture',
-          'Explainable AI',
-        ],
-      },
-      {
-        '@type': 'WebSite',
-        '@id': `${origin}/#website`,
-        url: origin,
-        name: siteName,
-        publisher: {
+  // Schema.org structured data (JSON-LD). Rebuilt only when the CMS payload or
+  // the active section changes, since stringifying the whole graph on every
+  // scroll tick would be wasteful.
+  const jsonLd = useMemo(() => {
+    const setting = (key: string, fallback = '') => cms?.getSetting(key, fallback) ?? fallback;
+
+    // `sameAs` must not contain empty or placeholder values — an invalid URL
+    // degrades the whole Organization entity.
+    const sameAs = [setting('social_linkedin'), setting('social_github'), setting('social_x')]
+      .map((u) => u.trim())
+      .filter((u) => /^https?:\/\/\S+\.\S+/.test(u));
+
+    const contactEmail = setting('contact_email');
+    const brand = setting('site_name', siteName) || siteName;
+
+    // OfferCatalog is derived from the CMS capabilities rather than a hardcoded
+    // list, so editing a capability updates the structured data automatically.
+    const capabilities = (cms?.capabilities ?? []) as Array<{
+      title?: string;
+      tagline?: string;
+      description?: string;
+    }>;
+    const offers = capabilities
+      .filter((c) => c.title)
+      .map((c) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: c.title,
+          description: (c.tagline || c.description || '').slice(0, 300),
+        },
+      }));
+
+    const faqs = (cms?.faqs ?? []) as Array<{ question?: string; answer?: string }>;
+
+    const projects = (cms?.projects ?? []) as Array<{
+      title?: string;
+      category?: string;
+      tagline?: string;
+      overview?: string;
+      live_url?: string;
+    }>;
+
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': ['Organization', 'Corporation'],
           '@id': `${origin}/#organization`,
+          name: brand,
+          alternateName: `${brand} Studio`,
+          url: origin,
+          logo: `${origin}/logo-mark.svg`,
+          image: ogImageUrl,
+          description:
+            'DevCenterPoint designs and engineers mission-critical software products, scalable SaaS platforms, intelligent AI systems, and cloud infrastructure engineered for zero technical debt.',
+          ...(contactEmail ? { email: contactEmail } : {}),
+          ...(sameAs.length ? { sameAs } : {}),
+          knowsAbout: [
+            'Software Engineering',
+            'Full-Stack SaaS Development',
+            'Explainable AI Systems',
+            'Cloud Infrastructure and DevOps',
+            'Docker and Kubernetes Orchestration',
+            'Real-Time Distributed Architecture',
+            'Enterprise ERP and POS Systems',
+            'Headless Commerce Infrastructure',
+            'TypeScript and React Architecture',
+          ],
+          areaServed: ['Worldwide', 'United States', 'Europe', 'Asia-Pacific'],
         },
-        description:
-          'Digital products, software & intelligent systems engineered for real-world impact.',
-      },
-      {
-        '@type': 'WebPage',
-        '@id': `${canonicalUrl}#webpage`,
-        url: canonicalUrl,
-        name: meta.title,
-        description: meta.description,
-        isPartOf: {
+        {
+          '@type': 'ProfessionalService',
+          '@id': `${origin}/#service-studio`,
+          name: `${brand} Software Engineering Studio`,
+          url: origin,
+          image: ogImageUrl,
+          ...(contactEmail ? { email: contactEmail } : {}),
+          priceRange: '$$$',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Dhaka',
+            addressCountry: 'BD',
+          },
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: 23.8103,
+            longitude: 90.4125,
+          },
+          areaServed: ['Worldwide', 'United States', 'Europe', 'Asia-Pacific'],
+          ...(offers.length
+            ? {
+                hasOfferCatalog: {
+                  '@type': 'OfferCatalog',
+                  name: `${brand} Engineering Capabilities`,
+                  itemListElement: offers,
+                },
+              }
+            : {}),
+        },
+        {
+          '@type': 'WebSite',
           '@id': `${origin}/#website`,
+          url: origin,
+          name: brand,
+          publisher: {
+            '@id': `${origin}/#organization`,
+          },
+          description:
+            'Digital products, software & intelligent systems engineered for real-world impact.',
         },
-      },
-    ],
-  };
+        {
+          '@type': 'WebPage',
+          '@id': `${canonicalUrl}#webpage`,
+          url: canonicalUrl,
+          name: meta.title,
+          description: meta.description,
+          isPartOf: {
+            '@id': `${origin}/#website`,
+          },
+          breadcrumb: {
+            '@id': `${canonicalUrl}#breadcrumbs`,
+          },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          '@id': `${canonicalUrl}#breadcrumbs`,
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: origin,
+            },
+            ...(meta.hash
+              ? [
+                  {
+                    '@type': 'ListItem',
+                    position: 2,
+                    name: meta.sectionName,
+                    item: canonicalUrl,
+                  },
+                ]
+              : []),
+          ],
+        },
+        // Answer-engine (AEO) markup. Emitted only when the CMS actually has
+        // published FAQs — an empty FAQPage is worse than none.
+        ...(faqs.length
+          ? [
+              {
+                '@type': 'FAQPage',
+                '@id': `${origin}/#faqpage`,
+                mainEntity: faqs
+                  .filter((f) => f.question && f.answer)
+                  .map((f) => ({
+                    '@type': 'Question',
+                    name: f.question,
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: f.answer,
+                    },
+                  })),
+              },
+            ]
+          : []),
+        // Selected work as SoftwareApplication entities.
+        ...(projects.length
+          ? [
+              {
+                '@type': 'ItemList',
+                '@id': `${origin}/#case-studies`,
+                name: `${brand} Production Case Studies & Applications`,
+                itemListElement: projects
+                  .filter((p) => p.title)
+                  .map((p, idx) => ({
+                    '@type': 'SoftwareApplication',
+                    position: idx + 1,
+                    name: p.title,
+                    applicationCategory: p.category || 'BusinessApplication',
+                    operatingSystem: 'Cloud / Web Browser / Mobile',
+                    description: (p.tagline || p.overview || '').slice(0, 300),
+                    url: p.live_url || `${origin}/#work`,
+                  })),
+              },
+            ]
+          : []),
+      ],
+    };
+  }, [cms, origin, canonicalUrl, ogImageUrl, siteName, meta.title, meta.description, meta.hash, meta.sectionName]);
 
   return (
     <Helmet>

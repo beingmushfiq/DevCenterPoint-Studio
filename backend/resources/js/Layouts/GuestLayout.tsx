@@ -1,11 +1,16 @@
 import React from 'react';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
 import { ShieldCheck, ArrowLeft } from 'lucide-react';
 
 export default function Guest({ children }: PropsWithChildren) {
     return (
         <div className="min-h-screen bg-[#06080e] text-slate-100 flex flex-col justify-between items-center p-4 sm:p-6 relative overflow-hidden font-sans antialiased">
+            {/* Auth screens are private entry points — keep them out of the index. */}
+            <Head>
+                <meta name="robots" content="noindex, nofollow" />
+            </Head>
+
             {/* Ambient Blurred Floating Light Orbs */}
             <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-600/18 blur-[140px] rounded-full pointer-events-none animate-float-orb-1" />
             <div className="absolute bottom-1/4 -right-20 w-md h-112 bg-purple-600/15 blur-[160px] rounded-full pointer-events-none animate-float-orb-2" />

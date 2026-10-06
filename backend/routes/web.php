@@ -4,10 +4,15 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 // Public Landing Page & CMS Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// XML sitemap. Generated from CMS content so `lastmod` stays accurate; the
+// static public/sitemap.xml was removed so Apache's `-f` check cannot shadow it.
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Lead & Inquiry Submission
 Route::post('/inquiry', [InquiryController::class, 'store'])

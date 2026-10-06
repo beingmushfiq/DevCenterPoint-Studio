@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Temporarily Unavailable | DevCenterPoint</title>
+    <meta name="description" content="DevCenterPoint Studio is briefly unavailable for scheduled maintenance. Please try again shortly.">
+    <meta name="robots" content="noindex, follow">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,700,800,900&display=swap" rel="stylesheet">
     <style>
