@@ -15,7 +15,7 @@ interface GlobalLoadingScreenProps {
   onMountComplete?: () => void;
   /**
    * Minimum display time in ms to ensure smooth visual transition.
-   * Default: 1100ms.
+   * Default: 500ms.
    */
   minDuration?: number;
   /**
@@ -31,7 +31,7 @@ interface GlobalLoadingScreenProps {
 export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
   isMounting: externalIsMounting,
   onMountComplete,
-  minDuration = 1100,
+  minDuration = 500,
   defaultView = 'spinner',
   allowPreviewToggle = true,
 }) => {
@@ -66,7 +66,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
         const timeout = setTimeout(() => {
           setInternalIsMounting(false);
           onMountComplete?.();
-        }, 180);
+        }, 80);
         return () => clearTimeout(timeout);
       }
     }, intervalDuration);
@@ -130,15 +130,6 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
             aria-live="polite"
             aria-label="Loading DevCenterPoint"
           >
-            {/* Subtle elegant radial ambient backlight tuned per theme */}
-            <div
-              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[540px] h-[540px] rounded-full pointer-events-none transition-colors duration-500 ${
-                isDark
-                  ? 'bg-blue-600/15 blur-[140px]'
-                  : 'bg-blue-500/10 blur-[130px]'
-              }`}
-            />
-
             {/* MAIN CONTENT: SKELETON MODE */}
             {viewMode === 'skeleton' ? (
               <div className="relative z-10 w-full max-w-5xl px-6 py-8">
@@ -195,28 +186,8 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                         : 'bg-white border border-slate-200/90 shadow-[0_12px_32px_-4px_rgba(37,99,235,0.16),0_4px_12px_rgba(0,0,0,0.04)]'
                     }`}
                   >
-                    {/* Backlight halo glow with organic breathing pulse */}
-                    <motion.div
-                      animate={
-                        shouldReduceMotion
-                          ? { opacity: 0.35, scale: 1 }
-                          : {
-                              opacity: isDark
-                                ? [0.3, 0.75, 0.35, 0.65, 0.3, 0.3]
-                                : [0.25, 0.6, 0.3, 0.5, 0.25, 0.25],
-                              scale: [0.95, 1.12, 0.98, 1.07, 0.95, 0.95],
-                            }
-                      }
-                      transition={
-                        shouldReduceMotion
-                          ? undefined
-                          : {
-                              duration: 2.0,
-                              repeat: Infinity,
-                              ease: 'easeInOut',
-                              times: [0, 0.14, 0.28, 0.42, 0.58, 1],
-                            }
-                      }
+                    {/* Backlight halo glow (static for crisp, light rendering) */}
+                    <div
                       className={`absolute inset-0 rounded-2xl blur-md pointer-events-none transition-colors ${
                         isDark
                           ? 'bg-gradient-to-tr from-blue-600/30 to-sky-400/25'
@@ -224,25 +195,8 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                       }`}
                     />
 
-                    {/* Highly visible vector logo emblem with organic heartbeat scaling */}
-                    <motion.div
-                      animate={
-                        shouldReduceMotion
-                          ? { scale: 1 }
-                          : {
-                              scale: [1, 1.08, 0.98, 1.05, 1, 1],
-                            }
-                      }
-                      transition={
-                        shouldReduceMotion
-                          ? undefined
-                          : {
-                              duration: 2.0,
-                              repeat: Infinity,
-                              ease: 'easeInOut',
-                              times: [0, 0.14, 0.28, 0.42, 0.58, 1],
-                            }
-                      }
+                    {/* Highly visible vector logo emblem */}
+                    <div
                       className={`relative z-10 shrink-0 flex items-center justify-center ${
                         isDark
                           ? 'filter drop-shadow-[0_2px_8px_rgba(37,99,235,0.45)]'
@@ -358,7 +312,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                           <path d="M 12 -9 L 18 0 L 12 9" />
                         </g>
                       </svg>
-                    </motion.div>
+                    </div>
                   </motion.div>
                 </div>
 

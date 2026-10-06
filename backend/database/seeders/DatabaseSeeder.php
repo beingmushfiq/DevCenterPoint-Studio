@@ -574,6 +574,34 @@ CODE,
                 'display_order' => 8,
                 'is_published' => true,
             ],
+            [
+                'slug' => 'kothalipi',
+                'title' => 'KothaLipi AI Engine',
+                'tagline' => 'Bengali Voice, Vision & Writing Intelligence Workspace',
+                'category' => 'AI & Intelligent Systems',
+                'client' => 'DevCenterPoint Bengali Language AI Initiative',
+                'year' => '2026',
+                'duration' => '12 Weeks',
+                'overview' => 'Production-grade multimodal Bengali intelligence workspace unifying regional voice transcription, historical manuscript OCR, and Bangla Academy-standard writing.',
+                'problem' => 'Off-the-shelf speech and OCR models mishandle Bengali regional dialects and frequently drop or split complex conjunct ligatures (যুক্তবর্ণ) such as ক্ষ, জ্ঞ, and হ্ম, while producing text that violates Bangla Academy orthography.',
+                'solution' => 'Engineered a multimodal workspace pairing React 19 with a Gemini-powered Express pipeline, isolating four specialized modules — Voice to Text, Vision OCR, Writing Studio, and Cloud Archive — behind a bilingual context engine.',
+                'metrics' => [
+                    ['label' => 'Regional Dialects Supported', 'value' => '4 Native'],
+                    ['label' => 'Conjunct Preservation', 'value' => '100%'],
+                    ['label' => 'Orthography Standard', 'value' => 'Promito'],
+                ],
+                'tech_stack' => ['React 19', 'TypeScript', 'Vite 8', 'Tailwind CSS v4', 'Express', 'Firebase', 'Google GenAI'],
+                'thumbnail_url' => 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Modern%20AI%20workspace%20dashboard%20performing%20Bengali%20document%20OCR%2C%20historical%20Bengali%20newspaper%20manuscript%20on%20left%20panel%2C%20extracted%20digital%20Bengali%20text%20on%20right%20panel%2C%20clean%20white%20interface%20with%20deep%20teal%20accent%2C%20minimal%20software%20UI&image_size=landscape_16_9',
+                'hero_image_url' => 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Modern%20AI%20workspace%20dashboard%20performing%20Bengali%20document%20OCR%2C%20historical%20Bengali%20newspaper%20manuscript%20on%20left%20panel%2C%20extracted%20digital%20Bengali%20text%20on%20right%20panel%2C%20clean%20white%20interface%20with%20deep%20teal%20accent%2C%20minimal%20software%20UI&image_size=landscape_16_9',
+                'gallery' => [
+                    'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Modern%20AI%20workspace%20dashboard%20performing%20Bengali%20document%20OCR%2C%20historical%20Bengali%20newspaper%20manuscript%20on%20left%20panel%2C%20extracted%20digital%20Bengali%20text%20on%20right%20panel%2C%20clean%20white%20interface%20with%20deep%20teal%20accent%2C%20minimal%20software%20UI&image_size=landscape_16_9',
+                ],
+                'live_url' => 'https://kothalipi.devcenterpoint.com',
+                'github_url' => 'https://github.com/beingmushfiq',
+                'is_featured' => false,
+                'display_order' => 9,
+                'is_published' => true,
+            ],
         ];
 
         foreach ($projects as $proj) {
@@ -862,6 +890,7 @@ CODE,
             ['key' => 'visual_liquid_orbs_enabled', 'value' => 'true', 'group' => 'atmosphere'],
             ['key' => 'visual_radar_status', 'value' => 'OPERATIONAL // 100% HEALTH', 'group' => 'atmosphere'],
             ['key' => 'show_pricing_on_site', 'value' => 'false', 'group' => 'commercial'],
+            ['key' => 'show_solution_studio_on_site', 'value' => 'true', 'group' => 'commercial'],
             ['key' => 'pricing_section_heading', 'value' => 'Transparent Engineering Engagements', 'group' => 'commercial'],
             ['key' => 'pricing_section_subheading', 'value' => 'Predictable milestones, dedicated senior squads, and zero-compromise system architecture.', 'group' => 'commercial'],
             // Appearance: Header / Footer Templates & Booking CTA
@@ -1343,6 +1372,9 @@ CODE,
                 $plan
             );
         }
+
+        // 12. Solution Studio Products (CMS Managed Showcase)
+        $this->call(SolutionProductSeeder::class);
     }
 }
 

@@ -480,6 +480,15 @@ else
     else
       warn "could not read the user count - seed skipped (run db:seed manually if needed)"
     fi
+
+    # Idempotent top-up: guarantees rows added after the initial seed exist on an
+    # already-populated production DB (the seeder uses updateOrCreate, so this is
+    # safe to run on every deploy). Failures never abort the deploy.
+    if run_artisan db:seed --class=SolutionProductSeeder --force; then
+      ok "Solution Studio products seeded"
+    else
+      warn "SolutionProductSeeder failed - run 'php artisan db:seed --class=SolutionProductSeeder --force' manually"
+    fi
   else
     warn "migrations reported an issue (check the database connection in .env)"
   fi

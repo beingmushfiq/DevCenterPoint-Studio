@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
@@ -7,28 +7,45 @@ export const BackToTop: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const shouldReduceMotion = useReducedMotion();
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
+    // Coalesce scroll events into one update per animation frame.
     const handleScroll = () => {
-      const hero = document.getElementById('hero');
-      const heroBottom = hero ? hero.offsetTop + hero.offsetHeight - 100 : 500;
-      
-      const currentScrollY = window.scrollY;
-      setIsVisible(currentScrollY > heroBottom);
+      if (frameRef.current !== null) return;
 
-      // Calculate total page scroll percentage
-      const totalScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalScrollHeight > 0) {
-        const progress = Math.min(100, Math.max(0, (currentScrollY / totalScrollHeight) * 100));
-        setScrollProgress(progress);
-      }
+      frameRef.current = requestAnimationFrame(() => {
+        frameRef.current = null;
+
+        const hero = document.getElementById('hero');
+        const heroBottom = hero ? hero.offsetTop + hero.offsetHeight - 100 : 500;
+
+        const currentScrollY = window.scrollY;
+        setIsVisible((prev) => {
+          const next = currentScrollY > heroBottom;
+          return prev === next ? prev : next;
+        });
+
+        // Calculate total page scroll percentage
+        const totalScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalScrollHeight > 0) {
+          const progress = Math.min(100, Math.max(0, (currentScrollY / totalScrollHeight) * 100));
+          setScrollProgress((prev) => (Math.abs(prev - progress) < 0.5 ? prev : progress));
+        }
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     // Check initial state
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
+      }
+    };
   }, []);
 
   const scrollToTop = () => {

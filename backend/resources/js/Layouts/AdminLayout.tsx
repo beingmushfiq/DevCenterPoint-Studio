@@ -40,6 +40,7 @@ export default function AdminLayout({ title, children }: Props) {
     { name: 'Plans & Pricing', href: '/admin/plans', icon: CreditCard },
     { name: 'Testimonials', href: '/admin/testimonials', icon: Quote },
     { name: 'Demo Sandbox', href: '/admin/sandbox', icon: Terminal },
+    { name: 'Solution Studio', href: '/admin/solutions', icon: Layers },
     { name: 'Team Leadership', href: '/admin/team', icon: UserCheck },
     { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
     { name: 'Page Blocks', href: '/admin/sections', icon: Layers },

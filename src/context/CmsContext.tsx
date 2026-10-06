@@ -8,6 +8,7 @@ export interface CmsData {
   team?: any[];
   testimonials?: any[];
   sandboxApps?: any[];
+  solutionProducts?: any[];
   pageSections?: Record<string, Record<string, any>>;
   siteSettings?: Record<string, string>;
 }

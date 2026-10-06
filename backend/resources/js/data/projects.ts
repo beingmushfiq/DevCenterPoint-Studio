@@ -341,6 +341,44 @@ export const PROJECTS_DATA: Project[] = [
     accentColor: '#06B6D4',
     githubUrl: 'https://github.com/beingmushfiq',
     openSourceRepoName: 'Speech Therapy Assessment Suite'
+  },
+  {
+    id: 'kothalipi',
+    number: '10',
+    title: 'KothaLipi AI Engine',
+    subtitle: 'Bengali Voice, Vision & Writing Intelligence Workspace',
+    category: 'AI & Intelligent Systems',
+    industry: 'Language AI & Document Digitization',
+    year: '2026',
+    shortDescription: 'Production-grade multimodal Bengali intelligence workspace unifying regional voice transcription, historical manuscript OCR, and Bangla Academy-standard writing.',
+    context: 'Bengali content — regional speech, archival manuscripts, and institutional documents — is largely locked in formats that generic AI tools handle poorly, forcing slow manual transcription and proofreading.',
+    problem: 'Off-the-shelf speech and OCR models mishandle Bengali regional dialects and frequently drop or split complex conjunct ligatures (যুক্তবর্ণ) such as ক্ষ, জ্ঞ, and হ্ম, while producing text that violates Bangla Academy orthography.',
+    strategy: 'Engineered a multimodal workspace pairing React 19 with a Gemini-powered Express pipeline, isolating four specialized modules — Voice to Text, Vision OCR, Writing Studio, and Cloud Archive — behind a bilingual context engine.',
+    designHighlights: [
+      'Clean four-workspace shell with bilingual (English / বাংলা) navigation and animated typewriter streaming',
+      'Grapheme-aware streaming output using Intl.Segmenter for Bengali with pulsing active carets',
+      'Thumb-friendly mobile bottom dock with safe-area padding and tactile active indicators',
+      'Bundled virtual Avro keyboard for in-browser phonetic Bengali typing'
+    ],
+    engineeringHighlights: [
+      'Express services wrapping @google/genai for OCR, transcription, proofreading, summarization, and TTS',
+      'Regional dialect normalization across Sylhet, Chittagong, Noakhali, and Standard Dhaka Bengali',
+      'Speaker diarization with turn-level timestamps and automated executive takeaways',
+      'Workbox-precached PWA shell with offline asset caching and installable mobile experience'
+    ],
+    deliveredFunctionality: [
+      'Voice to Text with dialect parsing, diarization, and audio executive briefings',
+      'Vision OCR preserving conjuncts with tabular and key-value field extraction',
+      'Writing Studio enforcing Bangla Academy Promito with Sadhu ⇄ Cholit and nine tonal rewrites',
+      'Multi-format export (PDF, DOCX, Markdown, TXT) with Firebase Firestore history sync'
+    ],
+    techStack: ['React 19', 'TypeScript', 'Vite 8', 'Tailwind CSS v4', 'Express', 'Firebase', 'Google GenAI'],
+    architectureOverview: 'React 19 + Vite PWA Client -> /api/* Reverse Proxy -> Express + @google/genai Pipeline -> Firebase Firestore & Google Auth Archive.',
+    accentColor: '#0F766E',
+    liveUrl: 'https://kothalipi.devcenterpoint.com',
+    githubUrl: 'https://github.com/beingmushfiq',
+    openSourceRepoName: 'KothaLipi-AI',
+    isRealWorldApp: true
   }
 ];
 

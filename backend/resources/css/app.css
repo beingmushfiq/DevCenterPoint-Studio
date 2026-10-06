@@ -2,6 +2,29 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * Scoped theme crossfade.
+ * Applied temporarily by ThemeContext.toggleTheme() only during a light<->dark
+ * switch, so normal scrolling/hover interactions are never affected.
+ */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 300ms ease, border-color 300ms ease,
+              color 300ms ease, fill 300ms ease, stroke 300ms ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition: none !important;
+  }
+}
+
+
 @layer base {
   :root {
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;

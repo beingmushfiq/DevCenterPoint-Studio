@@ -81,6 +81,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::put('/sandbox/{sandboxApp}', [\App\Http\Controllers\Admin\AdminSandboxController::class, 'update'])->name('sandbox.update');
     Route::delete('/sandbox/{sandboxApp}', [\App\Http\Controllers\Admin\AdminSandboxController::class, 'destroy'])->name('sandbox.destroy');
 
+    // Solution Studio CMS
+    Route::get('/solutions', [\App\Http\Controllers\Admin\AdminSolutionController::class, 'index'])->name('solutions.index');
+    Route::post('/solutions', [\App\Http\Controllers\Admin\AdminSolutionController::class, 'store'])->name('solutions.store');
+    Route::put('/solutions/{solutionProduct}', [\App\Http\Controllers\Admin\AdminSolutionController::class, 'update'])->name('solutions.update');
+    Route::delete('/solutions/{solutionProduct}', [\App\Http\Controllers\Admin\AdminSolutionController::class, 'destroy'])->name('solutions.destroy');
+    Route::patch('/solutions/{solutionProduct}/active', [\App\Http\Controllers\Admin\AdminSolutionController::class, 'toggleActive'])->name('solutions.active');
+    Route::post('/solutions/site-studio', [\App\Http\Controllers\Admin\AdminSolutionController::class, 'toggleSiteStudio'])->name('solutions.site_studio');
+
     // Studio Team & Leadership CMS
     Route::get('/team', [\App\Http\Controllers\Admin\AdminTeamController::class, 'index'])->name('team.index');
     Route::post('/team', [\App\Http\Controllers\Admin\AdminTeamController::class, 'store'])->name('team.store');

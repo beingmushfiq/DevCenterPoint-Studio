@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Globe,
@@ -8,6 +8,7 @@ import {
   Layers,
   Heart,
   Sparkles,
+  Languages,
   ShieldCheck,
   CheckCircle2,
   ArrowRight,
@@ -22,6 +23,7 @@ import {
   Key
 } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../context/CmsContext';
 
 interface SolutionProduct {
   id: string;
@@ -60,7 +62,7 @@ interface SolutionProduct {
   sampleActionToast: string;
 }
 
-const SOLUTIONS: SolutionProduct[] = [
+const DEFAULT_SOLUTIONS: SolutionProduct[] = [
   {
     id: 'erp',
     category: 'Enterprise ERP & Commerce',
@@ -363,17 +365,110 @@ const SOLUTIONS: SolutionProduct[] = [
     ],
     sampleActionLabel: 'Trigger AI Pipeline Inference',
     sampleActionToast: '✨ AI Workflow executed in 140ms! Structured JSON response generated.'
+  },
+  {
+    id: 'kothalipi',
+    category: 'Bengali AI & Multimodal',
+    badge: 'Language AI',
+    title: 'KothaLipi AI Engine',
+    tagline: 'Production-grade multimodal Bengali intelligence workspace unifying regional voice transcription, historical manuscript OCR, and Bangla Academy-standard writing.',
+    icon: Languages,
+    mockupTitle: 'KothaLipi • Bengali Voice, Vision & Writing Engine',
+    liveUrl: 'https://kothalipi.devcenterpoint.com',
+    stats: [
+      { label: 'Regional Dialects', value: '4 Native', change: 'Sylhet → Chittagong', trend: 'up' },
+      { label: 'Unified Workspaces', value: '4 Modules', change: 'Voice • Vision • Writing', trend: 'up' },
+      { label: 'Orthography Standard', value: '100%', change: 'Bangla Academy Promito', trend: 'up' }
+    ],
+    activityLogs: [
+      { time: 'Just now', event: 'Sylhet dialect voice note transcribed & diarized with turn timestamps', badge: 'কণ্ঠস্বর' },
+      { time: '2m ago', event: 'Historical gazette scanned — conjunct ligatures preserved (ক্ষ, জ্ঞ, হ্ম)', badge: 'নথি পাঠ' },
+      { time: '5m ago', event: 'Essay proofread to Bangla Academy Promito & Sadhu ⇄ Cholit converted', badge: 'শুদ্ধ লেখনী' }
+    ],
+    businessOutcomes: {
+      speedToMarket: '2 to 4 weeks for domain tuning',
+      impact: 'Eliminates manual Bengali transcription & proofreading',
+      security: 'Firebase Auth with private Gemini inference'
+    },
+    clientBenefits: [
+      'Transcribes colloquial Sylhet, Chittagong, Noakhali and Dhaka speech into standardized Bengali with speaker diarization',
+      'Reads degraded manuscripts, gazettes and cursive handwriting while preserving complex যুক্তবর্ণ conjuncts',
+      'Enforces Bangla Academy Promito orthography with Sadhu ⇄ Cholit conversion and nine tonal rewrites'
+    ],
+    deliverables: [
+      'React 19 + Vite 8 multimodal PWA workspace (Voice, Vision, Writing, History)',
+      'Express + @google/genai backend exposing /api/ocr, /api/transcribe, /api/proofread, /api/summarize, /api/tts',
+      'Firebase Firestore & Google Auth cloud archive vault',
+      'Multi-format export studio — PDF, DOCX, Markdown and plain text'
+    ],
+    sampleActionLabel: 'Run Bengali OCR & Proofread',
+    sampleActionToast: '✓ Bengali document OCR completed! Conjuncts preserved & proofread to Bangla Academy Promito.'
   }
 ];
 
+const ICON_MAP: Record<string, React.ElementType> = {
+  Globe,
+  ShieldAlert,
+  Radio,
+  ShoppingCart,
+  Layers,
+  Heart,
+  Sparkles,
+  Languages,
+};
+
+/**
+ * Convert a CMS `solution_products` row into the presentational shape used by
+ * this component. Falls back to sensible defaults for any missing content.
+ */
+const mapCmsSolution = (row: any): SolutionProduct => ({
+  id: String(row.slug),
+  category: row.category ?? '',
+  badge: row.badge ?? '',
+  title: row.title ?? '',
+  tagline: row.tagline ?? '',
+  icon: ICON_MAP[row.icon_name] ?? Globe,
+  mockupTitle: row.mockup_title ?? '',
+  liveUrl: row.live_url ?? undefined,
+  adminUrl: row.admin_url ?? undefined,
+  demoCredentials:
+    row.demo_username || row.demo_password
+      ? { user: row.demo_username ?? '', pass: row.demo_password ?? '', role: row.demo_role ?? undefined }
+      : undefined,
+  stats: Array.isArray(row.stats) ? row.stats : [],
+  activityLogs: Array.isArray(row.activity_logs) ? row.activity_logs : [],
+  businessOutcomes: row.business_outcomes ?? { speedToMarket: '', impact: '', security: '' },
+  clientBenefits: Array.isArray(row.client_benefits) ? row.client_benefits : [],
+  deliverables: Array.isArray(row.deliverables) ? row.deliverables : [],
+  sampleActionLabel: row.sample_action_label ?? '',
+  sampleActionToast: row.sample_action_toast ?? '',
+});
+
 export const DigitalSystemMap: React.FC = () => {
+  const cms = useCms();
   const [activeSolutionId, setActiveSolutionId] = useState<string>('erp');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
+  const solutions: SolutionProduct[] = useMemo(() => {
+    const fromCms = cms.solutionProducts;
+    if (Array.isArray(fromCms) && fromCms.length > 0) {
+      return fromCms.map(mapCmsSolution);
+    }
+    return DEFAULT_SOLUTIONS;
+  }, [cms.solutionProducts]);
+
+  // Keep the active tab valid when the product list changes (never blank).
+  useEffect(() => {
+    if (solutions.length === 0) return;
+    if (!solutions.some((s) => s.id === activeSolutionId)) {
+      setActiveSolutionId(solutions[0].id);
+    }
+  }, [solutions, activeSolutionId]);
+
   const activeSolution =
-    SOLUTIONS.find((s) => s.id === activeSolutionId) || SOLUTIONS[0];
+    solutions.find((s) => s.id === activeSolutionId) || solutions[0];
 
   const handleSelectSolution = (id: string) => {
     soundEngine.playTap();
@@ -409,6 +504,10 @@ export const DigitalSystemMap: React.FC = () => {
     }
   };
 
+  if (!activeSolution) {
+    return null;
+  }
+
   return (
     <div className="relative w-full rounded-3xl liquid-glass shadow-2xl overflow-hidden transition-all duration-300 ring-1 ring-black/5 dark:ring-white/10">
       
@@ -434,8 +533,8 @@ export const DigitalSystemMap: React.FC = () => {
       <div className="p-3.5 sm:p-6 lg:p-8">
         
         {/* Solution Tabs Selector */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-7 gap-2 sm:gap-2.5 mb-6 sm:mb-8">
-          {SOLUTIONS.map((item) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-2.5 mb-6 sm:mb-8">
+          {solutions.map((item) => {
             const isSelected = item.id === activeSolutionId;
             const Icon = item.icon;
 

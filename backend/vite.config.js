@@ -18,4 +18,16 @@ export default defineConfig({
             '@': path.resolve(__dirname, 'resources/js'),
         },
     },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vendor-react': ['react', 'react-dom', 'react-helmet-async', '@inertiajs/react'],
+                    'vendor-motion': ['framer-motion', 'motion'],
+                    'vendor-charts': ['recharts'],
+                    'vendor-ui': ['lucide-react', '@headlessui/react', 'clsx', 'tailwind-merge'],
+                },
+            },
+        },
+    },
 });

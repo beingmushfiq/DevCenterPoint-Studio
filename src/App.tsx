@@ -5,25 +5,55 @@ import { ThemeProvider } from './context/ThemeContext';
 import { SEOProvider } from './components/SEOHead';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
-import { Positioning } from './components/Positioning';
-import { CapabilitiesSection } from './components/CapabilitiesSection';
-import { SelectedWorkSection } from './components/SelectedWorkSection';
-import { EngineeringPhilosophy } from './components/EngineeringPhilosophy';
-import { TechEcosystem } from './components/TechEcosystem';
-import { ProcessSection } from './components/ProcessSection';
-import { EfficiencyMetricsSection } from './components/EfficiencyMetricsSection';
-import { AboutPrinciples } from './components/AboutPrinciples';
-import { FAQSection } from './components/FAQSection';
-import { ProjectInquiryBuilder } from './components/ProjectInquiryBuilder';
-import { PlansPricingSection } from './components/PlansPricingSection';
-import { NewsletterSignup } from './components/NewsletterSignup';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
 import { BackToTop } from './components/BackToTop';
 import { GlobalLoadingScreen } from './components/GlobalLoadingScreen';
-import { ClientDemoSandboxModal } from './components/ClientDemoSandboxModal';
 import { MobileBottomActionBar } from './components/MobileBottomActionBar';
-import { TestimonialsSection } from './components/TestimonialsSection';
+
+// Below-the-fold sections are code-split so the initial page payload stays small.
+const Positioning = React.lazy(() =>
+  import('./components/Positioning').then((m) => ({ default: m.Positioning }))
+);
+const CapabilitiesSection = React.lazy(() =>
+  import('./components/CapabilitiesSection').then((m) => ({ default: m.CapabilitiesSection }))
+);
+const SelectedWorkSection = React.lazy(() =>
+  import('./components/SelectedWorkSection').then((m) => ({ default: m.SelectedWorkSection }))
+);
+const TestimonialsSection = React.lazy(() =>
+  import('./components/TestimonialsSection').then((m) => ({ default: m.TestimonialsSection }))
+);
+const EngineeringPhilosophy = React.lazy(() =>
+  import('./components/EngineeringPhilosophy').then((m) => ({ default: m.EngineeringPhilosophy }))
+);
+const TechEcosystem = React.lazy(() =>
+  import('./components/TechEcosystem').then((m) => ({ default: m.TechEcosystem }))
+);
+const ProcessSection = React.lazy(() =>
+  import('./components/ProcessSection').then((m) => ({ default: m.ProcessSection }))
+);
+const EfficiencyMetricsSection = React.lazy(() =>
+  import('./components/EfficiencyMetricsSection').then((m) => ({ default: m.EfficiencyMetricsSection }))
+);
+const AboutPrinciples = React.lazy(() =>
+  import('./components/AboutPrinciples').then((m) => ({ default: m.AboutPrinciples }))
+);
+const FAQSection = React.lazy(() =>
+  import('./components/FAQSection').then((m) => ({ default: m.FAQSection }))
+);
+const ProjectInquiryBuilder = React.lazy(() =>
+  import('./components/ProjectInquiryBuilder').then((m) => ({ default: m.ProjectInquiryBuilder }))
+);
+const PlansPricingSection = React.lazy(() =>
+  import('./components/PlansPricingSection').then((m) => ({ default: m.PlansPricingSection }))
+);
+const NewsletterSignup = React.lazy(() =>
+  import('./components/NewsletterSignup').then((m) => ({ default: m.NewsletterSignup }))
+);
+const ClientDemoSandboxModal = React.lazy(() =>
+  import('./components/ClientDemoSandboxModal').then((m) => ({ default: m.ClientDemoSandboxModal }))
+);
 
 interface ScrollRevealSectionProps {
   children: React.ReactNode;
@@ -83,6 +113,21 @@ function HeroReveal({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Scroll-reveal wrapper for code-split sections. Reserves vertical space while
+ * the chunk loads so the page never shifts, and keeps the section anchors in a
+ * stable document flow once mounted.
+ */
+function DeferredSection({ children, className, delay, yOffset }: ScrollRevealSectionProps) {
+  return (
+    <ScrollRevealSection className={className} delay={delay} yOffset={yOffset}>
+      <React.Suspense fallback={<div className="w-full min-h-[40vh]" aria-hidden="true" />}>
+        {children}
+      </React.Suspense>
+    </ScrollRevealSection>
+  );
+}
+
 export default function App() {
   const [isSiteLoaded, setIsSiteLoaded] = React.useState(false);
   const [isSandboxOpen, setIsSandboxOpen] = React.useState(false);
@@ -110,69 +155,69 @@ export default function App() {
               </HeroReveal>
 
               {/* Positioning Statement: "We build systems, not just screens." */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <Positioning />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Interactive Capability Category Index & Code Inspector */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <CapabilitiesSection />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Selected Work Archive with Drill-down Case Study Inspector */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <SelectedWorkSection />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Verified Enterprise Impact & Executive Testimonials */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <TestimonialsSection />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Engineering Philosophy: 5-Layer System Architecture Diagram */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <EngineeringPhilosophy />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Technology Ecosystem Matrix */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <TechEcosystem />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Product Lifecycle & Process */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <ProcessSection />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Interactive Data Visualization: Lifecycle Efficiency Metrics */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <EfficiencyMetricsSection />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Brand Principles & Editorial Story */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <AboutPrinciples />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Frequently Asked Questions: Engineering Process & Engagement Models */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <FAQSection />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Dynamic Plans & Pricing Section (Disabled on public site by default) */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <PlansPricingSection isVisible={false} />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Interactive Project Scope Estimator & Contact Form */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <ProjectInquiryBuilder />
-              </ScrollRevealSection>
+              </DeferredSection>
 
               {/* Company Updates & Engineering Dispatch Newsletter Signup (Firebase Firestore) */}
-              <ScrollRevealSection>
+              <DeferredSection>
                 <NewsletterSignup />
-              </ScrollRevealSection>
+              </DeferredSection>
             </main>
 
             {/* Editorial Footer with subtle scroll-reveal */}
@@ -187,10 +232,12 @@ export default function App() {
             <MobileBottomActionBar onOpenSandbox={() => setIsSandboxOpen(true)} />
 
             {/* Live Client Sandbox Modal */}
-            <ClientDemoSandboxModal
-              isOpen={isSandboxOpen}
-              onClose={() => setIsSandboxOpen(false)}
-            />
+            <React.Suspense fallback={null}>
+              <ClientDemoSandboxModal
+                isOpen={isSandboxOpen}
+                onClose={() => setIsSandboxOpen(false)}
+              />
+            </React.Suspense>
           </div>
         </ThemeProvider>
       </SEOProvider>

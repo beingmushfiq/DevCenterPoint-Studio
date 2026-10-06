@@ -10,6 +10,7 @@ use App\Models\Plan;
 use App\Models\Project;
 use App\Models\SandboxApp;
 use App\Models\SiteSetting;
+use App\Models\SolutionProduct;
 use App\Models\TeamMember;
 use App\Models\Testimonial;
 use Inertia\Inertia;
@@ -66,6 +67,13 @@ class HomeController extends Controller
                 ->get();
         }
 
+        $solutions = [];
+        if (($settings['show_solution_studio_on_site'] ?? 'false') === 'true') {
+            $solutions = SolutionProduct::where('is_active', true)
+                ->orderBy('display_order')
+                ->get();
+        }
+
         return Inertia::render('Public/Home', [
             'capabilities' => $capabilities,
             'projects' => $projects,
@@ -75,6 +83,7 @@ class HomeController extends Controller
             'testimonials' => $testimonials,
             'sandboxApps' => $sandboxApps,
             'plans' => $plans,
+            'solutionProducts' => $solutions,
             'pageSections' => $sections,
             'siteSettings' => $settings,
         ]);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Menu,
   X,
@@ -31,6 +31,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
   const [activeSection, setActiveSection] = useState('work');
   const [isCommandOpen, setIsCommandOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(soundEngine.isSoundMuted());
+  const frameRef = useRef<number | null>(null);
 
   // Keyboard shortcut for Command Palette (⌘K or Ctrl+K)
   useEffect(() => {
@@ -46,27 +47,43 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenSandbox }) => {
 
   // Scroll detection & active section highlighter
   useEffect(() => {
+    // Coalesce scroll events into one update per animation frame.
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      if (frameRef.current !== null) return;
 
-      const sections = ['work', 'capabilities', 'process', 'faq', 'contact'];
-      const scrollPos = window.scrollY + 180;
+      frameRef.current = requestAnimationFrame(() => {
+        frameRef.current = null;
 
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(sectionId);
-            break;
+        setScrolled((prev) => {
+          const next = window.scrollY > 30;
+          return prev === next ? prev : next;
+        });
+
+        const sections = ['work', 'capabilities', 'process', 'faq', 'contact'];
+        const scrollPos = window.scrollY + 180;
+
+        for (const sectionId of sections) {
+          const el = document.getElementById(sectionId);
+          if (el) {
+            const top = el.offsetTop;
+            const height = el.offsetHeight;
+            if (scrollPos >= top && scrollPos < top + height) {
+              setActiveSection((prev) => (prev === sectionId ? prev : sectionId));
+              break;
+            }
           }
         }
-      }
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
+      }
+    };
   }, []);
 
   const handleNavClick = (href: string) => {

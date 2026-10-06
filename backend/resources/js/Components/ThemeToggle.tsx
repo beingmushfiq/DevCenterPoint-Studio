@@ -4,20 +4,19 @@ import { useTheme } from '../Context/ThemeContext';
 import { motion } from 'framer-motion';
 
 export const ThemeToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
-  const { theme, toggleTheme, isShutterActive } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
 
   return (
     <button
       onClick={toggleTheme}
-      disabled={isShutterActive}
-      className={`relative w-9 h-9 rounded-full transition-all duration-300 border flex items-center justify-center cursor-pointer group active:scale-95 disabled:opacity-80 ${
+      className={`relative w-9 h-9 rounded-full transition-all duration-300 border flex items-center justify-center cursor-pointer group active:scale-95 ${
         isDark
           ? 'bg-[#1a1a1a] hover:bg-[#252525] border-[#2a2a2a] text-amber-400 hover:border-amber-500/40 shadow-md'
           : 'bg-white hover:bg-slate-100 border-slate-300 text-blue-600 hover:border-blue-400 shadow-md'
       } ${className}`}
-      aria-label={`Switch to ${isDark ? 'Light' : 'Dark'} mode with smooth dropdown transition`}
-      title={`Switch to ${isDark ? 'Light' : 'Dark'} mode (Smooth Dropdown Transition)`}
+      aria-label={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
+      title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
     >
       <motion.div
         key={theme}

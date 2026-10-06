@@ -29,6 +29,8 @@ export const Hero: React.FC = () => {
   const whatsappMessage = encodeURIComponent(
     cms.getSetting('whatsapp_prefill_message', "Hi DevCenterPoint, I'd like to discuss a project")
   );
+  // The standalone SPA has no CMS provider, so default to visible here.
+  const studioEnabled = cms.getSetting('show_solution_studio_on_site', 'true') === 'true';
 
   const scrollToSection = (id: string) => {
     soundEngine.playClick();
@@ -179,15 +181,17 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* Digital System Map Interactive Showcase */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="mt-4"
-        >
-          <DigitalSystemMap />
-        </motion.div>
+        {studioEnabled && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="mt-4"
+          >
+            <DigitalSystemMap />
+          </motion.div>
+        )}
 
         {/* Architecture & Engineering Standards (Lush 4-column glass cards) */}
         <div className="mt-14 pt-10 border-t border-slate-200/70 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

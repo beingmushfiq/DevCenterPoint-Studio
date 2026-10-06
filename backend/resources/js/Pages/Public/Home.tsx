@@ -6,25 +6,55 @@ import { CmsProvider, CmsData } from '../../Context/CmsContext';
 import { SEOProvider } from '../../Components/SEOHead';
 import { SiteHeader } from '../../Components/SiteHeader';
 import { Hero } from '../../Components/Hero';
-import { Positioning } from '../../Components/Positioning';
-import { CapabilitiesSection } from '../../Components/CapabilitiesSection';
-import { SelectedWorkSection } from '../../Components/SelectedWorkSection';
-import { EngineeringPhilosophy } from '../../Components/EngineeringPhilosophy';
-import { TechEcosystem } from '../../Components/TechEcosystem';
-import { ProcessSection } from '../../Components/ProcessSection';
-import { EfficiencyMetricsSection } from '../../Components/EfficiencyMetricsSection';
-import { AboutPrinciples } from '../../Components/AboutPrinciples';
-import { FAQSection } from '../../Components/FAQSection';
-import { ProjectInquiryBuilder } from '../../Components/ProjectInquiryBuilder';
-import { PlansPricingSection } from '../../Components/PlansPricingSection';
-import { NewsletterSignup } from '../../Components/NewsletterSignup';
 import { SiteFooter } from '../../Components/SiteFooter';
 import { CustomCursor } from '../../Components/CustomCursor';
 import { BackToTop } from '../../Components/BackToTop';
 import { GlobalLoadingScreen } from '../../Components/GlobalLoadingScreen';
-import { ClientDemoSandboxModal } from '../../Components/ClientDemoSandboxModal';
 import { MobileBottomActionBar } from '../../Components/MobileBottomActionBar';
-import { TestimonialsSection } from '../../Components/TestimonialsSection';
+
+// Below-the-fold sections are code-split so the initial homepage payload stays small.
+const Positioning = React.lazy(() =>
+  import('../../Components/Positioning').then((m) => ({ default: m.Positioning }))
+);
+const CapabilitiesSection = React.lazy(() =>
+  import('../../Components/CapabilitiesSection').then((m) => ({ default: m.CapabilitiesSection }))
+);
+const SelectedWorkSection = React.lazy(() =>
+  import('../../Components/SelectedWorkSection').then((m) => ({ default: m.SelectedWorkSection }))
+);
+const TestimonialsSection = React.lazy(() =>
+  import('../../Components/TestimonialsSection').then((m) => ({ default: m.TestimonialsSection }))
+);
+const EngineeringPhilosophy = React.lazy(() =>
+  import('../../Components/EngineeringPhilosophy').then((m) => ({ default: m.EngineeringPhilosophy }))
+);
+const TechEcosystem = React.lazy(() =>
+  import('../../Components/TechEcosystem').then((m) => ({ default: m.TechEcosystem }))
+);
+const ProcessSection = React.lazy(() =>
+  import('../../Components/ProcessSection').then((m) => ({ default: m.ProcessSection }))
+);
+const EfficiencyMetricsSection = React.lazy(() =>
+  import('../../Components/EfficiencyMetricsSection').then((m) => ({ default: m.EfficiencyMetricsSection }))
+);
+const AboutPrinciples = React.lazy(() =>
+  import('../../Components/AboutPrinciples').then((m) => ({ default: m.AboutPrinciples }))
+);
+const FAQSection = React.lazy(() =>
+  import('../../Components/FAQSection').then((m) => ({ default: m.FAQSection }))
+);
+const ProjectInquiryBuilder = React.lazy(() =>
+  import('../../Components/ProjectInquiryBuilder').then((m) => ({ default: m.ProjectInquiryBuilder }))
+);
+const PlansPricingSection = React.lazy(() =>
+  import('../../Components/PlansPricingSection').then((m) => ({ default: m.PlansPricingSection }))
+);
+const NewsletterSignup = React.lazy(() =>
+  import('../../Components/NewsletterSignup').then((m) => ({ default: m.NewsletterSignup }))
+);
+const ClientDemoSandboxModal = React.lazy(() =>
+  import('../../Components/ClientDemoSandboxModal').then((m) => ({ default: m.ClientDemoSandboxModal }))
+);
 
 interface ScrollRevealSectionProps {
   children: React.ReactNode;
@@ -76,6 +106,21 @@ function HeroReveal({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Scroll-reveal wrapper for code-split sections. Reserves vertical space while
+ * the chunk loads so the page never shifts, and keeps the section anchors in a
+ * stable document flow once mounted.
+ */
+function DeferredSection({ children, className, delay, yOffset }: ScrollRevealSectionProps) {
+  return (
+    <ScrollRevealSection className={className} delay={delay} yOffset={yOffset}>
+      <React.Suspense fallback={<div className="w-full min-h-[40vh]" aria-hidden="true" />}>
+        {children}
+      </React.Suspense>
+    </ScrollRevealSection>
+  );
+}
+
 export default function Home(props: CmsData) {
   const [isSiteLoaded, setIsSiteLoaded] = React.useState(false);
   const [isSandboxOpen, setIsSandboxOpen] = React.useState(false);
@@ -105,76 +150,76 @@ export default function Home(props: CmsData) {
                 </HeroReveal>
 
                 {/* Positioning Statement */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <Positioning />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Interactive Capability Category Index & Code Inspector */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <CapabilitiesSection />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Selected Work Archive with Drill-down Case Study Inspector */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <SelectedWorkSection />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Verified Enterprise Impact & Executive Testimonials */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <TestimonialsSection />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Engineering Philosophy: 5-Layer System Architecture Diagram */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <EngineeringPhilosophy />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Technology Ecosystem Matrix */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <TechEcosystem />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Product Lifecycle & Process */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <ProcessSection />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Interactive Data Visualization: Lifecycle Efficiency Metrics */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <EfficiencyMetricsSection />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Brand Principles & Editorial Story */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <AboutPrinciples />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Frequently Asked Questions */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <FAQSection />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Dynamically Published Plans & Pricing (Controlled by CMS toggle) */}
                 {props.plans && props.plans.length > 0 && props.siteSettings?.show_pricing_on_site === 'true' && (
-                  <ScrollRevealSection>
+                  <DeferredSection>
                     <PlansPricingSection
                       plans={props.plans}
                       isVisible={true}
                       heading={props.siteSettings?.pricing_section_heading || 'Transparent Engineering Engagements'}
                       subheading={props.siteSettings?.pricing_section_subheading || 'Predictable milestones, dedicated senior squads, and zero-compromise system architecture.'}
                     />
-                  </ScrollRevealSection>
+                  </DeferredSection>
                 )}
 
                 {/* Interactive Project Scope Estimator & Contact Form */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <ProjectInquiryBuilder />
-                </ScrollRevealSection>
+                </DeferredSection>
 
                 {/* Company Updates & Newsletter Signup */}
-                <ScrollRevealSection>
+                <DeferredSection>
                   <NewsletterSignup />
-                </ScrollRevealSection>
+                </DeferredSection>
               </main>
 
               {/* Editorial Footer */}
@@ -189,10 +234,12 @@ export default function Home(props: CmsData) {
               <MobileBottomActionBar onOpenSandbox={() => setIsSandboxOpen(true)} />
 
               {/* Live Client Sandbox Modal */}
-              <ClientDemoSandboxModal
-                isOpen={isSandboxOpen}
-                onClose={() => setIsSandboxOpen(false)}
-              />
+              <React.Suspense fallback={null}>
+                <ClientDemoSandboxModal
+                  isOpen={isSandboxOpen}
+                  onClose={() => setIsSandboxOpen(false)}
+                />
+              </React.Suspense>
             </div>
           </ThemeProvider>
         </SEOProvider>
