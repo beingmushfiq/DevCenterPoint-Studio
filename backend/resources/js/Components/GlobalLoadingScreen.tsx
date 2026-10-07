@@ -109,12 +109,18 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
               <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
                 {/* Minimalist Branded Symbol with Outer Centered Spinner */}
                 <div className="relative flex items-center justify-center w-28 h-28 mb-6">
-                  {/* Windows 11 style ring: the dots stay fixed in place while a
-                      bright "comet head" sweeps smoothly around the circle and the
-                      trailing dots fade out. This travelling highlight is what
-                      reads as continuous circular motion — the same calm, soothing
-                      feel as the Windows boot spinner. (Rotating fixed-brightness
-                      dots just looks like a rigid spinning asterisk.) */}
+                  {/* Windows 11 style ring: the dots never move — a single bright
+                      "comet head" sweeps around the circle and the dots it passed
+                      fade out behind it, forming a fading tail. The travelling
+                      highlight is what reads as circular motion, exactly like the
+                      Windows boot spinner. (Rotating the dots themselves just looks
+                      like a rigid spinning asterisk.)
+
+                      Key detail: each dot's fade is ASYMMETRIC — it snaps to full
+                      brightness fast (linear, first 12% of the cycle) then decays
+                      slowly across the remaining 88%. A symmetric bell curve would
+                      light the dots ahead of the head too and read as a blob, not a
+                      tail. */}
                   <div className="absolute inset-0 pointer-events-none">
                     {Array.from({ length: 8 }).map((_, i) => (
                       <div
@@ -133,19 +139,22 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                           animate={
                             shouldReduceMotion
                               ? { opacity: 0.5 }
-                              : { opacity: [0.1, 1, 0.1], scale: [0.7, 1.15, 0.7] }
+                              : { opacity: [0.05, 1, 0.05] }
                           }
                           transition={
                             shouldReduceMotion
                               ? undefined
                               : {
-                                  duration: 1.3,
+                                  duration: 1.25,
                                   repeat: Infinity,
-                                  ease: 'easeInOut',
+                                  ease: 'linear',
+                                  /* Fast rise to the head, long slow decay for the
+                                     tail. */
+                                  times: [0, 0.12, 1],
                                   /* Negative, evenly spaced delays: the highlight is
                                      already mid-sweep on the first frame and travels
                                      at a constant angular speed around the ring. */
-                                  delay: -(i * 1.3) / 8,
+                                  delay: -(i * 1.25) / 8,
                                 }
                           }
                         />
