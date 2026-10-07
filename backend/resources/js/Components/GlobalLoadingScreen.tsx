@@ -109,9 +109,20 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
               <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
                 {/* Minimalist Branded Symbol with Outer Centered Spinner */}
                 <div className="relative flex items-center justify-center w-28 h-28 mb-6">
-                  {/* Windows-style loading: a ring of dots that light up in
-                      sequence, replacing the previous rotating arc spinner. */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  {/* Windows-style loading: a ring of dots with graded brightness
+                      that reads as a single travelling highlight. The whole ring
+                      spins at a constant (linear) speed, so the motion never
+                      stutters — the same calm, seamless feel as the Windows boot
+                      spinner. */}
+                  <motion.div
+                    className="absolute inset-0 pointer-events-none"
+                    animate={shouldReduceMotion ? { rotate: 0 } : { rotate: 360 }}
+                    transition={
+                      shouldReduceMotion
+                        ? undefined
+                        : { duration: 1.9, ease: 'linear', repeat: Infinity }
+                    }
+                  >
                     {[0, 1, 2, 3, 4].map((i) => (
                       <div
                         key={i}
@@ -120,35 +131,24 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                           transform: `translate(-50%, -50%) rotate(${i * 72}deg) translateY(-50px)`,
                         }}
                       >
-                        <motion.span
+                        <span
                           className={`block w-2 h-2 rounded-full ${
                             isDark
                               ? 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.7)]'
                               : 'bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.45)]'
                           }`}
-                          animate={
-                            shouldReduceMotion ? { opacity: 0.5 } : { opacity: [0.12, 1, 0.12] }
-                          }
-                          transition={
-                            shouldReduceMotion
-                              ? undefined
-                              : {
-                                  duration: 1.5,
-                                  repeat: Infinity,
-                                  ease: 'easeInOut',
-                                  delay: i * 0.15,
-                                }
-                          }
+                          style={{ opacity: shouldReduceMotion ? 0.6 : 1 - i * 0.17 }}
                         />
                       </div>
                     ))}
-                  </div>
+                  </motion.div>
 
-                  {/* Brand emblem mark container with ambient illumination & theme adaptation */}
+                  {/* Brand emblem mark container. Starts fully opaque so the mark
+                      is present from the very first frame — no late pop-in. */}
                   <motion.div
-                    initial={{ scale: 0.88, opacity: 0 }}
+                    initial={{ scale: 0.96, opacity: 1 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     className={`relative w-20 h-20 rounded-2xl flex items-center justify-center p-3 backdrop-blur-md transition-all duration-300 ${
                       isDark
                         ? 'bg-slate-900/95 border border-blue-500/40 shadow-[0_0_30px_rgba(37,99,235,0.35)]'
@@ -157,6 +157,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                   >
                     {/* Backlight halo glow with organic breathing pulse */}
                     <motion.div
+                      initial={{ opacity: 0.2, scale: 0.96 }}
                       animate={
                         shouldReduceMotion
                           ? { opacity: 0.35, scale: 1 }
@@ -186,6 +187,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
 
                     {/* Highly visible vector logo emblem with organic heartbeat scaling */}
                     <motion.div
+                      initial={{ opacity: 1 }}
                       animate={
                         shouldReduceMotion
                           ? { scale: 1 }
