@@ -23,10 +23,6 @@
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-        {{-- Fallback title for the very first paint; the Inertia <Head> on each
-             page replaces it (and SSR renders the real one into @inertiaHead). --}}
-        <title inertia>{{ config('app.name', 'DevCenterPoint') }}</title>
-
         <!-- Geo / Local Intent (GEO) -->
         <meta name="geo.region" content="BD-13">
         <meta name="geo.placename" content="Dhaka, Global">

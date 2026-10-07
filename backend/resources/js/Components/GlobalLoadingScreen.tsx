@@ -360,14 +360,16 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                   </motion.div>
                 </div>
 
-                {/* Brand Name & Tagline */}
-                <h1 className="text-xl sm:text-2xl font-bold tracking-tight mb-1.5 font-sans flex items-center justify-center gap-2">
+                {/* Brand Name & Tagline. Rendered as a div, not an <h1>: this
+                    overlay is present in the SSR output, so a heading here would
+                    give every page a second <h1> alongside its real page title. */}
+                <div className="text-xl sm:text-2xl font-bold tracking-tight mb-1.5 font-sans flex items-center justify-center gap-2">
                   <span>
                     <span className={isDark ? 'text-blue-400' : 'text-blue-600'}>DevCenter</span>
                     <span className={isDark ? 'text-white' : 'text-slate-900'}>Point</span>
                   </span>
                   <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981] inline-block" />
-                </h1>
+                </div>
                 <p
                   className={`text-xs font-semibold tracking-[0.2em] uppercase ${
                     isDark ? 'text-slate-400 font-medium' : 'text-slate-500'
