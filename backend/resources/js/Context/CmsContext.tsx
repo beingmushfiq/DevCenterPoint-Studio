@@ -3,6 +3,7 @@ import React, { createContext, useContext } from 'react';
 export interface CmsData {
   capabilities?: any[];
   projects?: any[];
+  posts?: any[];
   milestones?: any[];
   faqs?: any[];
   team?: any[];

@@ -1,9 +1,12 @@
 # DevCenterPoint — Comprehensive Technical Specification & Engineering Dossier
 
 ## Overview
-DevCenterPoint is an engineering studio dedicated to digital products, high-scale software platforms, and intelligent systems. Unlike traditional agencies that focus merely on visual mockups, DevCenterPoint engineers production software architectures built for enterprise reliability, high-throughput data processing, explainable AI integration, and zero technical debt.
+DevCenterPoint is a custom software development studio based in Dhaka, Bangladesh, building digital products, high-scale software platforms, and intelligent systems. Rather than stopping at visual mockups, DevCenterPoint engineers production software architectures built for enterprise reliability, high-throughput data processing, and explainable AI integration.
 
 - Official Website: https://devcenterpoint.com
+- Services: https://devcenterpoint.com/services
+- Case Studies & Portfolio: https://devcenterpoint.com/work
+- Engineering Blog: https://devcenterpoint.com/blog
 - Primary Specialization: Custom SaaS Engineering, AI Systems, Cloud Architecture, Enterprise Portals, Headless Commerce
 - Contact & Project Estimator: https://devcenterpoint.com/#contact
 - Primary Tech Stack: TypeScript, React 19, Python, Node.js, Go, PostgreSQL, Redis, Docker, Kubernetes, AWS, Google Cloud

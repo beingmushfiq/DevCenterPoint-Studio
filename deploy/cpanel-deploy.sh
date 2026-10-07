@@ -495,6 +495,18 @@ else
     else
       warn "ProjectSeeder failed - run 'php artisan db:seed --class=ProjectSeeder --force' manually"
     fi
+
+    if run_artisan db:seed --class=PostSeeder --force; then
+      ok "blog posts seeded"
+    else
+      warn "PostSeeder failed - run 'php artisan db:seed --class=PostSeeder --force' manually"
+    fi
+
+    if run_artisan db:seed --class=AppearanceLinkSeeder --force; then
+      ok "header/footer links seeded"
+    else
+      warn "AppearanceLinkSeeder failed - run 'php artisan db:seed --class=AppearanceLinkSeeder --force' manually"
+    fi
   else
     warn "migrations reported an issue (check the database connection in .env)"
   fi
@@ -504,6 +516,29 @@ else
   run_artisan config:cache && ok "config cached" || warn "config:cache failed"
   run_artisan route:cache  && ok "routes cached"  || warn "route:cache failed"
   run_artisan view:cache   && ok "views cached"   || warn "view:cache failed"
+fi
+
+# ------------------------------------------------------------------------------
+# 7. Inertia SSR server
+#     Started here (cPanel has no systemd/PM2) and kept alive afterwards by a
+#     cron job running `deploy/ssr-server.sh ensure`. SSR is what makes the
+#     server-rendered <title>/meta/JSON-LD reach crawlers, so a failure is
+#     loudly reported rather than silently degrading to client rendering.
+# ------------------------------------------------------------------------------
+step "Inertia SSR server"
+SSR_SCRIPT="$REPO/deploy/ssr-server.sh"
+if [ -f "$SSR_SCRIPT" ]; then
+  # `restart` (not `ensure`) so this deploy's freshly applied bundle is what is
+  # actually served — an already-running process would keep the previous build
+  # in memory.
+  if CORE="$CORE" bash "$SSR_SCRIPT" restart; then
+    ok "SSR server running"
+  else
+    warn "SSR server could not be started - pages fall back to client rendering."
+    warn "Check ~/dcp_core/storage/logs/ssr.log and run: bash $SSR_SCRIPT ensure"
+  fi
+else
+  warn "missing $SSR_SCRIPT (SSR server not started)"
 fi
 
 # ------------------------------------------------------------------------------

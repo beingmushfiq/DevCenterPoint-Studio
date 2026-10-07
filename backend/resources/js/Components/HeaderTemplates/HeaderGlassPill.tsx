@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { router } from '@inertiajs/react';
 import { Menu, X, ArrowUpRight, Search } from 'lucide-react';
 import { ThemeToggle } from '../ThemeToggle';
 import { SoundToggle } from '../SoundToggle';
@@ -49,11 +50,17 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
         <div className="flex items-center justify-between gap-3 h-10">
           <div className="flex items-center gap-3">
             <a
-              href="#"
+              href="/"
               onClick={(e) => {
                 e.preventDefault();
                 soundEngine.playClick();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // Already home: smooth-scroll to top. On a standalone page:
+                // navigate back to the homepage.
+                if (window.location.pathname === '/') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                  router.visit('/');
+                }
               }}
               className="flex items-center group transition-transform active:scale-98"
               aria-label={`${header.brandName} Home`}
@@ -64,8 +71,10 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
 
           <nav className="hidden lg:flex items-center gap-1 bg-slate-100/70 dark:bg-black/30 p-1 rounded-full border border-slate-200/60 dark:border-white/5 backdrop-blur-md text-xs font-semibold">
             {header.navLinks.map((link) => {
-              const sectionId = link.href.replace('#', '');
-              const isActive = activeSection === sectionId;
+              // Both `#section` and `/#section` point at a homepage anchor and
+              // take part in the scroll spy; routed links like `/work` do not.
+              const anchor = link.href.replace(/^\/?#/, '');
+              const isActive = anchor !== link.href && activeSection === anchor;
               return (
                 <button
                   key={`${link.label}-${link.href}`}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { router } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Search,
@@ -46,7 +47,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Join DevCenterPoint Dispatch Newsletter',
     category: 'Actions',
     description: 'Bi-weekly architectural post-mortems and distributed systems insights',
-    href: '#newsletter',
+    href: '/#newsletter',
     icon: Sparkles,
   },
 
@@ -121,7 +122,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Product Engineering (Full-Stack SaaS)',
     category: 'Services',
     description: 'High-performance web apps, APIs, and mission-critical cloud software',
-    href: '#capabilities',
+    href: '/services',
     icon: Globe,
     badge: '01',
   },
@@ -130,7 +131,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'AI & Machine Learning Copilots',
     category: 'Services',
     description: 'Intelligent automation, custom LLM pipelines, and predictive analytics',
-    href: '#capabilities',
+    href: '/services',
     icon: Cpu,
     badge: '02',
   },
@@ -139,7 +140,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Mobile Applications (iOS & Android)',
     category: 'Services',
     description: 'Fluid cross-platform mobile apps with offline sync and push alerts',
-    href: '#capabilities',
+    href: '/services',
     icon: Smartphone,
     badge: '03',
   },
@@ -148,7 +149,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Enterprise ERP & Modernization',
     category: 'Services',
     description: 'Legacy codebase refactoring, microservices, and high-throughput scaling',
-    href: '#capabilities',
+    href: '/services',
     icon: Layers,
     badge: '04',
   },
@@ -159,7 +160,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'DevCenterPoint ERP • Enterprise OMS',
     category: 'Case Studies',
     description: 'Real-time order lifecycle, multi-warehouse sync, and sub-50ms stock checks',
-    href: '#work',
+    href: '/work',
     icon: Briefcase,
     badge: 'Logistics',
   },
@@ -168,7 +169,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Qttenzy • Smart QR Attendance',
     category: 'Case Studies',
     description: 'Dynamic QR-based automated geofenced attendance system',
-    href: '#work',
+    href: '/work',
     icon: Briefcase,
     badge: 'Workplace',
   },
@@ -177,7 +178,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Road Safety Movement • Org Management OS',
     category: 'Case Studies',
     description: 'Central operational platform coordinating members, logistics, and safety',
-    href: '#work',
+    href: '/work',
     icon: Briefcase,
     badge: 'Civic OS',
   },
@@ -186,7 +187,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Speech Therapy Assessment Suite',
     category: 'Case Studies',
     description: 'Clinical assessment UI, interactive developmental screening forms, and tools',
-    href: '#work',
+    href: '/work',
     icon: Briefcase,
     badge: 'Clinical Tech',
   },
@@ -195,7 +196,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'MediPulse • Telehealth & AI Diagnostics',
     category: 'Case Studies',
     description: 'HIPAA-compliant video consults and automated clinical intake workflows',
-    href: '#work',
+    href: '/work',
     icon: Briefcase,
     badge: 'Healthcare',
   },
@@ -204,7 +205,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'FleetFlow • Telematics IoT Command',
     category: 'Case Studies',
     description: 'Sub-50ms sensor streaming, GPS tracking, and predictive fleet maintenance',
-    href: '#work',
+    href: '/work',
     icon: Briefcase,
     badge: 'IoT',
   },
@@ -215,7 +216,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: '5-Layer Architecture Engine',
     category: 'Methodology',
     description: 'System philosophy, clean boundaries, telemetry, and fault-tolerance',
-    href: '#architecture',
+    href: '/#architecture',
     icon: Layers,
   },
   {
@@ -223,7 +224,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Tech Ecosystem Matrix',
     category: 'Methodology',
     description: 'React 19, TypeScript, Node.js, Postgres, Docker, Redis & Cloudflare',
-    href: '#tech',
+    href: '/#tech',
     icon: Zap,
   },
   {
@@ -231,7 +232,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: '6-Phase Lifecycle Process',
     category: 'Methodology',
     description: 'From Discovery RFC to automated verification and zero-downtime deployment',
-    href: '#process',
+    href: '/#process',
     icon: BarChart3,
   },
   {
@@ -239,7 +240,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Efficiency & Reliability Metrics',
     category: 'Methodology',
     description: 'Deterministic benchmark data: 42% faster sprints, 99.98% uptime',
-    href: '#metrics',
+    href: '/#metrics',
     icon: BarChart3,
   },
   {
@@ -247,7 +248,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Studio Principles & Engineering Constitution',
     category: 'Methodology',
     description: 'Our core philosophy: craftsmanship, speed, transparency, and type safety',
-    href: '#about',
+    href: '/#about',
     icon: ShieldCheck,
   },
 
@@ -257,7 +258,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'IP Ownership & Code Handover',
     category: 'FAQ',
     description: '100% full intellectual property transfer from day 1 to your cloud accounts',
-    href: '#faq',
+    href: '/#faq',
     icon: HelpCircle,
   },
   {
@@ -265,7 +266,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Sprint Cadence & Engagement Models',
     category: 'FAQ',
     description: 'Dedicated squads, milestone deliverables, and 2-week bi-directional sprints',
-    href: '#faq',
+    href: '/#faq',
     icon: HelpCircle,
   },
   {
@@ -273,7 +274,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: 'Post-Launch SLAs & 30-Day Warranty',
     category: 'FAQ',
     description: '15-minute P0 critical response SLA and complimentary 30-day warranty',
-    href: '#faq',
+    href: '/#faq',
     icon: HelpCircle,
   },
 ];
@@ -319,16 +320,38 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
   const handleSelect = (item: CommandItem) => {
     soundEngine.playClick();
     onClose();
-    if (item.href) {
-      if (item.href.startsWith('http://') || item.href.startsWith('https://')) {
-        window.open(item.href, '_blank', 'noopener,noreferrer');
-      } else {
-        const el = document.querySelector(item.href);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
+    if (!item.href) return;
+
+    if (item.href.startsWith('http://') || item.href.startsWith('https://')) {
+      window.open(item.href, '_blank', 'noopener,noreferrer');
+      return;
     }
+
+    const scrollTo = (hash: string) => {
+      const el = document.querySelector(hash);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    if (item.href.startsWith('#')) {
+      scrollTo(item.href);
+      return;
+    }
+
+    // `/path#anchor` navigates to that page (SPA) and then scrolls to the
+    // section once it has mounted; a bare `/path` is a plain visit.
+    const hashIndex = item.href.indexOf('#');
+    if (hashIndex > 0) {
+      const path = item.href.slice(0, hashIndex);
+      const hash = item.href.slice(hashIndex);
+      if (path === window.location.pathname) {
+        scrollTo(hash);
+        return;
+      }
+      router.visit(path, { onSuccess: () => window.requestAnimationFrame(() => scrollTo(hash)) });
+      return;
+    }
+
+    router.visit(item.href);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

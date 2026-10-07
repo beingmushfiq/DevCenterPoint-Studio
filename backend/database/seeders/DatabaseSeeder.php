@@ -613,8 +613,8 @@ CODE,
             ['key' => 'serial_manager_url', 'value' => 'https://serial.ferozamedicinecorner.com', 'group' => 'general'],
             ['key' => 'roadsafety_url', 'value' => 'https://roadsafetymovement.org', 'group' => 'general'],
             ['key' => 'sound_enabled_default', 'value' => 'true', 'group' => 'general'],
-            ['key' => 'seo_meta_title', 'value' => 'DevCenterPoint — Digital Products, Software & Intelligent Systems', 'group' => 'seo'],
-            ['key' => 'seo_meta_description', 'value' => 'DevCenterPoint designs and engineers mission-critical software products, scalable SaaS platforms, intelligent AI systems, and cloud infrastructure engineered for zero technical debt and real-world impact.', 'group' => 'seo'],
+            ['key' => 'seo_meta_title', 'value' => 'Custom Software Development Company in Bangladesh — DevCenterPoint', 'group' => 'seo'],
+            ['key' => 'seo_meta_description', 'value' => 'DevCenterPoint is a custom software development studio in Dhaka, Bangladesh. We build SaaS platforms, web applications, ERP systems and AI-powered software for startups and enterprises worldwide.', 'group' => 'seo'],
             ['key' => 'social_github', 'value' => 'https://github.com/beingmushfiq', 'group' => 'social'],
             ['key' => 'social_linkedin', 'value' => 'https://linkedin.com', 'group' => 'social'],
             ['key' => 'social_x', 'value' => 'https://x.com', 'group' => 'social'],
@@ -645,30 +645,31 @@ CODE,
             ['key' => 'booking_in_header', 'value' => 'true', 'group' => 'appearance'],
             ['key' => 'booking_in_footer', 'value' => 'true', 'group' => 'appearance'],
             ['key' => 'header_nav_links', 'value' => json_encode([
-                ['label' => 'Work', 'href' => '#work'],
-                ['label' => 'Capabilities', 'href' => '#capabilities'],
-                ['label' => 'Architecture', 'href' => '#architecture'],
-                ['label' => 'Proof', 'href' => '#testimonials'],
-                ['label' => 'Process', 'href' => '#process'],
+                ['label' => 'Work', 'href' => '/work'],
+                ['label' => 'Services', 'href' => '/services'],
+                ['label' => 'Blog', 'href' => '/blog'],
+                ['label' => 'Architecture', 'href' => '/#architecture'],
+                ['label' => 'Process', 'href' => '/#process'],
             ]), 'group' => 'appearance'],
             ['key' => 'header_drawer_links', 'value' => json_encode([
-                ['label' => 'Selected Work', 'href' => '#work', 'note' => '9 Production Systems'],
-                ['label' => 'Capabilities & Services', 'href' => '#capabilities', 'note' => 'Full-stack & AI'],
-                ['label' => 'Sprint Methodology', 'href' => '#process', 'note' => 'Discovery to Deployment'],
-                ['label' => 'Frequently Asked Questions', 'href' => '#faq', 'note' => 'Engagements, SLAs, Terms'],
-                ['label' => 'Start Project Collaboration', 'href' => '#contact', 'note' => 'Scope & Architecture Estimator'],
+                ['label' => 'Selected Work', 'href' => '/work', 'note' => '9 Production Systems'],
+                ['label' => 'Services & Capabilities', 'href' => '/services', 'note' => 'Full-stack & AI'],
+                ['label' => 'Engineering Blog', 'href' => '/blog', 'note' => 'Guides & Case Notes'],
+                ['label' => 'Sprint Methodology', 'href' => '/#process', 'note' => 'Discovery to Deployment'],
+                ['label' => 'Start Project Collaboration', 'href' => '/#contact', 'note' => 'Scope & Architecture Estimator'],
             ]), 'group' => 'appearance'],
             ['key' => 'footer_columns', 'value' => json_encode([
                 [
                     'title' => 'Navigation',
                     'links' => [
-                        ['label' => 'Capabilities', 'href' => '#capabilities'],
-                        ['label' => 'Selected Work', 'href' => '#work'],
-                        ['label' => 'Architecture', 'href' => '#architecture'],
-                        ['label' => 'Tech Ecosystem', 'href' => '#tech'],
-                        ['label' => 'Lifecycle Process', 'href' => '#process'],
-                        ['label' => 'Principles', 'href' => '#about'],
-                        ['label' => 'FAQ & Engagement', 'href' => '#faq'],
+                        ['label' => 'Services', 'href' => '/services'],
+                        ['label' => 'Selected Work', 'href' => '/work'],
+                        ['label' => 'Engineering Blog', 'href' => '/blog'],
+                        ['label' => 'Architecture', 'href' => '/#architecture'],
+                        ['label' => 'Tech Ecosystem', 'href' => '/#tech'],
+                        ['label' => 'Lifecycle Process', 'href' => '/#process'],
+                        ['label' => 'Principles', 'href' => '/#about'],
+                        ['label' => 'FAQ & Engagement', 'href' => '/#faq'],
                         ['label' => 'Start Project', 'href' => '#contact'],
                     ],
                 ],
@@ -1119,6 +1120,11 @@ CODE,
 
         // 12. Solution Studio Products (CMS Managed Showcase)
         $this->call(SolutionProductSeeder::class);
+
+        // 13. Blog Posts (CMS Managed Engineering Blog).
+        // Delegated to PostSeeder so production can top up newly written
+        // articles without resetting the admin account via the full seed.
+        $this->call(PostSeeder::class);
     }
 }
 

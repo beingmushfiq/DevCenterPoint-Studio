@@ -19,6 +19,7 @@ import {
   UserCheck,
   CreditCard,
   Palette,
+  Newspaper,
 } from 'lucide-react';
 
 interface Props {
@@ -36,6 +37,7 @@ export default function AdminLayout({ title, children }: Props) {
     { name: 'Inquiries (CRM)', href: '/admin/inquiries', icon: Inbox },
     { name: 'Subscribers', href: '/admin/subscribers', icon: Users },
     { name: 'Projects CMS', href: '/admin/projects', icon: Briefcase },
+    { name: 'Blog Posts', href: '/admin/posts', icon: Newspaper },
     { name: 'Capabilities', href: '/admin/capabilities', icon: Wrench },
     { name: 'Plans & Pricing', href: '/admin/plans', icon: CreditCard },
     { name: 'Testimonials', href: '/admin/testimonials', icon: Quote },

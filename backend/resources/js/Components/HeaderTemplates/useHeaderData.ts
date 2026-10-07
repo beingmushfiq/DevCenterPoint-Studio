@@ -26,20 +26,25 @@ export interface HeaderData {
   template: string;
 }
 
+/**
+ * Primary navigation. Entries that have a dedicated route use a real path so
+ * search engines can follow them; homepage-only sections stay as `/#anchor`
+ * so they still resolve when the header is rendered on a standalone page.
+ */
 const DEFAULT_NAV_LINKS: NavLink[] = [
-  { label: 'Work', href: '#work' },
-  { label: 'Capabilities', href: '#capabilities' },
-  { label: 'Architecture', href: '#architecture' },
-  { label: 'Proof', href: '#testimonials' },
-  { label: 'Process', href: '#process' },
+  { label: 'Work', href: '/work' },
+  { label: 'Services', href: '/services' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Architecture', href: '/#architecture' },
+  { label: 'Process', href: '/#process' },
 ];
 
 const DEFAULT_DRAWER_LINKS: NavLink[] = [
-  { label: 'Selected Work', href: '#work', note: '9 Production Systems' },
-  { label: 'Capabilities & Services', href: '#capabilities', note: 'Full-stack & AI' },
-  { label: 'Sprint Methodology', href: '#process', note: 'Discovery to Deployment' },
-  { label: 'Frequently Asked Questions', href: '#faq', note: 'Engagements, SLAs, Terms' },
-  { label: 'Start Project Collaboration', href: '#contact', note: 'Scope & Architecture Estimator' },
+  { label: 'Selected Work', href: '/work', note: '9 Production Systems' },
+  { label: 'Services & Capabilities', href: '/services', note: 'Full-stack & AI' },
+  { label: 'Engineering Blog', href: '/blog', note: 'Guides & Case Notes' },
+  { label: 'Sprint Methodology', href: '/#process', note: 'Discovery to Deployment' },
+  { label: 'Start Project Collaboration', href: '/#contact', note: 'Scope & Architecture Estimator' },
 ];
 
 function parseJson<T>(raw: string | undefined, fallback: T): T {

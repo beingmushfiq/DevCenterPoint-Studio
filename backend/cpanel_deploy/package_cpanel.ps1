@@ -7,9 +7,10 @@
 #
 # Pick the SMALLEST target that fits your change - most deploys need none at all:
 #
-#   -Target Frontend   (default)  ~1 min   upload public_html.zip
-#       Rebuilds Vite and packs the compiled assets. Use after changing anything
-#       under resources/ (React, Tailwind, CSS). Backend PHP changes need NO zip.
+#   -Target Frontend   (default)  ~1 min   upload public_html.zip + ssr.zip
+#       Rebuilds Vite (client + SSR) and packs the compiled assets. Use after
+#       changing anything under resources/ (React, Tailwind, CSS). Backend PHP
+#       changes need NO zip.
 #
 #   -Target Vendor     (rare)     ~1 min   upload vendor.zip
 #       Packs backend/vendor. Use only after `composer.lock` / `composer.json`
@@ -132,6 +133,19 @@ if ($doFrontend) {
     Zip-Directory -Source $stagePublic -Destination $publicZip
     Remove-Item -Recurse -Force (Join-Path $distDir "stage")
     Write-Ok ("public_html.zip created in {0:N1}s" -f ((Get-Date) - $t0).TotalSeconds)
+
+    # The Inertia SSR bundle is a single self-contained Node file. It is packed
+    # separately because it installs into the private app dir (~/dcp_core), not
+    # the web root, and its entries must be relative to bootstrap/ssr so the
+    # archive extracts directly into ~/dcp_core/bootstrap/ssr.
+    $ssrBundle = Join-Path $backendRoot "bootstrap/ssr/ssr.mjs"
+    if (-not (Test-Path $ssrBundle)) {
+        throw "SSR bundle not found at backend/bootstrap/ssr/ssr.mjs (did 'npm run build' run the --ssr pass?)"
+    }
+    $ssrZip = Join-Path $distDir "ssr.zip"
+    $t2 = Get-Date
+    Zip-Directory -Source (Join-Path $backendRoot "bootstrap/ssr") -Destination $ssrZip
+    Write-Ok ("ssr.zip created in {0:N1}s" -f ((Get-Date) - $t2).TotalSeconds)
 }
 
 # ------------------------------------------------------------------------------
@@ -160,6 +174,9 @@ if ($doFrontend) {
     $mb = "{0:N1}" -f ((Get-Item (Join-Path $distDir "public_html.zip")).Length / 1MB)
     Write-Host "  public_html.zip ($mb MB)  -> extract into ~/public_html" -ForegroundColor Yellow
     $uploads += "public_html.zip"
+    $ssrMb = "{0:N1}" -f ((Get-Item (Join-Path $distDir "ssr.zip")).Length / 1MB)
+    Write-Host "  ssr.zip         ($ssrMb MB)  -> extract into ~/dcp_core/bootstrap/ssr" -ForegroundColor Yellow
+    $uploads += "ssr.zip"
 }
 if ($doVendor) {
     $mb = "{0:N1}" -f ((Get-Item (Join-Path $distDir "vendor.zip")).Length / 1MB)

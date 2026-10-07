@@ -151,6 +151,28 @@ else
   warn "public_html.zip not found (skipped)"
 fi
 
+# ------------------------------------------------------------------------------
+# ssr.zip -> ~/dcp_core/bootstrap/ssr   (compiled Inertia SSR bundle)
+# ------------------------------------------------------------------------------
+# Packed from backend/bootstrap/ssr, so entries are already relative to that
+# directory (ssr.mjs, ssr-manifest.json). Without this bundle Laravel has
+# nothing to render server-side and silently falls back to client rendering.
+SSR_ZIP="$UPLOADS/ssr.zip"
+if [ -f "$SSR_ZIP" ]; then
+  STAGE="$(mktemp -d)"
+  if extract_zip "$SSR_ZIP" "$STAGE"; then
+    mkdir -p "$CORE/bootstrap/ssr"
+    publish_tree "$STAGE/" "$CORE/bootstrap/ssr/" --delete
+    ok "ssr.zip applied -> $CORE/bootstrap/ssr"
+    APPLIED=$((APPLIED + 1))
+  else
+    fail "could not extract $SSR_ZIP (need unzip, PHP ZipArchive, or python3)"
+  fi
+  rm -rf "$STAGE"
+else
+  warn "ssr.zip not found (skipped - server-side rendering will be disabled)"
+fi
+
 if [ "$APPLIED" -eq 0 ]; then
   warn "no archives applied (upload public_html.zip and/or vendor.zip and re-run)"
   exit 0

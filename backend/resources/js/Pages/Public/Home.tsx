@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from '../../Context/ThemeContext';
 import { CmsProvider, CmsData } from '../../Context/CmsContext';
 import { SEOProvider } from '../../Components/SEOHead';
@@ -128,122 +127,120 @@ export default function Home(props: CmsData) {
   const handleMountComplete = React.useCallback(() => setIsSiteLoaded(true), []);
 
   return (
-    <HelmetProvider>
-      <CmsProvider value={props}>
-        <SEOProvider>
-          <ThemeProvider>
-            {/* Global Initial Mounting Screen & Skeleton Loader */}
-            <GlobalLoadingScreen onMountComplete={handleMountComplete} />
+    <CmsProvider value={props}>
+      <SEOProvider>
+        <ThemeProvider>
+          {/* Global Initial Mounting Screen & Skeleton Loader */}
+          <GlobalLoadingScreen onMountComplete={handleMountComplete} />
 
-            <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white font-sans antialiased relative selection:bg-blue-600 selection:text-white">
-              {/* Desktop Subtle Cursor Indicator */}
-              <CustomCursor />
+          <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white font-sans antialiased relative selection:bg-blue-600 selection:text-white">
+            {/* Desktop Subtle Cursor Indicator */}
+            <CustomCursor />
 
-              {/* Primary Fixed Navigation with Sandbox Opener */}
-              <SiteHeader onOpenSandbox={() => setIsSandboxOpen(true)} />
+            {/* Primary Fixed Navigation with Sandbox Opener */}
+            <SiteHeader onOpenSandbox={() => setIsSandboxOpen(true)} />
 
-              {/* Main Page Content Flow with Scroll-Reveal Motion Animations */}
-              <main id="main-content">
-                {/* Hero Section with Interactive System Map */}
-                <HeroReveal>
-                  <Hero />
-                </HeroReveal>
+            {/* Main Page Content Flow with Scroll-Reveal Motion Animations */}
+            <main id="main-content">
+              {/* Hero Section with Interactive System Map */}
+              <HeroReveal>
+                <Hero />
+              </HeroReveal>
 
-                {/* Positioning Statement */}
+              {/* Positioning Statement */}
+              <DeferredSection>
+                <Positioning />
+              </DeferredSection>
+
+              {/* Interactive Capability Category Index & Code Inspector */}
+              <DeferredSection>
+                <CapabilitiesSection />
+              </DeferredSection>
+
+              {/* Selected Work Archive with Drill-down Case Study Inspector */}
+              <DeferredSection>
+                <SelectedWorkSection />
+              </DeferredSection>
+
+              {/* Verified Enterprise Impact & Executive Testimonials */}
+              <DeferredSection>
+                <TestimonialsSection />
+              </DeferredSection>
+
+              {/* Engineering Philosophy: 5-Layer System Architecture Diagram */}
+              <DeferredSection>
+                <EngineeringPhilosophy />
+              </DeferredSection>
+
+              {/* Technology Ecosystem Matrix */}
+              <DeferredSection>
+                <TechEcosystem />
+              </DeferredSection>
+
+              {/* Product Lifecycle & Process */}
+              <DeferredSection>
+                <ProcessSection />
+              </DeferredSection>
+
+              {/* Interactive Data Visualization: Lifecycle Efficiency Metrics */}
+              <DeferredSection>
+                <EfficiencyMetricsSection />
+              </DeferredSection>
+
+              {/* Brand Principles & Editorial Story */}
+              <DeferredSection>
+                <AboutPrinciples />
+              </DeferredSection>
+
+              {/* Frequently Asked Questions */}
+              <DeferredSection>
+                <FAQSection />
+              </DeferredSection>
+
+              {/* Dynamically Published Plans & Pricing (Controlled by CMS toggle) */}
+              {props.plans && props.plans.length > 0 && props.siteSettings?.show_pricing_on_site === 'true' && (
                 <DeferredSection>
-                  <Positioning />
+                  <PlansPricingSection
+                    plans={props.plans}
+                    isVisible={true}
+                    heading={props.siteSettings?.pricing_section_heading || 'Transparent Engineering Engagements'}
+                    subheading={props.siteSettings?.pricing_section_subheading || 'Predictable milestones, dedicated senior squads, and zero-compromise system architecture.'}
+                  />
                 </DeferredSection>
+              )}
 
-                {/* Interactive Capability Category Index & Code Inspector */}
-                <DeferredSection>
-                  <CapabilitiesSection />
-                </DeferredSection>
+              {/* Interactive Project Scope Estimator & Contact Form */}
+              <DeferredSection>
+                <ProjectInquiryBuilder />
+              </DeferredSection>
 
-                {/* Selected Work Archive with Drill-down Case Study Inspector */}
-                <DeferredSection>
-                  <SelectedWorkSection />
-                </DeferredSection>
+              {/* Company Updates & Newsletter Signup */}
+              <DeferredSection>
+                <NewsletterSignup />
+              </DeferredSection>
+            </main>
 
-                {/* Verified Enterprise Impact & Executive Testimonials */}
-                <DeferredSection>
-                  <TestimonialsSection />
-                </DeferredSection>
+            {/* Editorial Footer */}
+            <ScrollRevealSection yOffset={24}>
+              <SiteFooter />
+            </ScrollRevealSection>
 
-                {/* Engineering Philosophy: 5-Layer System Architecture Diagram */}
-                <DeferredSection>
-                  <EngineeringPhilosophy />
-                </DeferredSection>
+            {/* Floating Back to Top Action Button */}
+            <BackToTop />
 
-                {/* Technology Ecosystem Matrix */}
-                <DeferredSection>
-                  <TechEcosystem />
-                </DeferredSection>
+            {/* Mobile Fixed Sticky Bottom Action Bar */}
+            <MobileBottomActionBar onOpenSandbox={() => setIsSandboxOpen(true)} />
 
-                {/* Product Lifecycle & Process */}
-                <DeferredSection>
-                  <ProcessSection />
-                </DeferredSection>
-
-                {/* Interactive Data Visualization: Lifecycle Efficiency Metrics */}
-                <DeferredSection>
-                  <EfficiencyMetricsSection />
-                </DeferredSection>
-
-                {/* Brand Principles & Editorial Story */}
-                <DeferredSection>
-                  <AboutPrinciples />
-                </DeferredSection>
-
-                {/* Frequently Asked Questions */}
-                <DeferredSection>
-                  <FAQSection />
-                </DeferredSection>
-
-                {/* Dynamically Published Plans & Pricing (Controlled by CMS toggle) */}
-                {props.plans && props.plans.length > 0 && props.siteSettings?.show_pricing_on_site === 'true' && (
-                  <DeferredSection>
-                    <PlansPricingSection
-                      plans={props.plans}
-                      isVisible={true}
-                      heading={props.siteSettings?.pricing_section_heading || 'Transparent Engineering Engagements'}
-                      subheading={props.siteSettings?.pricing_section_subheading || 'Predictable milestones, dedicated senior squads, and zero-compromise system architecture.'}
-                    />
-                  </DeferredSection>
-                )}
-
-                {/* Interactive Project Scope Estimator & Contact Form */}
-                <DeferredSection>
-                  <ProjectInquiryBuilder />
-                </DeferredSection>
-
-                {/* Company Updates & Newsletter Signup */}
-                <DeferredSection>
-                  <NewsletterSignup />
-                </DeferredSection>
-              </main>
-
-              {/* Editorial Footer */}
-              <ScrollRevealSection yOffset={24}>
-                <SiteFooter />
-              </ScrollRevealSection>
-
-              {/* Floating Back to Top Action Button */}
-              <BackToTop />
-
-              {/* Mobile Fixed Sticky Bottom Action Bar */}
-              <MobileBottomActionBar onOpenSandbox={() => setIsSandboxOpen(true)} />
-
-              {/* Live Client Sandbox Modal */}
-              <React.Suspense fallback={null}>
-                <ClientDemoSandboxModal
-                  isOpen={isSandboxOpen}
-                  onClose={() => setIsSandboxOpen(false)}
-                />
-              </React.Suspense>
-            </div>
-          </ThemeProvider>
-        </SEOProvider>
-      </CmsProvider>
-    </HelmetProvider>
+            {/* Live Client Sandbox Modal */}
+            <React.Suspense fallback={null}>
+              <ClientDemoSandboxModal
+                isOpen={isSandboxOpen}
+                onClose={() => setIsSandboxOpen(false)}
+              />
+            </React.Suspense>
+          </div>
+        </ThemeProvider>
+      </SEOProvider>
+    </CmsProvider>
   );
 }

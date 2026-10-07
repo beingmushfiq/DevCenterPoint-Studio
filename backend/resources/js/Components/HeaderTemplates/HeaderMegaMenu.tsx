@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { router } from '@inertiajs/react';
 import { Menu, X, ArrowUpRight, ChevronDown, Search } from 'lucide-react';
 import { ThemeToggle } from '../ThemeToggle';
 import { SoundToggle } from '../SoundToggle';
@@ -51,11 +52,15 @@ export const HeaderMegaMenu: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) =
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-4">
             <a
-              href="#"
+              href="/"
               onClick={(e) => {
                 e.preventDefault();
                 soundEngine.playClick();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (window.location.pathname === '/') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                  router.visit('/');
+                }
               }}
               className="flex items-center shrink-0"
               aria-label={`${header.brandName} Home`}

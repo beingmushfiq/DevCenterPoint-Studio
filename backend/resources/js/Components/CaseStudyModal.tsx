@@ -139,7 +139,9 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   const handleCopyLink = () => {
     soundEngine.playCopySuccess();
     if (project && navigator.clipboard) {
-      const url = `${window.location.origin}#work-${project.id}`;
+      // Deep-link to the indexable case-study route so shared links land on a
+      // real page rather than a hash the server cannot serve.
+      const url = `${window.location.origin}/work/${project.id}`;
       navigator.clipboard.writeText(url);
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
@@ -149,7 +151,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   const handleShareCaseStudy = async () => {
     soundEngine.playClick();
     if (!project) return;
-    const shareUrl = `${window.location.origin}#work-${project.id}`;
+    const shareUrl = `${window.location.origin}/work/${project.id}`;
     const shareData = {
       title: `${project.title} — DevCenterPoint Case Study`,
       text: `${project.title}: ${project.subtitle}. Explore the technical architecture, challenges, and verified outcomes:`,
@@ -219,8 +221,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
       setCustomSEO({
         title: `${project.title} — Technical Deep Dive Case Study | DevCenterPoint`,
         description: `${project.subtitle}. ${project.shortDescription}`,
-        keywords: [project.title, project.category, project.industry, ...project.techStack],
-        canonicalPath: `#work-${project.id}`,
+        canonicalPath: `/work/${project.id}`,
       });
     } else {
       setCustomSEO(null);

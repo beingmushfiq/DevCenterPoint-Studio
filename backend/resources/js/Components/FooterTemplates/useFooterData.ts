@@ -37,17 +37,24 @@ export interface FooterData {
   template: string;
 }
 
+/**
+ * Footer navigation. Dedicated routes use real paths; homepage-only sections
+ * use `/#anchor` so they still resolve when the footer is shown on a
+ * standalone page. `#contact` stays in-page because every public page renders
+ * the inquiry section.
+ */
 const DEFAULT_COLUMNS: FooterColumn[] = [
   {
     title: 'Navigation',
     links: [
-      { label: 'Capabilities', href: '#capabilities' },
-      { label: 'Selected Work', href: '#work' },
-      { label: 'Architecture', href: '#architecture' },
-      { label: 'Tech Ecosystem', href: '#tech' },
-      { label: 'Lifecycle Process', href: '#process' },
-      { label: 'Principles', href: '#about' },
-      { label: 'FAQ & Engagement', href: '#faq' },
+      { label: 'Services', href: '/services' },
+      { label: 'Selected Work', href: '/work' },
+      { label: 'Engineering Blog', href: '/blog' },
+      { label: 'Architecture', href: '/#architecture' },
+      { label: 'Tech Ecosystem', href: '/#tech' },
+      { label: 'Lifecycle Process', href: '/#process' },
+      { label: 'Principles', href: '/#about' },
+      { label: 'FAQ & Engagement', href: '/#faq' },
       { label: 'Start Project', href: '#contact' },
     ],
   },

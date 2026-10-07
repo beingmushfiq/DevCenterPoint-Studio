@@ -1,14 +1,30 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\WorkController;
 use Illuminate\Support\Facades\Route;
 
 // Public Landing Page & CMS Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Indexable service pages, one per CMS capability. Previously every offering
+// lived behind the `/#capabilities` hash, which crawlers cannot index as a URL.
+Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+Route::get('/services/{capability:slug}', [ServiceController::class, 'show'])->name('services.show');
+
+// Case study archive and per-project deep dives.
+Route::get('/work', [WorkController::class, 'index'])->name('work.index');
+Route::get('/work/{project:slug}', [WorkController::class, 'show'])->name('work.show');
+
+// Engineering blog.
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // XML sitemap. Generated from CMS content so `lastmod` stays accurate; the
 // static public/sitemap.xml was removed so Apache's `-f` check cannot shadow it.
@@ -51,6 +67,12 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::put('/projects/{project}', [\App\Http\Controllers\Admin\AdminProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{project}', [\App\Http\Controllers\Admin\AdminProjectController::class, 'destroy'])->name('projects.destroy');
     
+    // Blog Posts CMS
+    Route::get('/posts', [\App\Http\Controllers\Admin\AdminPostController::class, 'index'])->name('posts.index');
+    Route::post('/posts', [\App\Http\Controllers\Admin\AdminPostController::class, 'store'])->name('posts.store');
+    Route::put('/posts/{post}', [\App\Http\Controllers\Admin\AdminPostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{post}', [\App\Http\Controllers\Admin\AdminPostController::class, 'destroy'])->name('posts.destroy');
+
     // Capabilities CMS
     Route::get('/capabilities', [\App\Http\Controllers\Admin\AdminCapabilityController::class, 'index'])->name('capabilities.index');
     Route::put('/capabilities/{capability}', [\App\Http\Controllers\Admin\AdminCapabilityController::class, 'update'])->name('capabilities.update');

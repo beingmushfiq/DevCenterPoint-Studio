@@ -186,3 +186,73 @@ export interface FAQItem {
   category: 'Engineering & Process' | 'Engagement Models' | 'Security & IP' | 'Post-Launch & SLAs';
   highlights?: string[];
 }
+
+/**
+ * Raw CMS rows as serialised by the public controllers. These are the literal
+ * Eloquent payloads (snake_case, JSON arrays already cast), used by the
+ * standalone services / work / blog pages.
+ */
+export interface CmsService {
+  id: number;
+  slug: string;
+  title: string;
+  tagline?: string;
+  description?: string;
+  icon_name?: string;
+  features?: string[];
+  technologies?: string[];
+  architecture_points?: string[];
+  code_snippet?: string;
+  display_order?: number;
+  is_active?: boolean;
+  updated_at?: string;
+}
+
+export interface CmsMetric {
+  label: string;
+  value: string;
+}
+
+export interface CmsProject {
+  id: number;
+  slug: string;
+  title: string;
+  tagline?: string;
+  category?: string;
+  client?: string;
+  year?: string;
+  duration?: string;
+  overview?: string;
+  problem?: string;
+  solution?: string;
+  metrics?: CmsMetric[];
+  tech_stack?: string[];
+  thumbnail_url?: string;
+  hero_image_url?: string;
+  gallery?: string[];
+  live_url?: string;
+  github_url?: string;
+  is_featured?: boolean;
+  display_order?: number;
+  is_published?: boolean;
+  updated_at?: string;
+}
+
+export interface CmsPost {
+  id: number;
+  slug: string;
+  title: string;
+  category?: string;
+  author_name?: string;
+  excerpt?: string;
+  /** Markdown source. Rendered through lib/markdown.ts. */
+  body?: string;
+  cover_image_url?: string;
+  tags?: string[];
+  seo_title?: string;
+  seo_description?: string;
+  published_at?: string;
+  display_order?: number;
+  is_published?: boolean;
+  updated_at?: string;
+}

@@ -64,9 +64,8 @@ export default function SettingsIndex({ settings }: Props) {
     show_loading_preview_toggle: 'false',
     show_hero_canvas_controls: 'false',
     // SEO & Announcements
-    seo_meta_title: 'DevCenterPoint — Digital Products, Software & Intelligent Systems',
-    seo_meta_description: 'DevCenterPoint designs and engineers mission-critical software products, scalable SaaS platforms, intelligent AI systems, and cloud infrastructure engineered for zero technical debt and real-world impact.',
-    seo_meta_keywords: 'DevCenterPoint, software engineering studio, custom SaaS development, AI intelligent systems, enterprise software, full stack engineering, React TypeScript, Python AI, cloud architecture, microservices, zero downtime deployment',
+    seo_meta_title: 'Custom Software Development Company in Bangladesh — DevCenterPoint',
+    seo_meta_description: 'DevCenterPoint is a custom software development studio in Dhaka, Bangladesh. We build SaaS platforms, web applications, ERP systems and AI-powered software for startups and enterprises worldwide.',
     seo_canonical_url: 'https://devcenterpoint.com',
     seo_og_image: '/og-image.png',
     aeo_system_summary: 'DevCenterPoint Studio is a software engineering and system architecture consultancy founded by Mushfiq. Core capabilities include full-stack SaaS, AI/ML pipelines, real-time telemetry, and resilient cloud systems.',

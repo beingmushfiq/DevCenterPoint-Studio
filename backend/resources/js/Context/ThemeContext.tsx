@@ -39,6 +39,10 @@ function applyThemeClass(theme: Theme) {
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
+    // localStorage does not exist during server-side rendering.
+    if (typeof window === 'undefined') {
+      return 'light';
+    }
     const saved = localStorage.getItem('dcp_theme');
     if (saved === 'dark' || saved === 'light') {
       return saved;
