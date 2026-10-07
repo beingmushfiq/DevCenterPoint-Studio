@@ -16,7 +16,8 @@ interface GlobalLoadingScreenProps {
   onMountComplete?: () => void;
   /**
    * Minimum display time in ms to ensure smooth visual transition.
-   * Default: 500ms.
+   * Default: 600ms — matches 1.5 revolutions of the spinner (0.4s per
+   * revolution: a full 360° spin plus a 180° half spin).
    */
   minDuration?: number;
   /**
@@ -33,7 +34,7 @@ interface GlobalLoadingScreenProps {
 export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
   isMounting: externalIsMounting,
   onMountComplete,
-  minDuration = 500,
+  minDuration = 600,
   defaultView = 'spinner',
   allowPreviewToggle,
 }) => {
@@ -109,58 +110,50 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
               <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
                 {/* Minimalist Branded Symbol with Outer Centered Spinner */}
                 <div className="relative flex items-center justify-center w-28 h-28 mb-6">
-                  {/* Windows 11 style ring: the dots never move — a single bright
-                      "comet head" sweeps around the circle and the dots it passed
-                      fade out behind it, forming a fading tail. The travelling
-                      highlight is what reads as circular motion, exactly like the
-                      Windows boot spinner. (Rotating the dots themselves just looks
-                      like a rigid spinning asterisk.)
+                  {/* Windows 11 style spinner: a single SOLID arc sweeping around a
+                      faint track — no dots at all. The whole ring rotates, so the
+                      motion reads as one continuous, snappy circle.
 
-                      Key detail: each dot's fade is ASYMMETRIC — it snaps to full
-                      brightness fast (linear, first 12% of the cycle) then decays
-                      slowly across the remaining 88%. A symmetric bell curve would
-                      light the dots ahead of the head too and read as a blob, not a
-                      tail. */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    {Array.from({ length: 8 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="absolute left-1/2 top-1/2"
-                        style={{
-                          transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-46px)`,
-                        }}
-                      >
-                        <motion.span
-                          className={`block w-1.5 h-1.5 rounded-full ${
-                            isDark
-                              ? 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.7)]'
-                              : 'bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.45)]'
-                          }`}
-                          animate={
-                            shouldReduceMotion
-                              ? { opacity: 0.5 }
-                              : { opacity: [0.05, 1, 0.05] }
-                          }
-                          transition={
-                            shouldReduceMotion
-                              ? undefined
-                              : {
-                                  duration: 1.25,
-                                  repeat: Infinity,
-                                  ease: 'linear',
-                                  /* Fast rise to the head, long slow decay for the
-                                     tail. */
-                                  times: [0, 0.12, 1],
-                                  /* Negative, evenly spaced delays: the highlight is
-                                     already mid-sweep on the first frame and travels
-                                     at a constant angular speed around the ring. */
-                                  delay: -(i * 1.25) / 8,
-                                }
-                          }
-                        />
-                      </div>
-                    ))}
-                  </div>
+                      Rotation budget: one revolution takes 0.4s and the loader's
+                       default 600ms minimum display covers exactly 1.5 revolutions
+                       (360° + 180°) before it dismisses — the "full spin plus a half
+                       spin" the design calls for. */}
+                  <motion.svg
+                    viewBox="0 0 112 112"
+                    className={`absolute inset-0 w-full h-full pointer-events-none ${
+                      isDark
+                        ? 'filter drop-shadow-[0_0_6px_rgba(56,189,248,0.55)]'
+                        : 'filter drop-shadow-[0_0_6px_rgba(37,99,235,0.35)]'
+                    }`}
+                    style={{ transformOrigin: 'center' }}
+                    animate={shouldReduceMotion ? { rotate: 0 } : { rotate: 360 }}
+                    transition={
+                      shouldReduceMotion
+                        ? undefined
+                        : { duration: 0.4, ease: 'linear', repeat: Infinity }
+                    }
+                  >
+                    {/* Faint full-circle track */}
+                    <circle
+                      cx="56"
+                      cy="56"
+                      r="46"
+                      fill="none"
+                      strokeWidth="6"
+                      stroke={isDark ? 'rgba(56,189,248,0.15)' : 'rgba(37,99,235,0.12)'}
+                    />
+                    {/* Solid sweeping arc (25% of the circumference) */}
+                    <circle
+                      cx="56"
+                      cy="56"
+                      r="46"
+                      fill="none"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeDasharray="72 217"
+                      stroke={isDark ? '#38BDF8' : '#2563EB'}
+                    />
+                  </motion.svg>
 
                   {/* Brand emblem mark container. Starts fully opaque so the mark
                       is present from the very first frame — no late pop-in. */}
