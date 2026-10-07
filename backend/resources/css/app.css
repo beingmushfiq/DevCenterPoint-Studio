@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Self-hosted, subsetted fonts (Fontsource). Bundled by Vite so the browser
+   never blocks on a third-party stylesheet request to fonts.googleapis.com. */
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/jetbrains-mono";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
@@ -67,8 +72,8 @@ html.theme-vt::view-transition-new(root) {
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
   }
 
   *, *::before, *::after {

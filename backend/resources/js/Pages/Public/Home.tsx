@@ -87,22 +87,14 @@ function ScrollRevealSection({
   );
 }
 
+/**
+ * Hero wrapper. Intentionally a plain div: the hero heading is the LCP element,
+ * so it must be painted on the first frame. An `initial={{ opacity: 0 }}`
+ * entrance here would keep the whole hero invisible until hydration finishes,
+ * which is what pushed the LCP render delay into the multi-second range.
+ */
 function HeroReveal({ children }: { children: React.ReactNode }) {
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <motion.div
-      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: 0.85,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      className="w-full"
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className="w-full">{children}</div>;
 }
 
 /**

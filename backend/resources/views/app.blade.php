@@ -49,10 +49,9 @@
             })();
         </script>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <!-- Fonts are self-hosted via Fontsource and bundled by Vite
+             (see resources/css/app.css), so no third-party stylesheet is
+             requested here. -->
 
         <!-- Custom Head Scripts (CMS) -->
         {!! $dcpHeadScripts !!}

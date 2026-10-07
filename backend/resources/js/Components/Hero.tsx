@@ -97,26 +97,23 @@ export const Hero: React.FC = () => {
             </span>
           </motion.div>
 
-          {/* Main Hero Headline with Signature Gradient */}
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08 }}
+          {/* Main Hero Headline with Signature Gradient.
+              Rendered without an entrance animation: this heading is the LCP
+              element, and any `initial={{ opacity: 0 }}` would keep it invisible
+              until the animation runs after hydration. */}
+          <h1
             className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.12] mb-6 text-slate-950 dark:text-white wrap-break-word"
           >
             {headlineLine1} <br className="hidden sm:inline" />
             <span className="text-gradient-signature">{headlineLine2}</span>
-          </motion.h1>
+          </h1>
 
-          {/* Supporting Statement */}
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.16 }}
+          {/* Supporting Statement (also painted immediately, see above) */}
+          <p
             className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal mb-8"
           >
             {thesis}
-          </motion.p>
+          </p>
 
           {/* Primary Action Group with Liquid Polish */}
           <motion.div
