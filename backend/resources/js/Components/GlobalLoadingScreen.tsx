@@ -109,39 +109,49 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
               <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
                 {/* Minimalist Branded Symbol with Outer Centered Spinner */}
                 <div className="relative flex items-center justify-center w-28 h-28 mb-6">
-                  {/* Windows-style loading: a ring of dots with graded brightness
-                      that reads as a single travelling highlight. The whole ring
-                      spins at a constant (linear) speed, so the motion never
-                      stutters — the same calm, seamless feel as the Windows boot
-                      spinner. */}
-                  <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    animate={shouldReduceMotion ? { rotate: 0 } : { rotate: 360 }}
-                    transition={
-                      shouldReduceMotion
-                        ? undefined
-                        : { duration: 1.9, ease: 'linear', repeat: Infinity }
-                    }
-                  >
-                    {[0, 1, 2, 3, 4].map((i) => (
+                  {/* Windows 11 style ring: the dots stay fixed in place while a
+                      bright "comet head" sweeps smoothly around the circle and the
+                      trailing dots fade out. This travelling highlight is what
+                      reads as continuous circular motion — the same calm, soothing
+                      feel as the Windows boot spinner. (Rotating fixed-brightness
+                      dots just looks like a rigid spinning asterisk.) */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    {Array.from({ length: 8 }).map((_, i) => (
                       <div
                         key={i}
                         className="absolute left-1/2 top-1/2"
                         style={{
-                          transform: `translate(-50%, -50%) rotate(${i * 72}deg) translateY(-50px)`,
+                          transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-46px)`,
                         }}
                       >
-                        <span
-                          className={`block w-2 h-2 rounded-full ${
+                        <motion.span
+                          className={`block w-1.5 h-1.5 rounded-full ${
                             isDark
                               ? 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.7)]'
                               : 'bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.45)]'
                           }`}
-                          style={{ opacity: shouldReduceMotion ? 0.6 : 1 - i * 0.17 }}
+                          animate={
+                            shouldReduceMotion
+                              ? { opacity: 0.5 }
+                              : { opacity: [0.1, 1, 0.1], scale: [0.7, 1.15, 0.7] }
+                          }
+                          transition={
+                            shouldReduceMotion
+                              ? undefined
+                              : {
+                                  duration: 1.3,
+                                  repeat: Infinity,
+                                  ease: 'easeInOut',
+                                  /* Negative, evenly spaced delays: the highlight is
+                                     already mid-sweep on the first frame and travels
+                                     at a constant angular speed around the ring. */
+                                  delay: -(i * 1.3) / 8,
+                                }
+                          }
                         />
                       </div>
                     ))}
-                  </motion.div>
+                  </div>
 
                   {/* Brand emblem mark container. Starts fully opaque so the mark
                       is present from the very first frame — no late pop-in. */}
