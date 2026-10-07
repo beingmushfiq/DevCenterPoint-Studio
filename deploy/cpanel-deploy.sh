@@ -507,6 +507,12 @@ else
     else
       warn "AppearanceLinkSeeder failed - run 'php artisan db:seed --class=AppearanceLinkSeeder --force' manually"
     fi
+
+    if run_artisan db:seed --class=SeoMetaSeeder --force; then
+      ok "SEO meta description length corrected"
+    else
+      warn "SeoMetaSeeder failed - run 'php artisan db:seed --class=SeoMetaSeeder --force' manually"
+    fi
   else
     warn "migrations reported an issue (check the database connection in .env)"
   fi

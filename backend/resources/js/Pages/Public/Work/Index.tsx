@@ -20,7 +20,7 @@ export default function WorkIndex(props: WorkIndexProps) {
       meta={{
         title: 'Case Studies — Software Projects & Products | DevCenterPoint',
         description:
-          'Production case studies from DevCenterPoint: ERP platforms, healthcare systems, commerce infrastructure and AI products, with the architecture and measured outcomes behind each.',
+          'Explore DevCenterPoint case studies across ERP, healthcare, commerce and AI products, with the architecture decisions and measured outcomes behind each build.',
         canonicalPath: '/work',
       }}
       extraJsonLd={({ origin, canonicalUrl }) =>

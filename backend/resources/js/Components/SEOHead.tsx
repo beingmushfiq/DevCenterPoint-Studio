@@ -12,7 +12,7 @@ export interface SectionSEOMetadata {
 export const SECTION_METADATA: Record<string, SectionSEOMetadata> = {
   hero: {
     title: 'Custom Software Development Company in Bangladesh — DevCenterPoint',
-    description: 'DevCenterPoint is a custom software development studio in Dhaka, Bangladesh. We build SaaS platforms, web applications, ERP systems and AI-powered software for startups and enterprises worldwide.',
+    description: 'Custom software development studio in Dhaka, Bangladesh. DevCenterPoint builds SaaS platforms, web apps, ERP systems and AI products for global teams.',
     sectionName: 'Home',
     hash: '',
   },
