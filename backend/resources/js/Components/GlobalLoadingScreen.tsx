@@ -114,24 +114,24 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                       faint track — no dots at all. The whole ring rotates, so the
                       motion reads as one continuous, snappy circle.
 
+                      The rotation is driven by the CSS `.animate-loader-spin`
+                      keyframe (not framer-motion). This overlay is server-rendered,
+                      so a JS-driven animation would stay frozen until React
+                      hydrates; a CSS animation starts on the very first paint, which
+                      is what makes the motion feel polished from frame one.
+
                       Rotation budget: one revolution takes 0.4s and the loader's
-                       default 600ms minimum display covers exactly 1.5 revolutions
-                       (360° + 180°) before it dismisses — the "full spin plus a half
-                       spin" the design calls for. */}
-                  <motion.svg
+                      default 600ms minimum display covers exactly 1.5 revolutions
+                      (360° + 180°) before it dismisses — the "full spin plus a half
+                      spin" the design calls for. */}
+                  <svg
                     viewBox="0 0 112 112"
-                    className={`absolute inset-0 w-full h-full pointer-events-none ${
+                    aria-hidden="true"
+                    className={`animate-loader-spin absolute inset-0 w-full h-full pointer-events-none ${
                       isDark
                         ? 'filter drop-shadow-[0_0_6px_rgba(56,189,248,0.55)]'
                         : 'filter drop-shadow-[0_0_6px_rgba(37,99,235,0.35)]'
                     }`}
-                    style={{ transformOrigin: 'center' }}
-                    animate={shouldReduceMotion ? { rotate: 0 } : { rotate: 360 }}
-                    transition={
-                      shouldReduceMotion
-                        ? undefined
-                        : { duration: 0.4, ease: 'linear', repeat: Infinity }
-                    }
                   >
                     {/* Faint full-circle track */}
                     <circle
@@ -153,7 +153,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                       strokeDasharray="72 217"
                       stroke={isDark ? '#38BDF8' : '#2563EB'}
                     />
-                  </motion.svg>
+                  </svg>
 
                   {/* Brand emblem mark container. Starts fully opaque so the mark
                       is present from the very first frame — no late pop-in. */}

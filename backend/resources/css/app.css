@@ -240,6 +240,27 @@ html.light .bg-grid-pattern {
   }
 }
 
+/* Windows 11 style spinner: a solid arc sweeping around a faint track.
+   Driven by CSS (not JS) so the rotation starts on the very first paint —
+   including from the server-rendered markup before hydration — instead of
+   sitting frozen until the JS bundle runs. */
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-loader-spin {
+  transform-origin: center;
+  animation: loader-spin 0.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-loader-spin {
+    animation: none;
+  }
+}
+
 .animate-shimmer {
   position: relative;
   overflow: hidden;
