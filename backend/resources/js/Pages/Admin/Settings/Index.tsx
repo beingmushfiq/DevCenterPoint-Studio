@@ -52,12 +52,12 @@ export default function SettingsIndex({ settings }: Props) {
     hero_thesis_statement: 'DevCenterPoint designs and builds scalable web platforms, cloud architecture, and intelligent systems tailored for businesses that cannot afford technical debt.',
     hero_cta_primary_text: 'Start a Project',
     hero_cta_secondary_text: 'Explore Selected Work',
-    hero_telemetry_badge1_label: 'Cluster',
-    hero_telemetry_badge1_val: '7 Nodes Active',
-    hero_telemetry_badge2_label: 'Uptime SLA',
-    hero_telemetry_badge2_val: '99.99%',
-    hero_telemetry_badge3_label: 'Avg Latency',
-    hero_telemetry_badge3_val: '12ms',
+    hero_telemetry_badge1_label: 'Status',
+    hero_telemetry_badge1_val: 'Operational',
+    hero_telemetry_badge2_label: 'Reliability',
+    hero_telemetry_badge2_val: '99.9%',
+    hero_telemetry_badge3_label: 'Speed',
+    hero_telemetry_badge3_val: 'Ultra-Fast',
     visual_liquid_orbs_enabled: 'true',
     visual_radar_status: 'OPERATIONAL // 100% HEALTH',
     // Developer / Demo Controls (hidden from the public site by default)
@@ -251,15 +251,15 @@ export default function SettingsIndex({ settings }: Props) {
                 <div className="pt-2 flex flex-wrap items-center gap-2 text-[11px] font-mono">
                   <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>{formData['hero_telemetry_badge1_label'] || 'Cluster'}: {formData['hero_telemetry_badge1_val'] || '7 Nodes Active'}</span>
+                    <span>{formData['hero_telemetry_badge1_label'] || 'Status'}: {formData['hero_telemetry_badge1_val'] || 'Operational'}</span>
                   </div>
                   <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 flex items-center gap-1.5">
-                    <span className="text-blue-400 font-bold">{formData['hero_telemetry_badge2_val'] || '99.99%'}</span>
-                    <span>{formData['hero_telemetry_badge2_label'] || 'Uptime SLA'}</span>
+                    <span className="text-blue-400 font-bold">{formData['hero_telemetry_badge2_val'] || '99.9%'}</span>
+                    <span>{formData['hero_telemetry_badge2_label'] || 'Reliability'}</span>
                   </div>
                   <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 flex items-center gap-1.5">
-                    <span className="text-purple-400 font-bold">{formData['hero_telemetry_badge3_val'] || '12ms'}</span>
-                    <span>{formData['hero_telemetry_badge3_label'] || 'Avg Latency'}</span>
+                    <span className="text-purple-400 font-bold">{formData['hero_telemetry_badge3_val'] || 'Ultra-Fast'}</span>
+                    <span>{formData['hero_telemetry_badge3_label'] || 'Speed'}</span>
                   </div>
                 </div>
               </div>
@@ -357,7 +357,7 @@ export default function SettingsIndex({ settings }: Props) {
                       type="text"
                       value={formData['hero_telemetry_badge1_label']}
                       onChange={(e) => handleChange('hero_telemetry_badge1_label', e.target.value)}
-                      placeholder="Cluster"
+                      placeholder="Status"
                       className="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-white"
                     />
                   </div>
@@ -367,7 +367,7 @@ export default function SettingsIndex({ settings }: Props) {
                       type="text"
                       value={formData['hero_telemetry_badge1_val']}
                       onChange={(e) => handleChange('hero_telemetry_badge1_val', e.target.value)}
-                      placeholder="7 Nodes Active"
+                      placeholder="Operational"
                       className="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-white font-mono"
                     />
                   </div>
@@ -382,7 +382,7 @@ export default function SettingsIndex({ settings }: Props) {
                       type="text"
                       value={formData['hero_telemetry_badge2_label']}
                       onChange={(e) => handleChange('hero_telemetry_badge2_label', e.target.value)}
-                      placeholder="Uptime SLA"
+                      placeholder="Reliability"
                       className="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-white"
                     />
                   </div>
@@ -392,7 +392,7 @@ export default function SettingsIndex({ settings }: Props) {
                       type="text"
                       value={formData['hero_telemetry_badge2_val']}
                       onChange={(e) => handleChange('hero_telemetry_badge2_val', e.target.value)}
-                      placeholder="99.99%"
+                      placeholder="99.9%"
                       className="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-white font-mono"
                     />
                   </div>
@@ -407,7 +407,7 @@ export default function SettingsIndex({ settings }: Props) {
                       type="text"
                       value={formData['hero_telemetry_badge3_label']}
                       onChange={(e) => handleChange('hero_telemetry_badge3_label', e.target.value)}
-                      placeholder="Avg Latency"
+                      placeholder="Speed"
                       className="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-white"
                     />
                   </div>
@@ -417,7 +417,7 @@ export default function SettingsIndex({ settings }: Props) {
                       type="text"
                       value={formData['hero_telemetry_badge3_val']}
                       onChange={(e) => handleChange('hero_telemetry_badge3_val', e.target.value)}
-                      placeholder="12ms"
+                      placeholder="Ultra-Fast"
                       className="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-white font-mono"
                     />
                   </div>

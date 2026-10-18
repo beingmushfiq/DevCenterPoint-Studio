@@ -18,12 +18,12 @@ export const Hero: React.FC = () => {
   );
   const ctaPrimary = cms.getSetting('hero_cta_primary_text', 'Start a Project');
   const ctaSecondary = cms.getSetting('hero_cta_secondary_text', 'Explore Selected Work');
-  const tel1Label = cms.getSetting('hero_telemetry_badge1_label', 'Cluster');
-  const tel1Val = cms.getSetting('hero_telemetry_badge1_val', '7 Nodes Active');
-  const tel2Label = cms.getSetting('hero_telemetry_badge2_label', 'Uptime SLA');
-  const tel2Val = cms.getSetting('hero_telemetry_badge2_val', '99.99%');
-  const tel3Label = cms.getSetting('hero_telemetry_badge3_label', 'Avg Latency');
-  const tel3Val = cms.getSetting('hero_telemetry_badge3_val', '12ms');
+  const tel1Label = cms.getSetting('hero_telemetry_badge1_label', 'Status');
+  const tel1Val = cms.getSetting('hero_telemetry_badge1_val', 'Operational');
+  const tel2Label = cms.getSetting('hero_telemetry_badge2_label', 'Reliability');
+  const tel2Val = cms.getSetting('hero_telemetry_badge2_val', '99.9%');
+  const tel3Label = cms.getSetting('hero_telemetry_badge3_label', 'Speed');
+  const tel3Val = cms.getSetting('hero_telemetry_badge3_val', 'Ultra-Fast');
   const orbsEnabled = cms.getSetting('visual_liquid_orbs_enabled', 'true') !== 'false';
   const whatsappNumber = cms.getSetting('whatsapp_number', '8801988383323').replace(/[^0-9]/g, '');
   const whatsappMessage = encodeURIComponent(
