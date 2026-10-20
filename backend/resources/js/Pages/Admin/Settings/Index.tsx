@@ -54,6 +54,7 @@ export default function SettingsIndex({ settings }: Props) {
     hero_cta_primary_text: 'Start a Project',
     hero_cta_secondary_text: 'Explore Selected Work',
     hero_video_url: '/launch_video.mp4',
+    hero_video_mobile_url: '/launch_video_mobile.mp4',
     hero_video_enabled: 'true',
     lenis_smooth_scroll_enabled: 'true',
     hero_telemetry_badge1_label: 'Status',
@@ -109,6 +110,7 @@ export default function SettingsIndex({ settings }: Props) {
       hero_cta_primary_text: 'Start a Project',
       hero_cta_secondary_text: 'Explore Selected Work',
       hero_video_url: '/launch_video.mp4',
+      hero_video_mobile_url: '/launch_video_mobile.mp4',
       hero_video_enabled: 'true',
       lenis_smooth_scroll_enabled: 'true',
       booking_url: 'https://cal.com/devcenterpoint',
@@ -593,7 +595,7 @@ export default function SettingsIndex({ settings }: Props) {
                 </div>
 
                 <div>
-                  <label className="text-slate-400 font-semibold block mb-1">Hero Video Asset URL / Path</label>
+                  <label className="text-slate-400 font-semibold block mb-1">Hero Desktop Video Asset URL / Path</label>
                   <input
                     type="text"
                     value={formData['hero_video_url']}
@@ -602,7 +604,21 @@ export default function SettingsIndex({ settings }: Props) {
                     className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-blue-500"
                   />
                   <p className="text-[11px] text-slate-500 mt-1">
-                    Path to local MP4 asset in public directory or high-speed CDN video stream URL.
+                    Desktop ambient video asset in public directory or high-speed CDN video stream URL.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Hero Mobile Video Asset URL / Path</label>
+                  <input
+                    type="text"
+                    value={formData['hero_video_mobile_url']}
+                    onChange={(e) => handleChange('hero_video_mobile_url', e.target.value)}
+                    placeholder="/launch_video_mobile.mp4"
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-blue-500"
+                  />
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Mobile-optimized vertical/compact video asset (serves screens ≤ 768px).
                   </p>
                 </div>
 

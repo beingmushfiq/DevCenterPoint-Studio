@@ -36,6 +36,23 @@ export const Hero: React.FC = () => {
   );
   const ctaPrimary = cms.getSetting('hero_cta_primary_text', 'Start a Project');
   const ctaSecondary = cms.getSetting('hero_cta_secondary_text', 'Explore Selected Work');
+  const heroVideoUrl = cms.getSetting('hero_video_url', '/launch_video.mp4');
+  const heroVideoMobileUrl = cms.getSetting('hero_video_mobile_url', '/launch_video_mobile.mp4');
+  const heroVideoEnabled = cms.getSetting('hero_video_enabled', 'true') === 'true';
+
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const activeVideoSrc = isMobile ? heroVideoMobileUrl : heroVideoUrl;
+
   const tel1Label = cms.getSetting('hero_telemetry_badge1_label', 'Status');
   const tel1Val = cms.getSetting('hero_telemetry_badge1_val', 'Operational');
   const tel2Label = cms.getSetting('hero_telemetry_badge2_label', 'Reliability');
@@ -50,13 +67,13 @@ export const Hero: React.FC = () => {
   const bookingLabel = cms.getSetting('booking_cta_label', 'Book a Consultation');
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && heroVideoEnabled) {
       videoRef.current.play().catch(() => {
         // Autoplay may be blocked by browser policy without user gesture
         setIsPlaying(false);
       });
     }
-  }, []);
+  }, [activeVideoSrc, heroVideoEnabled]);
 
   const toggleVideoPlayback = () => {
     soundEngine.playClick();
@@ -118,20 +135,24 @@ export const Hero: React.FC = () => {
           1. CINEMATIC VIDEO BACKGROUND LAYER
           ========================================================================= */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none select-none">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted={isMuted}
-          playsInline
-          preload="auto"
-          onLoadedData={() => setVideoLoaded(true)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            videoLoaded ? 'opacity-85' : 'opacity-0'
-          }`}
-        >
-          <source src="/launch_video.mp4" type="video/mp4" />
-        </video>
+        {heroVideoEnabled && (
+          <video
+            key={activeVideoSrc}
+            ref={videoRef}
+            autoPlay
+            loop
+            muted={isMuted}
+            playsInline
+            preload="auto"
+            onLoadedData={() => setVideoLoaded(true)}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              videoLoaded ? 'opacity-85' : 'opacity-0'
+            }`}
+          >
+            <source src={heroVideoMobileUrl} type="video/mp4" media="(max-width: 768px)" />
+            <source src={heroVideoUrl} type="video/mp4" />
+          </video>
+        )}
 
         {/* Multi-layered cinematic glass scrim and vignette */}
         {/* Layer A: High-density dark tint for pristine text contrast */}
@@ -157,28 +178,30 @@ export const Hero: React.FC = () => {
       {/* =========================================================================
           2. FLOATING VIDEO CONTROL CHIP (Discrete Cinema Pill)
           ========================================================================= */}
-      <div className="absolute top-24 right-4 sm:right-8 z-20 flex items-center gap-2">
-        <button
-          type="button"
-          onClick={toggleVideoPlayback}
-          aria-label={isPlaying ? 'Pause background cinema' : 'Play background cinema'}
-          title={isPlaying ? 'Pause background cinema' : 'Play background cinema'}
-          className="px-3 py-1.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 text-white hover:text-blue-300 text-[11px] font-mono flex items-center gap-1.5 transition-all duration-200 cursor-pointer backdrop-blur-xl shadow-lg shadow-black/40"
-        >
-          {isPlaying ? <Pause className="w-3 h-3 text-blue-400" /> : <Play className="w-3 h-3 text-blue-400 fill-current" />}
-          <span className="hidden sm:inline font-semibold">{isPlaying ? 'Cinema Active' : 'Paused'}</span>
-        </button>
+      {heroVideoEnabled && (
+        <div className="absolute top-24 right-4 sm:right-8 z-20 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleVideoPlayback}
+            aria-label={isPlaying ? 'Pause background cinema' : 'Play background cinema'}
+            title={isPlaying ? 'Pause background cinema' : 'Play background cinema'}
+            className="px-3 py-1.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 text-white hover:text-blue-300 text-[11px] font-mono flex items-center gap-1.5 transition-all duration-200 cursor-pointer backdrop-blur-xl shadow-lg shadow-black/40"
+          >
+            {isPlaying ? <Pause className="w-3 h-3 text-blue-400" /> : <Play className="w-3 h-3 text-blue-400 fill-current" />}
+            <span className="hidden sm:inline font-semibold">{isPlaying ? 'Cinema Active' : 'Paused'}</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={toggleVideoAudio}
-          aria-label={isMuted ? 'Unmute video ambient audio' : 'Mute video audio'}
-          title={isMuted ? 'Unmute video audio' : 'Mute video audio'}
-          className="p-1.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 text-white hover:text-emerald-400 text-[11px] transition-all duration-200 cursor-pointer backdrop-blur-xl shadow-lg shadow-black/40"
-        >
-          {isMuted ? <VolumeX className="w-3.5 h-3.5 text-slate-400" /> : <Volume2 className="w-3.5 h-3.5 text-emerald-400" />}
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={toggleVideoAudio}
+            aria-label={isMuted ? 'Unmute video ambient audio' : 'Mute video audio'}
+            title={isMuted ? 'Unmute video audio' : 'Mute video audio'}
+            className="p-1.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 text-white hover:text-emerald-400 text-[11px] transition-all duration-200 cursor-pointer backdrop-blur-xl shadow-lg shadow-black/40"
+          >
+            {isMuted ? <VolumeX className="w-3.5 h-3.5 text-slate-400" /> : <Volume2 className="w-3.5 h-3.5 text-emerald-400" />}
+          </button>
+        </div>
+      )}
 
       {/* =========================================================================
           3. MAIN HERO COCKPIT & MESSAGING (Centered for Maximum Authority)

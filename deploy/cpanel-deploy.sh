@@ -317,7 +317,7 @@ done
 # These are referenced by absolute URL (e.g. /logo-horizontal.svg) in the React components.
 for entry in favicon.ico favicon.svg apple-touch-icon.png robots.txt llms.txt llms-full.txt \
              logo.svg logo-horizontal.svg logo-mark.svg logo-mark-white.svg \
-             og-image.svg og-image.png google3dd4624b67199596.html launch_video.mp4; do
+             og-image.svg og-image.png google3dd4624b67199596.html launch_video.mp4 launch_video_mobile.mp4; do
   if [ -f "$APP_SRC/public/$entry" ]; then
     sync_file "$APP_SRC/public/$entry" "$WEBROOT/$entry"
     ok "copied $entry"
