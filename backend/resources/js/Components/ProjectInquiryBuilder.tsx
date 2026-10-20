@@ -36,28 +36,40 @@ interface ProjectTypeOption {
 
 const PROJECT_TYPE_OPTIONS: ProjectTypeOption[] = [
   {
-    id: 'SaaS / Web Product',
-    label: 'Web & SaaS Platform',
-    description: 'Modern customer portals, web apps & high-converting platforms',
+    id: 'Custom Software & Tools',
+    label: 'Custom Software',
+    description: 'Bespoke portals, operational engines & legacy modernization',
+    icon: Layers,
+  },
+  {
+    id: 'Business Automation',
+    label: 'Business Automation',
+    description: 'Workflow triggers, automated data sync & zero human babysitting',
+    icon: Sparkles,
+  },
+  {
+    id: 'E-Commerce Systems',
+    label: 'E-Commerce Systems',
+    description: 'Headless storefronts, real-time inventory sync & checkout logic',
     icon: Globe,
   },
   {
-    id: 'Mobile Application',
-    label: 'Mobile Application',
-    description: 'Native-feel iOS & Android apps with offline sync & push alerts',
-    icon: Smartphone,
+    id: 'SaaS Platform Core',
+    label: 'SaaS & Customer Portals',
+    description: 'Multi-tenant architecture, subscription billing & RBAC controls',
+    icon: Globe,
   },
   {
-    id: 'AI & Machine Learning',
-    label: 'AI & Smart Workflows',
-    description: 'Intelligent automation, AI copilots & data intelligence',
+    id: 'AI & Intelligent Systems',
+    label: 'AI & Intelligent Systems',
+    description: 'Applied ML inference pipelines, RAG agents & explainable models',
     icon: Cpu,
   },
   {
-    id: 'Enterprise ERP / POS',
-    label: 'Enterprise Modernization',
-    description: 'Legacy refactoring, performance scaling & dedicated squad',
-    icon: Layers,
+    id: 'Mobile & Cross-Platform',
+    label: 'Mobile & Web Apps',
+    description: 'High-density reactive interfaces with offline-first local sync',
+    icon: Smartphone,
   },
 ];
 

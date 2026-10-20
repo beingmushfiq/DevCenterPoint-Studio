@@ -38,7 +38,10 @@ Write-Host ""
 if ($LASTEXITCODE -ne 0) { throw "Packager failed with exit code $LASTEXITCODE" }
 
 $uploadNames = @()
-if ($Target -eq 'Frontend' -or $Target -eq 'All') { $uploadNames += "public_html.zip" }
+if ($Target -eq 'Frontend' -or $Target -eq 'All') { 
+    $uploadNames += "public_html.zip"
+    $uploadNames += "ssr.zip"
+}
 if ($Target -eq 'Vendor'   -or $Target -eq 'All') { $uploadNames += "vendor.zip" }
 
 foreach ($name in $uploadNames) {

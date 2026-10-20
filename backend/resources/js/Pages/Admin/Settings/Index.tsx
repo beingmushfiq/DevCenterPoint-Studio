@@ -45,13 +45,17 @@ export default function SettingsIndex({ settings }: Props) {
     founder_portfolio_url: 'https://mushfiq.devcenterpoint.com',
     studio_location: 'Dhaka, Bangladesh // Remote Worldwide',
     booking_url: 'https://cal.com/devcenterpoint',
-    // Hero & Atmosphere Settings
-    hero_badge_text: 'Engineering Studio • Custom Systems & AI',
-    hero_headline_line1: 'Digital products,',
-    hero_headline_line2_gradient: 'engineered properly.',
-    hero_thesis_statement: 'DevCenterPoint designs and builds scalable web platforms, cloud architecture, and intelligent systems tailored for businesses that cannot afford technical debt.',
+    booking_cta_label: 'Book a Consultation',
+    // Hero & Cinema Settings (Strategic Architecture Plan Locked)
+    hero_badge_text: 'TECHNOLOGY COMPANY • BUSINESS AUTOMATION & AI',
+    hero_headline_line1: 'We turn inefficient',
+    hero_headline_line2_gradient: 'business processes into software.',
+    hero_thesis_statement: 'DevCenterPoint builds custom software, business automation systems, SaaS products, and intelligent digital solutions for businesses and organizations.',
     hero_cta_primary_text: 'Start a Project',
     hero_cta_secondary_text: 'Explore Selected Work',
+    hero_video_url: '/launch_video.mp4',
+    hero_video_enabled: 'true',
+    lenis_smooth_scroll_enabled: 'true',
     hero_telemetry_badge1_label: 'Status',
     hero_telemetry_badge1_val: 'Operational',
     hero_telemetry_badge2_label: 'Reliability',
@@ -93,6 +97,23 @@ export default function SettingsIndex({ settings }: Props) {
 
   const handleChange = (key: string, value: string) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const applyStrategicNorthStar = () => {
+    setFormData((prev) => ({
+      ...prev,
+      hero_badge_text: 'TECHNOLOGY COMPANY • BUSINESS AUTOMATION & AI',
+      hero_headline_line1: 'We turn inefficient',
+      hero_headline_line2_gradient: 'business processes into software.',
+      hero_thesis_statement: 'DevCenterPoint builds custom software, business automation systems, SaaS products, and intelligent digital solutions for businesses and organizations.',
+      hero_cta_primary_text: 'Start a Project',
+      hero_cta_secondary_text: 'Explore Selected Work',
+      hero_video_url: '/launch_video.mp4',
+      hero_video_enabled: 'true',
+      lenis_smooth_scroll_enabled: 'true',
+      booking_url: 'https://cal.com/devcenterpoint',
+      booking_cta_label: 'Book a Consultation',
+    }));
   };
 
   const handleSave = (e: React.FormEvent) => {
@@ -159,6 +180,63 @@ export default function SettingsIndex({ settings }: Props) {
           </div>
         </div>
 
+        {/* Public Website Routes Quick-Sync Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-[#0a0e18] border border-white/10 rounded-2xl text-xs">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="text-slate-300 font-mono font-semibold text-[11px] uppercase tracking-wider">
+              Live Front Routes:
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-blue-600/20 hover:text-blue-400 border border-white/10 text-slate-300 text-[11px] font-mono flex items-center gap-1 transition-colors"
+            >
+              <span>Home (/)</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
+              href="/services"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-emerald-600/20 hover:text-emerald-400 border border-white/10 text-slate-300 text-[11px] font-mono flex items-center gap-1 transition-colors"
+            >
+              <span>Services (/services)</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
+              href="/work"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-purple-600/20 hover:text-purple-400 border border-white/10 text-slate-300 text-[11px] font-mono flex items-center gap-1 transition-colors"
+            >
+              <span>Work (/work)</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
+              href="/blog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-cyan-600/20 hover:text-cyan-400 border border-white/10 text-slate-300 text-[11px] font-mono flex items-center gap-1 transition-colors"
+            >
+              <span>Blog (/blog)</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
+              href="/#contact"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-amber-600/20 hover:text-amber-400 border border-white/10 text-slate-300 text-[11px] font-mono flex items-center gap-1 transition-colors"
+            >
+              <span>Inquiry (#contact)</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+
         {/* Tab Navigation Navigation */}
         <div className="flex items-center gap-2 border-b border-white/10 overflow-x-auto no-scrollbar pb-1">
           {tabs.map((tab) => {
@@ -187,6 +265,21 @@ export default function SettingsIndex({ settings }: Props) {
           <div className="space-y-6">
             {/* Live Interactive Visual Preview Card */}
             <div className="backdrop-blur-2xl bg-[#0c1222]/90 border border-white/15 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-2xl">
+              {/* Optional Background Video Preview Simulation */}
+              {formData['hero_video_enabled'] !== 'false' && (
+                <div className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden">
+                  <video
+                    src={formData['hero_video_url'] || '/launch_video.mp4'}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-[#0c1222] via-[#0c1222]/60 to-transparent" />
+                </div>
+              )}
+
               {/* Optional Simulated Ambient Liquid Orbs */}
               {formData['visual_liquid_orbs_enabled'] !== 'false' && (
                 <>
@@ -197,16 +290,31 @@ export default function SettingsIndex({ settings }: Props) {
               )}
 
               <div className="relative z-10 space-y-5">
-                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
                     <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300">
                       Live Front-End Hero Preview
                     </span>
+                    {formData['hero_video_enabled'] !== 'false' && (
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 flex items-center gap-1">
+                        <Play className="w-2.5 h-2.5 fill-current" /> Video Active
+                      </span>
+                    )}
                   </div>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/25">
-                    Realtime Feedback
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={applyStrategicNorthStar}
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[11px] font-bold shadow-md shadow-blue-500/20 transition-all cursor-pointer border border-white/20"
+                    >
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>Apply Strategic North Star</span>
+                    </button>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/25">
+                      Realtime Feedback
+                    </span>
+                  </div>
                 </div>
 
                 {/* Eyebrow Badge Preview */}
@@ -217,33 +325,41 @@ export default function SettingsIndex({ settings }: Props) {
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                     </span>
                     <span className="text-[11px] font-mono font-bold uppercase tracking-wider bg-linear-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-                      {formData['hero_badge_text'] || 'Engineering Studio • Custom Systems & AI'}
+                      {formData['hero_badge_text'] || 'TECHNOLOGY COMPANY • BUSINESS AUTOMATION & AI'}
                     </span>
                   </div>
                 </div>
 
                 {/* Headline Preview */}
-                <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
-                  {formData['hero_headline_line1'] || 'Digital products,'}{' '}
+                <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight font-display">
+                  {formData['hero_headline_line1'] || 'We turn inefficient'}{' '}
                   <span className="bg-linear-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-                    {formData['hero_headline_line2_gradient'] || 'engineered properly.'}
+                    {formData['hero_headline_line2_gradient'] || 'business processes into software.'}
                   </span>
                 </div>
 
                 {/* Thesis Preview */}
                 <p className="text-xs sm:text-sm text-slate-300/90 leading-relaxed max-w-2xl font-normal">
-                  {formData['hero_thesis_statement'] || 'DevCenterPoint designs and builds scalable web platforms, cloud architecture, and intelligent systems tailored for businesses that cannot afford technical debt.'}
+                  {formData['hero_thesis_statement'] || 'DevCenterPoint builds custom software, business automation systems, SaaS products, and intelligent digital solutions for businesses and organizations.'}
                 </p>
 
-                {/* Buttons Preview */}
+                {/* 4 Distinct CTAs Preview */}
                 <div className="flex flex-wrap items-center gap-3 pt-1">
                   <div className="px-5 py-2.5 rounded-full bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-xs font-bold shadow-lg shadow-blue-500/25 flex items-center gap-1.5 border border-white/20">
                     <span>{formData['hero_cta_primary_text'] || 'Start a Project'}</span>
                     <ExternalLink className="w-3 h-3" />
                   </div>
+                  <div className="px-5 py-2.5 rounded-full bg-linear-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 border border-amber-500/40 text-amber-200 text-xs font-semibold backdrop-blur-md flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                    <span>{formData['booking_cta_label'] || 'Book a Consultation'}</span>
+                  </div>
                   <div className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-white text-xs font-semibold backdrop-blur-md flex items-center gap-1.5">
                     <Play className="w-3 h-3 text-blue-400 fill-current" />
                     <span>{formData['hero_cta_secondary_text'] || 'Explore Selected Work'}</span>
+                  </div>
+                  <div className="px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-mono font-medium flex items-center gap-1.5">
+                    <MessageSquare className="w-3 h-3 text-emerald-400" />
+                    <span>WhatsApp Direct</span>
                   </div>
                 </div>
 
@@ -458,6 +574,50 @@ export default function SettingsIndex({ settings }: Props) {
                   />
                   <p className="text-[11px] text-slate-500 mt-1">
                     Displayed inside the pill in the floating capsule navigation bar.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Hero Cinematic Background Video</label>
+                  <select
+                    value={formData['hero_video_enabled']}
+                    onChange={(e) => handleChange('hero_video_enabled', e.target.value)}
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="true">Enabled (1080p Ambient Loop with Cinema Audio Controller)</option>
+                    <option value="false">Disabled (Minimalist Neural Mesh Canvas Only)</option>
+                  </select>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Plays /launch_video.mp4 with audio toggle chip, dark glass scrim overlay, and bottom gradient blend.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Hero Video Asset URL / Path</label>
+                  <input
+                    type="text"
+                    value={formData['hero_video_url']}
+                    onChange={(e) => handleChange('hero_video_url', e.target.value)}
+                    placeholder="/launch_video.mp4"
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-blue-500"
+                  />
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Path to local MP4 asset in public directory or high-speed CDN video stream URL.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Universal Lenis Smooth Scroll</label>
+                  <select
+                    value={formData['lenis_smooth_scroll_enabled']}
+                    onChange={(e) => handleChange('lenis_smooth_scroll_enabled', e.target.value)}
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="true">Enabled (Universal Smooth Inertia on All Public Pages)</option>
+                    <option value="false">Disabled (Native Browser Scroll)</option>
+                  </select>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Inertia scroll with automatic reset on Inertia router navigation and prefers-reduced-motion honor.
                   </p>
                 </div>
 

@@ -10,6 +10,7 @@ import { CustomCursor } from '../../Components/CustomCursor';
 import { BackToTop } from '../../Components/BackToTop';
 import { GlobalLoadingScreen } from '../../Components/GlobalLoadingScreen';
 import { MobileBottomActionBar } from '../../Components/MobileBottomActionBar';
+import { initSmoothScroll } from '../../lib/lenis';
 
 // Below-the-fold sections are code-split so the initial homepage payload stays small.
 const Positioning = React.lazy(() =>
@@ -117,6 +118,10 @@ export default function Home(props: CmsData) {
   const [isSandboxOpen, setIsSandboxOpen] = React.useState(false);
 
   const handleMountComplete = React.useCallback(() => setIsSiteLoaded(true), []);
+
+  React.useEffect(() => {
+    initSmoothScroll();
+  }, []);
 
   return (
     <CmsProvider value={props}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Head, router } from '@inertiajs/react';
 import AdminLayout from '../../../Layouts/AdminLayout';
-import { Wrench, Edit2, CheckCircle2, X } from 'lucide-react';
+import { Wrench, Edit2, CheckCircle2, X, ExternalLink, Globe } from 'lucide-react';
 
 interface Capability {
   id: number;
@@ -65,13 +65,29 @@ export default function CapabilitiesIndex({ capabilities }: Props) {
   return (
     <AdminLayout title="Capabilities CMS">
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-            <Wrench className="w-6 h-6 text-emerald-400" /> Capabilities & Services CMS
-          </h1>
-          <p className="text-slate-400 text-sm mt-1">
-            Curate service offerings, deliverables bullets, tech badges, and order of appearance.
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+          <div>
+            <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 mb-2">
+              <Globe className="w-3 h-3 text-emerald-400" />
+              Public Route: /services/{'{slug}'}
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+              <Wrench className="w-6 h-6 text-emerald-400" /> Capabilities & Services CMS
+            </h1>
+            <p className="text-slate-400 text-sm mt-1">
+              Curate service offerings, deliverables bullets, tech badges, and order of appearance.
+            </p>
+          </div>
+
+          <a
+            href="/services"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all self-start sm:self-auto cursor-pointer"
+          >
+            <ExternalLink className="w-4 h-4" />
+            <span>View Public Services Archive (/services)</span>
+          </a>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -109,10 +125,22 @@ export default function CapabilitiesIndex({ capabilities }: Props) {
               </div>
 
               <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs">
-                <span className="text-slate-500 font-mono">Order: {cap.display_order}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 font-mono">Order: {cap.display_order}</span>
+                  <a
+                    href={`/services/${cap.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-400 hover:text-emerald-300 hover:underline"
+                    title={`Open /services/${cap.slug}`}
+                  >
+                    <span>/{cap.slug}</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
                 <button
                   onClick={() => openEdit(cap)}
-                  className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white rounded-lg flex items-center gap-1.5 transition-colors"
+                  className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Edit2 className="w-3.5 h-3.5" /> Edit Capability
                 </button>
@@ -125,8 +153,19 @@ export default function CapabilitiesIndex({ capabilities }: Props) {
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-[#0e131d] border border-white/10 rounded-2xl max-w-lg w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <h2 className="text-base font-bold text-white">Edit Capability: {editing.title}</h2>
-                <button onClick={() => setEditing(null)} className="text-slate-400 hover:text-white">
+                <div>
+                  <h2 className="text-base font-bold text-white">Edit Capability: {editing.title}</h2>
+                  <a
+                    href={`/services/${editing.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-400 hover:underline mt-0.5"
+                  >
+                    <span>/services/{editing.slug}</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+                <button onClick={() => setEditing(null)} className="text-slate-400 hover:text-white cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
               </div>

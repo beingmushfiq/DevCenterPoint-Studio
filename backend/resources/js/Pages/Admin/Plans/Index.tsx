@@ -19,6 +19,7 @@ import {
   DollarSign,
   AlertTriangle,
   Check,
+  ExternalLink,
 } from 'lucide-react';
 
 export interface PlanItem {
@@ -236,6 +237,15 @@ export default function PlansIndex({
           </div>
 
           <div className="flex items-center gap-3">
+            <a
+              href="/#pricing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+              <span>Preview on Site (/#pricing)</span>
+            </a>
             <button
               onClick={openCreate}
               className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/20 transition-all cursor-pointer"

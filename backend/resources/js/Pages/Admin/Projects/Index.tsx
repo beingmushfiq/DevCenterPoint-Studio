@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Head, router } from '@inertiajs/react';
 import AdminLayout from '../../../Layouts/AdminLayout';
-import { Briefcase, Plus, Edit2, Trash2, CheckCircle2, Eye, X } from 'lucide-react';
+import { Briefcase, Plus, Edit2, Trash2, CheckCircle2, Eye, X, ExternalLink, Globe } from 'lucide-react';
 
 interface Project {
   id: number;
@@ -29,6 +29,35 @@ interface Project {
 interface Props {
   projects: Project[];
 }
+
+const getTaxonomyTier = (category: string, title: string) => {
+  const cat = (category || '').toLowerCase();
+  const t = (title || '').toLowerCase();
+  if (
+    cat.includes('enterprise') ||
+    cat.includes('custom') ||
+    cat.includes('logistics') ||
+    cat.includes('system') ||
+    cat.includes('infrastructure') ||
+    cat.includes('government') ||
+    t.includes('tradeflow') ||
+    t.includes('cloudgov') ||
+    t.includes('healthpulse')
+  ) {
+    return { name: 'Company Delivery', badge: 'bg-blue-500/15 text-blue-300 border-blue-500/30' };
+  }
+  if (
+    cat.includes('saas') ||
+    cat.includes('product') ||
+    cat.includes('developer tool') ||
+    cat.includes('platform') ||
+    t.includes('devdock') ||
+    t.includes('microsaas')
+  ) {
+    return { name: 'Commercial Product', badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' };
+  }
+  return { name: 'Founder Foundation', badge: 'bg-purple-500/15 text-purple-300 border-purple-500/30' };
+};
 
 export default function ProjectsIndex({ projects }: Props) {
   const [editingProject, setEditingProject] = useState<Project | null>(null);
@@ -103,8 +132,12 @@ export default function ProjectsIndex({ projects }: Props) {
   return (
     <AdminLayout title="Projects CMS">
       <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
           <div>
+            <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/20 mb-2">
+              <Globe className="w-3 h-3 text-cyan-400" />
+              Public Route: /work/{'{slug}'}
+            </div>
             <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
               <Briefcase className="w-6 h-6 text-cyan-400" /> Case Studies & Portfolio CMS
             </h1>
@@ -113,85 +146,116 @@ export default function ProjectsIndex({ projects }: Props) {
             </p>
           </div>
 
-          <button
-            onClick={() => {
-              setEditingProject(null);
-              setIsCreating(true);
-            }}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all"
-          >
-            <Plus className="w-4 h-4" /> Add Case Study
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href="/work"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-2 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-cyan-400" />
+              <span>View Public Archive (/work)</span>
+            </a>
+            <button
+              onClick={() => {
+                setEditingProject(null);
+                setIsCreating(true);
+              }}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
+            >
+              <Plus className="w-4 h-4" /> Add Case Study
+            </button>
+          </div>
         </div>
 
         {/* Project Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((proj) => (
-            <div
-              key={proj.id}
-              className="bg-[#0c1017] border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-all flex flex-col justify-between"
-            >
-              <div>
-                <div className="h-44 w-full bg-slate-900 relative overflow-hidden">
-                  <img
-                    src={proj.thumbnail_url}
-                    alt={proj.title}
-                    className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
-                  />
-                  <div className="absolute top-3 right-3 flex items-center gap-1.5">
-                    {proj.is_featured && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                        Featured
+          {projects.map((proj) => {
+            const tier = getTaxonomyTier(proj.category, proj.title);
+            return (
+              <div
+                key={proj.id}
+                className="bg-[#0c1017] border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="h-44 w-full bg-slate-900 relative overflow-hidden">
+                    <img
+                      src={proj.thumbnail_url}
+                      alt={proj.title}
+                      className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-mono font-bold uppercase tracking-wider border backdrop-blur-md ${tier.badge}`}>
+                        {tier.name}
                       </span>
-                    )}
-                    <span
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                        proj.is_published
-                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                          : 'bg-slate-700 text-slate-300'
-                      }`}
+                    </div>
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                      {proj.is_featured && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                          Featured
+                        </span>
+                      )}
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                          proj.is_published
+                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                            : 'bg-slate-700 text-slate-300'
+                        }`}
+                      >
+                        {proj.is_published ? 'Published' : 'Draft'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-5">
+                    <span className="text-[11px] font-mono text-cyan-400 uppercase tracking-wider">{proj.category}</span>
+                    <h3 className="text-base font-bold text-white mt-1">{proj.title}</h3>
+                    <p className="text-xs text-slate-400 mt-2 line-clamp-2">{proj.overview}</p>
+
+                    <div className="flex flex-wrap gap-1.5 mt-4">
+                      {proj.tech_stack.slice(0, 4).map((tech) => (
+                        <span key={tech} className="px-2 py-0.5 rounded-md bg-white/5 text-[10px] text-slate-300 border border-white/5">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="px-5 py-3 border-t border-white/10 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-500 font-mono">Order: {proj.display_order}</span>
+                    <a
+                      href={`/work/${proj.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-mono text-cyan-400 hover:text-cyan-300 hover:underline"
+                      title={`Open /work/${proj.slug}`}
                     >
-                      {proj.is_published ? 'Published' : 'Draft'}
-                    </span>
+                      <span>/{proj.slug}</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
                   </div>
-                </div>
-
-                <div className="p-5">
-                  <span className="text-[11px] font-mono text-cyan-400 uppercase tracking-wider">{proj.category}</span>
-                  <h3 className="text-base font-bold text-white mt-1">{proj.title}</h3>
-                  <p className="text-xs text-slate-400 mt-2 line-clamp-2">{proj.overview}</p>
-
-                  <div className="flex flex-wrap gap-1.5 mt-4">
-                    {proj.tech_stack.slice(0, 4).map((tech) => (
-                      <span key={tech} className="px-2 py-0.5 rounded-md bg-white/5 text-[10px] text-slate-300 border border-white/5">
-                        {tech}
-                      </span>
-                    ))}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => openEditModal(proj)}
+                      className="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+                      title="Edit"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(proj.id)}
+                      className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
+                      title="Delete"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </div>
-
-              <div className="px-5 py-3 border-t border-white/10 flex items-center justify-between text-xs">
-                <span className="text-slate-500 font-mono">Order: {proj.display_order}</span>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => openEditModal(proj)}
-                    className="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-                    title="Edit"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(proj.id)}
-                    className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Create / Edit Modal */}
@@ -199,15 +263,28 @@ export default function ProjectsIndex({ projects }: Props) {
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
             <div className="bg-[#0e131d] border border-white/10 rounded-2xl max-w-2xl w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <h2 className="text-lg font-bold text-white">
-                  {editingProject ? `Edit Case Study: ${editingProject.title}` : 'Add New Case Study'}
-                </h2>
+                <div>
+                  <h2 className="text-lg font-bold text-white">
+                    {editingProject ? `Edit Case Study: ${editingProject.title}` : 'Add New Case Study'}
+                  </h2>
+                  {editingProject && (
+                    <a
+                      href={`/work/${editingProject.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-mono text-cyan-400 hover:underline mt-0.5"
+                    >
+                      <span>/work/{editingProject.slug}</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
                 <button
                   onClick={() => {
                     setEditingProject(null);
                     setIsCreating(false);
                   }}
-                  className="text-slate-400 hover:text-white"
+                  className="text-slate-400 hover:text-white cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>

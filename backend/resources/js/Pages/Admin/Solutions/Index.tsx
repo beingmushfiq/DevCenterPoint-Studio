@@ -194,12 +194,23 @@ export default function SolutionsIndex({ solutions, showSolutionStudioOnSite }: 
             </p>
           </div>
 
-          <button
-            onClick={openCreate}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all self-start sm:self-auto"
-          >
-            <Plus className="w-4 h-4" /> Add Solution Product
-          </button>
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <a
+              href="/#solutions"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-2 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+              <span>Preview on Site (/#solutions)</span>
+            </a>
+            <button
+              onClick={openCreate}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
+            >
+              <Plus className="w-4 h-4" /> Add Solution Product
+            </button>
+          </div>
         </div>
 
         {/* Master Section Toggle */}

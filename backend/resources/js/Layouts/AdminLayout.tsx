@@ -146,11 +146,58 @@ export default function AdminLayout({ title, children }: Props) {
 
         {/* User Profile & Actions */}
         <div className="p-4 border-t border-white/10 space-y-2">
+          <div className="flex items-center justify-between px-1 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500">
+            <span>Front Website</span>
+            <span className="text-emerald-400 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Live
+            </span>
+          </div>
+
+          <div className="grid grid-cols-4 gap-1 text-[10px] font-mono text-center">
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-1 px-1 rounded-lg bg-white/5 hover:bg-blue-500/20 text-slate-300 hover:text-blue-400 border border-white/5 transition-colors"
+              title="Home (/)"
+            >
+              Home
+            </a>
+            <a
+              href="/services"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-1 px-1 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-400 border border-white/5 transition-colors"
+              title="Services (/services)"
+            >
+              Serv
+            </a>
+            <a
+              href="/work"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-1 px-1 rounded-lg bg-white/5 hover:bg-purple-500/20 text-slate-300 hover:text-purple-400 border border-white/5 transition-colors"
+              title="Work (/work)"
+            >
+              Work
+            </a>
+            <a
+              href="/blog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-1 px-1 rounded-lg bg-white/5 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-400 border border-white/5 transition-colors"
+              title="Blog (/blog)"
+            >
+              Blog
+            </a>
+          </div>
+
           <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between px-3.5 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10"
+            className="flex items-center justify-between px-3.5 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 cursor-pointer"
           >
             <span className="flex items-center gap-2">
               <ExternalLink className="w-3.5 h-3.5 text-blue-400" /> View Public Site

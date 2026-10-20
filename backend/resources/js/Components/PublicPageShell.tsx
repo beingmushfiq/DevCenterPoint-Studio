@@ -8,6 +8,7 @@ import { CustomCursor } from './CustomCursor';
 import { BackToTop } from './BackToTop';
 import { GlobalLoadingScreen } from './GlobalLoadingScreen';
 import { MobileBottomActionBar } from './MobileBottomActionBar';
+import { initSmoothScroll } from '../lib/lenis';
 
 // Shared below-the-fold sections. Lazy so the initial HTML for a sub-page stays
 // as small as the homepage's, and so the inquiry form's client-only work never
@@ -66,6 +67,10 @@ export const PublicPageShell: React.FC<PublicPageShellProps> = ({
   children,
 }) => {
   const [isSandboxOpen, setIsSandboxOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    initSmoothScroll();
+  }, []);
 
   return (
     <CmsProvider value={cms}>

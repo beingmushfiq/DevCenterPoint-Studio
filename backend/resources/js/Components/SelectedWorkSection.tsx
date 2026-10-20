@@ -49,6 +49,26 @@ const cardVariants: Variants = {
   },
 };
 
+export function getTaxonomyTier(project: Project): { label: string; badgeClass: string } {
+  const id = project.id.toLowerCase();
+  if (id.includes('ordershield') || id.includes('qttenzy') || id.includes('aiml-studio') || id.includes('erp')) {
+    return {
+      label: 'Commercial Product',
+      badgeClass: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/25',
+    };
+  }
+  if (id.includes('feroza') || id.includes('roadsafety') || id.includes('dcp-studio')) {
+    return {
+      label: 'Company Delivery',
+      badgeClass: 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/25',
+    };
+  }
+  return {
+    label: 'Founder Foundation',
+    badgeClass: 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/25',
+  };
+}
+
 export const SelectedWorkSection: React.FC = () => {
   const cms = useCms();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -217,7 +237,10 @@ export const SelectedWorkSection: React.FC = () => {
                   >
                     {/* Top Meta Bar */}
                     <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200/80 dark:border-neutral-800/80">
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border uppercase tracking-wider ${getTaxonomyTier(project).badgeClass}`}>
+                          {getTaxonomyTier(project).label}
+                        </span>
                         <span className="text-[11px] font-mono font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-3 py-1 rounded-full border border-blue-200 dark:border-blue-900/60 uppercase tracking-wider">
                           FLAGSHIP 01 // {project.industry}
                         </span>
@@ -381,7 +404,10 @@ export const SelectedWorkSection: React.FC = () => {
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
                         PROJECT {project.number}
                       </span>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                        <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border uppercase tracking-wider ${getTaxonomyTier(project).badgeClass}`}>
+                          {getTaxonomyTier(project).label}
+                        </span>
                         {project.liveUrl && (
                           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/50 text-[9px] font-mono font-bold">
                             <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
