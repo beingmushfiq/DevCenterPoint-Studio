@@ -7,6 +7,13 @@ import { useTheme } from '../Context/ThemeContext';
 
 export type CanvasMode = 'mesh' | 'particles' | 'vortex' | 'matrix' | 'nebula';
 
+export interface HeroInteractiveCanvasProps {
+  externalMode?: CanvasMode;
+  onModeChange?: (mode: CanvasMode) => void;
+  ctaCoordinates?: { x: number; y: number; active: boolean } | null;
+  isCinemaActive?: boolean;
+}
+
 interface Particle {
   x: number;
   y: number;
@@ -37,7 +44,12 @@ interface Ripple {
 
 const MATRIX_GLYPHS = ['0', '1', 'λ', '⚡', '<', '>', '/', '#', '◈', '0x', 'π', '§'];
 
-export const HeroInteractiveCanvas: React.FC = () => {
+export const HeroInteractiveCanvas: React.FC<HeroInteractiveCanvasProps> = ({
+  externalMode,
+  onModeChange,
+  ctaCoordinates,
+  isCinemaActive = false,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mouseRef = useRef<{ x: number; y: number; active: boolean; radius: number }>({
@@ -46,6 +58,8 @@ export const HeroInteractiveCanvas: React.FC = () => {
     active: false,
     radius: 190
   });
+  const ctaCoordinatesRef = useRef<{ x: number; y: number; active: boolean } | null>(ctaCoordinates || null);
+  const isCinemaActiveRef = useRef<boolean>(isCinemaActive);
   const ripplesRef = useRef<Ripple[]>([]);
   const particlesRef = useRef<Particle[]>([]);
   const animFrameIdRef = useRef<number | null>(null);
@@ -53,11 +67,28 @@ export const HeroInteractiveCanvas: React.FC = () => {
   const cms = useCms();
   const { isSoundMuted: isMuted, toggleSound } = useTheme();
 
-  const [mode, setMode] = useState<CanvasMode>('mesh');
+  const [mode, setMode] = useState<CanvasMode>(externalMode || 'mesh');
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [particleSpeed, setParticleSpeed] = useState<number>(1);
   const [tonePreset, setTonePreset] = useState<'ethereal' | 'deep_tech' | 'cyber'>(soundEngine.getTonePreset());
   const [volumeLevel, setVolumeLevel] = useState<number>(soundEngine.getVolume());
+
+  // Keep refs in sync with incoming props
+  useEffect(() => {
+    ctaCoordinatesRef.current = ctaCoordinates || null;
+  }, [ctaCoordinates]);
+
+  useEffect(() => {
+    isCinemaActiveRef.current = isCinemaActive;
+  }, [isCinemaActive]);
+
+  // Sync external mode if changed outside
+  useEffect(() => {
+    if (externalMode && externalMode !== mode) {
+      setMode(externalMode);
+      initParticles(externalMode);
+    }
+  }, [externalMode]);
 
   // The floating 3D Mood / Studio FX capsule is a power-user control; hidden from the
   // public site unless explicitly enabled from the CMS.
@@ -88,6 +119,7 @@ export const HeroInteractiveCanvas: React.FC = () => {
     soundEngine.playTap();
     setMode(newMode);
     initParticles(newMode);
+    onModeChange?.(newMode);
   };
 
   // Trigger Sonar Pulse Burst
@@ -133,6 +165,12 @@ export const HeroInteractiveCanvas: React.FC = () => {
       }
     });
   }, [mode]);
+
+  useEffect(() => {
+    const handlePing = () => triggerSonarPulse();
+    window.addEventListener('hero-sonar-ping', handlePing);
+    return () => window.removeEventListener('hero-sonar-ping', handlePing);
+  }, [triggerSonarPulse]);
 
   const initParticles = useCallback((currentMode: CanvasMode = mode) => {
     const canvas = canvasRef.current;
@@ -291,6 +329,21 @@ export const HeroInteractiveCanvas: React.FC = () => {
 
       const mouse = mouseRef.current;
       const particles = particlesRef.current;
+      const cta = ctaCoordinatesRef.current;
+      const cinemaActive = isCinemaActiveRef.current;
+
+      // Draw subtle luminous target ring if CTA is actively hovered
+      if (cta && cta.active) {
+        ctx.save();
+        ctx.beginPath();
+        const pulseRadius = 32 + Math.sin(time * 5) * 5;
+        ctx.arc(cta.x, cta.y, pulseRadius, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(96, 165, 250, 0.45)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.restore();
+      }
 
       // Draw subtle ambient mouse glow aura
       if (mouse.active) {
@@ -459,12 +512,30 @@ export const HeroInteractiveCanvas: React.FC = () => {
           p.radius = p.baseRadius;
         }
 
+        // Gravitational Well: Attraction & orbital acceleration toward CTA button
+        if (cta && cta.active) {
+          const ctaDx = cta.x - p.x;
+          const ctaDy = cta.y - p.y;
+          const ctaDist = Math.sqrt(ctaDx * ctaDx + ctaDy * ctaDy);
+          const ctaRange = 360;
+
+          if (ctaDist < ctaRange && ctaDist > 8) {
+            const pull = ((ctaRange - ctaDist) / ctaRange) * 2.5;
+            p.vx += (ctaDx / ctaDist) * pull;
+            p.vy += (ctaDy / ctaDist) * pull;
+            // Angular velocity around CTA (orbital acceleration)
+            p.vx += (-ctaDy / ctaDist) * (pull * 0.45);
+            p.vy += (ctaDx / ctaDist) * (pull * 0.45);
+            p.glow = Math.max(p.glow, 16);
+          }
+        }
+
         // Render point
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.alpha;
-        ctx.shadowBlur = p.glow;
+        ctx.globalAlpha = cinemaActive ? Math.min(1, p.alpha * 1.35) : p.alpha;
+        ctx.shadowBlur = cinemaActive ? p.glow * 1.4 : p.glow;
         ctx.shadowColor = p.color;
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -508,6 +579,24 @@ export const HeroInteractiveCanvas: React.FC = () => {
               ctx.strokeStyle = p.color;
               ctx.globalAlpha = mouseAlpha;
               ctx.lineWidth = 1.2;
+              ctx.stroke();
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          // Connect filaments to CTA when active and in range
+          if (cta && cta.active) {
+            const ctaDx = cta.x - p.x;
+            const ctaDy = cta.y - p.y;
+            const ctaDist = Math.sqrt(ctaDx * ctaDx + ctaDy * ctaDy);
+            if (ctaDist < 240) {
+              const ctaLineAlpha = (1 - ctaDist / 240) * 0.7;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(cta.x, cta.y);
+              ctx.strokeStyle = '#60A5FA';
+              ctx.globalAlpha = ctaLineAlpha;
+              ctx.lineWidth = 1.3;
               ctx.stroke();
               ctx.globalAlpha = 1;
             }

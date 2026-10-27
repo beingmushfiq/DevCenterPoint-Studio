@@ -14,18 +14,31 @@ import {
   Volume2,
   VolumeX
 } from 'lucide-react';
-import { motion } from 'motion/react';
-import { HeroInteractiveCanvas } from './HeroInteractiveCanvas';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { HeroInteractiveCanvas, CanvasMode } from './HeroInteractiveCanvas';
+import { HeroTelemetryStream } from './HeroTelemetryStream';
+import { HeroCodeDrawer } from './HeroCodeDrawer';
 import { soundEngine } from '../lib/soundEngine';
 import { useCms } from '../Context/CmsContext';
 import { scrollToTarget } from '../lib/lenis';
 
 export const Hero: React.FC = () => {
   const cms = useCms();
+  const heroRef = useRef<HTMLElement>(null);
+  const primaryCtaRef = useRef<HTMLButtonElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [videoLoaded, setVideoLoaded] = useState<boolean>(false);
+  const [isCinemaActive, setIsCinemaActive] = useState<boolean>(false);
+  const [canvasMode, setCanvasMode] = useState<CanvasMode>('mesh');
+  const [ctaCoords, setCtaCoords] = useState<{ x: number; y: number; active: boolean } | null>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+  const blueprintOpacity = useTransform(scrollYProgress, [0.25, 0.95], [0, 0.75]);
 
   const badgeText = cms.getSetting('hero_badge_text', 'TECHNOLOGY COMPANY • BUSINESS AUTOMATION & AI');
   const headlineLine1 = cms.getSetting('hero_headline_line1', 'We turn inefficient');
@@ -94,6 +107,24 @@ export const Hero: React.FC = () => {
     setIsMuted(!isMuted);
   };
 
+  const handleCtaMouseMove = () => {
+    if (!primaryCtaRef.current) return;
+    const rect = primaryCtaRef.current.getBoundingClientRect();
+    const heroEl = document.getElementById('hero');
+    if (heroEl) {
+      const heroRect = heroEl.getBoundingClientRect();
+      setCtaCoords({
+        x: rect.left + rect.width / 2 - heroRect.left,
+        y: rect.top + rect.height / 2 - heroRect.top,
+        active: true,
+      });
+    }
+  };
+
+  const handleCtaMouseLeave = () => {
+    setCtaCoords((prev) => (prev ? { ...prev, active: false } : null));
+  };
+
   const handleNavClick = (target: string) => {
     soundEngine.playClick();
     scrollToTarget(target, { offset: -70, duration: 1.2 });
@@ -129,12 +160,18 @@ export const Hero: React.FC = () => {
   return (
     <section 
       id="hero" 
+      ref={heroRef}
       className="relative min-h-screen w-full flex flex-col justify-between pt-28 sm:pt-36 pb-8 sm:pb-12 overflow-hidden bg-[#000814] text-white selection:bg-blue-600 selection:text-white"
     >
       {/* =========================================================================
-          1. CINEMATIC VIDEO BACKGROUND LAYER
+          1. CINEMATIC VIDEO BACKGROUND LAYER (Live Interactive Sandbox Viewport)
           ========================================================================= */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none select-none">
+      <div 
+        className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none select-none transition-transform duration-700 ease-out"
+        style={{
+          transform: isCinemaActive ? 'perspective(1200px) rotateX(1.8deg) scale(1.02)' : 'none',
+        }}
+      >
         {heroVideoEnabled && (
           <video
             key={activeVideoSrc}
@@ -166,31 +203,66 @@ export const Hero: React.FC = () => {
           }}
         />
 
-        {/* Layer C: Bottom gradient blending into the next section */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-[#000814]/60 to-slate-50 dark:to-[#0a0a0a]" />
+        {/* Layer C: Multi-stop bottom gradient seamlessly blending into the next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-b from-transparent via-[#000814]/70 via-65% to-slate-50 dark:to-[#0a0a0a] pointer-events-none z-2" />
 
-        {/* Layer D: Translucent interactive neural canvas web */}
-        <div className="absolute inset-0 opacity-40 mix-blend-screen">
-          <HeroInteractiveCanvas />
+        {/* Layer D: Translucent interactive neural canvas web with Gravitational Well */}
+        <div className="absolute inset-0 opacity-40 mix-blend-screen pointer-events-auto">
+          <HeroInteractiveCanvas
+            externalMode={canvasMode}
+            onModeChange={(m) => setCanvasMode(m)}
+            ctaCoordinates={ctaCoords}
+            isCinemaActive={isCinemaActive}
+          />
         </div>
+
+        {/* Layer E: Scroll-triggered technical blueprint millimeter grid */}
+        <motion.div
+          style={{ opacity: blueprintOpacity }}
+          className="absolute inset-0 pointer-events-none z-1 mix-blend-screen bg-[linear-gradient(to_right,rgba(59,130,246,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(59,130,246,0.12)_1px,transparent_1px)] bg-[size:32px_32px]"
+        />
       </div>
 
       {/* =========================================================================
-          2. FLOATING VIDEO CONTROL CHIP (Discrete Cinema Pill)
+          2. FLOATING VIDEO CONTROL CHIP (Discrete Cinema & Sandbox Pill)
           ========================================================================= */}
       {heroVideoEnabled && (
-        <div className="absolute top-24 right-4 sm:right-8 z-20 flex items-center gap-2">
+        <div className="absolute top-24 right-4 sm:right-8 z-30 flex items-center gap-2">
+          {/* Cinema Sandbox Toggle Button */}
+          <button
+            type="button"
+            onClick={() => {
+              soundEngine.playTap();
+              setIsCinemaActive(!isCinemaActive);
+            }}
+            aria-label={isCinemaActive ? 'Exit Cinema Sandbox' : 'Enter Cinema Interactive Sandbox'}
+            title={isCinemaActive ? 'Exit Cinema Sandbox' : 'Enter Cinema Interactive Sandbox'}
+            className={`px-3 py-1.5 rounded-full border text-[11px] font-mono flex items-center gap-2 transition-all duration-300 cursor-pointer backdrop-blur-xl shadow-lg ${
+              isCinemaActive
+                ? 'bg-blue-600 hover:bg-blue-500 border-blue-400 text-white shadow-blue-500/50 ring-2 ring-blue-400/40'
+                : 'bg-slate-950/85 hover:bg-slate-900 border-white/20 text-white hover:text-blue-300 shadow-black/50'
+            }`}
+          >
+            <span className="relative flex h-2 w-2">
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isCinemaActive ? 'bg-amber-400' : 'bg-blue-400'} opacity-75`} />
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${isCinemaActive ? 'bg-amber-400 shadow-[0_0_8px_#f59e0b]' : 'bg-blue-400 shadow-[0_0_8px_#3b82f6]'}`} />
+            </span>
+            <span className="font-semibold">{isCinemaActive ? 'Sandbox Active' : isPlaying ? 'Cinema Active' : 'Cinema Paused'}</span>
+            <span className="text-[10px] text-blue-300/80">✦</span>
+          </button>
+
+          {/* Video Play / Pause Toggle */}
           <button
             type="button"
             onClick={toggleVideoPlayback}
-            aria-label={isPlaying ? 'Pause background cinema' : 'Play background cinema'}
-            title={isPlaying ? 'Pause background cinema' : 'Play background cinema'}
-            className="px-3 py-1.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 text-white hover:text-blue-300 text-[11px] font-mono flex items-center gap-1.5 transition-all duration-200 cursor-pointer backdrop-blur-xl shadow-lg shadow-black/40"
+            aria-label={isPlaying ? 'Pause background cinema video' : 'Play background cinema video'}
+            title={isPlaying ? 'Pause background cinema video' : 'Play background cinema video'}
+            className="p-1.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 text-white hover:text-blue-300 text-[11px] transition-all duration-200 cursor-pointer backdrop-blur-xl shadow-lg shadow-black/40"
           >
-            {isPlaying ? <Pause className="w-3 h-3 text-blue-400" /> : <Play className="w-3 h-3 text-blue-400 fill-current" />}
-            <span className="hidden sm:inline font-semibold">{isPlaying ? 'Cinema Active' : 'Paused'}</span>
+            {isPlaying ? <Pause className="w-3.5 h-3.5 text-blue-400" /> : <Play className="w-3.5 h-3.5 text-blue-400 fill-current" />}
           </button>
 
+          {/* Audio Mute Toggle */}
           <button
             type="button"
             onClick={toggleVideoAudio}
@@ -206,7 +278,17 @@ export const Hero: React.FC = () => {
       {/* =========================================================================
           3. MAIN HERO COCKPIT & MESSAGING (Centered for Maximum Authority)
           ========================================================================= */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 my-auto text-center">
+      <motion.div
+        animate={{
+          opacity: isCinemaActive ? 0.22 : 1,
+          scale: isCinemaActive ? 0.97 : 1,
+          y: isCinemaActive ? -8 : 0,
+        }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className={`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 my-auto text-center transition-all ${
+          isCinemaActive ? 'pointer-events-none' : ''
+        }`}
+      >
         
         {/* Luminous Frosted Eyebrow Badge */}
         <motion.div
@@ -252,10 +334,14 @@ export const Hero: React.FC = () => {
         >
           {/* Primary Action Row: Start a Project + Book a Consultation + Explore Work */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
-            {/* CTA 1: Primary Action Button (Luminous Signature Gradient) */}
+            {/* CTA 1: Primary Action Button (Luminous Signature Gradient + Gravity Well) */}
             <button
+              ref={primaryCtaRef}
               type="button"
               onClick={() => handleNavClick('contact')}
+              onMouseEnter={handleCtaMouseMove}
+              onMouseMove={handleCtaMouseMove}
+              onMouseLeave={handleCtaMouseLeave}
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 text-white text-sm sm:text-base font-bold tracking-tight transition-all duration-300 shadow-xl shadow-blue-600/35 hover:shadow-2xl hover:shadow-blue-500/50 flex items-center justify-center gap-2.5 active:scale-98 cursor-pointer ring-1 ring-white/30"
             >
               <span>{ctaPrimary}</span>
@@ -323,7 +409,15 @@ export const Hero: React.FC = () => {
           </div>
         </motion.div>
 
-      </div>
+        {/* Real-time Command Center Telemetry Stream HUD */}
+        <div className="mt-7 flex justify-center pointer-events-auto">
+          <HeroTelemetryStream
+            onOpenSandbox={() => setIsCinemaActive(true)}
+            isCinemaActive={isCinemaActive}
+          />
+        </div>
+
+      </motion.div>
 
       {/* =========================================================================
           5. OVERLAPPING PROOF PILLARS & SCROLL EXPEDITION (Bottom Edge)
@@ -371,6 +465,16 @@ export const Hero: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* =========================================================================
+          6. FLOATING INTERACTIVE ARCHITECTURE & CODE DRAWER
+          ========================================================================= */}
+      <HeroCodeDrawer
+        isOpen={isCinemaActive}
+        onClose={() => setIsCinemaActive(false)}
+        activeCanvasMode={canvasMode}
+        onSelectCanvasMode={(newMode) => setCanvasMode(newMode)}
+      />
     </section>
   );
 };
