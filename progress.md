@@ -43,6 +43,7 @@
 | Backend Server | `php artisan serve --port=8000` | Port 8000 listening | Running on http://127.0.0.1:8000 | ✓ |
 | Frontend Dev Server | `npm run dev` | Port 5173 listening | Running on http://localhost:5173 | ✓ |
 | Local HTTP 200 Verification | GET http://127.0.0.1:8000 | HTTP 200 with Inertia payload | HTTP 200 with complete Public/Home document | ✓ |
+| cPanel Deploy Packaging | `package_cpanel.ps1` | `public_html.zip` and `ssr.zip` created in `cpanel_dist/` | `public_html.zip` (16.8 MB) and `ssr.zip` (1.0 MB) ready | ✓ |
 
 ## Error Log
 | Timestamp | Error | Attempt | Resolution |
