@@ -350,6 +350,13 @@ export const ProjectInquiryBuilder: React.FC = () => {
 
   const bookingUrl = cms.getSetting('booking_url', 'https://cal.com/devcenterpoint');
   const bookingLabel = cms.getSetting('booking_cta_label', 'Book a Meeting');
+  const inquiryHeader = cms.getSectionBlock('inquiry', 'header', {
+    badge: '08 — Project Collaboration',
+    titlePrefix: 'Have a product worth building?',
+    titleHighlight: "Let's engineer the roadmap.",
+    description:
+      'Select your product focus, preferred investment tier, and target timeline. We will review your goals and deliver a verified technical roadmap within 24 hours.',
+  });
 
   return (
     <section
@@ -367,16 +374,16 @@ export const ProjectInquiryBuilder: React.FC = () => {
         <div className="max-w-3xl mb-12">
           <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 liquid-glass px-4 py-1.5 rounded-full mb-3 shadow-xs">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse" />
-            <span>08 — Project Collaboration</span>
+            <span>{inquiryHeader.badge}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
-            Have a product worth building? <br className="hidden sm:inline" />
-            <span className="text-gradient-signature">Let's engineer the roadmap.</span>
+            {inquiryHeader.titlePrefix} <br className="hidden sm:inline" />
+            <span className="text-gradient-signature">{inquiryHeader.titleHighlight}</span>
           </h2>
 
           <p className="text-xs sm:text-base text-slate-600 dark:text-neutral-400 font-normal leading-relaxed">
-            Select your product focus, preferred investment tier, and target timeline. We will review your goals and deliver a verified technical roadmap within 24 hours.
+            {inquiryHeader.description}
           </p>
         </div>
 

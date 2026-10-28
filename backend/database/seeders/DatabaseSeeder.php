@@ -593,6 +593,177 @@ CODE,
                     'mode' => 'off',
                 ]),
             ],
+            // Positioning
+            [
+                'section_key' => 'positioning',
+                'block_key' => 'content',
+                'content' => json_encode([
+                    'badge' => '01 — Operational Transformation',
+                    'headlinePrefix' => 'From broken manual process',
+                    'headlineHighlight' => 'to automated software engine.',
+                    'description' => 'Businesses lose thousands of productive hours to spreadsheet drift, unlinked SaaS tools, and fragmented manual handoffs. We dissect operational bottlenecks and engineer custom software that executes your workflows deterministically.',
+                    'tags' => ['ELIMINATE BOTTLENECKS', 'ZERO DATA LOSS', 'PREDICTABLE SCALE'],
+                    'pillars' => [
+                        [
+                            'num' => '01',
+                            'title' => 'Map the Broken Process',
+                            'desc' => 'We audit where your organization bleeds time and accuracy: manual data re-entry, unlinked SaaS tools, double-bookings, and spreadsheet chaos.',
+                        ],
+                        [
+                            'num' => '02',
+                            'title' => 'Engineer the Custom Fix',
+                            'desc' => 'We architect tailored software, customer portals, and internal tooling engineered around how your team actually operates—never generic page templates.',
+                        ],
+                        [
+                            'num' => '03',
+                            'title' => 'Automate the Repetition',
+                            'desc' => 'We wire up event-driven pipelines, automated database sync, instant alert triggers, and practical AI so operations run without human babysitting.',
+                        ],
+                        [
+                            'num' => '04',
+                            'title' => 'Scale Without Headcount',
+                            'desc' => 'Your systems handle 10x the transaction volume, inventory complexity, or client inquiries with zero operational drift or linear staffing inflation.',
+                        ],
+                    ],
+                ]),
+            ],
+            // Engineering Philosophy
+            [
+                'section_key' => 'philosophy',
+                'block_key' => 'header',
+                'content' => json_encode([
+                    'badge' => '04 — Engineering Architecture',
+                    'headline' => 'Built beyond the interface.',
+                    'subtitle' => 'Every software product built by DevCenterPoint is backed by a 5-tier resilient architecture engineered for zero data loss, sub-100ms speeds, and high security.',
+                ]),
+            ],
+            [
+                'section_key' => 'philosophy',
+                'block_key' => 'manifesto',
+                'content' => json_encode([
+                    'buttonLabel' => 'Read Architectural Manifesto',
+                    'collapseLabel' => 'Read Less (Collapse Thesis)',
+                    'p1Bold' => 'Why multi-tier isolation matters:',
+                    'p1Text' => ' Most digital products fail not from bad typography, but from unhandled database locks, cascading API timeouts, and unmonitored background worker queue deaths.',
+                    'p2Text' => 'We architect software in five decoupled tiers: each layer has an immutable contract, its own strict security boundary, dedicated failure isolation, and measurable verification metrics.',
+                ]),
+            ],
+            // Technology Ecosystem
+            [
+                'section_key' => 'tech_ecosystem',
+                'block_key' => 'header',
+                'content' => json_encode([
+                    'badge' => '05 — Technology Ecosystem',
+                    'headline' => 'Engineering Stack',
+                    'subtitle' => 'Hover over any technology icon to reveal integration architecture patterns and official documentation.',
+                ]),
+            ],
+            // Process
+            [
+                'section_key' => 'process',
+                'block_key' => 'header',
+                'content' => json_encode([
+                    'badge' => '06 — Lifecycle & Delivery Architecture',
+                    'headline' => 'The Engineering Process',
+                    'subtitle' => 'Standardized milestone timeline and verification gates powering zero-regression product delivery.',
+                ]),
+            ],
+            // Principles
+            [
+                'section_key' => 'principles',
+                'block_key' => 'header',
+                'content' => json_encode([
+                    'badge' => '07 — About DevCenterPoint',
+                    'headline' => 'Engineering Principles',
+                    'subtitle' => 'How we think shapes how we build. Our core convictions drive every architectural decision and visual line of code.',
+                ]),
+            ],
+            // Efficiency Metrics
+            [
+                'section_key' => 'efficiency_metrics',
+                'block_key' => 'header',
+                'content' => json_encode([
+                    'badge' => '05.5 — Data-Driven Engineering',
+                    'headline' => 'Lifecycle Efficiency Metrics',
+                    'subtitle' => "Quantifiable engineering performance benchmarks comparing traditional development against DevCenterPoint's modular automated architecture.",
+                ]),
+            ],
+            [
+                'section_key' => 'efficiency_metrics',
+                'block_key' => 'kpis',
+                'content' => json_encode([
+                    [
+                        'label' => 'Avg MVP Lead Time',
+                        'value' => '14 Days',
+                        'change' => '-72% vs Industry',
+                        'iconName' => 'Clock',
+                        'color' => 'text-blue-600 dark:text-blue-400',
+                        'bg' => 'bg-blue-500/10 border-blue-500/20',
+                    ],
+                    [
+                        'label' => 'API Response P99',
+                        'value' => '38 ms',
+                        'change' => 'Sub-100ms Guaranteed',
+                        'iconName' => 'Zap',
+                        'color' => 'text-emerald-600 dark:text-emerald-400',
+                        'bg' => 'bg-emerald-500/10 border-emerald-500/20',
+                    ],
+                    [
+                        'label' => 'Automated CI/CD Pass',
+                        'value' => '99.8%',
+                        'change' => 'Zero-Regression Gate',
+                        'iconName' => 'ShieldCheck',
+                        'color' => 'text-purple-600 dark:text-purple-400',
+                        'bg' => 'bg-purple-500/10 border-purple-500/20',
+                    ],
+                    [
+                        'label' => 'System Throughput',
+                        'value' => '100k+ rps',
+                        'change' => 'Scales to Peak Load',
+                        'iconName' => 'Activity',
+                        'color' => 'text-amber-600 dark:text-amber-400',
+                        'bg' => 'bg-amber-500/10 border-amber-500/20',
+                    ],
+                ]),
+            ],
+            // FAQ Header
+            [
+                'section_key' => 'faq',
+                'block_key' => 'header',
+                'content' => json_encode([
+                    'badge' => 'Methodology & Engagement Models',
+                    'headline' => 'Frequently Asked Questions',
+                    'description' => 'Direct answers regarding our engineering standards, sprint cadence, commercial models, IP ownership, and post-launch SLAs.',
+                ]),
+            ],
+            // Newsletter
+            [
+                'section_key' => 'newsletter',
+                'block_key' => 'content',
+                'content' => json_encode([
+                    'badge' => 'DevCenterPoint Dispatch',
+                    'spamNotice' => 'Zero Spam • Unsubscribe Anytime',
+                    'headline' => 'Architectural insights & company updates, direct to your inbox.',
+                    'description' => 'Subscribe for bi-weekly engineering breakdowns: distributed systems architectures, performance benchmarks, production post-mortems, and DevCenterPoint studio updates.',
+                    'perks' => [
+                        'Production post-mortems & scaling logs',
+                        'Architecture blueprints & tech benchmarks',
+                        'Early access to product case studies',
+                    ],
+                    'buttonLabel' => 'Join Company Dispatch',
+                ]),
+            ],
+            // Inquiry
+            [
+                'section_key' => 'inquiry',
+                'block_key' => 'header',
+                'content' => json_encode([
+                    'badge' => '08 — Project Collaboration',
+                    'titlePrefix' => 'Have a product worth building?',
+                    'titleHighlight' => "Let's engineer the roadmap.",
+                    'description' => 'Select your product focus, preferred investment tier, and target timeline. We will review your goals and deliver a verified technical roadmap within 24 hours.',
+                ]),
+            ],
         ];
 
         foreach ($blocks as $block) {

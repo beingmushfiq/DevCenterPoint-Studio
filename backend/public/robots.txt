@@ -12,6 +12,7 @@ Allow: /og-image.*
 Allow: /sitemap.xml
 Allow: /llms.txt
 Allow: /llms-full.txt
+Allow: /solutions/
 Disallow: /admin/
 Disallow: /super-admin/login
 Disallow: /dashboard

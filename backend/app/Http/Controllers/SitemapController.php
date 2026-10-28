@@ -9,6 +9,7 @@ use App\Models\Plan;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\SiteSetting;
+use App\Models\SolutionProduct;
 use App\Models\Testimonial;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
@@ -65,6 +66,15 @@ class SitemapController extends Controller
                 $this->stamp($project->updated_at),
                 'monthly',
                 '0.7'
+            );
+        }
+
+        foreach (SolutionProduct::where('is_active', true)->orderBy('display_order')->get() as $solution) {
+            $urls[] = $this->entry(
+                $siteUrl.'/solutions/'.$solution->slug,
+                $this->stamp($solution->updated_at),
+                'monthly',
+                '0.8'
             );
         }
 
@@ -142,6 +152,7 @@ class SitemapController extends Controller
     {
         $models = $models ?? [
             Project::class,
+            SolutionProduct::class,
             Capability::class,
             Faq::class,
             Plan::class,

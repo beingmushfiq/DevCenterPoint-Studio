@@ -18,6 +18,7 @@ import {
 import { FAQ_DATA, FAQ_CATEGORIES, FAQCategory } from '../data/faq';
 import { FAQItem } from '../types';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../Context/CmsContext';
 
 const categoryIconMap: Record<string, React.ElementType> = {
   'Engineering & Process': Cpu,
@@ -26,17 +27,50 @@ const categoryIconMap: Record<string, React.ElementType> = {
   'Post-Launch & SLAs': Clock,
 };
 
+interface FaqHeaderContent {
+  badge?: string;
+  headline?: string;
+  description?: string;
+}
+
+const DEFAULT_FAQ_HEADER: FaqHeaderContent = {
+  badge: 'Methodology & Engagement Models',
+  headline: 'Frequently Asked Questions',
+  description:
+    'Direct answers regarding our engineering standards, sprint cadence, commercial models, IP ownership, and post-launch SLAs.',
+};
+
 export const FAQSection: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<FAQCategory>('All');
+  const cms = useCms();
+  const headerContent = cms.getSectionBlock<FaqHeaderContent>('faq', 'header', DEFAULT_FAQ_HEADER);
+
+  const allFaqs: FAQItem[] = useMemo(() => {
+    if (cms.faqs && cms.faqs.length > 0) {
+      return cms.faqs.map((f: any) => ({
+        id: `faq-${f.id}`,
+        question: f.question,
+        answer: f.answer,
+        category: f.category || 'General',
+        highlights: [],
+      }));
+    }
+    return FAQ_DATA;
+  }, [cms.faqs]);
+
+  const categories = useMemo(() => {
+    const cats = Array.from(new Set(allFaqs.map((f) => f.category)));
+    return ['All', ...cats];
+  }, [allFaqs]);
+
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => {
-    // Default open the first two items for immediate visual context
-    return new Set(['faq-process-lifecycle', 'faq-engagement-models']);
+    return new Set(['faq-1', 'faq-2', 'faq-process-lifecycle', 'faq-engagement-models']);
   });
 
   const filteredFAQs = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    return FAQ_DATA.filter((item) => {
+    return allFaqs.filter((item) => {
       const matchesCategory =
         selectedCategory === 'All' || item.category === selectedCategory;
 
@@ -50,7 +84,7 @@ export const FAQSection: React.FC = () => {
 
       return inQuestion || inAnswer || inCategory || inHighlights;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [allFaqs, selectedCategory, searchQuery]);
 
   const toggleItem = (id: string) => {
     soundEngine.playTap();
@@ -80,7 +114,7 @@ export const FAQSection: React.FC = () => {
     filteredFAQs.length > 0 &&
     filteredFAQs.every((item) => expandedIds.has(item.id));
 
-  const handleCategorySelect = (cat: FAQCategory) => {
+  const handleCategorySelect = (cat: string) => {
     soundEngine.playClick();
     setSelectedCategory(cat);
   };
@@ -108,15 +142,15 @@ export const FAQSection: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/50 text-blue-600 dark:text-blue-400 font-mono text-xs font-bold uppercase tracking-wider mb-4">
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>Methodology & Engagement Models</span>
+            <span>{headerContent.badge || DEFAULT_FAQ_HEADER.badge}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-4">
-            Frequently Asked Questions
+            {headerContent.headline || DEFAULT_FAQ_HEADER.headline}
           </h2>
 
           <p className="text-sm sm:text-base text-slate-600 dark:text-gray-300 font-medium leading-relaxed">
-            Direct answers regarding our engineering standards, sprint cadence, commercial models, IP ownership, and post-launch SLAs.
+            {headerContent.description || DEFAULT_FAQ_HEADER.description}
           </p>
         </div>
 
@@ -162,12 +196,12 @@ export const FAQSection: React.FC = () => {
             
             {/* Category Filter Buttons */}
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
-              {FAQ_CATEGORIES.map((cat) => {
+              {categories.map((cat) => {
                 const isSelected = selectedCategory === cat;
                 const count =
                   cat === 'All'
-                    ? FAQ_DATA.length
-                    : FAQ_DATA.filter((i) => i.category === cat).length;
+                    ? allFaqs.length
+                    : allFaqs.filter((i) => i.category === cat).length;
 
                 return (
                   <button

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Globe,
@@ -822,8 +823,18 @@ export const DigitalSystemMap: React.FC = () => {
 
             {/* Bottom Conversion Prompt */}
             <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#282828] flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="text-[11px] text-slate-500 dark:text-gray-400 font-medium text-center sm:text-left">
-                100% IP ownership & full repository handover
+              <div className="flex flex-wrap items-center gap-2 text-center sm:text-left">
+                <Link
+                  href={`/solutions/${activeSolution.id}`}
+                  className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  <span>Architecture Specs</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <span className="text-slate-300 dark:text-gray-700 hidden sm:inline">•</span>
+                <span className="text-[11px] text-slate-500 dark:text-gray-400 font-medium">
+                  100% IP ownership & code handover
+                </span>
               </div>
 
               <button

@@ -33,6 +33,7 @@ import {
   Filter,
 } from 'lucide-react';
 import { useTheme } from '../Context/ThemeContext';
+import { useCms } from '../Context/CmsContext';
 
 // Dataset 1: Delivery Velocity (Days to Milestone)
 const VELOCITY_DATA = [
@@ -76,7 +77,79 @@ const RADAR_DATA = [
 
 type ViewMode = 'velocity' | 'latency' | 'quality' | 'radar';
 
+interface MetricsHeader {
+  badge?: string;
+  headline?: string;
+  subtitle?: string;
+}
+
+const DEFAULT_METRICS_HEADER: MetricsHeader = {
+  badge: '05.5 — Data-Driven Engineering',
+  headline: 'Lifecycle Efficiency Metrics',
+  subtitle:
+    "Quantifiable engineering performance benchmarks comparing traditional development against DevCenterPoint's modular automated architecture.",
+};
+
+interface MetricKpi {
+  label: string;
+  value: string;
+  change: string;
+  iconName?: string;
+  color?: string;
+  bg?: string;
+}
+
+const DEFAULT_KPIS: MetricKpi[] = [
+  {
+    label: 'Avg MVP Lead Time',
+    value: '14 Days',
+    change: '-72% vs Industry',
+    iconName: 'Clock',
+    color: 'text-blue-600 dark:text-blue-400',
+    bg: 'bg-blue-500/10 border-blue-500/20',
+  },
+  {
+    label: 'API Response P99',
+    value: '38 ms',
+    change: 'Sub-100ms Guaranteed',
+    iconName: 'Zap',
+    color: 'text-emerald-600 dark:text-emerald-400',
+    bg: 'bg-emerald-500/10 border-emerald-500/20',
+  },
+  {
+    label: 'Automated CI/CD Pass',
+    value: '99.8%',
+    change: 'Zero-Regression Gate',
+    iconName: 'ShieldCheck',
+    color: 'text-purple-600 dark:text-purple-400',
+    bg: 'bg-purple-500/10 border-purple-500/20',
+  },
+  {
+    label: 'System Throughput',
+    value: '100k+ rps',
+    change: 'Scales to Peak Load',
+    iconName: 'Activity',
+    color: 'text-amber-600 dark:text-amber-400',
+    bg: 'bg-amber-500/10 border-amber-500/20',
+  },
+];
+
+const KPI_ICONS: Record<string, React.ElementType> = {
+  Clock,
+  Zap,
+  ShieldCheck,
+  Activity,
+};
+
 export const EfficiencyMetricsSection: React.FC = () => {
+  const cms = useCms();
+  const headerContent = cms.getSectionBlock<MetricsHeader>('efficiency_metrics', 'header', DEFAULT_METRICS_HEADER);
+  const kpis = cms.getSectionBlock<MetricKpi[]>('efficiency_metrics', 'kpis', DEFAULT_KPIS);
+  const velocityData = cms.getSectionBlock('efficiency_metrics', 'velocity', VELOCITY_DATA);
+  const latencyData = cms.getSectionBlock('efficiency_metrics', 'latency', LATENCY_DATA);
+  const qualityData = cms.getSectionBlock('efficiency_metrics', 'quality', QUALITY_DATA);
+  const radarData = cms.getSectionBlock('efficiency_metrics', 'radar', RADAR_DATA);
+
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [activeView, setActiveView] = useState<ViewMode>('velocity');
@@ -95,41 +168,6 @@ export const EfficiencyMetricsSection: React.FC = () => {
     muted: isDark ? '#334155' : '#cbd5e1',
   };
 
-  const kpis = [
-    {
-      label: 'Avg MVP Lead Time',
-      value: '14 Days',
-      change: '-72% vs Industry',
-      icon: Clock,
-      color: 'text-blue-600 dark:text-blue-400',
-      bg: 'bg-blue-500/10 border-blue-500/20',
-    },
-    {
-      label: 'API Response P99',
-      value: '38 ms',
-      change: 'Sub-100ms Guaranteed',
-      icon: Zap,
-      color: 'text-emerald-600 dark:text-emerald-400',
-      bg: 'bg-emerald-500/10 border-emerald-500/20',
-    },
-    {
-      label: 'Automated CI/CD Pass',
-      value: '99.8%',
-      change: 'Zero-Regression Gate',
-      icon: ShieldCheck,
-      color: 'text-purple-600 dark:text-purple-400',
-      bg: 'bg-purple-500/10 border-purple-500/20',
-    },
-    {
-      label: 'System Throughput',
-      value: '100k+ rps',
-      change: 'Scales to Peak Load',
-      icon: Activity,
-      color: 'text-amber-600 dark:text-amber-400',
-      bg: 'bg-amber-500/10 border-amber-500/20',
-    },
-  ];
-
   return (
     <section id="metrics" className="py-24 bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] relative transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -144,21 +182,21 @@ export const EfficiencyMetricsSection: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20 mb-3">
               <Sparkles className="w-3 h-3 text-blue-500" />
-              05.5 — Data-Driven Engineering
+              {headerContent.badge || DEFAULT_METRICS_HEADER.badge}
             </div>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
-              Lifecycle Efficiency Metrics
+              {headerContent.headline || DEFAULT_METRICS_HEADER.headline}
             </h2>
           </div>
           <p className="text-xs text-slate-600 dark:text-gray-400 max-w-md mt-4 md:mt-0 font-bold uppercase tracking-wider">
-            Quantifiable engineering performance benchmarks comparing traditional development against DevCenterPoint's modular automated architecture.
+            {headerContent.subtitle || DEFAULT_METRICS_HEADER.subtitle}
           </p>
         </motion.div>
 
         {/* Top Highlight KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           {kpis.map((kpi, idx) => {
-            const IconComponent = kpi.icon;
+            const IconComponent = (kpi.iconName && KPI_ICONS[kpi.iconName]) || (kpi as any).icon || Clock;
             return (
               <motion.div
                 key={idx}
@@ -298,7 +336,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
                   <div className="h-[320px] w-full pt-4">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={VELOCITY_DATA} margin={{ top: 20, right: 30, left: 0, bottom: 25 }}>
+                      <BarChart data={velocityData} margin={{ top: 20, right: 30, left: 0, bottom: 25 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} vertical={false} />
                         <XAxis
                           dataKey="phase"
@@ -361,7 +399,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
                   <div className="h-[320px] w-full pt-4">
                     <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={LATENCY_DATA} margin={{ top: 20, right: 30, left: 0, bottom: 25 }}>
+                      <AreaChart data={latencyData} margin={{ top: 20, right: 30, left: 0, bottom: 25 }}>
                         <defs>
                           <linearGradient id="colorDcpEdge" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
@@ -423,7 +461,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
                   <div className="h-[320px] w-full pt-4">
                     <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={QUALITY_DATA} margin={{ top: 20, right: 30, left: 0, bottom: 25 }}>
+                      <LineChart data={qualityData} margin={{ top: 20, right: 30, left: 0, bottom: 25 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} vertical={false} />
                         <XAxis
                           dataKey="sprint"
@@ -483,7 +521,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
                   <div className="h-[320px] w-full pt-2 flex justify-center">
                     <ResponsiveContainer width="100%" height="100%">
-                      <RadarChart cx="50%" cy="50%" outerRadius="80%" data={RADAR_DATA}>
+                      <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
                         <PolarGrid stroke={chartColors.grid} />
                         <PolarAngleAxis dataKey="metric" stroke={chartColors.text} tick={{ fill: chartColors.text, fontSize: 11, fontWeight: 700 }} />
                         <PolarRadiusAxis angle={30} domain={[0, 100]} stroke={chartColors.grid} />

@@ -256,3 +256,49 @@ export interface CmsPost {
   is_published?: boolean;
   updated_at?: string;
 }
+
+export interface SolutionStat {
+  label: string;
+  value: string;
+  change?: string;
+  trend?: 'up' | 'down' | 'neutral';
+}
+
+export interface SolutionActivityLog {
+  time: string;
+  event: string;
+  badge?: string;
+}
+
+export interface SolutionBusinessOutcomes {
+  speedToMarket?: string;
+  impact?: string;
+  security?: string;
+  [key: string]: string | undefined;
+}
+
+export interface CmsSolutionProduct {
+  id: number;
+  slug: string;
+  category: string;
+  badge: string;
+  title: string;
+  tagline: string;
+  icon_name?: string;
+  mockup_title?: string;
+  live_url?: string;
+  admin_url?: string;
+  demo_username?: string;
+  demo_password?: string;
+  demo_role?: string;
+  stats?: SolutionStat[];
+  activity_logs?: SolutionActivityLog[];
+  business_outcomes?: SolutionBusinessOutcomes;
+  client_benefits?: string[];
+  deliverables?: string[];
+  sample_action_label?: string;
+  sample_action_toast?: string;
+  display_order?: number;
+  is_active?: boolean;
+  updated_at?: string;
+}

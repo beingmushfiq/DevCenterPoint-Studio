@@ -39,15 +39,31 @@ const DEFAULT_TEAM = [
   },
 ];
 
+interface PrinciplesHeader {
+  badge?: string;
+  headline?: string;
+  subtitle?: string;
+}
+
+const DEFAULT_PRINCIPLES_HEADER: PrinciplesHeader = {
+  badge: '07 — About DevCenterPoint',
+  headline: 'Engineering Principles',
+  subtitle:
+    'How we think shapes how we build. Our core convictions drive every architectural decision and visual line of code.',
+};
+
 export const AboutPrinciples: React.FC = () => {
   const cms = useCms();
-  const [selectedNum, setSelectedNum] = useState<string>('01');
+  const headerContent = cms.getSectionBlock<PrinciplesHeader>('principles', 'header', DEFAULT_PRINCIPLES_HEADER);
+  const principles = cms.getSectionBlock('principles', 'items', PRINCIPLES_DATA);
+
+  const [selectedNum, setSelectedNum] = useState<string>(principles[0]?.number || '01');
 
   const teamMembers = (cms.team && cms.team.length > 0)
     ? cms.team.filter((m: any) => m.is_active !== false)
     : DEFAULT_TEAM;
 
-  const activePrinciple = PRINCIPLES_DATA.find((p) => p.number === selectedNum) || PRINCIPLES_DATA[0];
+  const activePrinciple = principles.find((p: any) => p.number === selectedNum) || principles[0] || PRINCIPLES_DATA[0];
 
   return (
     <section id="about" className="py-28 bg-white dark:bg-[#07090e] text-slate-900 dark:text-white border-t border-slate-200/70 dark:border-white/5 relative overflow-hidden transition-colors duration-500">
@@ -61,14 +77,14 @@ export const AboutPrinciples: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 liquid-glass px-4 py-1.5 rounded-full mb-3 shadow-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-              07 — About DevCenterPoint
+              {headerContent.badge || DEFAULT_PRINCIPLES_HEADER.badge}
             </div>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
-              Engineering Principles
+              {headerContent.headline || DEFAULT_PRINCIPLES_HEADER.headline}
             </h2>
           </div>
           <p className="text-xs text-slate-600 dark:text-gray-400 max-w-md mt-4 md:mt-0 font-bold uppercase tracking-wider">
-            How we think shapes how we build. Our core convictions drive every architectural decision and visual line of code.
+            {headerContent.subtitle || DEFAULT_PRINCIPLES_HEADER.subtitle}
           </p>
         </div>
 
@@ -76,7 +92,7 @@ export const AboutPrinciples: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Principles Cards */}
           <div className="lg:col-span-5 space-y-3">
-            {PRINCIPLES_DATA.map((item) => {
+            {principles.map((item: any) => {
               const isSelected = item.number === selectedNum;
               return (
                 <button

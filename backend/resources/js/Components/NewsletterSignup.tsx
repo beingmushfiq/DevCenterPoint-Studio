@@ -15,6 +15,30 @@ import {
 import confetti from 'canvas-confetti';
 import { subscribeToNewsletter } from '../lib/firebase';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../Context/CmsContext';
+
+interface NewsletterContent {
+  badge?: string;
+  spamNotice?: string;
+  headline?: string;
+  description?: string;
+  perks?: string[];
+  buttonLabel?: string;
+}
+
+const DEFAULT_NEWSLETTER: NewsletterContent = {
+  badge: 'DevCenterPoint Dispatch',
+  spamNotice: 'Zero Spam • Unsubscribe Anytime',
+  headline: 'Architectural insights & company updates, direct to your inbox.',
+  description:
+    'Subscribe for bi-weekly engineering breakdowns: distributed systems architectures, performance benchmarks, production post-mortems, and DevCenterPoint studio updates.',
+  perks: [
+    'Production post-mortems & scaling logs',
+    'Architecture blueprints & tech benchmarks',
+    'Early access to product case studies',
+  ],
+  buttonLabel: 'Join Company Dispatch',
+};
 
 interface NewsletterSignupProps {
   variant?: 'standalone' | 'embedded';
@@ -25,6 +49,10 @@ export const NewsletterSignup: React.FC<NewsletterSignupProps> = ({
   variant = 'standalone',
   className = '',
 }) => {
+  const cms = useCms();
+  const content = cms.getSectionBlock<NewsletterContent>('newsletter', 'content', DEFAULT_NEWSLETTER);
+  const perks = content.perks && content.perks.length > 0 ? content.perks : DEFAULT_NEWSLETTER.perks!;
+
   const [email, setEmail] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -120,12 +148,12 @@ export const NewsletterSignup: React.FC<NewsletterSignupProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-900/40 text-blue-600 dark:text-blue-400 font-mono text-[11px] font-bold tracking-wider uppercase">
               <BellRing className="w-3.5 h-3.5 text-blue-500 animate-pulse" />
-              <span>DevCenterPoint Dispatch</span>
+              <span>{content.badge || DEFAULT_NEWSLETTER.badge}</span>
             </div>
 
             <div className="flex items-center gap-1.5 text-[11px] font-mono font-semibold text-slate-500 dark:text-gray-400">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Zero Spam • Unsubscribe Anytime</span>
+              <span>{content.spamNotice || DEFAULT_NEWSLETTER.spamNotice}</span>
             </div>
           </div>
 
@@ -134,27 +162,21 @@ export const NewsletterSignup: React.FC<NewsletterSignupProps> = ({
             {/* Left Column: Editorial Value Proposition (7 cols) */}
             <div className="lg:col-span-7 space-y-4">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-                Architectural insights & company updates, direct to your inbox.
+                {content.headline || DEFAULT_NEWSLETTER.headline}
               </h2>
               
               <p className="text-sm sm:text-base text-slate-600 dark:text-gray-300 leading-relaxed font-medium">
-                Subscribe for bi-weekly engineering breakdowns: distributed systems architectures, performance benchmarks, production post-mortems, and DevCenterPoint studio updates.
+                {content.description || DEFAULT_NEWSLETTER.description}
               </p>
 
               {/* Three Strategic Subscriber Perks */}
               <div className="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="flex items-start gap-2 text-xs font-semibold text-slate-700 dark:text-gray-300">
-                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-                  <span>Production post-mortems & scaling logs</span>
-                </div>
-                <div className="flex items-start gap-2 text-xs font-semibold text-slate-700 dark:text-gray-300">
-                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-                  <span>Architecture blueprints & tech benchmarks</span>
-                </div>
-                <div className="flex items-start gap-2 text-xs font-semibold text-slate-700 dark:text-gray-300">
-                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-                  <span>Early access to product case studies</span>
-                </div>
+                {perks.map((perk, pIdx) => (
+                  <div key={pIdx} className="flex items-start gap-2 text-xs font-semibold text-slate-700 dark:text-gray-300">
+                    <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                    <span>{perk}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -259,7 +281,7 @@ export const NewsletterSignup: React.FC<NewsletterSignupProps> = ({
                           </>
                         ) : (
                           <>
-                            <span>Join Company Dispatch</span>
+                            <span>{content.buttonLabel || DEFAULT_NEWSLETTER.buttonLabel}</span>
                             <ArrowRight className="w-4 h-4" />
                           </>
                         )}

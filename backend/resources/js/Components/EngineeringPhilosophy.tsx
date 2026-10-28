@@ -17,18 +17,55 @@ import {
   SlidersHorizontal
 } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../Context/CmsContext';
+
+interface PhilosophyHeader {
+  badge?: string;
+  headline?: string;
+  subtitle?: string;
+}
+
+interface PhilosophyManifesto {
+  buttonLabel?: string;
+  collapseLabel?: string;
+  p1Bold?: string;
+  p1Text?: string;
+  p2Text?: string;
+}
+
+const DEFAULT_PHILOSOPHY_HEADER: PhilosophyHeader = {
+  badge: '04 — Engineering Architecture',
+  headline: 'Built beyond the interface.',
+  subtitle:
+    'Every software product built by DevCenterPoint is backed by a 5-tier resilient architecture engineered for zero data loss, sub-100ms speeds, and high security.',
+};
+
+const DEFAULT_PHILOSOPHY_MANIFESTO: PhilosophyManifesto = {
+  buttonLabel: 'Read Architectural Manifesto',
+  collapseLabel: 'Read Less (Collapse Thesis)',
+  p1Bold: 'Why multi-tier isolation matters:',
+  p1Text:
+    ' Most digital products fail not from bad typography, but from unhandled database locks, cascading API timeouts, and unmonitored background worker queue deaths.',
+  p2Text:
+    'We architect software in five decoupled tiers: each layer has an immutable contract, its own strict security boundary, dedicated failure isolation, and measurable verification metrics.',
+};
 
 export const EngineeringPhilosophy: React.FC = () => {
+  const cms = useCms();
+  const headerContent = cms.getSectionBlock<PhilosophyHeader>('philosophy', 'header', DEFAULT_PHILOSOPHY_HEADER);
+  const manifesto = cms.getSectionBlock<PhilosophyManifesto>('philosophy', 'manifesto', DEFAULT_PHILOSOPHY_MANIFESTO);
+  const layers = cms.getSectionBlock('philosophy', 'layers', ARCHITECTURE_LAYERS);
+
   const shouldReduceMotion = useReducedMotion();
-  const [selectedLayerId, setSelectedLayerId] = useState<string>(ARCHITECTURE_LAYERS[0].id);
+  const [selectedLayerId, setSelectedLayerId] = useState<string>(layers[0]?.id || ARCHITECTURE_LAYERS[0].id);
   const [isManifestoExpanded, setIsManifestoExpanded] = useState<boolean>(false);
   
   // Per-layer expanded state map for granular Read More management
   const [expandedLayerDetails, setExpandedLayerDetails] = useState<Record<string, boolean>>({
-    [ARCHITECTURE_LAYERS[0].id]: false,
+    [layers[0]?.id || ARCHITECTURE_LAYERS[0].id]: false,
   });
 
-  const activeLayer = ARCHITECTURE_LAYERS.find((l) => l.id === selectedLayerId) || ARCHITECTURE_LAYERS[0];
+  const activeLayer = layers.find((l: any) => l.id === selectedLayerId) || layers[0] || ARCHITECTURE_LAYERS[0];
   const isCurrentLayerExpanded = !!expandedLayerDetails[activeLayer.id];
 
   const handleSelectLayer = (layerId: string) => {
@@ -47,13 +84,13 @@ export const EngineeringPhilosophy: React.FC = () => {
   const handleToggleAllLayers = (expand: boolean) => {
     soundEngine.playClick();
     const updated: Record<string, boolean> = {};
-    ARCHITECTURE_LAYERS.forEach((l) => {
+    layers.forEach((l: any) => {
       updated[l.id] = expand;
     });
     setExpandedLayerDetails(updated);
   };
 
-  const allLayersAreExpanded = ARCHITECTURE_LAYERS.every((l) => !!expandedLayerDetails[l.id]);
+  const allLayersAreExpanded = layers.every((l: any) => !!expandedLayerDetails[l.id]);
 
   return (
     <section id="architecture" className="py-28 bg-white dark:bg-[#07090e] text-slate-900 dark:text-white border-t border-slate-200/70 dark:border-white/5 relative overflow-hidden transition-colors duration-500">
@@ -74,16 +111,16 @@ export const EngineeringPhilosophy: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 liquid-glass px-4 py-1.5 rounded-full mb-3 shadow-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-              04 — Engineering Architecture
+              {headerContent.badge || DEFAULT_PHILOSOPHY_HEADER.badge}
             </div>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
-              Built beyond the interface.
+              {headerContent.headline || DEFAULT_PHILOSOPHY_HEADER.headline}
             </h2>
           </div>
 
           <div className="max-w-md">
             <p className="text-xs text-slate-600 dark:text-gray-400 font-bold uppercase tracking-wider leading-relaxed">
-              Every software product built by DevCenterPoint is backed by a 5-tier resilient architecture engineered for zero data loss, sub-100ms speeds, and high security.
+              {headerContent.subtitle || DEFAULT_PHILOSOPHY_HEADER.subtitle}
             </p>
 
             {/* Expandable Section Manifesto Toggle */}
@@ -98,7 +135,11 @@ export const EngineeringPhilosophy: React.FC = () => {
                 aria-controls="engineering-manifesto-text"
               >
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>{isManifestoExpanded ? 'Read Less (Collapse Thesis)' : 'Read Architectural Manifesto'}</span>
+                <span>
+                  {isManifestoExpanded
+                    ? (manifesto.collapseLabel || DEFAULT_PHILOSOPHY_MANIFESTO.collapseLabel)
+                    : (manifesto.buttonLabel || DEFAULT_PHILOSOPHY_MANIFESTO.buttonLabel)}
+                </span>
                 {isManifestoExpanded ? (
                   <ChevronUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
                 ) : (
@@ -118,10 +159,13 @@ export const EngineeringPhilosophy: React.FC = () => {
                   >
                     <div className="mt-3.5 p-4 rounded-2xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed space-y-2">
                       <p>
-                        <strong className="text-slate-900 dark:text-white font-extrabold">Why multi-tier isolation matters:</strong> Most digital products fail not from bad typography, but from unhandled database locks, cascading API timeouts, and unmonitored background worker queue deaths.
+                        <strong className="text-slate-900 dark:text-white font-extrabold">
+                          {manifesto.p1Bold || DEFAULT_PHILOSOPHY_MANIFESTO.p1Bold}
+                        </strong>
+                        {manifesto.p1Text || DEFAULT_PHILOSOPHY_MANIFESTO.p1Text}
                       </p>
                       <p>
-                        We architect software in five decoupled tiers: each layer has an immutable contract, its own strict security boundary, dedicated failure isolation, and measurable verification metrics.
+                        {manifesto.p2Text || DEFAULT_PHILOSOPHY_MANIFESTO.p2Text}
                       </p>
                     </div>
                   </motion.div>
@@ -155,7 +199,7 @@ export const EngineeringPhilosophy: React.FC = () => {
           
           {/* Layer Stack Selector (Left - 6 cols) */}
           <div className="lg:col-span-6 space-y-3">
-            {ARCHITECTURE_LAYERS.map((layer, idx) => {
+            {layers.map((layer: any, idx: number) => {
               const isSelected = layer.id === selectedLayerId;
               const isExpanded = !!expandedLayerDetails[layer.id];
 
@@ -291,7 +335,7 @@ export const EngineeringPhilosophy: React.FC = () => {
                     </AnimatePresence>
                   </motion.div>
 
-                  {idx < ARCHITECTURE_LAYERS.length - 1 && (
+                  {idx < layers.length - 1 && (
                     <div className="flex justify-center my-1 text-slate-400 dark:text-gray-700">
                       <ArrowDown className="w-4 h-4 animate-bounce" />
                     </div>

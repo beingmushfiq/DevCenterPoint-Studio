@@ -26,9 +26,13 @@ Route::get('/work/{project:slug}', [WorkController::class, 'show'])->name('work.
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 
-// XML sitemap. Generated from CMS content so `lastmod` stays accurate; the
-// static public/sitemap.xml was removed so Apache's `-f` check cannot shadow it.
+// Programmatic industry solution landing pages (Programmatic SEO & AEO)
+Route::get('/solutions/{solution:slug}', [\App\Http\Controllers\SolutionController::class, 'show'])->name('solutions.show');
+
+// XML sitemap & Dynamic LLM Context Endpoints (GEO & Search Agents)
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/llms.txt', [\App\Http\Controllers\LlmsTxtController::class, 'index'])->name('llms.txt');
+Route::get('/llms-full.txt', [\App\Http\Controllers\LlmsTxtController::class, 'full'])->name('llms.full');
 
 // Lead & Inquiry Submission
 Route::post('/inquiry', [InquiryController::class, 'store'])

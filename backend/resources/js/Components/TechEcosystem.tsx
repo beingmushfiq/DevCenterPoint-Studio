@@ -14,16 +14,37 @@ import {
 } from 'lucide-react';
 import { TechIcon } from './TechIcon';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../Context/CmsContext';
+
+interface TechEcosystemHeader {
+  badge?: string;
+  headline?: string;
+  subtitle?: string;
+}
+
+const DEFAULT_TECH_HEADER: TechEcosystemHeader = {
+  badge: '05 — Technology Ecosystem',
+  headline: 'Engineering Stack',
+  subtitle:
+    'Hover over any technology icon to reveal integration architecture patterns and official documentation.',
+};
 
 export const TechEcosystem: React.FC = () => {
+  const cms = useCms();
+  const headerContent = cms.getSectionBlock<TechEcosystemHeader>('tech_ecosystem', 'header', DEFAULT_TECH_HEADER);
+  const techStack = cms.getSectionBlock<TechItem[]>('tech_ecosystem', 'stack_items', TECH_STACK_DATA);
+
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [activeTech, setActiveTech] = useState<TechItem>(TECH_STACK_DATA[0]);
+  const [activeTech, setActiveTech] = useState<TechItem>(techStack[0] || TECH_STACK_DATA[0]);
   const [hoveredTech, setHoveredTech] = useState<TechItem | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const categories = ['All', 'Frontend', 'Backend', 'Data', 'Infrastructure', 'Realtime', 'AI / ML'];
+  const categories = React.useMemo(() => {
+    const cats = Array.from(new Set(techStack.map((t) => t.category)));
+    return ['All', ...cats];
+  }, [techStack]);
 
-  const filteredTech = TECH_STACK_DATA.filter((t) => {
+  const filteredTech = techStack.filter((t) => {
     if (selectedCategory === 'All') return true;
     return t.category === selectedCategory;
   });
@@ -61,14 +82,14 @@ export const TechEcosystem: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></span>
-              05 — Technology Ecosystem
+              {headerContent.badge || DEFAULT_TECH_HEADER.badge}
             </div>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
-              Engineering Stack
+              {headerContent.headline || DEFAULT_TECH_HEADER.headline}
             </h2>
           </div>
           <p className="text-xs text-slate-600 dark:text-gray-400 max-w-md mt-4 md:mt-0 font-bold uppercase tracking-wider">
-            Hover over any technology icon to reveal integration architecture patterns and official documentation.
+            {headerContent.subtitle || DEFAULT_TECH_HEADER.subtitle}
           </p>
         </motion.div>
 

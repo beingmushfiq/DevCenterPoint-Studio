@@ -23,22 +23,40 @@ import {
   Wrench
 } from 'lucide-react';
 import { soundEngine } from '../lib/soundEngine';
+import { useCms } from '../Context/CmsContext';
 
 type ProcessViewMode = 'timeline' | 'phases';
 
+interface ProcessHeaderContent {
+  badge?: string;
+  headline?: string;
+  subtitle?: string;
+}
+
+const DEFAULT_PROCESS_HEADER: ProcessHeaderContent = {
+  badge: '06 — Lifecycle & Delivery Architecture',
+  headline: 'The Engineering Process',
+  subtitle: 'Standardized milestone timeline and verification gates powering zero-regression product delivery.',
+};
+
 export const ProcessSection: React.FC = () => {
+  const cms = useCms();
+  const headerContent = cms.getSectionBlock<ProcessHeaderContent>('process', 'header', DEFAULT_PROCESS_HEADER);
+  const milestones = cms.getSectionBlock<ProjectMilestone[]>('process', 'milestones', PROJECT_MILESTONES);
+  const phases = cms.getSectionBlock('process', 'phases', PROCESS_DATA);
+
   const shouldReduceMotion = useReducedMotion();
   const [viewMode, setViewMode] = useState<ProcessViewMode>('timeline');
-  const [activeMilestoneId, setActiveMilestoneId] = useState<string>('m0-discovery');
+  const [activeMilestoneId, setActiveMilestoneId] = useState<string>(() => milestones[0]?.id || 'm0-discovery');
   const [activeModalMilestone, setActiveModalMilestone] = useState<ProjectMilestone | null>(null);
   const [activePhaseNumber, setActivePhaseNumber] = useState<string>('01');
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(false);
   const timelineRailRef = useRef<HTMLDivElement>(null);
   const activeNodeRef = useRef<HTMLButtonElement>(null);
 
-  const activeMilestoneIndex = PROJECT_MILESTONES.findIndex((m) => m.id === activeMilestoneId);
-  const activeMilestone = PROJECT_MILESTONES[activeMilestoneIndex] || PROJECT_MILESTONES[0];
-  const activePhase = PROCESS_DATA.find((p) => p.number === activePhaseNumber) || PROCESS_DATA[0];
+  const activeMilestoneIndex = Math.max(0, milestones.findIndex((m) => m.id === activeMilestoneId));
+  const activeMilestone = milestones[activeMilestoneIndex] || milestones[0] || PROJECT_MILESTONES[0];
+  const activePhase = phases.find((p) => p.number === activePhaseNumber) || phases[0] || PROCESS_DATA[0];
 
   // Auto-play timeline progression
   useEffect(() => {
@@ -46,15 +64,15 @@ export const ProcessSection: React.FC = () => {
 
     const interval = setInterval(() => {
       setActiveMilestoneId((prevId) => {
-        const currentIndex = PROJECT_MILESTONES.findIndex((m) => m.id === prevId);
-        const nextIndex = (currentIndex + 1) % PROJECT_MILESTONES.length;
+        const currentIndex = milestones.findIndex((m) => m.id === prevId);
+        const nextIndex = (currentIndex + 1) % milestones.length;
         soundEngine.playTap();
-        return PROJECT_MILESTONES[nextIndex].id;
+        return milestones[nextIndex]?.id || prevId;
       });
     }, 4500);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying]);
+  }, [isAutoPlaying, milestones]);
 
   // Scroll active milestone into view horizontally on rail
   useEffect(() => {
@@ -83,14 +101,14 @@ export const ProcessSection: React.FC = () => {
 
   const handlePrevMilestone = () => {
     soundEngine.playClick();
-    const prevIndex = (activeMilestoneIndex - 1 + PROJECT_MILESTONES.length) % PROJECT_MILESTONES.length;
-    setActiveMilestoneId(PROJECT_MILESTONES[prevIndex].id);
+    const prevIndex = (activeMilestoneIndex - 1 + milestones.length) % milestones.length;
+    setActiveMilestoneId(milestones[prevIndex].id);
   };
 
   const handleNextMilestone = () => {
     soundEngine.playClick();
-    const nextIndex = (activeMilestoneIndex + 1) % PROJECT_MILESTONES.length;
-    setActiveMilestoneId(PROJECT_MILESTONES[nextIndex].id);
+    const nextIndex = (activeMilestoneIndex + 1) % milestones.length;
+    setActiveMilestoneId(milestones[nextIndex].id);
   };
 
   const toggleAutoPlay = () => {
@@ -109,7 +127,7 @@ export const ProcessSection: React.FC = () => {
   };
 
   // Calculate percentage along the rail for the progress line
-  const progressPercent = (activeMilestoneIndex / (PROJECT_MILESTONES.length - 1)) * 100;
+  const progressPercent = milestones.length > 1 ? (activeMilestoneIndex / (milestones.length - 1)) * 100 : 0;
 
   return (
     <section id="process" className="py-24 bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] relative transition-colors duration-300">
@@ -126,16 +144,16 @@ export const ProcessSection: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></span>
-              06 — Lifecycle & Delivery Architecture
+              {headerContent.badge || DEFAULT_PROCESS_HEADER.badge}
             </div>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
-              The Engineering Process
+              {headerContent.headline || DEFAULT_PROCESS_HEADER.headline}
             </h2>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <p className="text-xs text-slate-600 dark:text-gray-400 max-w-sm font-bold uppercase tracking-wider leading-relaxed">
-              Standardized milestone timeline and verification gates powering zero-regression product delivery.
+              {headerContent.subtitle || DEFAULT_PROCESS_HEADER.subtitle}
             </p>
 
             {/* View Mode Segmented Controls */}
@@ -191,7 +209,7 @@ export const ProcessSection: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></div>
                   <span className="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200">
-                    Chronological Project Milestones ({activeMilestoneIndex + 1} of {PROJECT_MILESTONES.length})
+                    Chronological Project Milestones ({activeMilestoneIndex + 1} of {milestones.length})
                   </span>
                   <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/50">
                     {activeMilestone.durationWeeks}
@@ -261,7 +279,7 @@ export const ProcessSection: React.FC = () => {
 
                   {/* Milestone Nodes */}
                   <div className="relative z-10 flex items-start justify-between">
-                    {PROJECT_MILESTONES.map((milestone, idx) => {
+                    {milestones.map((milestone, idx) => {
                       const isActive = milestone.id === activeMilestoneId;
                       const isPast = idx < activeMilestoneIndex;
 
@@ -271,7 +289,7 @@ export const ProcessSection: React.FC = () => {
                           ref={isActive ? activeNodeRef : null}
                           onClick={() => handleSelectMilestone(milestone, true)}
                           className="flex flex-col items-center text-center group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl p-1 transition-transform"
-                          style={{ width: `${100 / PROJECT_MILESTONES.length}%` }}
+                          style={{ width: `${100 / milestones.length}%` }}
                           title={`Click to open full technical dossier for ${milestone.milestoneCode}: ${milestone.title}`}
                           aria-label={`Milestone ${milestone.milestoneCode}: ${milestone.title}. Click to reveal deep technical modal.`}
                         >
@@ -657,7 +675,7 @@ export const ProcessSection: React.FC = () => {
             setActiveMilestoneId(m.id);
             setActiveModalMilestone(m);
           }}
-          allMilestones={PROJECT_MILESTONES}
+          allMilestones={milestones}
           onJumpToPhase={handleJumpToPhase}
         />
       </div>

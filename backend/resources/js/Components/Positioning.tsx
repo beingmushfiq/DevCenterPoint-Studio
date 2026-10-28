@@ -1,29 +1,60 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { useCms } from '../Context/CmsContext';
+
+interface PositioningPillar {
+  num: string;
+  title: string;
+  desc: string;
+}
+
+interface PositioningContent {
+  badge?: string;
+  headlinePrefix?: string;
+  headlineHighlight?: string;
+  description?: string;
+  tags?: string[];
+  pillars?: PositioningPillar[];
+}
+
+const DEFAULT_PILLARS: PositioningPillar[] = [
+  {
+    num: '01',
+    title: 'Map the Broken Process',
+    desc: 'We audit where your organization bleeds time and accuracy: manual data re-entry, unlinked SaaS tools, double-bookings, and spreadsheet chaos.'
+  },
+  {
+    num: '02',
+    title: 'Engineer the Custom Fix',
+    desc: 'We architect tailored software, customer portals, and internal tooling engineered around how your team actually operates—never generic page templates.'
+  },
+  {
+    num: '03',
+    title: 'Automate the Repetition',
+    desc: 'We wire up event-driven pipelines, automated database sync, instant alert triggers, and practical AI so operations run without human babysitting.'
+  },
+  {
+    num: '04',
+    title: 'Scale Without Headcount',
+    desc: 'Your systems handle 10x the transaction volume, inventory complexity, or client inquiries with zero operational drift or linear staffing inflation.'
+  }
+];
+
+const DEFAULT_CONTENT: PositioningContent = {
+  badge: '01 — Operational Transformation',
+  headlinePrefix: 'From broken manual process',
+  headlineHighlight: 'to automated software engine.',
+  description:
+    'Businesses lose thousands of productive hours to spreadsheet drift, unlinked SaaS tools, and fragmented manual handoffs. We dissect operational bottlenecks and engineer custom software that executes your workflows deterministically.',
+  tags: ['ELIMINATE BOTTLENECKS', 'ZERO DATA LOSS', 'PREDICTABLE SCALE'],
+  pillars: DEFAULT_PILLARS,
+};
 
 export const Positioning: React.FC = () => {
-  const pillars = [
-    {
-      num: '01',
-      title: 'Map the Broken Process',
-      desc: 'We audit where your organization bleeds time and accuracy: manual data re-entry, unlinked SaaS tools, double-bookings, and spreadsheet chaos.'
-    },
-    {
-      num: '02',
-      title: 'Engineer the Custom Fix',
-      desc: 'We architect tailored software, customer portals, and internal tooling engineered around how your team actually operates—never generic page templates.'
-    },
-    {
-      num: '03',
-      title: 'Automate the Repetition',
-      desc: 'We wire up event-driven pipelines, automated database sync, instant alert triggers, and practical AI so operations run without human babysitting.'
-    },
-    {
-      num: '04',
-      title: 'Scale Without Headcount',
-      desc: 'Your systems handle 10x the transaction volume, inventory complexity, or client inquiries with zero operational drift or linear staffing inflation.'
-    }
-  ];
+  const cms = useCms();
+  const content = cms.getSectionBlock<PositioningContent>('positioning', 'content', DEFAULT_CONTENT);
+  const pillars = content.pillars && content.pillars.length > 0 ? content.pillars : DEFAULT_PILLARS;
+  const tags = content.tags && content.tags.length > 0 ? content.tags : DEFAULT_CONTENT.tags!;
 
   return (
     <section id="positioning" className="py-24 bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] relative overflow-hidden transition-colors duration-300">
@@ -39,27 +70,28 @@ export const Positioning: React.FC = () => {
           >
             <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></span>
-              01 — Operational Transformation
+              {content.badge || DEFAULT_CONTENT.badge}
             </div>
 
             <h2 className="font-display text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white leading-tight">
-              From broken manual process <br />
+              {content.headlinePrefix || DEFAULT_CONTENT.headlinePrefix} <br />
               <span className="text-gradient-signature">
-                to automated software engine.
+                {content.headlineHighlight || DEFAULT_CONTENT.headlineHighlight}
               </span>
             </h2>
 
             <p className="text-slate-600 dark:text-gray-400 text-base leading-relaxed font-medium">
-              Businesses lose thousands of productive hours to spreadsheet drift, unlinked SaaS tools, and fragmented manual handoffs. We dissect operational bottlenecks and engineer custom software that executes your workflows deterministically.
+              {content.description || DEFAULT_CONTENT.description}
             </p>
 
             <div className="pt-4 border-t border-slate-200 dark:border-[#2a2a2a]">
-              <div className="flex items-center gap-3 text-[10px] font-black tracking-widest text-slate-500 dark:text-gray-500 uppercase">
-                <span>ELIMINATE BOTTLENECKS</span>
-                <span>•</span>
-                <span>ZERO DATA LOSS</span>
-                <span>•</span>
-                <span>PREDICTABLE SCALE</span>
+              <div className="flex flex-wrap items-center gap-3 text-[10px] font-black tracking-widest text-slate-500 dark:text-gray-500 uppercase">
+                {tags.map((tag, tIdx) => (
+                  <React.Fragment key={tIdx}>
+                    {tIdx > 0 && <span>•</span>}
+                    <span>{tag}</span>
+                  </React.Fragment>
+                ))}
               </div>
             </div>
           </motion.div>
