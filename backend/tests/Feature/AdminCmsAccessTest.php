@@ -26,13 +26,29 @@ class AdminCmsAccessTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_authenticated_admin_can_access_inquiries_crm(): void
+    public function test_regular_user_cannot_access_admin_dashboard(): void
     {
-        $admin = User::factory()->create([
-            'role' => 'superadmin',
+        $regularUser = User::factory()->create([
+            'role' => 'user',
         ]);
 
-        $response = $this->actingAs($admin)->get('/admin/inquiries');
+        $response = $this->actingAs($regularUser)->get('/admin/dashboard');
+        $response->assertStatus(403);
+    }
+
+    public function test_public_registration_is_disabled_by_default(): void
+    {
+        $response = $this->get('/register');
+        $response->assertStatus(404);
+    }
+
+    public function test_admin_role_can_access_admin_dashboard(): void
+    {
+        $admin = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        $response = $this->actingAs($admin)->get('/admin/dashboard');
         $response->assertStatus(200);
     }
 }

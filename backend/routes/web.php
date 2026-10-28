@@ -50,7 +50,7 @@ Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'uns
 Route::redirect('/dashboard', '/admin/dashboard')->middleware(['auth'])->name('dashboard');
 
 // Admin Authenticated Dashboard & CMS Routes
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
     
     // Inquiries / Leads CRM

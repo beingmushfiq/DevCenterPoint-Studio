@@ -22,12 +22,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Initial Super Admin User
+        // 1. Initial Super Admin User (configurable via environment variables)
+        $adminEmail = env('INITIAL_ADMIN_EMAIL', 'admin@devcenterpoint.com');
+        $adminPassword = env('INITIAL_ADMIN_PASSWORD', 'admin12345');
+
         User::updateOrCreate(
-            ['email' => 'admin@devcenterpoint.com'],
+            ['email' => $adminEmail],
             [
                 'name' => 'Studio Super Admin',
-                'password' => Hash::make('admin12345'),
+                'password' => Hash::make($adminPassword),
                 'role' => 'superadmin',
                 'email_verified_at' => now(),
             ]

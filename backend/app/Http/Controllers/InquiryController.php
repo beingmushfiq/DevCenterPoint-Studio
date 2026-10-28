@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class InquiryController extends Controller
 {
@@ -29,7 +30,7 @@ class InquiryController extends Controller
             'selected_tech' => 'nullable|array',
         ]);
 
-        $randomSuffix = rand(1000, 9999);
+        $randomSuffix = strtoupper(Str::random(8));
         $referenceNumber = 'DCP-' . date('Y') . '-' . $randomSuffix;
 
         $inquiry = Inquiry::create([

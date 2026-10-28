@@ -171,8 +171,16 @@ class AdminInquiryController extends Controller
                 'Created At',
             ]);
 
+            $sanitizeCsv = static function ($value): string {
+                $str = (string) ($value ?? '');
+                if ($str !== '' && in_array($str[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+                    return "'" . $str;
+                }
+                return $str;
+            };
+
             foreach ($leads as $lead) {
-                fputcsv($handle, [
+                $row = [
                     $lead->reference_number,
                     $lead->name,
                     $lead->company ?? 'N/A',
@@ -187,7 +195,9 @@ class AdminInquiryController extends Controller
                     $lead->lead_source ?? 'Website',
                     $lead->details,
                     $lead->created_at->format('Y-m-d H:i'),
-                ]);
+                ];
+
+                fputcsv($handle, array_map($sanitizeCsv, $row));
             }
 
             fclose($handle);

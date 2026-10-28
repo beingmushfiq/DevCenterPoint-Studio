@@ -59,14 +59,24 @@ class AdminSubscriberController extends Controller
             $handle = fopen('php://output', 'w');
             fputcsv($handle, ['ID', 'Email', 'Status', 'Subscribed At']);
 
-            NewsletterSubscriber::chunk(200, function ($subscribers) use ($handle) {
+            $sanitizeCsv = static function ($value): string {
+                $str = (string) ($value ?? '');
+                if ($str !== '' && in_array($str[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+                    return "'" . $str;
+                }
+                return $str;
+            };
+
+            NewsletterSubscriber::chunk(200, function ($subscribers) use ($handle, $sanitizeCsv) {
                 foreach ($subscribers as $sub) {
-                    fputcsv($handle, [
+                    $row = [
                         $sub->id,
                         $sub->email,
                         $sub->status,
                         $sub->created_at->toDateTimeString(),
-                    ]);
+                    ];
+
+                    fputcsv($handle, array_map($sanitizeCsv, $row));
                 }
             });
 

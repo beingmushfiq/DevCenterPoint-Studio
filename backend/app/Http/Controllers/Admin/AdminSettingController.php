@@ -51,9 +51,14 @@ class AdminSettingController extends Controller
         $data = $request->except(['_token', '_method', ...self::APPEARANCE_KEYS]);
 
         foreach ($data as $key => $value) {
+            // Guard against arbitrary parameter injection; accept only canonical snake_case keys
+            if (! is_string($key) || ! preg_match('/^[a-z0-9_]{2,80}$/', $key)) {
+                continue;
+            }
+
             SiteSetting::updateOrCreate(
                 ['key' => $key],
-                ['value' => $value]
+                ['value' => is_scalar($value) ? (string) $value : (is_null($value) ? '' : json_encode($value))]
             );
         }
 

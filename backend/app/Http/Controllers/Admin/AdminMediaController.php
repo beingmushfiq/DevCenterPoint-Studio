@@ -15,11 +15,13 @@ class AdminMediaController extends Controller
     public function upload(Request $request): JsonResponse
     {
         $request->validate([
-            'file' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:5120', // max 5MB
+            'file' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120', // max 5MB (raster only to prevent SVG script execution)
         ]);
 
         $file = $request->file('file');
-        $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+        $safeExtension = $file->extension() ?: 'jpg';
+        $safeBase = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) ?: 'upload';
+        $filename = time() . '_' . $safeBase . '.' . $safeExtension;
 
         $destinationPath = public_path('uploads');
         if (!file_exists($destinationPath)) {

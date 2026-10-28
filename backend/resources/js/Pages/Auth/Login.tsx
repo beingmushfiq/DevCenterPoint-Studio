@@ -8,8 +8,7 @@ import {
   EyeOff, 
   ArrowRight, 
   Sparkles, 
-  ShieldCheck, 
-  KeyRound 
+  ShieldCheck
 } from 'lucide-react';
 import { soundEngine } from '../../lib/soundEngine';
 
@@ -35,36 +34,9 @@ export default function Login({
         });
     };
 
-    const handleQuickFill = () => {
-        soundEngine.playClick();
-        setData({
-            email: 'admin@devcenterpoint.com',
-            password: 'admin12345',
-            remember: true,
-        });
-    };
-
     return (
         <GuestLayout>
             <Head title="Admin Login | DevCenterPoint" />
-
-            {/* Quick Demo Helper Pill */}
-            <div className="mb-6 p-3 rounded-2xl bg-blue-500/10 border border-blue-500/25 flex items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2 text-blue-300">
-                    <KeyRound className="w-4 h-4 text-blue-400 shrink-0" />
-                    <div>
-                        <span className="font-semibold block text-[11px] text-white">Default Admin Credentials</span>
-                        <span className="font-mono text-[10px] text-blue-300/80">admin@devcenterpoint.com</span>
-                    </div>
-                </div>
-                <button
-                    type="button"
-                    onClick={handleQuickFill}
-                    className="px-2.5 py-1.5 rounded-lg bg-blue-600/30 hover:bg-blue-600/50 text-blue-300 hover:text-white font-mono text-[10px] font-bold uppercase transition-all border border-blue-400/30 cursor-pointer whitespace-nowrap"
-                >
-                    Auto-Fill
-                </button>
-            </div>
 
             {status && (
                 <div className="mb-5 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-semibold">
