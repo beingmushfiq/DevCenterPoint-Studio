@@ -1,6 +1,7 @@
 import React from 'react';
-import { ArrowUp, Github, Linkedin, Twitter, Mail, MapPin, Calendar, ExternalLink, Send } from 'lucide-react';
+import { ArrowUp, Mail, MapPin, Calendar, ExternalLink, Send } from 'lucide-react';
 import { DevCenterPointLogo } from '../DevCenterPointLogo';
+import { SocialIcon } from '../SocialIcons';
 import { useFooterData } from './useFooterData';
 
 export const FooterMegaSitemap: React.FC = () => {
@@ -13,12 +14,6 @@ export const FooterMegaSitemap: React.FC = () => {
     if (!email.trim()) return;
     setSubscribed(true);
   };
-
-  const socials = [
-    { href: footer.socialGithub, icon: Github, label: 'GitHub' },
-    { href: footer.socialLinkedin, icon: Linkedin, label: 'LinkedIn' },
-    { href: footer.socialTwitter, icon: Twitter, label: 'Twitter' },
-  ].filter((s) => s.href);
 
   return (
     <footer className="bg-white/90 dark:bg-[#07090e] text-slate-900 dark:text-white border-t border-slate-200/70 dark:border-white/5 font-sans pt-20 pb-16 relative transition-colors duration-500 overflow-hidden">
@@ -189,16 +184,16 @@ export const FooterMegaSitemap: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            {socials.map((social) => (
+            {footer.socialNetwork.map((channel) => (
               <a
-                key={social.label}
-                href={social.href}
+                key={channel.name}
+                href={channel.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={social.label}
+                aria-label={channel.name}
                 className="p-2 rounded-xl bg-slate-100 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#282828] text-slate-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition-colors"
               >
-                <social.icon className="w-3.5 h-3.5" />
+                <SocialIcon name={channel.platform} className="w-3.5 h-3.5" />
               </a>
             ))}
 

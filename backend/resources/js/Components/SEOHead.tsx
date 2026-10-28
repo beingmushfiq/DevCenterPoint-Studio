@@ -278,7 +278,14 @@ export const SEOHead: React.FC<{
 
     // `sameAs` must not contain empty or placeholder values — an invalid URL
     // degrades the whole Organization entity.
-    const sameAs = [setting('social_linkedin'), setting('social_github'), setting('social_x')]
+    const sameAs = [
+      setting('social_linkedin', 'https://www.linkedin.com/company/devcenterpoint'),
+      setting('social_github', 'https://github.com/DevCenterPoint'),
+      setting('social_x', setting('social_twitter', 'https://x.com/DevCenterPoint')),
+      setting('social_youtube', 'https://youtube.com/@DevCenterPoint'),
+      setting('social_instagram', 'https://www.instagram.com/devcenterpoint/'),
+      setting('social_facebook', 'https://facebook.com/DevCenterPoint'),
+    ]
       .map((u) => u.trim())
       .filter((u) => /^https?:\/\/\S+\.\S+/.test(u));
 

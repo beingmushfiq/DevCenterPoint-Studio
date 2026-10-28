@@ -13,6 +13,16 @@ export interface FooterLink {
   accent?: string;
 }
 
+export type SocialPlatform = 'linkedin' | 'github' | 'x' | 'youtube' | 'instagram' | 'facebook';
+
+export interface SocialChannel {
+  name: string;
+  handle: string;
+  url: string;
+  platform: SocialPlatform | string;
+  accentHover?: string;
+}
+
 export interface FooterData {
   brandName: string;
   bio: string;
@@ -34,6 +44,11 @@ export interface FooterData {
   socialGithub: string;
   socialLinkedin: string;
   socialTwitter: string;
+  socialX: string;
+  socialYoutube: string;
+  socialInstagram: string;
+  socialFacebook: string;
+  socialNetwork: SocialChannel[];
   template: string;
 }
 
@@ -93,6 +108,54 @@ export function useFooterData(): FooterData {
   const ecosystemLinks = parseJson<FooterLink[]>(cms.getSetting('footer_ecosystem_links', ''), DEFAULT_ECOSYSTEM);
   const bookingUrl = cms.getSetting('booking_url', 'https://cal.com/devcenterpoint');
 
+  const socialLinkedin = cms.getSetting('social_linkedin', 'https://www.linkedin.com/company/devcenterpoint');
+  const socialGithub = cms.getSetting('social_github', 'https://github.com/DevCenterPoint');
+  const socialX = cms.getSetting('social_x', cms.getSetting('social_twitter', 'https://x.com/DevCenterPoint'));
+  const socialYoutube = cms.getSetting('social_youtube', 'https://youtube.com/@DevCenterPoint');
+  const socialInstagram = cms.getSetting('social_instagram', 'https://www.instagram.com/devcenterpoint/');
+  const socialFacebook = cms.getSetting('social_facebook', 'https://facebook.com/DevCenterPoint');
+
+  const rawSocials: SocialChannel[] = [
+    {
+      name: 'LinkedIn',
+      handle: '/company/devcenterpoint',
+      url: socialLinkedin,
+      platform: 'linkedin',
+    },
+    {
+      name: 'GitHub',
+      handle: '@DevCenterPoint',
+      url: socialGithub,
+      platform: 'github',
+    },
+    {
+      name: 'X (Twitter)',
+      handle: '@DevCenterPoint',
+      url: socialX,
+      platform: 'x',
+    },
+    {
+      name: 'YouTube',
+      handle: '@DevCenterPoint',
+      url: socialYoutube,
+      platform: 'youtube',
+    },
+    {
+      name: 'Instagram',
+      handle: '@devcenterpoint',
+      url: socialInstagram,
+      platform: 'instagram',
+    },
+    {
+      name: 'Facebook',
+      handle: '/DevCenterPoint',
+      url: socialFacebook,
+      platform: 'facebook',
+    },
+  ];
+
+  const socialNetwork = rawSocials.filter((item) => Boolean(item.url));
+
   return {
     brandName: cms.getSetting('site_name', 'DevCenterPoint Studio'),
     bio: cms.getSetting(
@@ -113,10 +176,15 @@ export function useFooterData(): FooterData {
     showBooking: cms.getSetting('booking_in_footer', 'true') !== 'false' && bookingUrl !== '',
     founderName: cms.getSetting('founder_name', 'Mushfiq'),
     founderUrl: cms.getSetting('founder_portfolio_url', 'https://buildwithmushfiq.vercel.app'),
-    githubUrl: cms.getSetting('social_github', 'https://github.com/beingmushfiq'),
-    socialGithub: cms.getSetting('social_github', 'https://github.com/beingmushfiq'),
-    socialLinkedin: cms.getSetting('social_linkedin', 'https://linkedin.com/company/devcenterpoint'),
-    socialTwitter: cms.getSetting('social_twitter', 'https://twitter.com/devcenterpoint'),
+    githubUrl: socialGithub,
+    socialGithub,
+    socialLinkedin,
+    socialTwitter: socialX,
+    socialX,
+    socialYoutube,
+    socialInstagram,
+    socialFacebook,
+    socialNetwork,
     template: cms.getSetting('footer_template', 'four-column'),
   };
 }

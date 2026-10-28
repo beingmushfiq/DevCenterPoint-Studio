@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUp, Github, Mail, MapPin, ExternalLink, User, Calendar } from 'lucide-react';
 import { DevCenterPointLogo } from '../DevCenterPointLogo';
+import { SocialIcon } from '../SocialIcons';
 import { useFooterData } from './useFooterData';
 
 export const FooterFourColumn: React.FC = () => {
@@ -96,27 +97,35 @@ export const FooterFourColumn: React.FC = () => {
 
           <div className="md:col-span-3 space-y-3">
             <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
-              Studio Ecosystem
+              Studio Network
             </div>
-            <ul className="space-y-2 text-xs text-slate-600 dark:text-gray-400 font-bold">
-              {footer.ecosystemLinks.map((link) => (
-                <li key={`${link.label}-${link.href}`}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-blue-600 dark:hover:text-white transition-colors flex items-center justify-between group"
-                  >
-                    <span>{link.label}</span>
-                    {link.note && (
-                      <span className={`text-[10px] font-mono group-hover:text-blue-500 ${accentClass(link.accent)}`}>
-                        {link.note}
-                      </span>
-                    )}
-                  </a>
-                </li>
+            <div className="space-y-1.5">
+              {footer.socialNetwork.map((channel) => (
+                <a
+                  key={channel.name}
+                  href={channel.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-between px-3 py-2 rounded-xl bg-slate-100/70 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/[0.06] hover:bg-white dark:hover:bg-white/[0.06] hover:border-blue-500/40 dark:hover:border-white/20 transition-all duration-200"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <SocialIcon
+                      name={channel.platform}
+                      className="w-3.5 h-3.5 text-slate-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-white transition-colors shrink-0"
+                    />
+                    <span className="text-xs font-bold text-slate-700 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-white transition-colors truncate">
+                      {channel.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0 ml-2">
+                    <span className="text-[10px] font-mono text-slate-400 dark:text-gray-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {channel.handle}
+                    </span>
+                    <ExternalLink className="w-2.5 h-2.5 text-slate-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 -translate-x-0.5 group-hover:translate-x-0 transition-all" />
+                  </div>
+                </a>
               ))}
-            </ul>
+            </div>
           </div>
 
           <div className="md:col-span-3 space-y-3 text-xs text-slate-600 dark:text-gray-400 font-bold">

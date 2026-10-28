@@ -77,10 +77,13 @@ export default function SettingsIndex({ settings }: Props) {
     announcement_active: 'false',
     announcement_badge: 'UPDATE',
     announcement_text: 'Now accepting select product engineering engagements for 2026.',
-    announcement_link: '#contact',
-    social_github: 'https://github.com/beingmushfiq',
-    social_linkedin: 'https://linkedin.com/company/devcenterpoint',
-    social_twitter: 'https://twitter.com/devcenterpoint',
+    social_github: 'https://github.com/DevCenterPoint',
+    social_linkedin: 'https://www.linkedin.com/company/devcenterpoint',
+    social_twitter: 'https://x.com/DevCenterPoint',
+    social_x: 'https://x.com/DevCenterPoint',
+    social_youtube: 'https://youtube.com/@DevCenterPoint',
+    social_instagram: 'https://www.instagram.com/devcenterpoint/',
+    social_facebook: 'https://facebook.com/DevCenterPoint',
     custom_head_scripts: '',
     custom_body_scripts: '',
   };
@@ -900,31 +903,70 @@ export default function SettingsIndex({ settings }: Props) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div>
+                  <label className="text-slate-400 font-semibold block mb-1">LinkedIn Company Page</label>
+                  <input
+                    type="url"
+                    value={formData['social_linkedin'] || ''}
+                    onChange={(e) => handleChange('social_linkedin', e.target.value)}
+                    placeholder="https://www.linkedin.com/company/devcenterpoint"
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                <div>
                   <label className="text-slate-400 font-semibold block mb-1">GitHub Organization / Profile</label>
                   <input
                     type="url"
-                    value={formData['social_github']}
+                    value={formData['social_github'] || ''}
                     onChange={(e) => handleChange('social_github', e.target.value)}
+                    placeholder="https://github.com/DevCenterPoint"
                     className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="text-slate-400 font-semibold block mb-1">LinkedIn Page</label>
+                  <label className="text-slate-400 font-semibold block mb-1">X (formerly Twitter)</label>
                   <input
                     type="url"
-                    value={formData['social_linkedin']}
-                    onChange={(e) => handleChange('social_linkedin', e.target.value)}
+                    value={formData['social_twitter'] || formData['social_x'] || ''}
+                    onChange={(e) => {
+                      handleChange('social_twitter', e.target.value);
+                      handleChange('social_x', e.target.value);
+                    }}
+                    placeholder="https://x.com/DevCenterPoint"
                     className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="text-slate-400 font-semibold block mb-1">X / Twitter</label>
+                  <label className="text-slate-400 font-semibold block mb-1">YouTube Channel</label>
                   <input
                     type="url"
-                    value={formData['social_twitter']}
-                    onChange={(e) => handleChange('social_twitter', e.target.value)}
+                    value={formData['social_youtube'] || ''}
+                    onChange={(e) => handleChange('social_youtube', e.target.value)}
+                    placeholder="https://youtube.com/@DevCenterPoint"
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Instagram Profile</label>
+                  <input
+                    type="url"
+                    value={formData['social_instagram'] || ''}
+                    onChange={(e) => handleChange('social_instagram', e.target.value)}
+                    placeholder="https://www.instagram.com/devcenterpoint/"
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Facebook Page</label>
+                  <input
+                    type="url"
+                    value={formData['social_facebook'] || ''}
+                    onChange={(e) => handleChange('social_facebook', e.target.value)}
+                    placeholder="https://facebook.com/DevCenterPoint"
                     className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
