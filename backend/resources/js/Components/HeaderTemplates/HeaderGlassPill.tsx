@@ -119,9 +119,8 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
               <Search className="w-3.5 h-3.5" />
             </button>
 
-            <span className="hidden sm:inline-flex">
-              <ThemeToggle />
-            </span>
+            {/* Compact Theme Toggle directly beside Hamburger on Mobile & Desktop */}
+            <ThemeToggle className="shrink-0" />
 
             {header.showBooking && (
               <BookingCta

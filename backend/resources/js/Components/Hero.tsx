@@ -21,6 +21,7 @@ export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLElement>(null);
 
   const badgeText = cms.getSetting('hero_badge_text', 'SOFTWARE STUDIO • WEB SYSTEMS & ERP');
+  const mobileBadgeText = badgeText.includes('•') ? badgeText.split('•')[0].trim() : badgeText;
   const headlineLine1 = cms.getSetting('hero_headline_line1', 'Custom software & ERP systems');
   const headlineLine2 = cms.getSetting('hero_headline_line2_gradient', 'engineered for real business operations.');
   const thesis = cms.getSetting(
@@ -96,8 +97,9 @@ export const Hero: React.FC = () => {
             {/* Studio Meta Badge */}
             <div className="inline-flex max-w-full items-center gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-1.5 rounded-full border hairline-border bg-[var(--bg-surface)] shadow-xs">
               <span className="status-beacon-live shrink-0" />
-              <span className="text-[11px] sm:text-xs font-mono font-medium tracking-wide text-[var(--text-secondary)] truncate">
-                {badgeText}
+              <span className="text-[11px] sm:text-xs font-mono font-medium tracking-wide text-[var(--text-secondary)] whitespace-nowrap">
+                <span className="sm:hidden">{mobileBadgeText}</span>
+                <span className="hidden sm:inline">{badgeText}</span>
               </span>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-subtle)] text-[var(--accent-primary)] font-semibold border hairline-border whitespace-nowrap shrink-0">
                 EST. 2026
