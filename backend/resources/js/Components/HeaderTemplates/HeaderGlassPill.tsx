@@ -137,9 +137,10 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
                 e.preventDefault();
                 handleNavClick('#contact');
               }}
-              className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#121316] hover:bg-[#0047FF] dark:bg-white dark:hover:bg-[#0047FF] text-white dark:text-[#121316] dark:hover:text-white text-xs font-semibold transition-all active:scale-95 shadow-xs cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-[#121316] hover:bg-[#0047FF] dark:bg-white dark:hover:bg-[#0047FF] text-white dark:text-[#121316] dark:hover:text-white text-xs font-semibold transition-all active:scale-95 shadow-xs cursor-pointer"
             >
-              <span>Estimate Project</span>
+              <span className="hidden sm:inline">Estimate Project</span>
+              <span className="sm:hidden">Estimate</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
 

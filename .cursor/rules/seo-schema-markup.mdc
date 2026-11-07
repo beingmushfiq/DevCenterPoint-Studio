@@ -1,0 +1,8 @@
+---
+description: "Semantic JSON-LD structured data architecture, Schema.org vocabulary modeling, Rich Result eligibility, and entity disambiguation. Trigger when: 1. Publishing or updating articles, blog posts, whitepapers, or documentation (`Article`, `TechArticle`). 2. Creating or updating corporate identity, contact pages, or about pages (`Organi"
+globs: "**/*"
+alwaysApply: false
+---
+
+# Schema Markup Rules
+Follow operational procedures in .agent/skills/seo-schema-markup/SKILL.md

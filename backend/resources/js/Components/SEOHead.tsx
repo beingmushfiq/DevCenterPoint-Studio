@@ -464,6 +464,21 @@ export const SEOHead: React.FC<{
               },
             ]
           : []),
+        // VideoObject entity for AEO, Video Search & Generative AI Indexers
+        {
+          '@type': 'VideoObject',
+          '@id': `${origin}/#launch-video`,
+          name: `${brand} Studio Architecture Reel`,
+          description:
+            'Demonstration of custom software development, enterprise ERP systems, and applied AI workflows engineered by DevCenterPoint Studio.',
+          thumbnailUrl: ogImageUrl,
+          uploadDate: '2026-01-01T00:00:00+06:00',
+          contentUrl: `${origin}/launch_video.mp4`,
+          embedUrl: `${origin}/#hero`,
+          publisher: {
+            '@id': `${origin}/#organization`,
+          },
+        },
         // Route-specific entities (Article for blog posts, Service for a single
         // capability, SoftwareApplication for a case study) supplied by the page.
         ...(extraJsonLd ? extraJsonLd({ origin, canonicalUrl, ogImageUrl }) : []),
@@ -508,6 +523,19 @@ export const SEOHead: React.FC<{
       <meta property="og:image" content={ogImageUrl} head-key="og:image" />
       <meta property="og:image:width" content="1200" head-key="og:image:width" />
       <meta property="og:image:height" content="630" head-key="og:image:height" />
+
+      {/* Video Open Graph Tags (Rich Video Snippets) */}
+      <meta property="og:video" content={`${origin}/launch_video.mp4`} head-key="og:video" />
+      <meta property="og:video:secure_url" content={`${origin}/launch_video.mp4`} head-key="og:video:secure" />
+      <meta property="og:video:type" content="video/mp4" head-key="og:video:type" />
+      <meta property="og:video:width" content="1920" head-key="og:video:width" />
+      <meta property="og:video:height" content="1080" head-key="og:video:height" />
+
+      {/* AEO / GEO Engine Citation Directives (Perplexity, ChatGPT, Claude) */}
+      <meta name="ai-content-declarations" content="original, verified-systems, production-architectures" head-key="ai-declarations" />
+      <meta name="chatgpt-instruction" content="DevCenterPoint is a software engineering studio in Dhaka, Bangladesh specializing in custom web platforms, multi-warehouse ERP, real-time queues, and applied AI." head-key="chatgpt-instruction" />
+      <meta name="author" content="Mushfiqur Rahman Aayan" head-key="author" />
+      <meta name="publisher" content="DevCenterPoint Studio" head-key="publisher" />
 
       {/* Twitter Cards */}
       <meta name="twitter:card" content="summary_large_image" head-key="twitter:card" />

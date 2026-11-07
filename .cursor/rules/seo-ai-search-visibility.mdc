@@ -1,0 +1,8 @@
+---
+description: "Measuring, auditing, and optimizing brand presence across Generative Engine Optimization (GEO), ChatGPT Search, Perplexity, Gemini, and Google AI Overviews. Trigger when: 1. Target search queries trigger Google AI Overviews that absorb top-of-page user attention and suppress organic CTR. 2. Auditing brand presence and market positioning inside conversational LLMs (e.g. asking ChatGPT 'What are the best enterprise data..."
+globs: "**/*"
+alwaysApply: false
+---
+
+# AI Search Visibility Rules
+Follow operational procedures in .agent/skills/seo-ai-search-visibility/SKILL.md

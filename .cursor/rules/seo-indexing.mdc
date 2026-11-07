@@ -1,0 +1,8 @@
+---
+description: "Search engine indexation governance, canonical tag resolution, robots meta tag directives, and GSC Page Indexing error triage. Trigger when: 1. Google Search Console reports a sudden increase in 'Discovered - currently not indexed' or 'Crawled - currently not indexed' URLs. 2. New published pages fail to index within 7 to 14 days of launch. 3. Troubleshooting duplicate content issues wher..."
+globs: "**/*"
+alwaysApply: false
+---
+
+# Indexing Rules
+Follow operational procedures in .agent/skills/seo-indexing/SKILL.md

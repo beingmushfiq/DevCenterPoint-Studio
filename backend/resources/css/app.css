@@ -433,3 +433,39 @@ html.dark .studio-nav-bar {
   transform: translateY(0);
 }
 
+/* ==========================================================================
+   Omnichannel Responsive Utilities & Touch Hardening
+   ========================================================================== */
+.scroll-touch-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll-touch-x::-webkit-scrollbar {
+  display: none;
+}
+
+/* Fluid Responsive Typography Tokens */
+:root {
+  --fluid-h1: clamp(2.25rem, 5vw + 1rem, 4.25rem);
+  --fluid-h2: clamp(1.75rem, 3.5vw + 0.5rem, 3rem);
+  --fluid-h3: clamp(1.25rem, 2vw + 0.25rem, 1.875rem);
+}
+
+/* Ensure code blocks and pre elements never break page width on small viewports */
+pre, code {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Touch target comfort on mobile */
+@media (max-width: 640px) {
+  .touch-target-min {
+    min-height: 44px;
+  }
+}
+
+

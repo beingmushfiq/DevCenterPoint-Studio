@@ -46,23 +46,28 @@ export default function SettingsIndex({ settings }: Props) {
     studio_location: 'Dhaka, Bangladesh // Remote Worldwide',
     booking_url: 'https://cal.com/devcenterpoint',
     booking_cta_label: 'Book a Consultation',
-    // Hero & Cinema Settings (Strategic Architecture Plan Locked)
-    hero_badge_text: 'TECHNOLOGY COMPANY • BUSINESS AUTOMATION & AI',
-    hero_headline_line1: 'We turn inefficient',
-    hero_headline_line2_gradient: 'business processes into software.',
-    hero_thesis_statement: 'DevCenterPoint builds custom software, business automation systems, SaaS products, and intelligent digital solutions for businesses and organizations.',
-    hero_cta_primary_text: 'Start a Project',
+    // Hero & Simulator Settings (Architectural Editorial 2026)
+    hero_badge_text: 'SOFTWARE STUDIO • WEB SYSTEMS & ERP',
+    hero_headline_line1: 'Custom software & ERP systems',
+    hero_headline_line2_gradient: 'engineered for real business operations.',
+    hero_thesis_statement: 'We replace fragile spreadsheets, manual WhatsApp orders, and disconnected paper workflows with robust web systems tailored to your operations. Built with Laravel, React, and PostgreSQL, delivered with 100% full source code ownership.',
+    hero_cta_primary_text: 'Estimate Project Scope',
     hero_cta_secondary_text: 'Explore Selected Work',
+    simulator_default_mode: 'erp',
+    simulator_enabled: 'true',
+    lenis_smooth_scroll_enabled: 'true',
+    hero_telemetry_badge1_label: 'Source Code',
+    hero_telemetry_badge1_val: '100% Owned',
+    hero_telemetry_badge2_label: 'Core Stack',
+    hero_telemetry_badge2_val: 'Laravel + React',
+    hero_telemetry_badge3_label: 'Live Demos',
+    hero_telemetry_badge3_val: '7 Verified Apps',
+    hero_video_enabled: 'true',
     hero_video_url: '/launch_video.mp4',
     hero_video_mobile_url: '/launch_video_mobile.mp4',
-    hero_video_enabled: 'true',
-    lenis_smooth_scroll_enabled: 'true',
-    hero_telemetry_badge1_label: 'Status',
-    hero_telemetry_badge1_val: 'Operational',
-    hero_telemetry_badge2_label: 'Reliability',
-    hero_telemetry_badge2_val: '99.9%',
-    hero_telemetry_badge3_label: 'Speed',
-    hero_telemetry_badge3_val: 'Ultra-Fast',
+    hero_video_poster: '/og-image.png',
+    hero_video_caption: 'Studio Engineering Reel // Architecture in Motion',
+    hero_video_sound_default: 'false',
     visual_liquid_orbs_enabled: 'true',
     visual_radar_status: 'OPERATIONAL // 100% HEALTH',
     // Developer / Demo Controls (hidden from the public site by default)
@@ -106,16 +111,21 @@ export default function SettingsIndex({ settings }: Props) {
   const applyStrategicNorthStar = () => {
     setFormData((prev) => ({
       ...prev,
-      hero_badge_text: 'TECHNOLOGY COMPANY • BUSINESS AUTOMATION & AI',
-      hero_headline_line1: 'We turn inefficient',
-      hero_headline_line2_gradient: 'business processes into software.',
-      hero_thesis_statement: 'DevCenterPoint builds custom software, business automation systems, SaaS products, and intelligent digital solutions for businesses and organizations.',
-      hero_cta_primary_text: 'Start a Project',
+      hero_badge_text: 'SOFTWARE STUDIO • WEB SYSTEMS & ERP',
+      hero_headline_line1: 'Custom software & ERP systems',
+      hero_headline_line2_gradient: 'engineered for real business operations.',
+      hero_thesis_statement: 'We replace fragile spreadsheets, manual WhatsApp orders, and disconnected paper workflows with robust web systems tailored to your operations. Built with Laravel, React, and PostgreSQL, delivered with 100% full source code ownership.',
+      hero_cta_primary_text: 'Estimate Project Scope',
       hero_cta_secondary_text: 'Explore Selected Work',
-      hero_video_url: '/launch_video.mp4',
-      hero_video_mobile_url: '/launch_video_mobile.mp4',
-      hero_video_enabled: 'true',
+      simulator_default_mode: 'erp',
+      simulator_enabled: 'true',
       lenis_smooth_scroll_enabled: 'true',
+      hero_telemetry_badge1_label: 'Source Code',
+      hero_telemetry_badge1_val: '100% Owned',
+      hero_telemetry_badge2_label: 'Core Stack',
+      hero_telemetry_badge2_val: 'Laravel + React',
+      hero_telemetry_badge3_label: 'Live Demos',
+      hero_telemetry_badge3_val: '7 Verified Apps',
       booking_url: 'https://cal.com/devcenterpoint',
       booking_cta_label: 'Book a Consultation',
     }));
@@ -270,21 +280,6 @@ export default function SettingsIndex({ settings }: Props) {
           <div className="space-y-6">
             {/* Live Interactive Visual Preview Card */}
             <div className="backdrop-blur-2xl bg-[#0c1222]/90 border border-white/15 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-2xl">
-              {/* Optional Background Video Preview Simulation */}
-              {formData['hero_video_enabled'] !== 'false' && (
-                <div className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden">
-                  <video
-                    src={formData['hero_video_url'] || '/launch_video.mp4'}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-[#0c1222] via-[#0c1222]/60 to-transparent" />
-                </div>
-              )}
-
               {/* Optional Simulated Ambient Liquid Orbs */}
               {formData['visual_liquid_orbs_enabled'] !== 'false' && (
                 <>
@@ -301,11 +296,9 @@ export default function SettingsIndex({ settings }: Props) {
                     <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300">
                       Live Front-End Hero Preview
                     </span>
-                    {formData['hero_video_enabled'] !== 'false' && (
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 flex items-center gap-1">
-                        <Play className="w-2.5 h-2.5 fill-current" /> Video Active
-                      </span>
-                    )}
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 flex items-center gap-1">
+                      <Layers className="w-2.5 h-2.5" /> Interactive App Simulator
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -314,7 +307,7 @@ export default function SettingsIndex({ settings }: Props) {
                       className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[11px] font-bold shadow-md shadow-blue-500/20 transition-all cursor-pointer border border-white/20"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>Apply Strategic North Star</span>
+                      <span>Apply 2026 Architectural Defaults</span>
                     </button>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/25">
                       Realtime Feedback
@@ -546,6 +539,101 @@ export default function SettingsIndex({ settings }: Props) {
               </div>
             </div>
 
+            {/* Hero Launch Video Reel Controls */}
+            <div className="bg-[#0c1017] border border-white/10 rounded-2xl p-6 space-y-5">
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-white/10 pb-3">
+                <Play className="w-4 h-4 text-emerald-400" /> Hero Launch Video (Architectural Cinema Card)
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Launch Video Display</label>
+                  <select
+                    value={formData['hero_video_enabled'] || 'true'}
+                    onChange={(e) => handleChange('hero_video_enabled', e.target.value)}
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="true">Enabled (Right Column 5-Col Cinema Card)</option>
+                    <option value="false">Disabled (Hide Video Card)</option>
+                  </select>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Renders the launch video in the hero right column alongside the headline.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Default Sound State</label>
+                  <select
+                    value={formData['hero_video_sound_default'] || 'false'}
+                    onChange={(e) => handleChange('hero_video_sound_default', e.target.value)}
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="false">Muted by Default (Recommended for browser autoplay policies)</option>
+                    <option value="true">Unmuted by Default</option>
+                  </select>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Visitors can always click the floating sound chip to toggle audio at any time.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Desktop Video Asset URL / CDN Path</label>
+                  <input
+                    type="text"
+                    value={formData['hero_video_url'] || '/launch_video.mp4'}
+                    onChange={(e) => handleChange('hero_video_url', e.target.value)}
+                    placeholder="/launch_video.mp4"
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-blue-500"
+                  />
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Local path in public/ or external HTTPS streaming CDN URL.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Mobile Video Asset URL / Path</label>
+                  <input
+                    type="text"
+                    value={formData['hero_video_mobile_url'] || '/launch_video_mobile.mp4'}
+                    onChange={(e) => handleChange('hero_video_mobile_url', e.target.value)}
+                    placeholder="/launch_video_mobile.mp4"
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-blue-500"
+                  />
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Optimized vertical or lightweight mobile stream asset (serves screens &lt; 768px).
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Video Poster Thumbnail Image</label>
+                  <input
+                    type="text"
+                    value={formData['hero_video_poster'] || '/og-image.png'}
+                    onChange={(e) => handleChange('hero_video_poster', e.target.value)}
+                    placeholder="/og-image.png"
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-blue-500"
+                  />
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Preloaded frame displayed before the video stream starts. Prevents layout shift (CLS).
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-semibold block mb-1">Video Caption / Architectural Subtitle</label>
+                  <input
+                    type="text"
+                    value={formData['hero_video_caption'] || 'Studio Engineering Reel // Architecture in Motion'}
+                    onChange={(e) => handleChange('hero_video_caption', e.target.value)}
+                    placeholder="Studio Engineering Reel // Architecture in Motion"
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  />
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Displayed in the card footer and in Schema.org VideoObject metadata for AI search engines.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Atmosphere & Visual Effects */}
             <div className="bg-[#0c1017] border border-white/10 rounded-2xl p-6 space-y-5">
               <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-white/10 pb-3">
@@ -583,45 +671,33 @@ export default function SettingsIndex({ settings }: Props) {
                 </div>
 
                 <div>
-                  <label className="text-slate-400 font-semibold block mb-1">Hero Cinematic Background Video</label>
+                  <label className="text-slate-400 font-semibold block mb-1">Live App Simulator on Hero</label>
                   <select
-                    value={formData['hero_video_enabled']}
-                    onChange={(e) => handleChange('hero_video_enabled', e.target.value)}
+                    value={formData['simulator_enabled'] || 'true'}
+                    onChange={(e) => handleChange('simulator_enabled', e.target.value)}
                     className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
                   >
-                    <option value="true">Enabled (1080p Ambient Loop with Cinema Audio Controller)</option>
-                    <option value="false">Disabled (Minimalist Neural Mesh Canvas Only)</option>
+                    <option value="true">Enabled (Interactive 3-Tab Production Simulator)</option>
+                    <option value="false">Disabled (Minimalist Hero)</option>
                   </select>
                   <p className="text-[11px] text-slate-500 mt-1">
-                    Plays /launch_video.mp4 with audio toggle chip, dark glass scrim overlay, and bottom gradient blend.
+                    Showcases interactive ERP multi-warehouse logistics, clinic queue manager, and dynamic QR attendance.
                   </p>
                 </div>
 
                 <div>
-                  <label className="text-slate-400 font-semibold block mb-1">Hero Desktop Video Asset URL / Path</label>
-                  <input
-                    type="text"
-                    value={formData['hero_video_url']}
-                    onChange={(e) => handleChange('hero_video_url', e.target.value)}
-                    placeholder="/launch_video.mp4"
-                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-blue-500"
-                  />
+                  <label className="text-slate-400 font-semibold block mb-1">Simulator Default Active Tab</label>
+                  <select
+                    value={formData['simulator_default_mode'] || 'erp'}
+                    onChange={(e) => handleChange('simulator_default_mode', e.target.value)}
+                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500 font-mono"
+                  >
+                    <option value="erp">ERP & Multi-Warehouse Logistics (erp)</option>
+                    <option value="queue">Healthcare Serial & Patient Queue (queue)</option>
+                    <option value="qr">Workforce Cryptographic Dynamic QR (qr)</option>
+                  </select>
                   <p className="text-[11px] text-slate-500 mt-1">
-                    Desktop ambient video asset in public directory or high-speed CDN video stream URL.
-                  </p>
-                </div>
-
-                <div>
-                  <label className="text-slate-400 font-semibold block mb-1">Hero Mobile Video Asset URL / Path</label>
-                  <input
-                    type="text"
-                    value={formData['hero_video_mobile_url']}
-                    onChange={(e) => handleChange('hero_video_mobile_url', e.target.value)}
-                    placeholder="/launch_video_mobile.mp4"
-                    className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-blue-500"
-                  />
-                  <p className="text-[11px] text-slate-500 mt-1">
-                    Mobile-optimized vertical/compact video asset (serves screens ≤ 768px).
+                    Selects which interactive live system tab opens first when visitors land on the studio website.
                   </p>
                 </div>
 

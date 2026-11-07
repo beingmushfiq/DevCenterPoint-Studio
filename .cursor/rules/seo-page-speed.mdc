@@ -1,0 +1,8 @@
+---
+description: "Core Web Vitals engineering (LCP, INP, CLS), critical rendering path optimization, font display, and CDN caching architecture. Trigger when: 1. Google Search Console flags URLs in the Core Web Vitals report as 'Need Improvement' or 'Poor'. 2. Deploying a new frontend framework, design overhaul, or heavy JavaScript third-party script suite. 3. Conducting technical audits on high-value comm..."
+globs: "**/*"
+alwaysApply: false
+---
+
+# Page Speed Rules
+Follow operational procedures in .agent/skills/seo-page-speed/SKILL.md

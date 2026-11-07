@@ -1,0 +1,8 @@
+---
+description: "Master SEO orchestrator, symptom triage engine, and multi-skill dispatch director. Diagnoses organic traffic drops, Google Search Console indexing anomalies, Core Web Vitals regressions, Schema.org structured data errors, and directs queries to specialized Everything SEO skills. Trigger when: 1. The user presents an open-ended, ambiguous, or multi-symptom SEO inquiry (e.g., *'Our organic traffic dropped 40% after Tuesday's deploy'*, *'How do I optimi"
+globs: "**/*"
+alwaysApply: false
+---
+
+# SEO Orchestrator Rules
+Follow operational procedures in .agent/skills/seo-orchestrator/SKILL.md

@@ -27,41 +27,58 @@ trait ProvidesPublicCmsPayload
      */
     protected function cmsPayload(): array
     {
-        $rawSections = PageSection::where('is_visible', true)->get();
-        $sections = [];
-        foreach ($rawSections as $section) {
-            $decoded = json_decode($section->content, true);
-            $sections[$section->section_key][$section->block_key] = $decoded !== null ? $decoded : $section->content;
+        try {
+            $rawSections = PageSection::where('is_visible', true)->get();
+            $sections = [];
+            foreach ($rawSections as $section) {
+                $decoded = json_decode($section->content, true);
+                $sections[$section->section_key][$section->block_key] = $decoded !== null ? $decoded : $section->content;
+            }
+
+            $settings = SiteSetting::pluck('value', 'key');
+
+            $plans = [];
+            if (($settings['show_pricing_on_site'] ?? 'false') === 'true') {
+                $plans = Plan::where('is_published', true)
+                    ->orderBy('display_order')
+                    ->get();
+            }
+
+            $solutions = [];
+            if (($settings['show_solution_studio_on_site'] ?? 'false') === 'true') {
+                $solutions = SolutionProduct::where('is_active', true)
+                    ->orderBy('display_order')
+                    ->get();
+            }
+
+            return [
+                'capabilities' => Capability::where('is_active', true)->orderBy('display_order')->get(),
+                'projects' => Project::where('is_published', true)->orderBy('display_order')->get(),
+                'milestones' => Milestone::where('is_active', true)->orderBy('display_order')->get(),
+                'faqs' => Faq::where('is_published', true)->orderBy('display_order')->get(),
+                'team' => TeamMember::where('is_active', true)->orderBy('display_order')->get(),
+                'testimonials' => Testimonial::where('is_published', true)->orderBy('display_order')->get(),
+                'sandboxApps' => SandboxApp::where('is_active', true)->orderBy('display_order')->get(),
+                'plans' => $plans,
+                'solutionProducts' => $solutions,
+                'pageSections' => $sections,
+                'siteSettings' => $settings,
+            ];
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('CMS Payload assembly failed; activating static fallback: ' . $e->getMessage());
+            return [
+                'capabilities' => [],
+                'projects' => [],
+                'milestones' => [],
+                'faqs' => [],
+                'team' => [],
+                'testimonials' => [],
+                'sandboxApps' => [],
+                'plans' => [],
+                'solutionProducts' => [],
+                'pageSections' => [],
+                'siteSettings' => [],
+            ];
         }
-
-        $settings = SiteSetting::pluck('value', 'key');
-
-        $plans = [];
-        if (($settings['show_pricing_on_site'] ?? 'false') === 'true') {
-            $plans = Plan::where('is_published', true)
-                ->orderBy('display_order')
-                ->get();
-        }
-
-        $solutions = [];
-        if (($settings['show_solution_studio_on_site'] ?? 'false') === 'true') {
-            $solutions = SolutionProduct::where('is_active', true)
-                ->orderBy('display_order')
-                ->get();
-        }
-
-        return [
-            'capabilities' => Capability::where('is_active', true)->orderBy('display_order')->get(),
-            'projects' => Project::where('is_published', true)->orderBy('display_order')->get(),
-            'milestones' => Milestone::where('is_active', true)->orderBy('display_order')->get(),
-            'faqs' => Faq::where('is_published', true)->orderBy('display_order')->get(),
-            'team' => TeamMember::where('is_active', true)->orderBy('display_order')->get(),
-            'testimonials' => Testimonial::where('is_published', true)->orderBy('display_order')->get(),
-            'sandboxApps' => SandboxApp::where('is_active', true)->orderBy('display_order')->get(),
-            'plans' => $plans,
-            'solutionProducts' => $solutions,
-            'pageSections' => $sections,
-            'siteSettings' => $settings,
-        ];
     }
 }

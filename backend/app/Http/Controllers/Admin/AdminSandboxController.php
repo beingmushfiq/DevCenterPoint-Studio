@@ -37,6 +37,9 @@ class AdminSandboxController extends Controller
             'roles' => 'nullable|array',
             'credentials_notes' => 'nullable|string',
             'features' => 'nullable|array',
+            'stats' => 'nullable|array',
+            'activity_logs' => 'nullable|array',
+            'business_outcomes' => 'nullable|array',
             'display_order' => 'integer',
             'is_active' => 'boolean',
         ]);
@@ -63,6 +66,9 @@ class AdminSandboxController extends Controller
             'roles' => 'nullable|array',
             'credentials_notes' => 'nullable|string',
             'features' => 'nullable|array',
+            'stats' => 'nullable|array',
+            'activity_logs' => 'nullable|array',
+            'business_outcomes' => 'nullable|array',
             'display_order' => 'integer',
             'is_active' => 'boolean',
         ]);

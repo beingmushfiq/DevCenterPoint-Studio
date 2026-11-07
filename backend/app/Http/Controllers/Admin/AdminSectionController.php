@@ -35,10 +35,18 @@ class AdminSectionController extends Controller
             'is_visible' => 'boolean',
         ]);
 
+        $content = trim($validated['content']);
+        if (str_starts_with($content, '{') || str_starts_with($content, '[')) {
+            json_decode($content);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return back()->withErrors(['content' => 'Invalid JSON syntax: ' . json_last_error_msg()]);
+            }
+        }
+
         PageSection::updateOrCreate(
             ['section_key' => $validated['section_key'], 'block_key' => $validated['block_key']],
             [
-                'content' => $validated['content'],
+                'content' => $content,
                 'is_visible' => $validated['is_visible'] ?? true,
             ]
         );

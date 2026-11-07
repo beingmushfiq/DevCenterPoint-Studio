@@ -14,11 +14,33 @@ import {
   Clock
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useCms } from '../Context/CmsContext';
 
 type SimulatorMode = 'erp' | 'queue' | 'qr';
 
 export const LiveAppSimulator: React.FC = () => {
-  const [mode, setMode] = useState<SimulatorMode>('erp');
+  const cms = useCms();
+  const configuredMode = cms.getSetting('simulator_default_mode', 'erp') as SimulatorMode;
+  const [mode, setMode] = useState<SimulatorMode>(
+    ['erp', 'queue', 'qr'].includes(configuredMode) ? configuredMode : 'erp'
+  );
+
+  // Retrieve dynamic sandbox app records if available in CMS payload
+  const erpApp = cms.sandboxApps?.find((a) => a.slug === 'erp');
+  const queueApp = cms.sandboxApps?.find((a) => a.slug === 'feroza-serial' || a.slug === 'serial');
+  const qrApp = cms.sandboxApps?.find((a) => a.slug === 'qttenzy-qr' || a.slug === 'qttenzy');
+
+  const erpLiveUrl = erpApp?.live_url || 'https://demoerp.devcenterpoint.com/login';
+  const erpUser = erpApp?.credentials_username || 'Admin';
+  const erpPass = erpApp?.credentials_password || '12345678';
+
+  const queueLiveUrl = queueApp?.live_url || 'https://serial.ferozamedicinecorner.com';
+  const queueUser = queueApp?.credentials_username || 'clinic_reception';
+  const queuePass = queueApp?.credentials_password || 'ClinicVerified99!';
+
+  const qrLiveUrl = qrApp?.live_url || 'https://qttenzy.vercel.app';
+  const qrUser = qrApp?.credentials_username || 'site_supervisor';
+  const qrPass = qrApp?.credentials_password || 'QttenzySecAuth!';
 
   // ==========================================
   // 1. ERP Inventory State
@@ -113,11 +135,11 @@ export const LiveAppSimulator: React.FC = () => {
         </div>
 
         {/* Tactical Switcher Tabs */}
-        <div className="flex items-center bg-white dark:bg-[#0D0E11] p-1 rounded-lg border hairline-border text-xs font-medium">
+        <div className="flex items-center overflow-x-auto scroll-touch-x max-w-full bg-white dark:bg-[#0D0E11] p-1 rounded-lg border hairline-border text-xs font-medium">
           <button
             type="button"
             onClick={() => setMode('erp')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md whitespace-nowrap transition-all cursor-pointer ${
               mode === 'erp'
                 ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-semibold shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
@@ -130,7 +152,7 @@ export const LiveAppSimulator: React.FC = () => {
           <button
             type="button"
             onClick={() => setMode('queue')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md whitespace-nowrap transition-all cursor-pointer ${
               mode === 'queue'
                 ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-semibold shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
@@ -143,7 +165,7 @@ export const LiveAppSimulator: React.FC = () => {
           <button
             type="button"
             onClick={() => setMode('qr')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md whitespace-nowrap transition-all cursor-pointer ${
               mode === 'qr'
                 ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-semibold shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
@@ -191,7 +213,7 @@ export const LiveAppSimulator: React.FC = () => {
                     <RotateCcw className="w-3.5 h-3.5" />
                   </button>
                   <a
-                    href="https://demoerp.devcenterpoint.com/login"
+                    href={erpLiveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white text-xs font-medium transition-all"
@@ -272,7 +294,7 @@ export const LiveAppSimulator: React.FC = () => {
 
               {/* Credentials Hint */}
               <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                <span>Direct Credentials: Username: <b>Admin</b> | Password: <b>12345678</b></span>
+                <span>Direct Credentials: Username: <b>{erpUser}</b> | Password: <b>{erpPass}</b></span>
                 <span className="text-slate-400">Stack: Laravel 11 • PostgreSQL • Redis • Reverb</span>
               </div>
             </motion.div>
@@ -302,7 +324,7 @@ export const LiveAppSimulator: React.FC = () => {
                 </div>
 
                 <a
-                  href="https://serial.ferozamedicinecorner.com"
+                  href={queueLiveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white text-xs font-medium transition-all"
@@ -375,7 +397,7 @@ export const LiveAppSimulator: React.FC = () => {
               </div>
 
               <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                <span>Super Admin: <b>Super Admin</b> | Password: <b>12345678</b></span>
+                <span>Super Admin: <b>{queueUser}</b> | Password: <b>{queuePass}</b></span>
                 <span className="text-slate-400">Stack: Laravel • WebSockets • Twilio SMS • MySQL</span>
               </div>
             </motion.div>
@@ -405,7 +427,7 @@ export const LiveAppSimulator: React.FC = () => {
                 </div>
 
                 <a
-                  href="https://qttenzy.vercel.app"
+                  href={qrLiveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white text-xs font-medium transition-all"
@@ -479,8 +501,8 @@ export const LiveAppSimulator: React.FC = () => {
               </div>
 
               <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                <span>Anti-Screenshot Watermark Active</span>
-                <span className="text-slate-400">Stack: React Native • PWA • Node.js • MongoDB</span>
+                <span>Supervisor: <b>{qrUser}</b> | Password: <b>{qrPass}</b></span>
+                <span className="text-slate-400">Stack: React Native • PWA • Node.js • PostGIS</span>
               </div>
             </motion.div>
           )}

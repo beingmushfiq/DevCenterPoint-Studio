@@ -1,0 +1,39 @@
+---
+description: "Master SEO router and triage dispatcher. Activates on any SEO audit, ranking drop, indexation issue, Core Web Vitals, Schema.org markup, or AI search query."
+globs: "**/*"
+alwaysApply: true
+---
+
+# Everything SEO Master Router & Triage Engine
+When the user asks an SEO-related question or requests an optimization, use this triage decision matrix to inspect, read, and apply the exact operational manual from .agent/skills/seo-<slug>/SKILL.md:
+
+- Indexation, Crawl Status, Canonical Loops, 404s, Noindex Directives:
+  -> Read .agent/skills/seo-indexing/SKILL.md or .agent/skills/seo-crawling/SKILL.md
+- Robots.txt Errors, Bot Blocking, RFC 9309 Directive Syntax:
+  -> Read .agent/skills/seo-robotstxt/SKILL.md
+- Schema.org, JSON-LD, Rich Results, Structured Data Errors:
+  -> Read .agent/skills/seo-schema-markup/SKILL.md
+- Core Web Vitals, LCP, INP, CLS, Asset Optimization, Server Latency:
+  -> Read .agent/skills/seo-page-speed/SKILL.md
+- AI Overviews, Perplexity Citations, ChatGPT Search, GEO Entity Gain:
+  -> Read .agent/skills/seo-ai-search-visibility/SKILL.md
+- Organic Traffic Decay, Stale Content, SERP Rank Decline:
+  -> Read .agent/skills/seo-content-refresh/SKILL.md
+- Hreflang, Multilingual Sites, Multi-Region Targeting:
+  -> Read .agent/skills/seo-hreflang/SKILL.md
+- Internal Linking, Orphan Pages, PageRank Distribution:
+  -> Read .agent/skills/seo-internal-linking/SKILL.md
+- Title Tags, Meta Descriptions, CTR Anomaly Remediation:
+  -> Read .agent/skills/seo-title/SKILL.md or .agent/skills/seo-ctr-optimization/SKILL.md
+- URL Structure, Slugs, Faceted Navigation Parameters:
+  -> Read .agent/skills/seo-url-optimization/SKILL.md
+- Redirect Chains, 301/302 Rules, HTTP-to-HTTPS Loops:
+  -> Read .agent/skills/seo-redirects/SKILL.md
+- XML Sitemaps, Sitemap Indexing, Lastmod Hygeine:
+  -> Read .agent/skills/seo-xml-sitemaps/SKILL.md
+- Search Console Performance, GSC Coverage Errors, Query Clicks:
+  -> Read .agent/skills/seo-search-console/SKILL.md
+- Master Triage, Multi-Symptom Diagnostics, or Ambiguous Ranking Losses:
+  -> Read .agent/skills/seo-orchestrator/SKILL.md
+
+Follow the 5-phase procedure (Ingestion -> Extraction -> Synthesis -> Remediation -> Governance) in the referenced skill manual.

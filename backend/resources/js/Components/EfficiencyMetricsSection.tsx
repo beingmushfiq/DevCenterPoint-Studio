@@ -292,10 +292,10 @@ export const EfficiencyMetricsSection: React.FC = () => {
         <div className="editorial-card rounded-2xl p-6 sm:p-8 space-y-6">
           {/* Controls Bar: View Selector */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b hairline-border">
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center overflow-x-auto scroll-touch-x max-w-full pb-1 gap-2">
               <button
                 onClick={() => setActiveView('deliverables')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap tracking-wide transition-all border hairline-border cursor-pointer ${
                   activeView === 'deliverables'
                     ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
                     : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -306,7 +306,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
               <button
                 onClick={() => setActiveView('velocity')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap tracking-wide transition-all border hairline-border cursor-pointer ${
                   activeView === 'velocity'
                     ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
                     : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -317,7 +317,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
               <button
                 onClick={() => setActiveView('latency')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap tracking-wide transition-all border hairline-border cursor-pointer flex items-center gap-1.5 ${
                   activeView === 'latency'
                     ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
                     : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -329,7 +329,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
               <button
                 onClick={() => setActiveView('quality')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap tracking-wide transition-all border hairline-border cursor-pointer flex items-center gap-1.5 ${
                   activeView === 'quality'
                     ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
                     : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -341,7 +341,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
               <button
                 onClick={() => setActiveView('radar')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap tracking-wide transition-all border hairline-border cursor-pointer flex items-center gap-1.5 ${
                   activeView === 'radar'
                     ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
                     : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'

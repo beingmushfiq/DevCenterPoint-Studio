@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { LiveAppSimulator } from './LiveAppSimulator';
+import { HeroVideoCard } from './HeroVideoCard';
 import { useCms } from '../Context/CmsContext';
 import { scrollToTarget } from '../lib/lenis';
 
@@ -42,6 +43,7 @@ export const Hero: React.FC = () => {
   );
   const bookingUrl = cms.getSetting('booking_url', 'https://cal.com/devcenterpoint');
   const bookingLabel = cms.getSetting('booking_cta_label', 'Book a Consultation');
+  const simulatorEnabled = cms.getSetting('simulator_enabled', 'true') !== 'false';
 
   const handleNavClick = (target: string) => {
     scrollToTarget(target, { offset: -70, duration: 1.0 });
@@ -86,112 +88,122 @@ export const Hero: React.FC = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-12 sm:space-y-16">
         
         {/* =========================================================================
-            1. TOP EDITORIAL META ROW & HEADLINE
+            1. TOP EDITORIAL META ROW & HEADLINE + LAUNCH VIDEO (12-COL ASYMMETRIC GRID)
             ========================================================================= */}
-        <div className="max-w-4xl space-y-6">
-          {/* Studio Meta Badge */}
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border hairline-border bg-[var(--bg-surface)] shadow-xs">
-            <span className="status-beacon-live" />
-            <span className="text-xs font-mono font-medium tracking-wide text-[var(--text-secondary)]">
-              {badgeText}
-            </span>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-subtle)] text-[var(--accent-primary)] font-semibold border hairline-border">
-              EST. 2024
-            </span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Left Column: Headlines, Thesis & Controls (7 Cols) */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Studio Meta Badge */}
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border hairline-border bg-[var(--bg-surface)] shadow-xs">
+              <span className="status-beacon-live" />
+              <span className="text-xs font-mono font-medium tracking-wide text-[var(--text-secondary)]">
+                {badgeText}
+              </span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-subtle)] text-[var(--accent-primary)] font-semibold border hairline-border">
+                EST. 2024
+              </span>
+            </div>
+
+            {/* Master Headline */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[var(--text-primary)] leading-[1.12]">
+              {headlineLine1} <br className="hidden sm:inline" />
+              <span className="text-[var(--accent-primary)]">
+                {headlineLine2}
+              </span>
+            </h1>
+
+            {/* Business Grounded Thesis */}
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-2xl">
+              {thesis}
+            </p>
+
+            {/* Tactical Action Bar */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => handleNavClick('#contact')}
+                className="px-6 py-3 rounded-xl bg-[#121316] hover:bg-[#0047FF] dark:bg-white dark:hover:bg-[#0047FF] text-white dark:text-[#121316] dark:hover:text-white text-sm font-semibold flex items-center gap-2 transition-all active:scale-98 shadow-sm cursor-pointer"
+              >
+                <span>{ctaPrimary}</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleNavClick('#work')}
+                className="px-5 py-3 rounded-xl border hairline-border bg-[var(--bg-surface)] hover:bg-[var(--bg-subtle)] text-[var(--text-primary)] text-sm font-semibold flex items-center gap-2 transition-all active:scale-98 cursor-pointer"
+              >
+                <span>{ctaSecondary}</span>
+              </button>
+
+              {whatsappNumber && (
+                <a
+                  href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-3 rounded-xl border hairline-border bg-[var(--bg-surface)] hover:text-emerald-600 text-[var(--text-secondary)] text-sm font-medium flex items-center gap-2 transition-colors"
+                  title="Direct WhatsApp Consultation"
+                >
+                  <MessageCircle className="w-4 h-4 text-emerald-500" />
+                  <span className="hidden sm:inline">WhatsApp Lead Engineer</span>
+                </a>
+              )}
+
+              {bookingUrl && (
+                <a
+                  href={bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-3 rounded-xl border hairline-border bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-sm font-medium flex items-center gap-2 transition-colors"
+                >
+                  <Calendar className="w-4 h-4 text-blue-500" />
+                  <span className="hidden md:inline">{bookingLabel}</span>
+                </a>
+              )}
+            </div>
+
+            {/* Architectural Proof Readouts */}
+            <div className="flex flex-wrap items-center gap-6 pt-4 border-t hairline-border text-xs font-mono text-[var(--text-secondary)]">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-[var(--text-primary)]">{tel1Label}:</span>
+                <span className="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border hairline-border font-bold text-emerald-600 dark:text-emerald-400">
+                  {tel1Val}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-[var(--text-primary)]">{tel2Label}:</span>
+                <span className="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border hairline-border font-bold text-[var(--text-primary)]">
+                  {tel2Val}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-[var(--text-primary)]">{tel3Label}:</span>
+                <span className="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border hairline-border font-bold text-[var(--accent-primary)]">
+                  {tel3Val}
+                </span>
+              </div>
+            </div>
           </div>
 
-          {/* Master Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[var(--text-primary)] leading-[1.12]">
-            {headlineLine1} <br className="hidden sm:inline" />
-            <span className="text-[var(--accent-primary)]">
-              {headlineLine2}
-            </span>
-          </h1>
-
-          {/* Business Grounded Thesis */}
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-3xl">
-            {thesis}
-          </p>
-
-          {/* Tactical Action Bar */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <button
-              type="button"
-              onClick={() => handleNavClick('#contact')}
-              className="px-6 py-3 rounded-xl bg-[#121316] hover:bg-[#0047FF] dark:bg-white dark:hover:bg-[#0047FF] text-white dark:text-[#121316] dark:hover:text-white text-sm font-semibold flex items-center gap-2 transition-all active:scale-98 shadow-sm cursor-pointer"
-            >
-              <span>{ctaPrimary}</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleNavClick('#work')}
-              className="px-5 py-3 rounded-xl border hairline-border bg-[var(--bg-surface)] hover:bg-[var(--bg-subtle)] text-[var(--text-primary)] text-sm font-semibold flex items-center gap-2 transition-all active:scale-98 cursor-pointer"
-            >
-              <span>{ctaSecondary}</span>
-            </button>
-
-            {whatsappNumber && (
-              <a
-                href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-3 rounded-xl border hairline-border bg-[var(--bg-surface)] hover:text-emerald-600 text-[var(--text-secondary)] text-sm font-medium flex items-center gap-2 transition-colors"
-                title="Direct WhatsApp Consultation"
-              >
-                <MessageCircle className="w-4 h-4 text-emerald-500" />
-                <span className="hidden sm:inline">WhatsApp Lead Engineer</span>
-              </a>
-            )}
-
-            {bookingUrl && (
-              <a
-                href={bookingUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-3 rounded-xl border hairline-border bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-sm font-medium flex items-center gap-2 transition-colors"
-              >
-                <Calendar className="w-4 h-4 text-blue-500" />
-                <span className="hidden md:inline">{bookingLabel}</span>
-              </a>
-            )}
-          </div>
-
-          {/* Architectural Proof Readouts */}
-          <div className="flex flex-wrap items-center gap-6 pt-4 border-t hairline-border text-xs font-mono text-[var(--text-secondary)]">
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-[var(--text-primary)]">{tel1Label}:</span>
-              <span className="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border hairline-border font-bold text-emerald-600 dark:text-emerald-400">
-                {tel1Val}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-[var(--text-primary)]">{tel2Label}:</span>
-              <span className="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border hairline-border font-bold text-[var(--text-primary)]">
-                {tel2Val}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-[var(--text-primary)]">{tel3Label}:</span>
-              <span className="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border hairline-border font-bold text-[var(--accent-primary)]">
-                {tel3Val}
-              </span>
-            </div>
+          {/* Right Column: Architectural Cinema Card (5 Cols) */}
+          <div className="lg:col-span-5 w-full">
+            <HeroVideoCard />
           </div>
         </div>
 
         {/* =========================================================================
             2. THE CENTERPIECE: LIVE INTERACTIVE APP SIMULATOR
             ========================================================================= */}
-        <div className="w-full">
-          <div className="mb-3 flex items-center justify-between text-xs font-mono text-[var(--text-muted)]">
-            <span>[INTERACTIVE WORKBENCH] TEST ACTUAL ARCHITECTURAL MECHANICS</span>
-            <span className="hidden sm:inline">CLICK BUTTONS BELOW TO SIMULATE ACTIONS</span>
-          </div>
+        {simulatorEnabled && (
+          <div className="w-full">
+            <div className="mb-3 flex items-center justify-between text-xs font-mono text-[var(--text-muted)]">
+              <span>[INTERACTIVE WORKBENCH] TEST ACTUAL ARCHITECTURAL MECHANICS</span>
+              <span className="hidden sm:inline">CLICK BUTTONS BELOW TO SIMULATE ACTIONS</span>
+            </div>
 
-          <LiveAppSimulator />
-        </div>
+            <LiveAppSimulator />
+          </div>
+        )}
 
         {/* =========================================================================
             3. FOUR ARCHITECTURAL PROOF PILLARS

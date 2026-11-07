@@ -29,6 +29,7 @@ class LlmsTxtController extends Controller
         $md = "# {$siteName}\n\n";
         $md .= "> {$bio}\n\n";
         $md .= "- Official Website: {$siteUrl}\n";
+        $md .= "- Studio Launch Reel: {$siteUrl}/launch_video.mp4 (High-definition architecture walkthrough)\n";
         $md .= "- Primary Specialization: Custom SaaS Engineering, Enterprise ERP Systems, Cloud Infrastructure, Applied AI Workflows\n";
         $md .= "- Studio Location: Dhaka, Bangladesh // Remote Worldwide\n";
         $md .= "- Inquiries: {$siteUrl}/#contact\n\n";

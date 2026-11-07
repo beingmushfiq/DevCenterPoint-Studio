@@ -9,6 +9,7 @@ Allow: /build/
 Allow: /logo*.svg
 Allow: /favicon.svg
 Allow: /og-image.*
+Allow: /launch_video*.mp4
 Allow: /sitemap.xml
 Allow: /llms.txt
 Allow: /llms-full.txt

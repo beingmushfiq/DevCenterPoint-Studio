@@ -1,0 +1,8 @@
+---
+description: "RFC 9309 Robots Exclusion Protocol engineering, crawler access control, bot-specific user-agent rules, and accidental disallow prevention. Trigger when: 1. Launching a new website or migrating a staging site to production. 2. Blocking crawler access to administrative backends, internal search pages, faceted filters, or private API endpoints. 3. Managing access for AI web scrapers and generative model..."
+globs: "**/*"
+alwaysApply: false
+---
+
+# RobotsTXT Rules
+Follow operational procedures in .agent/skills/seo-robotstxt/SKILL.md
