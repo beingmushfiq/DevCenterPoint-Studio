@@ -115,7 +115,12 @@ if ($doFrontend) {
     New-Item -ItemType Directory -Force -Path $stagePublic | Out-Null
 
     Copy-Item -Recurse -Force (Join-Path $backendRoot "public/build") (Join-Path $stagePublic "build")
-    Copy-Item -Force (Join-Path $backendRoot "public/.htaccess")       (Join-Path $stagePublic ".htaccess")
+    $cpanelHtaccess = Join-Path $PSScriptRoot ".htaccess"
+    if (Test-Path $cpanelHtaccess) {
+        Copy-Item -Force $cpanelHtaccess (Join-Path $stagePublic ".htaccess")
+    } else {
+        Copy-Item -Force (Join-Path $backendRoot "public/.htaccess") (Join-Path $stagePublic ".htaccess")
+    }
     # The Laravel entrypoint that points at ../dcp_core.
     Copy-Item -Force (Join-Path $PSScriptRoot "index.php")             (Join-Path $stagePublic "index.php")
 
