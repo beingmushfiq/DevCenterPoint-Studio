@@ -153,7 +153,7 @@ export const FooterFourColumn: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-[var(--text-muted)]">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-[var(--text-muted)] text-center sm:text-left">
           <div>
             {footer.copyrightText ? (
               footer.copyrightText

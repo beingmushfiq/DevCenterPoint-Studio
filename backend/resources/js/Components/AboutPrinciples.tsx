@@ -142,7 +142,7 @@ export const AboutPrinciples: React.FC = () => {
 
             <div className="pt-4 border-t hairline-border flex items-center justify-between text-xs font-mono text-[var(--text-muted)]">
               <span>DEVCENTERPOINT CHARTER</span>
-              <span>EST. 2024</span>
+              <span>EST. 2026</span>
             </div>
           </div>
         </div>

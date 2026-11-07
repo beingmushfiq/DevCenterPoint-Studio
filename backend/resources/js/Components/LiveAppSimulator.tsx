@@ -192,7 +192,7 @@ export const LiveAppSimulator: React.FC = () => {
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b hairline-border">
                 <div>
-                  <h4 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <h4 className="text-base font-semibold text-slate-900 dark:text-white flex flex-wrap items-center gap-2">
                     <span>DevCenterPoint ERP: Inventory & Multi-Depot Sync</span>
                     <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900/40">
                       Live Production Core
@@ -312,7 +312,7 @@ export const LiveAppSimulator: React.FC = () => {
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b hairline-border">
                 <div>
-                  <h4 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <h4 className="text-base font-semibold text-slate-900 dark:text-white flex flex-wrap items-center gap-2">
                     <span>Feroza Medicine Corner: Counter Serial & SMS Dispatch</span>
                     <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/40">
                       Sub-second WebSocket Queue
@@ -415,7 +415,7 @@ export const LiveAppSimulator: React.FC = () => {
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b hairline-border">
                 <div>
-                  <h4 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <h4 className="text-base font-semibold text-slate-900 dark:text-white flex flex-wrap items-center gap-2">
                     <span>Qttenzy: Anti-Fraud Geofenced Attendance Token</span>
                     <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-900/40">
                       HMAC-SHA256 10s Rotation

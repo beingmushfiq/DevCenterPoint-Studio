@@ -9,12 +9,12 @@ import { useCms } from '../context/CmsContext';
 export const Hero: React.FC = () => {
   const cms = useCms();
 
-  const badgeText = cms.getSetting('hero_badge_text', 'Engineering Studio • Custom Systems & AI');
-  const headlineLine1 = cms.getSetting('hero_headline_line1', 'Digital products,');
-  const headlineLine2 = cms.getSetting('hero_headline_line2_gradient', 'engineered properly.');
+  const badgeText = cms.getSetting('hero_badge_text', 'SOFTWARE STUDIO • WEB SYSTEMS & ERP');
+  const headlineLine1 = cms.getSetting('hero_headline_line1', 'Custom software and ERP systems');
+  const headlineLine2 = cms.getSetting('hero_headline_line2_gradient', 'for growing businesses.');
   const thesis = cms.getSetting(
     'hero_thesis_statement',
-    'DevCenterPoint designs and builds scalable web platforms, cloud architecture, and intelligent systems tailored for businesses that cannot afford technical debt.'
+    'We replace manual spreadsheets, disconnected tools, and paper workflows with web systems tailored to your operations. Built with Laravel, React, and PostgreSQL, delivered with full source code ownership.'
   );
   const ctaPrimary = cms.getSetting('hero_cta_primary_text', 'Start a Project');
   const ctaSecondary = cms.getSetting('hero_cta_secondary_text', 'Explore Selected Work');

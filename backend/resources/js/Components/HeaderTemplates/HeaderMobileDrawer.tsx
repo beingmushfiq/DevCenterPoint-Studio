@@ -100,8 +100,21 @@ export const HeaderMobileDrawer: React.FC<HeaderMobileDrawerProps> = ({
 
               <div className="space-y-1">{drawerLinks.map(renderLink)}</div>
 
-              {header.showBooking && (
-                <div className="pt-2">
+              <div className="pt-2 space-y-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    soundEngine.playClick();
+                    onNavigate('/#contact');
+                  }}
+                  className="w-full p-3.5 rounded-2xl bg-[#121316] dark:bg-white text-white dark:text-[#121316] font-bold text-sm flex items-center justify-between hover:bg-[#0047FF] dark:hover:bg-[#0047FF] dark:hover:text-white transition-all cursor-pointer shadow-sm active:scale-98"
+                >
+                  <span>Estimate Project Scope</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+
+                {header.showBooking && (
                   <BookingCta
                     url={header.bookingUrl}
                     label={header.bookingLabel}
@@ -109,8 +122,8 @@ export const HeaderMobileDrawer: React.FC<HeaderMobileDrawerProps> = ({
                     size="lg"
                     className="w-full"
                   />
-                </div>
-              )}
+                )}
+              </div>
 
               {onOpenSandbox && (
                 <div className="pt-2">

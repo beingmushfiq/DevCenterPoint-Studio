@@ -41,7 +41,7 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
   return (
     <>
       <header
-        className={`fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-7xl rounded-full studio-nav-bar px-4 sm:px-6 py-2.5 transition-all duration-300 ${
+        className={`fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-40 w-[94%] sm:w-[95%] max-w-7xl rounded-full studio-nav-bar px-3.5 sm:px-6 py-2 sm:py-2.5 transition-all duration-300 ${
           scrolled
             ? 'shadow-xl shadow-black/5 dark:shadow-black/60 scale-[0.99] border-black/10 dark:border-white/10'
             : 'border-black/5 dark:border-white/5'
@@ -49,7 +49,7 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
       >
         <div className="flex items-center justify-between gap-3 h-10">
           {/* Brand Logo & Studio Availability Marker */}
-          <div className="flex items-center gap-3.5">
+          <div className="flex items-center gap-3.5 shrink-0">
             <a
               href="/"
               onClick={(e) => {
@@ -60,7 +60,7 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
                   router.visit('/');
                 }
               }}
-              className="flex items-center group transition-transform active:scale-98"
+              className="flex items-center group transition-transform active:scale-98 shrink-0"
               aria-label={`${header.brandName} Home`}
             >
               <DevCenterPointLogo variant="horizontal" size="sm" showTagline={false} />
@@ -119,7 +119,9 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
               <Search className="w-3.5 h-3.5" />
             </button>
 
-            <ThemeToggle />
+            <span className="hidden sm:inline-flex">
+              <ThemeToggle />
+            </span>
 
             {header.showBooking && (
               <BookingCta
@@ -137,10 +139,9 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
                 e.preventDefault();
                 handleNavClick('#contact');
               }}
-              className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-[#121316] hover:bg-[#0047FF] dark:bg-white dark:hover:bg-[#0047FF] text-white dark:text-[#121316] dark:hover:text-white text-xs font-semibold transition-all active:scale-95 shadow-xs cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#121316] hover:bg-[#0047FF] dark:bg-white dark:hover:bg-[#0047FF] text-white dark:text-[#121316] dark:hover:text-white text-xs font-semibold transition-all active:scale-95 shadow-xs cursor-pointer"
             >
-              <span className="hidden sm:inline">Estimate Project</span>
-              <span className="sm:hidden">Estimate</span>
+              <span>Estimate Project</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
 
@@ -148,7 +149,7 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
             <button
               type="button"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-[#15171C] text-slate-700 dark:text-slate-200 cursor-pointer transition-colors"
+              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-[#15171C] text-slate-700 dark:text-slate-200 cursor-pointer transition-colors shrink-0 active:scale-95"
               aria-label={menuOpen ? 'Close Menu' : 'Open Menu'}
               aria-expanded={menuOpen}
             >

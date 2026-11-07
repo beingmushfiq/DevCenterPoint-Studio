@@ -94,13 +94,13 @@ export const Hero: React.FC = () => {
           {/* Left Column: Headlines, Thesis & Controls (7 Cols) */}
           <div className="lg:col-span-7 space-y-6">
             {/* Studio Meta Badge */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border hairline-border bg-[var(--bg-surface)] shadow-xs">
-              <span className="status-beacon-live" />
-              <span className="text-xs font-mono font-medium tracking-wide text-[var(--text-secondary)]">
+            <div className="inline-flex max-w-full items-center gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-1.5 rounded-full border hairline-border bg-[var(--bg-surface)] shadow-xs">
+              <span className="status-beacon-live shrink-0" />
+              <span className="text-[11px] sm:text-xs font-mono font-medium tracking-wide text-[var(--text-secondary)] truncate">
                 {badgeText}
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-subtle)] text-[var(--accent-primary)] font-semibold border hairline-border">
-                EST. 2024
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-subtle)] text-[var(--accent-primary)] font-semibold border hairline-border whitespace-nowrap shrink-0">
+                EST. 2026
               </span>
             </div>
 

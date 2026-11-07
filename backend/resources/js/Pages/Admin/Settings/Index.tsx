@@ -323,7 +323,7 @@ export default function SettingsIndex({ settings }: Props) {
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                     </span>
                     <span className="text-[11px] font-mono font-bold uppercase tracking-wider bg-linear-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-                      {formData['hero_badge_text'] || 'TECHNOLOGY COMPANY • BUSINESS AUTOMATION & AI'}
+                      {formData['hero_badge_text'] || 'SOFTWARE STUDIO • WEB SYSTEMS & ERP'}
                     </span>
                   </div>
                 </div>
@@ -392,7 +392,7 @@ export default function SettingsIndex({ settings }: Props) {
                     type="text"
                     value={formData['hero_badge_text']}
                     onChange={(e) => handleChange('hero_badge_text', e.target.value)}
-                    placeholder="Engineering Studio • Custom Systems & AI"
+                    placeholder="SOFTWARE STUDIO • WEB SYSTEMS & ERP"
                     className="w-full p-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500"
                   />
                   <p className="text-[11px] text-slate-500 mt-1">Displays as the frosted pill with the glowing pulse dot at the very top of the page.</p>
