@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, MessageCircle, Zap, Calendar } from 'lucide-react';
-import { soundEngine } from '../lib/soundEngine';
 import { useCms } from '../Context/CmsContext';
 
 interface MobileBottomActionBarProps {
@@ -14,19 +13,17 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
   const [visible, setVisible] = useState(true);
 
   const bookingUrl = cms.getSetting('booking_url', 'https://cal.com/devcenterpoint');
-  const bookingLabel = cms.getSetting('booking_cta_label', 'Book a Meeting');
+  const bookingLabel = cms.getSetting('booking_cta_label', 'Book');
   const whatsappNumber = cms.getSetting('whatsapp_number', '+8801988383323').replace(/[^0-9]/g, '');
   const whatsappMessage = encodeURIComponent(
-    cms.getSetting('whatsapp_prefill_message', "Hi DevCenterPoint, I'd like to discuss a project")
+    cms.getSetting('whatsapp_prefill_message', "Hi DevCenterPoint, I'd like to discuss an engineering project")
   );
 
-  // Auto-hide bottom bar when user reaches the contact section or bottom of page
   useEffect(() => {
     const handleScroll = () => {
       const contactEl = document.getElementById('contact');
       if (contactEl) {
         const rect = contactEl.getBoundingClientRect();
-        // Hide if contact form is in the viewport
         if (rect.top < window.innerHeight * 0.75 && rect.bottom > 0) {
           setVisible(false);
           return;
@@ -40,7 +37,6 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
   }, []);
 
   const scrollToContact = () => {
-    soundEngine.playClick();
     const elem = document.getElementById('contact');
     if (elem) {
       elem.scrollIntoView({ behavior: 'smooth' });
@@ -52,17 +48,16 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
   return (
     <nav
       aria-label="Mobile Quick Actions"
-      className="md:hidden fixed bottom-3 inset-x-3 z-40 pointer-events-none animate-in slide-in-from-bottom-3 duration-300"
+      className="md:hidden fixed bottom-3 inset-x-3 z-40 pointer-events-none animate-in slide-in-from-bottom-3 duration-200"
     >
-      <div className="max-w-md mx-auto pointer-events-auto p-1.5 rounded-full bg-slate-950/92 dark:bg-[#121212]/95 backdrop-blur-xl border border-slate-800/80 dark:border-[#2a2a2a] shadow-2xl flex items-center justify-between gap-1.5 text-white">
+      <div className="max-w-md mx-auto pointer-events-auto p-1.5 rounded-xl bg-[var(--bg-surface)] backdrop-blur-md border hairline-border shadow-lg flex items-center justify-between gap-1.5 text-[var(--text-ink)]">
         
         {/* Direct WhatsApp Instant Consultation */}
         <a
           href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => soundEngine.playClick()}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 text-[#25D366] border border-[#25D366]/30 text-xs font-bold transition-all active:scale-95"
+          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-bold transition-all active:scale-95"
           title="Direct WhatsApp with Lead Architect"
         >
           <MessageCircle className="w-3.5 h-3.5 fill-current" />
@@ -75,12 +70,11 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
             href={bookingUrl}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => soundEngine.playClick()}
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/35 text-xs font-bold transition-all active:scale-95"
+            className="inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-[var(--bg-subtle)] text-[var(--text-ink)] border hairline-border text-xs font-mono font-bold transition-all active:scale-95"
             title={bookingLabel}
           >
-            <Calendar className="w-3.5 h-3.5" />
-            <span>Book</span>
+            <Calendar className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+            <span>{bookingLabel}</span>
           </a>
         )}
 
@@ -88,14 +82,11 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
         {onOpenSandbox && (
           <button
             type="button"
-            onClick={() => {
-              soundEngine.playModalOpen();
-              onOpenSandbox();
-            }}
-            className="px-3 py-2.5 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-mono font-bold flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+            onClick={onOpenSandbox}
+            className="px-3 py-2 rounded-lg bg-[var(--bg-subtle)] text-[var(--text-ink)] border hairline-border text-xs font-mono font-bold flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
             title="Open Live Demos"
           >
-            <Zap className="w-3 h-3 text-blue-400" />
+            <Zap className="w-3 h-3 text-[var(--accent-primary)]" />
             <span>Demos</span>
           </button>
         )}
@@ -104,9 +95,9 @@ export const MobileBottomActionBar: React.FC<MobileBottomActionBarProps> = ({
         <button
           type="button"
           onClick={scrollToContact}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md shadow-blue-600/30 active:scale-95 transition-all cursor-pointer"
+          className="editorial-btn-primary flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-bold active:scale-95 transition-all cursor-pointer"
         >
-          <span>Start Project</span>
+          <span>Start Scope</span>
           <ArrowUpRight className="w-3.5 h-3.5" />
         </button>
 

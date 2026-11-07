@@ -71,7 +71,7 @@ export default function ServicesIndex(props: ServicesIndexProps) {
         crumbs={[{ label: 'Services' }]}
       />
 
-      <section className="py-16 sm:py-24 bg-slate-50 dark:bg-[#0a0a0a] transition-colors duration-500">
+      <section className="py-16 sm:py-24 bg-[var(--bg-canvas)] text-[var(--text-ink)] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {services.length === 0 ? (
             <SectionState
@@ -88,35 +88,35 @@ export default function ServicesIndex(props: ServicesIndexProps) {
                 return (
                   <motion.div
                     key={service.slug}
-                    initial={{ opacity: 0, y: 24 }}
+                    initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-40px' }}
-                    transition={{ duration: 0.5, delay: (idx % 2) * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.3, delay: (idx % 2) * 0.05 }}
                   >
                     <Link
                       href={`/services/${service.slug}`}
-                      className="group flex h-full flex-col liquid-glass rounded-3xl p-6 sm:p-8 ring-1 ring-black/5 dark:ring-white/10 hover:ring-blue-500/40 transition-all duration-300"
+                      className="group flex h-full flex-col editorial-card rounded-2xl p-6 sm:p-8 hover:border-[var(--accent-primary)] transition-all duration-200"
                     >
                       <div className="flex items-center justify-between mb-5">
-                        <div className="p-3 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/60">
+                        <div className="p-2.5 rounded-xl bg-[var(--accent-subtle)] text-[var(--accent-primary)] border hairline-border">
                           <Icon className="w-5 h-5" />
                         </div>
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-neutral-500">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)]">
                           Service {String(idx + 1).padStart(2, '0')}
                         </span>
                       </div>
 
-                      <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white mb-2">
+                      <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[var(--text-ink)] mb-2">
                         {service.title}
                       </h2>
 
                       {service.tagline && (
-                        <p className="text-sm font-bold text-blue-600 dark:text-blue-400 mb-3">
+                        <p className="text-sm font-bold text-[var(--accent-primary)] mb-3">
                           {service.tagline}
                         </p>
                       )}
 
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 leading-relaxed font-normal mb-5">
+                      <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed font-normal mb-5">
                         {service.description}
                       </p>
 
@@ -125,18 +125,18 @@ export default function ServicesIndex(props: ServicesIndexProps) {
                           {highlights.map((feature, i) => (
                             <li
                               key={i}
-                              className="flex items-start gap-2 text-xs text-slate-700 dark:text-neutral-300 font-medium"
+                              className="flex items-start gap-2 text-xs text-[var(--text-ink)] font-medium"
                             >
-                              <CheckCircle className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                              <CheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                               <span>{feature}</span>
                             </li>
                           ))}
                         </ul>
                       )}
 
-                      <span className="mt-auto inline-flex items-center gap-2 text-xs font-bold text-blue-600 dark:text-blue-400">
-                        <span>Explore this service</span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                      <span className="mt-auto inline-flex items-center gap-1.5 text-xs font-bold text-[var(--accent-primary)]">
+                        <span>Explore discipline</span>
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-1" />
                       </span>
                     </Link>
                   </motion.div>

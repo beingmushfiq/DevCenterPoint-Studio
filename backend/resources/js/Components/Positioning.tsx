@@ -1,5 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
+import { 
+  FileSpreadsheet, 
+  Database, 
+  AlertTriangle, 
+  CheckCircle2, 
+  ArrowRight, 
+  Lock, 
+  GitBranch, 
+  Zap,
+  Server
+} from 'lucide-react';
 import { useCms } from '../Context/CmsContext';
 
 interface PositioningPillar {
@@ -17,113 +28,172 @@ interface PositioningContent {
   pillars?: PositioningPillar[];
 }
 
-const DEFAULT_PILLARS: PositioningPillar[] = [
-  {
-    num: '01',
-    title: 'Map the Broken Process',
-    desc: 'We audit where your organization bleeds time and accuracy: manual data re-entry, unlinked SaaS tools, double-bookings, and spreadsheet chaos.'
-  },
-  {
-    num: '02',
-    title: 'Engineer the Custom Fix',
-    desc: 'We architect tailored software, customer portals, and internal tooling engineered around how your team actually operates—never generic page templates.'
-  },
-  {
-    num: '03',
-    title: 'Automate the Repetition',
-    desc: 'We wire up event-driven pipelines, automated database sync, instant alert triggers, and practical AI so operations run without human babysitting.'
-  },
-  {
-    num: '04',
-    title: 'Scale Without Headcount',
-    desc: 'Your systems handle 10x the transaction volume, inventory complexity, or client inquiries with zero operational drift or linear staffing inflation.'
-  }
-];
-
 const DEFAULT_CONTENT: PositioningContent = {
-  badge: '01 — Operational Transformation',
-  headlinePrefix: 'From broken manual process',
-  headlineHighlight: 'to automated software engine.',
+  badge: '01 — Problem & Approach',
+  headlinePrefix: 'When spreadsheets and off-the-shelf SaaS',
+  headlineHighlight: 'stop fitting your business operations.',
   description:
-    'Businesses lose thousands of productive hours to spreadsheet drift, unlinked SaaS tools, and fragmented manual handoffs. We dissect operational bottlenecks and engineer custom software that executes your workflows deterministically.',
-  tags: ['ELIMINATE BOTTLENECKS', 'ZERO DATA LOSS', 'PREDICTABLE SCALE'],
-  pillars: DEFAULT_PILLARS,
+    'Generic SaaS platforms force your operations into their rigid constraints, while charging steep monthly per-seat fees. We engineer bespoke web systems and ERP cores tailored to your exact workflows—delivered with 100% source code ownership.',
+  tags: ['100% CODE OWNERSHIP', 'TRANSACTIONAL ACID INTEGRITY', 'ZERO RECURRING LICENSING'],
 };
 
 export const Positioning: React.FC = () => {
   const cms = useCms();
   const content = cms.getSectionBlock<PositioningContent>('positioning', 'content', DEFAULT_CONTENT);
-  const pillars = content.pillars && content.pillars.length > 0 ? content.pillars : DEFAULT_PILLARS;
   const tags = content.tags && content.tags.length > 0 ? content.tags : DEFAULT_CONTENT.tags!;
 
+  const [activeTab, setActiveTab] = useState<'contrast' | 'lifecycle'>('contrast');
+
+  const beforeItems = [
+    {
+      title: 'Spreadsheet Drift & Double-Allocation',
+      desc: 'Multiple reps editing local sheets simultaneously lead to overselling stock and delayed fulfillment.',
+    },
+    {
+      title: 'Untracked Orders in WhatsApp Chats',
+      desc: 'Customer receipts, address changes, and payment proofs get buried in scattered chat history.',
+    },
+    {
+      title: 'Per-Seat Monthly SaaS Tax',
+      desc: 'Paying $30–$80/user/month to foreign SaaS platforms that refuse to integrate with bKash or local couriers.',
+    },
+    {
+      title: 'Zero Permanent Data Control',
+      desc: 'If the third-party SaaS alters their API, raises pricing, or locks your account, your business grinds to a halt.',
+    },
+  ];
+
+  const afterItems = [
+    {
+      title: 'Deterministic PostgreSQL Schema',
+      desc: 'Atomic transactional locks (ACID) prevent inventory drift across central and remote warehouse locations.',
+    },
+    {
+      title: 'Unified High-Density Web Portal',
+      desc: 'Custom roles for admins, inventory staff, accountants, and dispatch desks with real-time status updates.',
+    },
+    {
+      title: 'Local Rail Integration Built-In',
+      desc: 'Native automated reconciliation for bKash, SSLCommerz, Nagad, and direct courier manifest printing.',
+    },
+    {
+      title: 'Permanent Source Code Handover',
+      desc: 'You own every migration, React component, and Docker file. Run on your own servers forever with 0 license fees.',
+    },
+  ];
+
   return (
-    <section id="positioning" className="py-24 bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] relative overflow-hidden transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column: Editorial Positioning Statement */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-            className="lg:col-span-5 space-y-6"
-          >
-            <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></span>
-              {content.badge || DEFAULT_CONTENT.badge}
-            </div>
+    <section id="positioning" className="py-20 sm:py-28 bg-[var(--bg-canvas)] text-[var(--text-primary)] border-t hairline-border relative overflow-hidden transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+        
+        {/* Header Block */}
+        <div className="max-w-3xl space-y-4">
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-medium tracking-wide text-[var(--accent-primary)] bg-[var(--accent-subtle)] px-3 py-1 rounded-full border hairline-border">
+            <span>{content.badge || DEFAULT_CONTENT.badge}</span>
+          </div>
 
-            <h2 className="font-display text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white leading-tight">
-              {content.headlinePrefix || DEFAULT_CONTENT.headlinePrefix} <br />
-              <span className="text-gradient-signature">
-                {content.headlineHighlight || DEFAULT_CONTENT.headlineHighlight}
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)] leading-[1.15]">
+            {content.headlinePrefix || DEFAULT_CONTENT.headlinePrefix} <br />
+            <span className="text-[var(--accent-primary)]">
+              {content.headlineHighlight || DEFAULT_CONTENT.headlineHighlight}
+            </span>
+          </h2>
+
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
+            {content.description || DEFAULT_CONTENT.description}
+          </p>
+
+          <div className="pt-2 flex flex-wrap items-center gap-2 text-xs font-mono text-[var(--text-muted)]">
+            {tags.map((tag, tIdx) => (
+              <span key={tIdx} className="tech-tag">
+                {tag}
               </span>
-            </h2>
-
-            <p className="text-slate-600 dark:text-gray-400 text-base leading-relaxed font-medium">
-              {content.description || DEFAULT_CONTENT.description}
-            </p>
-
-            <div className="pt-4 border-t border-slate-200 dark:border-[#2a2a2a]">
-              <div className="flex flex-wrap items-center gap-3 text-[10px] font-black tracking-widest text-slate-500 dark:text-gray-500 uppercase">
-                {tags.map((tag, tIdx) => (
-                  <React.Fragment key={tIdx}>
-                    {tIdx > 0 && <span>•</span>}
-                    <span>{tag}</span>
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right Column: Editorial Grid Pillars (Outcome-Driven Bento Cards) */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {pillars.map((pillar, idx) => (
-              <motion.div
-                key={pillar.num}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{
-                  duration: 0.6,
-                  delay: idx * 0.12,
-                  ease: [0.215, 0.61, 0.355, 1]
-                }}
-                className="space-y-3 p-8 rounded-[2rem] bg-white dark:bg-[#141824] border border-slate-200 dark:border-white/10 hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300 shadow-lg group"
-              >
-                <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-xs border border-blue-500/20 group-hover:scale-110 transition-transform">
-                  {pillar.num}
-                </div>
-                <h3 className="text-lg font-extrabold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {pillar.title}
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
-                  {pillar.desc}
-                </p>
-              </motion.div>
             ))}
           </div>
         </div>
+
+        {/* =========================================================================
+            THE ARCHITECTURAL CONTRAST: BEFORE VS AFTER
+            ========================================================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+          
+          {/* THE FRAGILE STATE (Spreadsheet Chaos) */}
+          <div className="p-6 sm:p-8 rounded-2xl border border-red-200/80 dark:border-red-950/40 bg-red-50/30 dark:bg-red-950/10 space-y-6 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between pb-3 border-b border-red-200/60 dark:border-red-900/40">
+                <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-mono text-xs font-bold uppercase tracking-wider">
+                  <FileSpreadsheet className="w-4 h-4" />
+                  <span>The Fragile Workflow (Spreadsheets & Generic SaaS)</span>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 font-bold">
+                  HIGH FRICTION
+                </span>
+              </div>
+
+              <div className="space-y-4 pt-2">
+                {beforeItems.map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center text-red-600 dark:text-red-400 shrink-0 mt-0.5 text-xs font-bold font-mono">
+                      ✕
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-slate-900 dark:text-white">
+                        {item.title}
+                      </div>
+                      <div className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 leading-relaxed">
+                        {item.desc}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-red-200/60 dark:border-red-900/40 text-[11px] font-mono text-red-700 dark:text-red-400">
+              Result: Operational overhead grows with every new employee and order.
+            </div>
+          </div>
+
+          {/* THE ENGINEERED STATE (DevCenterPoint Core) */}
+          <div className="p-6 sm:p-8 rounded-2xl border border-[var(--accent-primary)]/30 bg-blue-50/20 dark:bg-[#131722] space-y-6 flex flex-col justify-between shadow-xs">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between pb-3 border-b border-blue-200/60 dark:border-blue-900/40">
+                <div className="flex items-center gap-2 text-[var(--accent-primary)] font-mono text-xs font-bold uppercase tracking-wider">
+                  <Database className="w-4 h-4" />
+                  <span>The DevCenterPoint Engineered System</span>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950/60 text-[var(--accent-primary)] dark:text-blue-300 font-bold">
+                  PERMANENT ASSET
+                </span>
+              </div>
+
+              <div className="space-y-4 pt-2">
+                {afterItems.map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-950/60 flex items-center justify-center text-[var(--accent-primary)] shrink-0 mt-0.5 text-xs font-bold font-mono">
+                      ✓
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-[var(--text-primary)]">
+                        {item.title}
+                      </div>
+                      <div className="text-xs text-[var(--text-secondary)] mt-0.5 leading-relaxed">
+                        {item.desc}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-blue-200/60 dark:border-blue-900/40 text-[11px] font-mono text-[var(--accent-primary)] dark:text-blue-400 flex items-center justify-between">
+              <span>Result: Operational cost stays flat as volume scales 10x.</span>
+              <span className="font-bold">100% Owned</span>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
   );

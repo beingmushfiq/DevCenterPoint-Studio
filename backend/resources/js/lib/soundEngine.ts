@@ -6,7 +6,7 @@
 
 class SoundEngine {
   private ctx: AudioContext | null = null;
-  private muted: boolean = false;
+  private muted: boolean = true;
 
   private volume: number = 0.7;
   private tonePreset: 'ethereal' | 'deep_tech' | 'cyber' = 'ethereal';
@@ -14,7 +14,7 @@ class SoundEngine {
   constructor() {
     if (typeof window !== 'undefined') {
       const savedMute = localStorage.getItem('dcp_sound_muted');
-      this.muted = savedMute === 'true';
+      this.muted = savedMute === null ? true : savedMute === 'true';
       const savedVol = localStorage.getItem('dcp_sound_volume');
       if (savedVol) this.volume = parseFloat(savedVol) || 0.7;
       const savedTone = localStorage.getItem('dcp_sound_tone') as 'ethereal' | 'deep_tech' | 'cyber';

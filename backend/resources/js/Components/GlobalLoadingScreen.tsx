@@ -93,8 +93,8 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
             /* 100% Solid Opaque Background: Completely eliminates any site bleed or watermark */
             className={`fixed inset-0 z-99999 flex flex-col justify-center items-center overflow-hidden transition-colors duration-300 select-none ${
               isDark
-                ? 'bg-[#070b14] text-white'
-                : 'bg-[#f8fafc] text-slate-900'
+                ? 'bg-[#0C0D10] text-[#ECECED]'
+                : 'bg-[#FBFBF9] text-[#121316]'
             }`}
             role="status"
             aria-live="polite"
@@ -140,7 +140,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                       r="46"
                       fill="none"
                       strokeWidth="6"
-                      stroke={isDark ? 'rgba(56,189,248,0.15)' : 'rgba(37,99,235,0.12)'}
+                      stroke={isDark ? 'rgba(59,117,255,0.15)' : 'rgba(0,71,255,0.12)'}
                     />
                     {/* Solid sweeping arc (25% of the circumference) */}
                     <circle
@@ -151,7 +151,7 @@ export const GlobalLoadingScreen: React.FC<GlobalLoadingScreenProps> = ({
                       strokeWidth="6"
                       strokeLinecap="round"
                       strokeDasharray="72 217"
-                      stroke={isDark ? '#38BDF8' : '#2563EB'}
+                      stroke={isDark ? '#3B75FF' : '#0047FF'}
                     />
                   </svg>
 

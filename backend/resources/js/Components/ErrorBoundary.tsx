@@ -40,22 +40,21 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     }
 
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-slate-50 dark:bg-[#07090e] text-slate-900 dark:text-white">
-        <div className="max-w-md w-full text-center liquid-glass rounded-3xl p-8 sm:p-10 ring-1 ring-black/5 dark:ring-white/10 shadow-2xl">
-          <div className="mx-auto w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900/60 flex items-center justify-center mb-5">
-            <AlertTriangle className="w-6 h-6 text-rose-600 dark:text-rose-400" />
+      <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--bg-canvas)] text-[var(--text-ink)]">
+        <div className="max-w-md w-full text-center editorial-card rounded-2xl p-8 sm:p-10 shadow-lg">
+          <div className="mx-auto w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900/60 flex items-center justify-center mb-5">
+            <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black tracking-tight mb-2">
             Something went wrong
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 font-medium leading-relaxed mb-6">
-            The page hit an unexpected error while rendering. Reloading usually resolves it. If it
-            keeps happening, please reach out and we will look into it.
+          <p className="text-xs sm:text-sm text-[var(--text-muted)] font-normal leading-relaxed mb-6">
+            The page encountered an unexpected state. Reloading will reset the application.
           </p>
 
           {this.state.message && (
-            <pre className="mb-6 text-left text-[11px] font-mono text-slate-500 dark:text-neutral-500 bg-white/60 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-xl p-3 overflow-x-auto whitespace-pre-wrap">
+            <pre className="mb-6 text-left text-[11px] font-mono text-[var(--text-muted)] bg-[var(--bg-subtle)] border hairline-border rounded-lg p-3 overflow-x-auto whitespace-pre-wrap">
               {this.state.message}
             </pre>
           )}
@@ -63,7 +62,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
           <button
             type="button"
             onClick={this.handleReload}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-blue-600/20 cursor-pointer"
+            className="editorial-btn-primary inline-flex items-center gap-2 px-4 py-2 text-xs font-bold cursor-pointer rounded-lg"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Reload Page</span>

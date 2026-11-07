@@ -17,7 +17,6 @@ import {
   ShieldCheck,
   ChevronDown
 } from 'lucide-react';
-import { soundEngine } from '../lib/soundEngine';
 import { useCms } from '../Context/CmsContext';
 import { SectionState } from './SectionState';
 
@@ -59,8 +58,8 @@ export const CapabilitiesSection: React.FC = () => {
 
   if (capabilities.length === 0 || !activeCapability) {
     return (
-      <section id="capabilities" className="py-24 sm:py-32 bg-white dark:bg-[#07090e] text-slate-900 dark:text-neutral-100 border-t border-slate-200/70 dark:border-white/5 relative overflow-hidden transition-colors duration-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <section id="capabilities" className="py-20 sm:py-28 bg-[var(--bg-canvas)] text-[var(--text-primary)] border-t hairline-border relative transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionState
             variant="empty"
             title="Capabilities are being curated"
@@ -74,37 +73,26 @@ export const CapabilitiesSection: React.FC = () => {
   const ActiveIcon = iconMap[activeCapability.iconName] || Code;
 
   return (
-    <section id="capabilities" className="py-24 sm:py-32 bg-white dark:bg-[#07090e] text-slate-900 dark:text-neutral-100 border-t border-slate-200/70 dark:border-white/5 relative overflow-hidden transition-colors duration-500">
-      {/* Ambient Floating Glow Orbs */}
-      <div className="absolute top-1/4 left-10 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/10 dark:bg-purple-600/15 blur-[140px] rounded-full pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="capabilities" className="py-20 sm:py-28 bg-[var(--bg-canvas)] text-[var(--text-primary)] border-t hairline-border relative transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-8 border-b border-slate-200/80 dark:border-white/10 gap-6"
-        >
-          <div>
-            <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 liquid-glass px-4 py-1.5 rounded-full mb-3 shadow-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse"></span>
-              02 — Core Engineering Disciplines
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 border-b hairline-border gap-6">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 text-xs font-mono font-medium tracking-wide text-[var(--accent-primary)] bg-[var(--accent-subtle)] px-3 py-1 rounded-full border hairline-border">
+              <span>03 — Core Engineering Disciplines</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">
               Studio Capabilities
             </h2>
           </div>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 max-w-md font-medium leading-relaxed">
-            From zero-defect system architecture and cloud backends to high-velocity mobile platforms and explainable AI pipelines.
+          <p className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md font-normal leading-relaxed">
+            From zero-defect ERP system architecture and high-velocity web portals to real-time clinic queues and IoT telematics.
           </p>
-        </motion.div>
+        </div>
 
         {/* Mobile Horizontal Snap-Scroll Tabs (<lg) */}
-        <div className="lg:hidden mb-6">
+        <div className="lg:hidden">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4">
             {capabilities.map((item) => {
               const isSelected = item.id === selectedId;
@@ -114,14 +102,13 @@ export const CapabilitiesSection: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => {
-                    soundEngine.playTap();
                     setSelectedId(item.id);
                     setShowCode(false);
                   }}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold shrink-0 transition-all border cursor-pointer ${
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold shrink-0 transition-all border hairline-border cursor-pointer ${
                     isSelected
-                      ? 'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-md shadow-blue-500/25'
-                      : 'liquid-glass text-slate-700 dark:text-neutral-300'
+                      ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
+                      : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                   }`}
                 >
                   <IconComp className="w-3.5 h-3.5" />
@@ -136,7 +123,7 @@ export const CapabilitiesSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Desktop Vertical Category Index */}
-          <div className="hidden lg:block lg:col-span-5 space-y-2.5">
+          <div className="hidden lg:block lg:col-span-5 space-y-2">
             {capabilities.map((item) => {
               const isSelected = item.id === selectedId;
               const IconComp = iconMap[item.iconName] || Code;
@@ -145,27 +132,26 @@ export const CapabilitiesSection: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => {
-                    soundEngine.playTap();
                     setSelectedId(item.id);
                     setShowCode(false);
                   }}
-                  className={`w-full text-left p-4 rounded-2xl transition-all duration-300 flex items-center justify-between group border cursor-pointer ${
+                  className={`w-full text-left p-4 rounded-xl editorial-card transition-all flex items-center justify-between group cursor-pointer ${
                     isSelected
-                      ? 'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-lg shadow-blue-500/25 translate-x-1.5 font-bold ring-1 ring-white/20'
-                      : 'liquid-glass text-slate-800 dark:text-neutral-200 hover:border-blue-500/30 hover:bg-white/80 dark:hover:bg-white/10'
+                      ? 'border-[var(--accent-primary)] ring-1 ring-[var(--accent-primary)] bg-[var(--accent-subtle)]'
+                      : 'hover:border-[var(--border-strong)]'
                   }`}
                 >
                   <div className="flex items-center gap-3.5">
-                    <span className={`text-xs font-mono font-bold ${isSelected ? 'text-blue-100' : 'text-slate-400 dark:text-neutral-500'}`}>
+                    <span className={`text-xs font-mono font-bold ${isSelected ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'}`}>
                       {item.number}
                     </span>
-                    <IconComp className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-blue-600 dark:text-blue-400'}`} />
-                    <span className="font-bold text-sm tracking-tight">{item.title}</span>
+                    <IconComp className={`w-4 h-4 ${isSelected ? 'text-[var(--accent-primary)]' : 'text-[var(--text-secondary)]'}`} />
+                    <span className="font-bold text-sm text-[var(--text-primary)]">{item.title}</span>
                   </div>
 
                   <ArrowRight
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      isSelected ? 'translate-x-0.5 text-white' : 'text-slate-400 dark:text-neutral-600 opacity-0 group-hover:opacity-100'
+                    className={`w-4 h-4 transition-transform ${
+                      isSelected ? 'translate-x-0.5 text-[var(--accent-primary)]' : 'text-[var(--text-muted)] opacity-0 group-hover:opacity-100'
                     }`}
                   />
                 </button>
@@ -174,76 +160,70 @@ export const CapabilitiesSection: React.FC = () => {
           </div>
 
           {/* Interactive Capability Detail Inspector Panel */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-30px' }}
-            transition={{ duration: 0.55 }}
-            className="lg:col-span-7 liquid-glass rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden ring-1 ring-black/5 dark:ring-white/10"
-          >
+          <div className="lg:col-span-7 rounded-2xl editorial-card p-6 sm:p-8 space-y-6">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeCapability.id}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-6"
               >
                 {/* Header */}
-                <div className="flex items-center justify-between pb-5 border-b border-slate-200/80 dark:border-white/10">
+                <div className="flex items-center justify-between pb-4 border-b hairline-border">
                   <div className="flex items-center gap-3">
-                    <div className="p-3 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/60">
+                    <div className="p-2.5 rounded-xl bg-[var(--bg-subtle)] border hairline-border text-[var(--accent-primary)]">
                       <ActiveIcon className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
+                      <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--accent-primary)]">
                         DISCIPLINE {activeCapability.number}
                       </div>
-                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                      <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--text-primary)]">
                         {activeCapability.title}
                       </h3>
                     </div>
                   </div>
-                  <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/60 text-[10px] font-mono font-bold tracking-wider uppercase">
+                  <span className="tech-tag text-[10px] text-emerald-600 dark:text-emerald-400 font-bold shrink-0">
                     PRODUCTION READY
                   </span>
                 </div>
 
                 {/* Tagline & Narrative */}
-                <div>
-                  <p className="text-sm sm:text-base text-slate-900 dark:text-white font-bold leading-relaxed mb-2">
+                <div className="space-y-1.5">
+                  <p className="text-sm sm:text-base text-[var(--text-primary)] font-bold leading-relaxed">
                     {activeCapability.tagline}
                   </p>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 leading-relaxed font-normal">
+                  <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
                     {activeCapability.description}
                   </p>
                 </div>
 
                 {/* Outputs & Architectural Benchmarks */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="liquid-glass p-4 sm:p-5 rounded-2xl border border-white/60 dark:border-white/10 shadow-xs">
-                    <h4 className="text-[10px] font-mono font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-3">
+                  <div className="p-4 rounded-xl bg-[var(--bg-subtle)] border hairline-border space-y-2">
+                    <h4 className="text-[10px] font-mono font-bold text-[var(--text-muted)] uppercase tracking-wider">
                       Delivered Outputs
                     </h4>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1.5">
                       {activeCapability.keyOutputs.map((output, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 dark:text-neutral-300 font-medium">
-                          <CheckCircle className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                        <li key={idx} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
+                          <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                           <span>{output}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="liquid-glass p-4 sm:p-5 rounded-2xl border border-white/60 dark:border-white/10 shadow-xs">
-                    <h4 className="text-[10px] font-mono font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-3">
+                  <div className="p-4 rounded-xl bg-[var(--bg-subtle)] border hairline-border space-y-2">
+                    <h4 className="text-[10px] font-mono font-bold text-[var(--text-muted)] uppercase tracking-wider">
                       Architectural Standards
                     </h4>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1.5">
                       {activeCapability.architectureHighlights.map((arch, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 dark:text-neutral-300 font-medium">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0 mt-1.5" />
+                        <li key={idx} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)] shrink-0 mt-1.5" />
                           <span>{arch}</span>
                         </li>
                       ))}
@@ -252,16 +232,13 @@ export const CapabilitiesSection: React.FC = () => {
                 </div>
 
                 {/* Core Stack Pills */}
-                <div>
-                  <h4 className="text-[10px] font-mono font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-2.5">
+                <div className="space-y-2">
+                  <h4 className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-wider">
                     Core Stack & Tooling
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {activeCapability.techStack.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 text-xs font-medium text-slate-700 dark:text-neutral-300"
-                      >
+                      <span key={idx} className="tech-tag text-xs">
                         {tech}
                       </span>
                     ))}
@@ -273,33 +250,26 @@ export const CapabilitiesSection: React.FC = () => {
                   <div className="pt-2">
                     <button
                       type="button"
-                      onClick={() => {
-                        soundEngine.playTap();
-                        setShowCode((prev) => !prev);
-                      }}
-                      className="inline-flex items-center gap-2 text-xs font-mono font-semibold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                      onClick={() => setShowCode((prev) => !prev)}
+                      className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[var(--accent-primary)] hover:underline cursor-pointer"
                     >
                       <Terminal className="w-3.5 h-3.5" />
-                      <span>{showCode ? 'Hide Architectural Code Sample' : 'View Architectural Code Sample'}</span>
+                      <span>{showCode ? 'Hide Architectural Snippet' : 'View Architectural Snippet'}</span>
                       <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${showCode ? 'rotate-180' : ''}`} />
                     </button>
 
                     {showCode && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="mt-3 bg-neutral-950 text-neutral-200 p-4 rounded-2xl font-mono text-[11px] leading-relaxed border border-neutral-800 overflow-x-auto shadow-inner"
-                      >
+                      <div className="mt-3 bg-slate-900 text-slate-100 dark:bg-black p-4 rounded-xl font-mono text-[11px] leading-relaxed border border-slate-800 overflow-x-auto">
                         <pre><code>{activeCapability.codeSample}</code></pre>
-                      </motion.div>
+                      </div>
                     )}
                   </div>
                 )}
               </motion.div>
             </AnimatePresence>
-          </motion.div>
+          </div>
         </div>
+
       </div>
     </section>
   );

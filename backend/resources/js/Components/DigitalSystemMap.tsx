@@ -510,7 +510,7 @@ export const DigitalSystemMap: React.FC = () => {
   }
 
   return (
-    <div className="relative w-full rounded-3xl liquid-glass shadow-2xl overflow-hidden transition-all duration-300 ring-1 ring-black/5 dark:ring-white/10">
+    <div className="relative w-full rounded-2xl editorial-card overflow-hidden transition-all duration-200">
       
       {/* Top Header Banner */}
       <div className="px-6 py-4 bg-slate-50/80 dark:bg-white/5 border-b border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 backdrop-blur-md">

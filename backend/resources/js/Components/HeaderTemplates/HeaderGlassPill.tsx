@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { router } from '@inertiajs/react';
 import { Menu, X, ArrowUpRight, Search } from 'lucide-react';
 import { ThemeToggle } from '../ThemeToggle';
-import { SoundToggle } from '../SoundToggle';
 import { DevCenterPointLogo } from '../DevCenterPointLogo';
 import { CommandPalette } from '../CommandPalette';
 import { BookingCta } from '../BookingCta';
-import { soundEngine } from '../../lib/soundEngine';
 import { HeaderMobileDrawer } from './HeaderMobileDrawer';
 import { useHeaderData } from './useHeaderData';
 import { useHeaderBehavior } from './useHeaderBehavior';
@@ -43,19 +41,19 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
   return (
     <>
       <header
-        className={`fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-7xl rounded-full glass-pill-nav px-3.5 sm:px-5 py-2 transition-all duration-300 ${
-          scrolled ? 'shadow-2xl shadow-blue-900/10 dark:shadow-black/70 scale-[0.99]' : 'shadow-lg shadow-slate-200/40 dark:shadow-none'
+        className={`fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-7xl rounded-full studio-nav-bar px-4 sm:px-6 py-2.5 transition-all duration-300 ${
+          scrolled
+            ? 'shadow-xl shadow-black/5 dark:shadow-black/60 scale-[0.99] border-black/10 dark:border-white/10'
+            : 'border-black/5 dark:border-white/5'
         }`}
       >
         <div className="flex items-center justify-between gap-3 h-10">
-          <div className="flex items-center gap-3">
+          {/* Brand Logo & Studio Availability Marker */}
+          <div className="flex items-center gap-3.5">
             <a
               href="/"
               onClick={(e) => {
                 e.preventDefault();
-                soundEngine.playClick();
-                // Already home: smooth-scroll to top. On a standalone page:
-                // navigate back to the homepage.
                 if (window.location.pathname === '/') {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
@@ -67,12 +65,17 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
             >
               <DevCenterPointLogo variant="horizontal" size="sm" showTagline={false} />
             </a>
+
+            {/* Subtle Editorial Status Beacon */}
+            <div className="hidden xl:flex items-center gap-2 pl-3 border-l border-slate-200 dark:border-white/10 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+              <span className="status-beacon-live" />
+              <span className="tracking-tight">Available Q1/Q2</span>
+            </div>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-1 bg-slate-100/70 dark:bg-black/30 p-1 rounded-full border border-slate-200/60 dark:border-white/5 backdrop-blur-md text-xs font-semibold">
+          {/* Typographic Navigation Deck */}
+          <nav className="hidden lg:flex items-center gap-1 bg-slate-100/80 dark:bg-white/[0.04] p-1 rounded-full border border-slate-200/60 dark:border-white/5 text-xs font-medium">
             {header.navLinks.map((link) => {
-              // Both `#section` and `/#section` point at a homepage anchor and
-              // take part in the scroll spy; routed links like `/work` do not.
               const anchor = link.href.replace(/^\/?#/, '');
               const isActive = anchor !== link.href && activeSection === anchor;
               return (
@@ -80,9 +83,9 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
                   key={`${link.label}-${link.href}`}
                   type="button"
                   onClick={() => handleNavClick(link.href)}
-                  className={`px-3.5 py-1 rounded-full transition-all cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-white dark:bg-white/10 text-blue-600 dark:text-white font-bold shadow-xs'
+                      ? 'bg-white dark:bg-white/10 text-[#0047FF] dark:text-white font-semibold shadow-xs'
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
                   }`}
                 >
@@ -92,36 +95,29 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
             })}
           </nav>
 
-          <div className="flex items-center gap-2">
+          {/* Tactical Action Deck */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {onOpenSandbox && (
               <button
                 type="button"
-                onClick={() => {
-                  soundEngine.playTap();
-                  onOpenSandbox();
-                }}
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 text-xs font-bold whitespace-nowrap transition-all active:scale-95 cursor-pointer"
+                onClick={onOpenSandbox}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0047FF]/10 hover:bg-[#0047FF]/15 text-[#0047FF] dark:text-blue-400 border border-[#0047FF]/20 text-xs font-semibold whitespace-nowrap transition-all active:scale-95 cursor-pointer"
                 title="Launch Live Client Sandbox"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Live Demos</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0047FF] animate-pulse" />
+                <span>Live Apps</span>
               </button>
             )}
 
             <button
               type="button"
-              onClick={() => {
-                soundEngine.playClick();
-                setIsCommandOpen(true);
-              }}
-              className="hidden md:flex items-center justify-center w-9 h-9 rounded-full border border-slate-300 dark:border-white/15 bg-white dark:bg-[#1a1a1a] text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#252525] hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer active:scale-95"
-              aria-label="Search site"
-              title="Search site"
+              onClick={() => setIsCommandOpen(true)}
+              className="hidden md:flex items-center justify-center w-8 h-8 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-[#15171C] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer active:scale-95"
+              aria-label="Search site (⌘K)"
+              title="Search site (⌘K)"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-3.5 h-3.5" />
             </button>
-
-            <SoundToggle />
 
             <ThemeToggle />
 
@@ -141,32 +137,34 @@ export const HeaderGlassPill: React.FC<HeaderPresetProps> = ({ onOpenSandbox }) 
                 e.preventDefault();
                 handleNavClick('#contact');
               }}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-linear-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold whitespace-nowrap transition-all shadow-md shadow-blue-600/25 active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#121316] hover:bg-[#0047FF] dark:bg-white dark:hover:bg-[#0047FF] text-white dark:text-[#121316] dark:hover:text-white text-xs font-semibold transition-all active:scale-95 shadow-xs cursor-pointer"
             >
-              <span>Start a Project</span>
+              <span>Estimate Project</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
 
+            {/* Mobile Hamburger Toggle */}
             <button
               type="button"
-              onClick={() => {
-                soundEngine.playMenuToggle(!menuOpen);
-                setMenuOpen(!menuOpen);
-              }}
-              className="inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300 transition-colors cursor-pointer lg:hidden"
-              aria-label="Toggle Studio Menu"
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-[#15171C] text-slate-700 dark:text-slate-200 cursor-pointer transition-colors"
+              aria-label={menuOpen ? 'Close Menu' : 'Open Menu'}
+              aria-expanded={menuOpen}
             >
               {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-              <span className="hidden min-[380px]:inline text-xs font-bold">
-                {menuOpen ? 'Close' : 'Menu'}
-              </span>
             </button>
           </div>
         </div>
       </header>
 
-      <CommandPalette isOpen={isCommandOpen} onClose={() => setIsCommandOpen(false)} />
+      {/* Global Command Palette (⌘K) */}
+      <CommandPalette
+        isOpen={isCommandOpen}
+        onClose={() => setIsCommandOpen(false)}
+        onOpenSandbox={onOpenSandbox}
+      />
 
+      {/* Mobile Drawer Navigation */}
       <HeaderMobileDrawer
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}

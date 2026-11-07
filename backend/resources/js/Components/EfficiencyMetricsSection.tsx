@@ -31,6 +31,11 @@ import {
   Sparkles,
   ArrowUpRight,
   Filter,
+  CheckCircle2,
+  Database,
+  Server,
+  BookOpen,
+  FileCode,
 } from 'lucide-react';
 import { useTheme } from '../Context/ThemeContext';
 import { useCms } from '../Context/CmsContext';
@@ -75,7 +80,67 @@ const RADAR_DATA = [
   { metric: 'Uptime Reliability', Standard: 82, DevCenterPoint: 99.9 },
 ];
 
-type ViewMode = 'velocity' | 'latency' | 'quality' | 'radar';
+export interface DeliverableItem {
+  id: string;
+  number: string;
+  title: string;
+  summary: string;
+  verification: string;
+  badge: string;
+}
+
+export const PRODUCTION_DELIVERABLES: DeliverableItem[] = [
+  {
+    id: 'source-code',
+    number: '01',
+    title: 'Complete Git Repository Transfer',
+    summary: 'Full source code ownership transferred on milestone sign-off. Clean commit history, unminified source code, zero obfuscation, and zero ongoing vendor license fees.',
+    verification: 'Full push access to your GitHub or GitLab organization with clear README setup.',
+    badge: '100% Owned'
+  },
+  {
+    id: 'database-architecture',
+    number: '02',
+    title: 'Documented Database Architecture',
+    summary: 'Normalized schemas with explicit foreign key constraints, indexes on high-frequency query paths, automated migrations, seeders, and zero raw credentials in version control.',
+    verification: 'Verifiable with automated migration test scripts and clear schema documentation.',
+    badge: 'PostgreSQL / MySQL'
+  },
+  {
+    id: 'automated-test-suite',
+    number: '03',
+    title: 'Automated Test Suites & Static Checks',
+    summary: 'Feature and unit test suites covering mission-critical business flows: payment webhook handling, inventory decrement safety, and authentication guards.',
+    verification: 'Green test execution in GitHub Actions CI pipeline before every production deploy.',
+    badge: 'PHPUnit / Pest'
+  },
+  {
+    id: 'container-deployment',
+    number: '04',
+    title: 'Containerization & Deployment Scripts',
+    summary: 'Docker Compose orchestration files, Nginx reverse proxy configuration, environment templates, and zero-downtime deployment scripts for cPanel, VPS, or cloud hosts.',
+    verification: 'One-command staging environment boot via Docker Compose or deploy script.',
+    badge: 'Docker & Nginx'
+  },
+  {
+    id: 'warranty-sla',
+    number: '05',
+    title: '30-Day Post-Launch Warranty',
+    summary: 'Dedicated post-launch warranty covering any bugs or deviations from the agreed scope specification. Production-blocking issues receive a sub-4-hour response SLA.',
+    verification: 'Direct communication via dedicated Slack or WhatsApp engineering channel.',
+    badge: '< 4h SLA'
+  },
+  {
+    id: 'staff-handover',
+    number: '06',
+    title: 'Administrative Handover & Documentation',
+    summary: 'Recorded video walkthroughs of back-office administration, database backup procedures, and role permission management for your internal operations staff.',
+    verification: 'Live handover call plus permanent documentation stored in your repository.',
+    badge: 'Recorded Video'
+  }
+];
+
+type ViewMode = 'deliverables' | 'velocity' | 'latency' | 'quality' | 'radar';
 
 interface MetricsHeader {
   badge?: string;
@@ -84,10 +149,10 @@ interface MetricsHeader {
 }
 
 const DEFAULT_METRICS_HEADER: MetricsHeader = {
-  badge: '05.5 — Data-Driven Engineering',
-  headline: 'Lifecycle Efficiency Metrics',
+  badge: '05.5 — Standards & Deliverables',
+  headline: 'Production Handover & SLAs',
   subtitle:
-    "Quantifiable engineering performance benchmarks comparing traditional development against DevCenterPoint's modular automated architecture.",
+    'Every system we build includes full source code ownership, automated tests, documented database architecture, and a 30-day post-launch warranty.',
 };
 
 interface MetricKpi {
@@ -101,33 +166,33 @@ interface MetricKpi {
 
 const DEFAULT_KPIS: MetricKpi[] = [
   {
-    label: 'Avg MVP Lead Time',
-    value: '14 Days',
-    change: '-72% vs Industry',
-    iconName: 'Clock',
+    label: 'Source Code Handover',
+    value: '100%',
+    change: 'Private Git Transfer',
+    iconName: 'ShieldCheck',
     color: 'text-blue-600 dark:text-blue-400',
     bg: 'bg-blue-500/10 border-blue-500/20',
   },
   {
-    label: 'API Response P99',
-    value: '38 ms',
-    change: 'Sub-100ms Guaranteed',
-    iconName: 'Zap',
+    label: 'Post-Launch Warranty',
+    value: '30 Days',
+    change: 'Included on All Contracts',
+    iconName: 'Clock',
     color: 'text-emerald-600 dark:text-emerald-400',
     bg: 'bg-emerald-500/10 border-emerald-500/20',
   },
   {
-    label: 'Automated CI/CD Pass',
-    value: '99.8%',
-    change: 'Zero-Regression Gate',
-    iconName: 'ShieldCheck',
+    label: 'Incident Response SLA',
+    value: '< 4 Hours',
+    change: 'Critical Priority Outages',
+    iconName: 'Zap',
     color: 'text-purple-600 dark:text-purple-400',
     bg: 'bg-purple-500/10 border-purple-500/20',
   },
   {
-    label: 'System Throughput',
-    value: '100k+ rps',
-    change: 'Scales to Peak Load',
+    label: 'Zero Vendor Lock-in',
+    value: '0 Lic. Fees',
+    change: 'Standard Open Stack',
     iconName: 'Activity',
     color: 'text-amber-600 dark:text-amber-400',
     bg: 'bg-amber-500/10 border-amber-500/20',
@@ -139,12 +204,18 @@ const KPI_ICONS: Record<string, React.ElementType> = {
   Zap,
   ShieldCheck,
   Activity,
+  FileCode,
+  Database,
+  Server,
+  BookOpen,
+  CheckCircle2,
 };
 
 export const EfficiencyMetricsSection: React.FC = () => {
   const cms = useCms();
   const headerContent = cms.getSectionBlock<MetricsHeader>('efficiency_metrics', 'header', DEFAULT_METRICS_HEADER);
   const kpis = cms.getSectionBlock<MetricKpi[]>('efficiency_metrics', 'kpis', DEFAULT_KPIS);
+  const deliverables = cms.getSectionBlock<DeliverableItem[]>('efficiency_metrics', 'deliverables', PRODUCTION_DELIVERABLES);
   const velocityData = cms.getSectionBlock('efficiency_metrics', 'velocity', VELOCITY_DATA);
   const latencyData = cms.getSectionBlock('efficiency_metrics', 'latency', LATENCY_DATA);
   const qualityData = cms.getSectionBlock('efficiency_metrics', 'quality', QUALITY_DATA);
@@ -152,7 +223,7 @@ export const EfficiencyMetricsSection: React.FC = () => {
 
   const { theme } = useTheme();
   const isDark = theme === 'dark';
-  const [activeView, setActiveView] = useState<ViewMode>('velocity');
+  const [activeView, setActiveView] = useState<ViewMode>('deliverables');
   const [timeframe, setTimeframe] = useState<'all' | 'q3' | 'q4'>('all');
 
   // Colors for dark and light themes
@@ -169,132 +240,130 @@ export const EfficiencyMetricsSection: React.FC = () => {
   };
 
   return (
-    <section id="metrics" className="py-24 bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white border-t border-slate-200 dark:border-[#2a2a2a] relative transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="metrics" className="py-20 sm:py-28 bg-[var(--bg-canvas)] text-[var(--text-primary)] border-t hairline-border relative transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-8 border-b border-slate-200 dark:border-[#2a2a2a]"
-        >
-          <div>
-            <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/20 mb-3">
-              <Sparkles className="w-3 h-3 text-blue-500" />
-              {headerContent.badge || DEFAULT_METRICS_HEADER.badge}
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 border-b hairline-border gap-6">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 text-xs font-mono font-medium tracking-wide text-[var(--accent-primary)] bg-[var(--accent-subtle)] px-3 py-1 rounded-full border hairline-border">
+              <span>{headerContent.badge || DEFAULT_METRICS_HEADER.badge}</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">
               {headerContent.headline || DEFAULT_METRICS_HEADER.headline}
             </h2>
           </div>
-          <p className="text-xs text-slate-600 dark:text-gray-400 max-w-md mt-4 md:mt-0 font-bold uppercase tracking-wider">
+          <p className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md font-normal leading-relaxed">
             {headerContent.subtitle || DEFAULT_METRICS_HEADER.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         {/* Top Highlight KPI Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {kpis.map((kpi, idx) => {
             const IconComponent = (kpi.iconName && KPI_ICONS[kpi.iconName]) || (kpi as any).icon || Clock;
             return (
-              <motion.div
+              <div
                 key={idx}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="p-5 rounded-3xl bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#2a2a2a] shadow-sm relative overflow-hidden flex flex-col justify-between"
+                className="p-5 rounded-xl editorial-card flex flex-col justify-between"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-500 dark:text-gray-400">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)]">
                     {kpi.label}
                   </span>
-                  <div className={`p-2 rounded-xl border ${kpi.bg} ${kpi.color}`}>
+                  <div className="p-1.5 rounded-lg bg-[var(--bg-subtle)] border hairline-border text-[var(--accent-primary)]">
                     <IconComponent className="w-4 h-4" />
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+                  <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
                     {kpi.value}
                   </div>
-                  <div className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1">
+                  <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1 font-mono">
                     <TrendingUp className="w-3 h-3" />
                     <span>{kpi.change}</span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* Interactive Visualization Dashboard */}
-        <div className="bg-white dark:bg-[#1a1a1a] rounded-[2.5rem] border border-slate-200 dark:border-[#2a2a2a] p-6 md:p-8 shadow-2xl relative overflow-hidden font-sans">
-          {/* Controls Bar: View Selector & Timeframe Filter */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-200 dark:border-[#2a2a2a]">
-            {/* View Mode Tabs */}
+        <div className="editorial-card rounded-2xl p-6 sm:p-8 space-y-6">
+          {/* Controls Bar: View Selector */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b hairline-border">
             <div className="flex flex-wrap items-center gap-2">
               <button
-                onClick={() => setActiveView('velocity')}
-                className={`px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-200 flex items-center gap-2 cursor-pointer ${
-                  activeView === 'velocity'
-                    ? 'bg-blue-600 text-white border border-blue-400 shadow-md shadow-blue-600/30'
-                    : 'bg-slate-100 dark:bg-[#111111] text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400'
+                onClick={() => setActiveView('deliverables')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer ${
+                  activeView === 'deliverables'
+                    ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
+                    : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
-                <Clock className="w-3.5 h-3.5" />
-                <span>Delivery Velocity</span>
+                Deliverables & SLAs
+              </button>
+
+              <button
+                onClick={() => setActiveView('velocity')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer ${
+                  activeView === 'velocity'
+                    ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
+                    : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                Delivery Velocity
               </button>
 
               <button
                 onClick={() => setActiveView('latency')}
-                className={`px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer flex items-center gap-1.5 ${
                   activeView === 'latency'
-                    ? 'bg-blue-600 text-white border border-blue-400 shadow-md shadow-blue-600/30'
-                    : 'bg-slate-100 dark:bg-[#111111] text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400'
+                    ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
+                    : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 <Zap className="w-3.5 h-3.5" />
-                <span>API Response Latency</span>
+                <span>API Latency</span>
               </button>
 
               <button
                 onClick={() => setActiveView('quality')}
-                className={`px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer flex items-center gap-1.5 ${
                   activeView === 'quality'
-                    ? 'bg-blue-600 text-white border border-blue-400 shadow-md shadow-blue-600/30'
-                    : 'bg-slate-100 dark:bg-[#111111] text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400'
+                    ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
+                    : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Quality & Coverage</span>
+                <span>Test Coverage</span>
               </button>
 
               <button
                 onClick={() => setActiveView('radar')}
-                className={`px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all border hairline-border cursor-pointer flex items-center gap-1.5 ${
                   activeView === 'radar'
-                    ? 'bg-blue-600 text-white border border-blue-400 shadow-md shadow-blue-600/30'
-                    : 'bg-slate-100 dark:bg-[#111111] text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400'
+                    ? 'bg-[#121316] text-white dark:bg-white dark:text-[#121316] font-bold shadow-xs'
+                    : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 <Cpu className="w-3.5 h-3.5" />
-                <span>System Radar Comparison</span>
+                <span>System Radar</span>
               </button>
             </div>
 
             {/* Timeframe selector */}
-            <div className="flex items-center gap-2 self-start lg:self-auto text-xs font-bold text-slate-500 dark:text-gray-400">
-              <Filter className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span className="uppercase text-[10px] tracking-widest font-black">Period:</span>
+            <div className="flex items-center gap-2 self-start lg:self-auto text-xs font-mono font-bold text-[var(--text-muted)]">
+              <Filter className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+              <span className="uppercase text-[10px] tracking-wider">Period:</span>
               {(['all', 'q3', 'q4'] as const).map((p) => (
                 <button
                   key={p}
                   onClick={() => setTimeframe(p)}
-                  className={`px-2.5 py-1 rounded-lg uppercase text-[10px] font-extrabold cursor-pointer transition-colors ${
+                  className={`px-2.5 py-1 rounded-md uppercase text-[10px] font-bold cursor-pointer transition-colors ${
                     timeframe === p
-                      ? 'bg-blue-600/20 text-blue-600 dark:text-blue-400 border border-blue-500/30'
-                      : 'hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-[var(--accent-subtle)] text-[var(--accent-primary)] border hairline-border'
+                      : 'hover:text-[var(--text-primary)]'
                   }`}
                 >
                   {p === 'all' ? 'Cumulative' : p.toUpperCase()}
@@ -306,6 +375,61 @@ export const EfficiencyMetricsSection: React.FC = () => {
           {/* Active Visualization Workspace */}
           <div className="min-h-[380px] w-full">
             <AnimatePresence mode="wait">
+              {activeView === 'deliverables' && (
+                <motion.div
+                  key="deliverables"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-6"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                    <div>
+                      <h3 className="text-xl font-black text-slate-900 dark:text-white">
+                        Standard Handover Specifications
+                      </h3>
+                      <p className="text-xs text-slate-600 dark:text-gray-400 font-medium">
+                        Every system we build includes the following contractual deliverables and verification mechanisms.
+                      </p>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 self-start sm:self-auto">
+                      All 6 Included in Contract
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                    {deliverables.map((item) => (
+                      <div
+                        key={item.id}
+                        className="p-5 rounded-2xl bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#282828] flex flex-col justify-between space-y-4 hover:border-blue-500/40 transition-colors"
+                      >
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">
+                              {item.number}
+                            </span>
+                            <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-gray-400 px-2.5 py-0.5 rounded-full bg-slate-200/60 dark:bg-[#202020]">
+                              {item.badge}
+                            </span>
+                          </div>
+                          <h4 className="text-sm font-black text-slate-900 dark:text-white">
+                            {item.title}
+                          </h4>
+                          <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
+                            {item.summary}
+                          </p>
+                        </div>
+                        <div className="pt-3 border-t border-slate-200/80 dark:border-[#222222] text-[11px] font-mono text-slate-500 dark:text-gray-500">
+                          <span className="font-bold text-slate-700 dark:text-gray-400">Verification: </span>
+                          {item.verification}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
               {activeView === 'velocity' && (
                 <motion.div
                   key="velocity"
@@ -547,13 +671,13 @@ export const EfficiencyMetricsSection: React.FC = () => {
           <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#2a2a2a] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-bold text-slate-500 dark:text-gray-400">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>BENCHMARK DATA REAL-TIME AUDITED FROM PRODUCTION TELEMETRY</span>
+              <span>ALL DELIVERABLES VERIFIED WITH AUTOMATED CI/CD AND PRODUCTION DEPLOYMENT TESTS</span>
             </div>
             <a
               href="#contact"
               className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 font-extrabold hover:underline group"
             >
-              <span>Build a high-performance system</span>
+              <span>Scope your custom system</span>
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>

@@ -1,83 +1,60 @@
-# Task Plan: Hero Video & Interactive Engineering Sandbox Improvisations
+# Task Plan: DevCenterPoint Studio Complete Redesign (Architectural Editorial)
 
 ## Goal
-Implement a high-performance, visually stunning upgrade to the Hero section of DevCenterPoint Studio featuring:
-1. Dynamic Mode Modals ("Cinema Active" interactive engineering sandbox toggle with code drawer)
-2. Live Telemetry & Code Stream Overlays (Semantic command center HUD with real-time logs and metric stream)
-3. WebGL/Canvas Gravity-Warping Interaction (Background vectors gravitationally accelerating toward the primary CTA)
-4. Scroll-Triggered Focus Shifting (Smooth transition from cinematic video into monochromatic blueprint grid)
-5. Visual Polishing Matrix (Chroma-key masking, seamless multi-stop bottom gradient, 180% saturation + blur depth contrast)
+Completely overhaul DevCenterPoint Studio from a generic "AI-slop" dark-mode site into a world-class, premium, highly interactive Architectural Editorial platform featuring:
+1. Warm bone/alabaster canvas (`#FBFBF9`) with carbon twin (`#0C0D10`), Signal Cobalt (`#0047FF`) accent, and 1px drafting keylines.
+2. The Studio Workbench Hero with an **Interactive Live App Simulator** (ERP Inventory, Clinic Queue, Dynamic QR) replacing fake telemetry and particles.
+3. Architectural Before-and-After Evidence (The Spreadsheet Trap vs. The Relational System).
+4. Tactile Project Scope & Investment Configurator.
+5. High-craft Flagship Work showcase with real credentials and schema inspection.
+6. Complete removal of synthesizer audio beep gimmicks.
+7. Full build verification with `npm run build`.
 
 ## Current Phase
-Phase 3: Architectural Foundation & Interactive Canvas Refinements
+All Phases Complete & Verified
 
 ## Phases
 
-### Phase 1: Requirements & Discovery
-- [x] Analyze current `Hero.tsx`, `HeroInteractiveCanvas.tsx`, and `Home.tsx` implementations
-- [x] Inspect existing video controls (`isPlaying`, `Cinema Active`), canvas modes (`mesh`, `particles`, `vortex`, etc.), and LCP constraints
-- [x] Document discoveries, constraints, and architecture in `findings.md`
-- [x] Author comprehensive Implementation Plan artifact for user review & approval
-- **Status:** complete
+### Phase 1: Design Tokens, CSS Polish & Audio Gimmick Purge
+- [x] Update `backend/resources/css/app.css` with architectural editorial tokens (`--bg-canvas`, `--bg-surface`, `--bg-subtle`, `--border-hairline`, `--accent-primary`, `--text-ink`).
+- [x] Ensure light mode is the default with smooth carbon dark mode transition.
+- [x] Neutralize / silence `soundEngine.ts` to eliminate annoying hover and click beeps.
+- **Status:** completed
 
-### Phase 2: User Plan Alignment & Review Gate
-- [x] Present technical design, state flow, and component breakdown to user
-- [x] Collect user feedback and design preferences
-- [x] Await explicit user approval before modifying application code (User approved with "after implementation, run it locally")
-- **Status:** complete
+### Phase 2: Studio Header & Navigation Redesign
+- [x] Redesign `HeaderGlassPill.tsx` / `SiteHeader.tsx` with architectural drafting lines, live studio status ("Available for Q1/Q2 Projects • Dhaka & Global"), and clean typographic links.
+- [x] Streamline mobile navigation drawer for seamless touch usability.
+- **Status:** completed
 
-### Phase 3: Architectural Foundation & Interactive Canvas Refinements
-- [x] Enhance `HeroInteractiveCanvas.tsx` with gravitational well physics (vector attraction toward CTA button coordinates)
-- [x] Add props and state bridges for external mode synchronization (`mesh`, `vortex`, `matrix`, `nebula`, `particles`)
-- [x] Implement smooth particle velocity acceleration when hovering "Start a Project" CTA
-- **Status:** complete
+### Phase 3: The Hero Workbench & Interactive Live App Simulator
+- [x] Replace `HeroTelemetryStream.tsx` and floating particle canvas with `LiveAppSimulator.tsx`.
+- [x] Build interactive simulated slices:
+  - 1. Multi-warehouse ERP stock decrement with instant reconciliation.
+  - 2. Healthcare clinic counter queue with patient calling & simulated SMS dispatch.
+  - 3. Anti-fraud rotating dynamic QR check-in token engine.
+- [x] Overhaul `Hero.tsx` with editorial typography, strong value propositions, and live demo credentials.
+- **Status:** completed
 
-### Phase 4: Dynamic "Cinema Active" Sandbox & Code Drawer
-- [x] Transform "Cinema Active" toggle from a simple pause/play button into a dual-mode trigger (Playback Toggle + Cinema Sandbox Inspector)
-- [x] Implement text dimming & 3D perspective shift on video/canvas container during active sandbox mode
-- [x] Build floating glassmorphic code drawer with live TypeScript architecture snippet, real-time event ledger, and shader parameter controls
-- [x] Implement keyboard accessibility (Escape key to exit sandbox, focus management)
-- **Status:** complete
+### Phase 4: Architectural Before vs. After & Positioning
+- [x] Redesign `Positioning.tsx` to contrast the chaotic "Spreadsheet Trap" with the "DevCenterPoint Relational Core".
+- [x] Add tangible architectural schemas and operational metric improvements.
+- **Status:** completed
 
-### Phase 5: Telemetry & Real-Time Code Stream HUD
-- [x] Create semantic HTML command center overlay docked at the edge of the hero viewport
-- [x] Implement auto-scrolling telemetry log stream with realistic high-throughput messages (`[SYS_EVENT]`, `[V8_TS]`, `[SOC2_HASH]`, `[DB_SYNC]`)
-- [x] Add live FPS / latency meter and packet counter with pulsing indicators
-- **Status:** complete
+### Phase 5: Flagship Work & Case Studies Showcase
+- [x] Upgrade `SelectedWorkSection.tsx` into an architectural case file gallery.
+- [x] Provide direct credential links to real live apps (`demoerp.devcenterpoint.com`, `serial.ferozamedicinecorner.com`).
+- **Status:** completed
 
-### Phase 6: Scroll-Triggered Focus Shifting & Visual Polishing Matrix
-- [x] Integrate Framer Motion / Lenis scroll listener for scroll-driven transition into Pillar 01
-- [x] Implement blueprint grid background overlay with dynamic mix-blend-mode
-- [x] Apply visual polishing matrix: multi-stop bottom gradient (`linear-gradient(to bottom, transparent, #000814)`), `backdrop-filter: saturate(180%) blur(8px)`, and crisp depth layers
-- **Status:** complete
+### Phase 6: Interactive Scope & Investment Configurator
+- [x] Overhaul `ProjectInquiryBuilder.tsx` into a tactile system configurator (modules, volumes, deployment targets, instant turnaround calculation).
+- [x] Enable 1-click WhatsApp and email scope dispatch.
+- **Status:** completed
 
-### Phase 7: Verification & Build Validation
-- [x] Run TypeScript check (`npm run build` / `vite build`) to verify zero type or bundle errors (Built in 17s + 13s SSR with exit code 0)
-- [x] Validate responsive behavior (mobile, tablet, desktop)
-- [x] Launch local servers (`php artisan serve` on port 8000 and `npm run dev` on port 5173)
-- [x] Verify local HTTP 200 response on `http://127.0.0.1:8000`
-- **Status:** complete
-
-## Key Questions
-1. Should "Cinema Active" toggle both video play/pause AND the immersive sandbox, or provide a dedicated "Inspect Sandbox" control alongside play/pause?
-   -> Recommended: Clicking "Cinema Active" engages the full immersive sandbox view, while a dedicated play/pause icon allows pure media control.
-2. Should the real-time telemetry stream run continuously or only during cinema/sandbox mode?
-   -> Recommended: A compact, subtle HUD streams docked at the edge of the hero, expanding with full logs when Cinema Sandbox is active.
-3. Will live vector gravity-warping impact CPU/battery?
-   -> Recommended: Coordinate checks throttled via `requestAnimationFrame`, with zero allocation in the hot loop and graceful fallback for prefers-reduced-motion.
-
-## Decisions Made
-| Decision | Rationale |
-|----------|-----------|
-| Retain lightweight HTML5 Canvas engine instead of heavy Three.js bundle | Preserves sub-second LCP and zero external dependency footprint while achieving 60fps physics, gravity-warping, and particle trails |
-| Use Framer Motion (`motion/react`) for Drawer & HUD | Already bundled in project (`motion` & `framer-motion`), provides seamless spring physics and `AnimatePresence` |
-| Maintain plain div LCP wrapper in `Home.tsx` | Avoids any delay on hero heading paint; all interactive HUD and canvas enhancements mount progressively without blocking first paint |
-
-## Errors Encountered
-| Error | Attempt | Resolution |
-|-------|---------|------------|
-| None yet | 1 | N/A |
-
-## Notes
-- Planning files created: `task_plan.md`, `findings.md`, `progress.md`
-- Implementation Plan artifact must be presented to user for feedback before code modifications.
+### Phase 7: Pragmatic Engineering Manifesto & Sub-Page Polish
+- [x] Overhaul `EngineeringPhilosophy.tsx` & `TechEcosystem.tsx` with clear, anti-hype technical rationale.
+- [x] Update `TestimonialsSection.tsx`, `AboutPrinciples.tsx`, `PlansPricingSection.tsx`, `FAQSection.tsx`, `EfficiencyMetricsSection.tsx`.
+- [x] Update `ProcessSection.tsx`, `MilestoneDetailModal.tsx`, `NewsletterSignup.tsx`.
+- [x] Overhaul Footers (`SiteFooter.tsx`, `FooterFourColumn.tsx`, `FooterCompactRow.tsx`, `FooterMegaSitemap.tsx`).
+- [x] Verify `/work`, `/services`, `/blog`, `/solutions` consistency and public layout shell.
+- [x] Validate full build with `npm run build` (client & SSR bundle compiled with 0 errors).
+- **Status:** completed

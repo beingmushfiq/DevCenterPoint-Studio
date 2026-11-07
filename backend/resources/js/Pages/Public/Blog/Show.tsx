@@ -94,21 +94,21 @@ export default function BlogShow({ post, related = [], ...cms }: BlogShowProps) 
         </div>
       </PageMasthead>
 
-      <section className="py-16 sm:py-24 bg-slate-50 dark:bg-[#0a0a0a] transition-colors duration-500">
+      <section className="py-16 sm:py-24 bg-[var(--bg-canvas)] text-[var(--text-ink)] transition-colors duration-300">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {post.cover_image_url && (
             <motion.img
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.3 }}
               src={post.cover_image_url}
               alt={post.title}
-              className="w-full aspect-video object-cover rounded-3xl ring-1 ring-black/5 dark:ring-white/10 mb-10"
+              className="w-full aspect-video object-cover rounded-2xl border hairline-border mb-10 shadow-xs"
             />
           )}
 
           {post.excerpt && (
-            <p className="text-base sm:text-lg text-slate-700 dark:text-neutral-300 font-medium leading-relaxed pl-5 border-l-2 border-blue-500 mb-10">
+            <p className="text-base sm:text-lg text-[var(--text-ink)] font-medium leading-relaxed pl-5 border-l-2 border-[var(--accent-primary)] mb-10">
               {post.excerpt}
             </p>
           )}
@@ -116,17 +116,17 @@ export default function BlogShow({ post, related = [], ...cms }: BlogShowProps) 
           {/* Article body. `renderMarkdown` escapes all HTML before formatting,
               so the raw CMS string can never inject markup. */}
           <article
-            className="text-sm sm:text-base"
+            className="text-sm sm:text-base leading-relaxed text-[var(--text-ink)]"
             dangerouslySetInnerHTML={{ __html: html }}
           />
 
           {tags.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-slate-200/70 dark:border-white/10">
+            <div className="mt-12 pt-8 border-t hairline-border">
               <div className="flex flex-wrap items-center gap-2">
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1.5 rounded-full bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 text-[11px] font-mono font-bold text-slate-600 dark:text-neutral-400"
+                    className="tech-tag text-[11px]"
                   >
                     {tag}
                   </span>
@@ -138,14 +138,14 @@ export default function BlogShow({ post, related = [], ...cms }: BlogShowProps) 
           <div className="mt-12 flex flex-wrap items-center gap-3">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl liquid-glass text-xs font-bold text-slate-700 dark:text-neutral-300 border border-slate-200 dark:border-white/10 hover:border-blue-500/40 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[var(--bg-surface)] text-xs font-mono font-bold text-[var(--text-ink)] border hairline-border hover:border-[var(--accent-primary)] transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>All articles</span>
             </Link>
             <Link
               href="/#contact"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-linear-to-r from-blue-600 via-indigo-600 to-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/25 hover:from-blue-500 hover:to-indigo-500 transition-colors"
+              className="editorial-btn-primary inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold"
             >
               <span>Discuss your project</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -153,8 +153,8 @@ export default function BlogShow({ post, related = [], ...cms }: BlogShowProps) 
           </div>
 
           {related.length > 0 && (
-            <div className="mt-16 pt-10 border-t border-slate-200/70 dark:border-white/10">
-              <h2 className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-neutral-400 mb-5">
+            <div className="mt-16 pt-10 border-t hairline-border">
+              <h2 className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)] mb-5">
                 Continue reading
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

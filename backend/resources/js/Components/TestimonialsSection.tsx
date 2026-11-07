@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, Star, Building2, CheckCircle2, TrendingUp, ShieldCheck } from 'lucide-react';
+import { Quote, Building2, CheckCircle2, TrendingUp, ShieldCheck } from 'lucide-react';
 import { useCms } from '../Context/CmsContext';
 import { SectionState } from './SectionState';
 
@@ -19,43 +19,43 @@ interface TestimonialItem {
 
 const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
   {
-    client_name: 'David Vance',
-    client_role: 'Chief Operating Officer',
-    company_name: 'Apex Omnichannel Commerce',
-    avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-    quote: 'DevCenterPoint re-engineered our multi-warehouse inventory engine from the ground up. Their architecture eliminated stock desynchronization and drove our warehouse dispatch speeds up by over 400%.',
-    project_reference: 'Multi-Tenant ERP & Storefront',
-    metric_highlight: '4.2x Faster Fulfillment',
+    client_name: 'Distribution Hub Operations',
+    client_role: 'Operations Review',
+    company_name: 'DevCenterPoint ERP & Storefront',
+    avatar_url: null,
+    quote: 'Centralized multi-warehouse inventory engine with live SKU tracking, barcode scanner support, and automated dispatching. Eliminates stock desynchronization across sales channels.',
+    project_reference: 'Live Demo: demoerp.devcenterpoint.com',
+    metric_highlight: 'Multi-Warehouse Sync',
     is_published: true,
   },
   {
-    client_name: 'Col. Farhan Ahmed (Retd.)',
-    client_role: 'Program Director',
-    company_name: 'National Road Safety Movement',
-    avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-    quote: 'The real-time nationwide incident dispatch platform built by DevCenterPoint provided absolute operational reliability under extreme concurrent traffic. Their team operates with military-grade precision.',
-    project_reference: 'Emergency Telemetry & Incident Ops',
-    metric_highlight: '99.99% Uptime During Peaks',
+    client_name: 'Clinical Pharmacy Staff',
+    client_role: 'Healthcare Deployment',
+    company_name: 'Feroza Clinic Serial Manager',
+    avatar_url: null,
+    quote: 'Real-time patient serial management with digital waiting room displays and SMS alerts. Replaced crowded paper queues with an orderly, 1-click patient summon workflow.',
+    project_reference: 'Live Platform: serial.ferozamedicinecorner.com',
+    metric_highlight: 'Live Queue & SMS Alerts',
     is_published: true,
   },
   {
-    client_name: 'Marcus Sterling',
-    client_role: 'VP of Telematics',
-    company_name: 'Global Fleet Telemetry Ltd',
-    avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-    quote: 'Handling millions of GPS sensor pings per hour requires elite backend distributed systems knowledge. DevCenterPoint optimized our database pipelines to sub-millisecond query response times.',
-    project_reference: 'Traccar GPS Telematics Pipeline',
-    metric_highlight: '2.8M Events/hr Ingestion',
+    client_name: 'Volunteer Network Lead',
+    client_role: 'Civic Safety Program',
+    company_name: 'Road Safety Movement',
+    avatar_url: null,
+    quote: 'Mobile-responsive field dispatch platform for coordinated traffic safety campaigns, volunteer check-ins, and emergency road incident reporting.',
+    project_reference: 'Live Platform: roadsafetymovement.org',
+    metric_highlight: 'National Campaign Dispatch',
     is_published: true,
   },
   {
-    client_name: 'Elena Rostova',
-    client_role: 'Managing Partner',
-    company_name: 'VentureScale Operations',
-    avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
-    quote: 'Unlike generalist agencies that deliver fragile prototypes, DevCenterPoint constructs production systems engineered for automated self-healing, deterministic testing, and zero-downtime releases.',
-    project_reference: 'Enterprise Core Modernization',
-    metric_highlight: '$1.4M Saved Annually',
+    client_name: 'Store Management',
+    client_role: 'Retail Inventory Deployment',
+    company_name: 'Slice Mart Retail FMS',
+    avatar_url: null,
+    quote: 'Fast web-based retail management system with barcode scanner integration, daily sales reconciliation, and automated low-stock reorder thresholds.',
+    project_reference: 'Public Sandbox: slice-mart-fms.vercel.app',
+    metric_highlight: 'Instant Barcode SKU Search',
     is_published: true,
   },
 ];
@@ -68,29 +68,25 @@ export const TestimonialsSection: React.FC = () => {
     ? cms.testimonials!.filter((t) => t.is_published !== false)
     : (hasCmsTestimonials ? [] : DEFAULT_TESTIMONIALS);
 
-  const title = cms.getSetting('testimonials_heading', 'Verified Enterprise Impact & Leadership Endorsements');
+  const title = cms.getSetting('testimonials_heading', 'Verified Deployments & Operating Systems');
   const subtitle = cms.getSetting(
     'testimonials_subheading',
-    'Hear directly from operating executives, engineering directors, and product leaders who scaled critical platforms with DevCenterPoint Studio.'
+    'Active web systems and operational software engineered by DevCenterPoint Studio. Each deployment is live and accessible for demonstration.'
   );
 
   return (
-    <section id="testimonials" className="py-24 border-t border-slate-200/80 dark:border-white/10 relative overflow-hidden bg-slate-50/50 dark:bg-black/30">
-      {/* Background Accent Gradients */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
-      <div className="absolute top-1/2 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Eyebrow & Title */}
-        <div className="max-w-3xl mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium tracking-wide uppercase bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700/50 mb-4">
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
-            Social Proof & Client Testimonials
+    <section id="testimonials" className="py-20 sm:py-28 bg-[var(--bg-canvas)] text-[var(--text-primary)] border-t hairline-border relative transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Section Header */}
+        <div className="max-w-3xl space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium tracking-wide uppercase bg-[var(--accent-subtle)] text-[var(--accent-primary)] border hairline-border">
+            <ShieldCheck className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+            <span>04 — Verified Production Systems & Impact</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">
             {title}
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+          <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
             {subtitle}
           </p>
         </div>
@@ -99,86 +95,64 @@ export const TestimonialsSection: React.FC = () => {
         {rawTestimonials.length === 0 ? (
           <SectionState
             variant="empty"
-            title="Client endorsements coming soon"
-            description="We are collecting verified feedback from the engineering leaders we work with. New endorsements will appear here shortly."
+            title="Deployments coming soon"
+            description="We are publishing verified system case files. New operating deployments will appear here shortly."
           />
         ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {rawTestimonials.map((item, index) => (
-            <motion.div
-              key={item.id || index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white dark:bg-[#0c1017] border border-slate-200 dark:border-white/10 rounded-2xl p-8 flex flex-col justify-between shadow-xl shadow-slate-200/50 dark:shadow-none hover:border-blue-500/40 transition-all group"
-            >
-              <div>
-                {/* Header with Quote Icon & Metric Badge */}
-                <div className="flex items-center justify-between gap-4 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-600/10 text-blue-600 dark:text-blue-400 flex items-center justify-center border border-blue-100 dark:border-blue-500/20 group-hover:scale-105 transition-transform">
-                    <Quote className="w-5 h-5" />
-                  </div>
-                  {item.metric_highlight && (
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">
-                      <TrendingUp className="w-3.5 h-3.5" />
-                      {item.metric_highlight}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            {rawTestimonials.map((item, index) => (
+              <div
+                key={item.id || index}
+                className="rounded-2xl editorial-card p-6 sm:p-8 flex flex-col justify-between space-y-6 hover:border-[var(--accent-primary)] transition-all"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b hairline-border">
+                    <div className="w-8 h-8 rounded-lg bg-[var(--bg-subtle)] border hairline-border text-[var(--accent-primary)] flex items-center justify-center">
+                      <Quote className="w-4 h-4" />
                     </div>
-                  )}
+                    {item.metric_highlight && (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60">
+                        <TrendingUp className="w-3 h-3" />
+                        <span>{item.metric_highlight}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed italic">
+                    "{item.quote}"
+                  </p>
                 </div>
 
-                {/* Quote Content */}
-                <p className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed italic mb-8">
-                  "{item.quote}"
-                </p>
-              </div>
-
-              {/* Author Footer & Project Reference */}
-              <div className="pt-6 border-t border-slate-100 dark:border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  {item.avatar_url ? (
-                    <img
-                      src={item.avatar_url}
-                      alt={item.client_name}
-                      className="w-11 h-11 rounded-full object-cover border-2 border-white dark:border-slate-800 shadow-md"
-                    />
-                  ) : (
-                    <div className="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-md">
-                      {item.client_name.charAt(0)}
-                    </div>
-                  )}
+                <div className="pt-4 border-t hairline-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                   <div>
-                    <h4 className="font-bold text-slate-900 dark:text-white text-sm">
+                    <h4 className="font-bold text-[var(--text-primary)]">
                       {item.client_name}
                     </h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      {item.client_role} · <span className="text-blue-600 dark:text-blue-400 font-medium">{item.company_name}</span>
+                    <p className="text-[11px] text-[var(--text-secondary)]">
+                      {item.client_role} · <span className="text-[var(--accent-primary)] font-semibold">{item.company_name}</span>
                     </p>
                   </div>
-                </div>
 
-                {item.project_reference && (
-                  <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-black/40 px-2.5 py-1 rounded-lg border border-slate-200/50 dark:border-white/5 self-start sm:self-auto">
-                    {item.project_reference}
-                  </div>
-                )}
+                  {item.project_reference && (
+                    <div className="text-[11px] font-mono text-[var(--text-muted)] bg-[var(--bg-subtle)] px-2.5 py-1 rounded-md border hairline-border self-start sm:self-auto">
+                      {item.project_reference}
+                    </div>
+                  )}
+                </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
         )}
 
-        {/* Enterprise Logos / Trust Banner */}
-        <div className="mt-16 pt-12 border-t border-slate-200/60 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">
-            Trusted by Engineering Leaders & Founders Across Industries:
-          </span>
-          <div className="flex flex-wrap items-center gap-8 opacity-75 grayscale hover:grayscale-0 transition-all">
-            <span className="text-sm font-bold tracking-tight text-slate-700 dark:text-slate-300 font-sans">APEX COMMERCE</span>
-            <span className="text-sm font-bold tracking-tight text-slate-700 dark:text-slate-300 font-sans">ROAD SAFETY MOVEMENT</span>
-            <span className="text-sm font-bold tracking-tight text-slate-700 dark:text-slate-300 font-sans">GLOBAL FLEET GPS</span>
-            <span className="text-sm font-bold tracking-tight text-slate-700 dark:text-slate-300 font-sans">VENTURESCALE</span>
-            <span className="text-sm font-bold tracking-tight text-slate-700 dark:text-slate-300 font-sans">SHAP AI LABS</span>
+        {/* Operating Deployments Banner */}
+        <div className="pt-8 border-t hairline-border flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-[var(--text-muted)]">
+          <span>VERIFIED PRODUCTION REPOSITORIES & DEPLOYMENTS:</span>
+          <div className="flex flex-wrap items-center gap-6 text-[var(--text-secondary)] font-bold">
+            <span>DCP ERP</span>
+            <span>CLINIC SERIAL</span>
+            <span>ROAD SAFETY MOVEMENT</span>
+            <span>SLICE MART</span>
+            <span>QTTENZY</span>
           </div>
         </div>
       </div>

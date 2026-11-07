@@ -130,7 +130,7 @@ export default function Home(props: CmsData) {
           {/* Global Initial Mounting Screen & Skeleton Loader */}
           <GlobalLoadingScreen onMountComplete={handleMountComplete} />
 
-          <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-white font-sans antialiased relative selection:bg-blue-600 selection:text-white">
+          <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-ink)] font-sans antialiased relative selection:bg-[#0047FF] selection:text-white">
             {/* Desktop Subtle Cursor Indicator */}
             <CustomCursor />
 

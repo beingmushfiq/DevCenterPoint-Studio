@@ -12,11 +12,10 @@ import {
   CheckCircle2,
   AlertTriangle,
   BookOpen,
-  Sparkles,
   Layers,
-  SlidersHorizontal
+  Database,
+  Lock
 } from 'lucide-react';
-import { soundEngine } from '../lib/soundEngine';
 import { useCms } from '../Context/CmsContext';
 
 interface PhilosophyHeader {
@@ -25,491 +24,207 @@ interface PhilosophyHeader {
   subtitle?: string;
 }
 
-interface PhilosophyManifesto {
-  buttonLabel?: string;
-  collapseLabel?: string;
-  p1Bold?: string;
-  p1Text?: string;
-  p2Text?: string;
-}
-
 const DEFAULT_PHILOSOPHY_HEADER: PhilosophyHeader = {
-  badge: '04 — Engineering Architecture',
-  headline: 'Built beyond the interface.',
+  badge: '04 — Systems Architecture',
+  headline: 'Engineered beyond the interface.',
   subtitle:
-    'Every software product built by DevCenterPoint is backed by a 5-tier resilient architecture engineered for zero data loss, sub-100ms speeds, and high security.',
-};
-
-const DEFAULT_PHILOSOPHY_MANIFESTO: PhilosophyManifesto = {
-  buttonLabel: 'Read Architectural Manifesto',
-  collapseLabel: 'Read Less (Collapse Thesis)',
-  p1Bold: 'Why multi-tier isolation matters:',
-  p1Text:
-    ' Most digital products fail not from bad typography, but from unhandled database locks, cascading API timeouts, and unmonitored background worker queue deaths.',
-  p2Text:
-    'We architect software in five decoupled tiers: each layer has an immutable contract, its own strict security boundary, dedicated failure isolation, and measurable verification metrics.',
+    'Every system built by DevCenterPoint is structured in decoupled operational tiers: deterministic data schemas, resilient queues, and verifiable security boundaries.',
 };
 
 export const EngineeringPhilosophy: React.FC = () => {
   const cms = useCms();
   const headerContent = cms.getSectionBlock<PhilosophyHeader>('philosophy', 'header', DEFAULT_PHILOSOPHY_HEADER);
-  const manifesto = cms.getSectionBlock<PhilosophyManifesto>('philosophy', 'manifesto', DEFAULT_PHILOSOPHY_MANIFESTO);
   const layers = cms.getSectionBlock('philosophy', 'layers', ARCHITECTURE_LAYERS);
 
   const shouldReduceMotion = useReducedMotion();
   const [selectedLayerId, setSelectedLayerId] = useState<string>(layers[0]?.id || ARCHITECTURE_LAYERS[0].id);
   const [isManifestoExpanded, setIsManifestoExpanded] = useState<boolean>(false);
-  
-  // Per-layer expanded state map for granular Read More management
-  const [expandedLayerDetails, setExpandedLayerDetails] = useState<Record<string, boolean>>({
-    [layers[0]?.id || ARCHITECTURE_LAYERS[0].id]: false,
-  });
 
   const activeLayer = layers.find((l: any) => l.id === selectedLayerId) || layers[0] || ARCHITECTURE_LAYERS[0];
-  const isCurrentLayerExpanded = !!expandedLayerDetails[activeLayer.id];
-
-  const handleSelectLayer = (layerId: string) => {
-    soundEngine.playTap();
-    setSelectedLayerId(layerId);
-  };
-
-  const handleToggleLayerDetail = (layerId: string) => {
-    soundEngine.playTap();
-    setExpandedLayerDetails((prev) => ({
-      ...prev,
-      [layerId]: !prev[layerId],
-    }));
-  };
-
-  const handleToggleAllLayers = (expand: boolean) => {
-    soundEngine.playClick();
-    const updated: Record<string, boolean> = {};
-    layers.forEach((l: any) => {
-      updated[l.id] = expand;
-    });
-    setExpandedLayerDetails(updated);
-  };
-
-  const allLayersAreExpanded = layers.every((l: any) => !!expandedLayerDetails[l.id]);
 
   return (
-    <section id="architecture" className="py-28 bg-white dark:bg-[#07090e] text-slate-900 dark:text-white border-t border-slate-200/70 dark:border-white/5 relative overflow-hidden transition-colors duration-500">
-      {/* Floating Ambient Light Glow Orbs */}
-      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-96 h-96 bg-purple-500/10 dark:bg-purple-600/15 blur-[140px] rounded-full pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="architecture" className="py-20 sm:py-28 bg-[var(--bg-canvas)] text-[var(--text-primary)] border-t hairline-border relative transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }}
-          className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 pb-8 border-b border-slate-200/80 dark:border-white/10 gap-6"
-        >
-          <div>
-            <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 liquid-glass px-4 py-1.5 rounded-full mb-3 shadow-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-              {headerContent.badge || DEFAULT_PHILOSOPHY_HEADER.badge}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between pb-8 border-b hairline-border gap-6">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 text-xs font-mono font-medium tracking-wide text-[var(--accent-primary)] bg-[var(--accent-subtle)] px-3 py-1 rounded-full border hairline-border">
+              <span>{headerContent.badge || DEFAULT_PHILOSOPHY_HEADER.badge}</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">
               {headerContent.headline || DEFAULT_PHILOSOPHY_HEADER.headline}
             </h2>
           </div>
 
-          <div className="max-w-md">
-            <p className="text-xs text-slate-600 dark:text-gray-400 font-bold uppercase tracking-wider leading-relaxed">
+          <div className="max-w-md space-y-2">
+            <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
               {headerContent.subtitle || DEFAULT_PHILOSOPHY_HEADER.subtitle}
             </p>
 
-            {/* Expandable Section Manifesto Toggle */}
-            <div className="mt-3">
-              <button
-                onClick={() => {
-                  soundEngine.playTap();
-                  setIsManifestoExpanded((prev) => !prev);
-                }}
-                className="inline-flex items-center gap-1.5 text-xs font-black text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer group"
-                aria-expanded={isManifestoExpanded}
-                aria-controls="engineering-manifesto-text"
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>
-                  {isManifestoExpanded
-                    ? (manifesto.collapseLabel || DEFAULT_PHILOSOPHY_MANIFESTO.collapseLabel)
-                    : (manifesto.buttonLabel || DEFAULT_PHILOSOPHY_MANIFESTO.buttonLabel)}
-                </span>
-                {isManifestoExpanded ? (
-                  <ChevronUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
-                ) : (
-                  <ChevronDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
-                )}
-              </button>
-
-              <AnimatePresence>
-                {isManifestoExpanded && (
-                  <motion.div
-                    id="engineering-manifesto-text"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: shouldReduceMotion ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="mt-3.5 p-4 rounded-2xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed space-y-2">
-                      <p>
-                        <strong className="text-slate-900 dark:text-white font-extrabold">
-                          {manifesto.p1Bold || DEFAULT_PHILOSOPHY_MANIFESTO.p1Bold}
-                        </strong>
-                        {manifesto.p1Text || DEFAULT_PHILOSOPHY_MANIFESTO.p1Text}
-                      </p>
-                      <p>
-                        {manifesto.p2Text || DEFAULT_PHILOSOPHY_MANIFESTO.p2Text}
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Global Controls & Density Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-2">
-          <div className="text-[10px] text-slate-500 dark:text-gray-500 font-black uppercase tracking-[0.2em] flex items-center gap-2">
-            <Layers className="w-3.5 h-3.5 text-blue-500" />
-            <span>Interactive 5-Layer Stack (Click to select & focus)</span>
-          </div>
-
-          {/* Quick Density Management Toggle */}
-          <div className="flex items-center gap-2 text-xs">
             <button
-              onClick={() => handleToggleAllLayers(!allLayersAreExpanded)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#161616] text-slate-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border border-slate-200 dark:border-[#2a2a2a] hover:border-blue-400 font-bold transition-all text-[11px] cursor-pointer"
+              type="button"
+              onClick={() => setIsManifestoExpanded((prev) => !prev)}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--accent-primary)] hover:underline cursor-pointer"
             >
-              <SlidersHorizontal className="w-3 h-3" />
-              <span>{allLayersAreExpanded ? 'Collapse All Deep Dives' : 'Expand All Deep Dives'}</span>
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>{isManifestoExpanded ? 'Collapse Architecture Manifesto' : 'Read Anti-Hype Engineering Manifesto'}</span>
+              {isManifestoExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </button>
           </div>
         </div>
 
-        {/* Interactive 5-Layer Stack Diagram */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Expandable Architecture Manifesto */}
+        <AnimatePresence>
+          {isManifestoExpanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="p-6 rounded-2xl editorial-card bg-[var(--bg-subtle)] space-y-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                <p>
+                  <strong className="text-[var(--text-primary)] font-bold">Why Pragmatic Architecture Out-Delivers Hyped Stacks:</strong> Most custom software projects fail not because they lacked a 15-microservice Kubernetes mesh, but because an unmonitored background worker died silently, or two browser tabs updated inventory simultaneously with no database transaction lock.
+                </p>
+                <p>
+                  At DevCenterPoint, we reject resume-driven development. We engineer with battle-tested PHP 8.3 / Laravel 11, React Inertia.js, and PostgreSQL. It delivers deterministic ACID guarantees, sub-50ms API responses, 10x faster shipping velocity, and trivial maintenance that any competent engineer can run on a standard VPS or container.
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* 5-Layer Stack Interactive Explorer */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Layer Stack Selector (Left - 6 cols) */}
+          {/* Layer Selector Column (6 cols) */}
           <div className="lg:col-span-6 space-y-3">
+            <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider mb-2">
+              Select Architectural Tier:
+            </div>
+
             {layers.map((layer: any, idx: number) => {
               const isSelected = layer.id === selectedLayerId;
-              const isExpanded = !!expandedLayerDetails[layer.id];
 
               return (
-                <React.Fragment key={layer.id}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-30px' }}
-                    transition={{
-                      duration: 0.5,
-                      delay: idx * 0.08,
-                      ease: [0.215, 0.61, 0.355, 1]
+                <div key={layer.id} className="space-y-2">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setSelectedLayerId(layer.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedLayerId(layer.id);
+                      }
                     }}
-                    className={`rounded-2xl transition-all duration-300 border overflow-hidden ${
+                    className={`p-4 rounded-xl editorial-card cursor-pointer transition-all flex items-center justify-between ${
                       isSelected
-                        ? 'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white border-transparent shadow-xl shadow-blue-500/25 scale-[1.01] ring-1 ring-white/20'
-                        : 'liquid-glass text-slate-800 dark:text-gray-200 hover:border-blue-400/40 shadow-xs'
+                        ? 'border-[var(--accent-primary)] ring-1 ring-[var(--accent-primary)] bg-[var(--accent-subtle)]'
+                        : 'hover:border-[var(--border-strong)]'
                     }`}
                   >
-                    {/* Primary Layer Click Target */}
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => handleSelectLayer(layer.id)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          handleSelectLayer(layer.id);
-                        }
-                      }}
-                      className="w-full text-left p-4 sm:p-5 flex items-center justify-between cursor-pointer focus:outline-none"
-                      aria-label={`Select Layer ${layer.level}: ${layer.name}`}
-                    >
-                      <div className="flex items-center gap-4 min-w-0">
-                        <div
-                          className={`w-9 h-9 rounded-2xl shrink-0 flex items-center justify-center font-black text-xs border ${
-                            isSelected
-                              ? 'bg-white text-blue-600 border-white'
-                              : 'bg-slate-100 dark:bg-[#111111] text-blue-600 dark:text-blue-400 border-slate-200 dark:border-[#2a2a2a]'
-                          }`}
-                        >
-                          L{layer.level}
-                        </div>
-                        <div className="min-w-0 pr-2">
-                          <div className="font-extrabold text-base truncate">{layer.name}</div>
-                          <div
-                            className={`text-xs truncate ${
-                              isSelected ? 'text-blue-100 font-medium' : 'text-slate-500 dark:text-gray-500 font-bold'
-                            }`}
-                          >
-                            {layer.focus}
-                          </div>
-                        </div>
+                    <div className="flex items-center gap-3.5 min-w-0">
+                      <div
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-xs shrink-0 ${
+                          isSelected
+                            ? 'bg-[#0047FF] text-white'
+                            : 'bg-[var(--bg-subtle)] text-[var(--text-secondary)] border hairline-border'
+                        }`}
+                      >
+                        L{layer.level}
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
-                        {/* Status Badge */}
-                        <span
-                          className={`text-[10px] font-black tracking-widest px-2.5 py-1 rounded-full uppercase hidden sm:inline-block ${
-                            isSelected
-                              ? 'bg-white/20 text-white'
-                              : 'bg-emerald-500/10 text-emerald-600 dark:text-green-400 border border-emerald-500/20'
-                          }`}
-                        >
-                          ACTIVE
-                        </span>
-
-                        {/* Inline Read More Accordion Trigger */}
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleSelectLayer(layer.id);
-                            handleToggleLayerDetail(layer.id);
-                          }}
-                          className={`p-1.5 rounded-xl transition-all cursor-pointer ${
-                            isSelected
-                              ? 'bg-white/10 hover:bg-white/20 text-white'
-                              : 'bg-slate-100 dark:bg-[#111111] hover:bg-slate-200 dark:hover:bg-[#252525] text-slate-600 dark:text-gray-400'
-                          }`}
-                          title={isExpanded ? 'Collapse Layer Details' : 'Read More Layer Details'}
-                          aria-expanded={isExpanded}
-                        >
-                          {isExpanded ? (
-                            <ChevronUp className="w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4" />
-                          )}
-                        </button>
+                      <div className="min-w-0">
+                        <div className="text-sm font-bold text-[var(--text-primary)] truncate">
+                          {layer.name}
+                        </div>
+                        <div className="text-xs text-[var(--text-secondary)] truncate">
+                          {layer.focus}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Left Accordion Dropdown Content (When Read More is clicked on card) */}
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
-                          className={`border-t px-5 py-4 text-xs ${
-                            isSelected
-                              ? 'border-blue-400/40 bg-blue-700/50 text-blue-50'
-                              : 'border-slate-100 dark:border-[#262626] bg-slate-50/80 dark:bg-[#151515] text-slate-600 dark:text-gray-400'
-                          }`}
-                        >
-                          <div className="font-semibold leading-relaxed mb-2.5">
-                            {layer.deepDive?.summary || layer.subtitle}
-                          </div>
-
-                          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/10 dark:border-[#222222]">
-                            <span className="font-mono text-[10px] uppercase font-bold opacity-80">
-                              Target SLA: {layer.deepDive?.contractSLA || layer.scalabilityMetric}
-                            </span>
-                            <button
-                              onClick={() => {
-                                handleSelectLayer(layer.id);
-                                const inspector = document.getElementById('layer-deep-inspector');
-                                if (inspector) {
-                                  inspector.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                                }
-                              }}
-                              className={`text-[11px] font-black underline cursor-pointer ${
-                                isSelected ? 'text-white' : 'text-blue-600 dark:text-blue-400'
-                              }`}
-                            >
-                              Inspect Full Specification &rarr;
-                            </button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-surface)] border hairline-border text-[var(--accent-primary)] font-semibold shrink-0">
+                      TIER 0{layer.level}
+                    </span>
+                  </div>
 
                   {idx < layers.length - 1 && (
-                    <div className="flex justify-center my-1 text-slate-400 dark:text-gray-700">
-                      <ArrowDown className="w-4 h-4 animate-bounce" />
+                    <div className="flex justify-center text-[var(--text-muted)] my-0.5">
+                      <ArrowDown className="w-3.5 h-3.5" />
                     </div>
                   )}
-                </React.Fragment>
+                </div>
               );
             })}
           </div>
 
-          {/* Active Layer Inspector Panel (Right - 6 cols) */}
-          <motion.div
-            id="layer-deep-inspector"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-            className="lg:col-span-6 liquid-glass rounded-4xl p-6 md:p-8 shadow-2xl relative overflow-hidden font-sans ring-1 ring-black/5 dark:ring-white/10"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeLayer.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Layer Header */}
-                <div className="flex items-center justify-between pb-6 mb-6 border-b border-slate-200 dark:border-[#2a2a2a]">
-                  <div>
-                    <span className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em]">
-                      LAYER {activeLayer.level} DEEP INSPECTION
-                    </span>
-                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-1">{activeLayer.name}</h3>
-                  </div>
-                  <div className="w-10 h-10 rounded-2xl bg-blue-600/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-xs border border-blue-500/20">
-                    L{activeLayer.level}
-                  </div>
-                </div>
+          {/* Active Layer Deep Inspection Box (6 cols) */}
+          <div className="lg:col-span-6 rounded-2xl editorial-card p-6 sm:p-8 space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b hairline-border">
+              <div>
+                <span className="text-[10px] font-mono font-bold text-[var(--accent-primary)] uppercase tracking-wider">
+                  TIER {activeLayer.level} DEEP SPECIFICATION
+                </span>
+                <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--text-primary)] mt-0.5">
+                  {activeLayer.name}
+                </h3>
+              </div>
+              <div className="w-9 h-9 rounded-xl bg-[var(--bg-subtle)] border hairline-border flex items-center justify-center font-mono font-bold text-xs text-[var(--accent-primary)]">
+                L{activeLayer.level}
+              </div>
+            </div>
 
-                {/* Subtitle / Focus Summary */}
-                <p className="text-sm text-slate-700 dark:text-gray-300 leading-relaxed font-medium mb-4">
-                  {activeLayer.subtitle}
-                </p>
+            <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+              {activeLayer.deepDive?.summary || activeLayer.subtitle}
+            </p>
 
-                {/* Expandable "Read More Deep Architecture" Section in Inspector */}
-                <div className="mb-6 p-4 rounded-2xl bg-slate-50 dark:bg-[#141414] border border-slate-200 dark:border-[#2a2a2a]">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500 dark:text-gray-400 flex items-center gap-1.5">
-                      <Cpu className="w-3.5 h-3.5 text-blue-500" />
-                      Architectural Philosophy & Bounds
-                    </span>
+            {/* Mitigated Failure Modes */}
+            {activeLayer.deepDive?.failureModesMitigated && (
+              <div className="p-4 rounded-xl bg-[var(--bg-subtle)] border hairline-border space-y-2">
+                <span className="text-xs font-mono font-bold uppercase text-[var(--text-primary)] block">
+                  Failure Modes Mitigated:
+                </span>
+                <ul className="space-y-1.5 text-xs text-[var(--text-secondary)]">
+                  {activeLayer.deepDive.failureModesMitigated.map((modeText: string, idx: number) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold shrink-0">✓</span>
+                      <span>{modeText}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-                    <button
-                      onClick={() => handleToggleLayerDetail(activeLayer.id)}
-                      className="inline-flex items-center gap-1 text-xs font-black text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer"
-                      aria-expanded={isCurrentLayerExpanded}
-                    >
-                      <span>{isCurrentLayerExpanded ? 'Read Less' : 'Read More'}</span>
-                      {isCurrentLayerExpanded ? (
-                        <ChevronUp className="w-3.5 h-3.5" />
-                      ) : (
-                        <ChevronDown className="w-3.5 h-3.5" />
-                      )}
-                    </button>
-                  </div>
+            {/* Component Chips */}
+            <div className="space-y-2">
+              <span className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider block">
+                Production Building Blocks:
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {activeLayer.components?.map((comp: string, cIdx: number) => (
+                  <span key={cIdx} className="tech-tag text-xs">
+                    {comp}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-                  {/* Collapsed Preview Snippet */}
-                  {!isCurrentLayerExpanded && activeLayer.deepDive && (
-                    <p className="text-xs text-slate-600 dark:text-gray-400 mt-2 line-clamp-2 leading-relaxed">
-                      {activeLayer.deepDive.summary}
-                    </p>
-                  )}
+            {/* Target SLA */}
+            <div className="pt-4 border-t hairline-border flex items-center justify-between text-xs font-mono text-[var(--text-secondary)]">
+              <span>SLA Target:</span>
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                {activeLayer.deepDive?.contractSLA || activeLayer.scalabilityMetric || 'Production SLA Validated'}
+              </span>
+            </div>
+          </div>
 
-                  {/* Expanded Full Deep Dive Text */}
-                  <AnimatePresence>
-                    {isCurrentLayerExpanded && activeLayer.deepDive && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: shouldReduceMotion ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        className="overflow-hidden"
-                      >
-                        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-[#252525] space-y-4">
-                          {/* Summary & Rationale */}
-                          <div>
-                            <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-gray-500 mb-1">
-                              // Architectural Rationale
-                            </div>
-                            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-                              {activeLayer.deepDive.summary}
-                            </p>
-                            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-2 italic bg-white dark:bg-[#1a1a1a] p-3 rounded-xl border border-slate-200/80 dark:border-[#2a2a2a]">
-                              "{activeLayer.deepDive.designRationale}"
-                            </p>
-                          </div>
-
-                          {/* Failure Modes Mitigated */}
-                          <div>
-                            <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-gray-500 mb-2 flex items-center gap-1.5">
-                              <AlertTriangle className="w-3 h-3 text-amber-500" />
-                              Critical Failure Modes Mitigated
-                            </div>
-                            <ul className="space-y-1.5">
-                              {activeLayer.deepDive.failureModesMitigated.map((failure, fIdx) => (
-                                <li
-                                  key={fIdx}
-                                  className="flex items-start gap-2 text-xs text-slate-700 dark:text-gray-300 font-semibold leading-relaxed"
-                                >
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                                  <span>{failure}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          {/* Contract SLA */}
-                          <div className="pt-2 border-t border-slate-200 dark:border-[#252525] flex items-center justify-between text-[11px] font-mono">
-                            <span className="text-slate-500 dark:text-gray-400">Strict SLA Objective:</span>
-                            <span className="text-blue-600 dark:text-blue-400 font-bold">{activeLayer.deepDive.contractSLA}</span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* Core Layer Components List */}
-                <div className="mb-6">
-                  <h4 className="text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-3">
-                    Engineered Components
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {activeLayer.components.map((comp, idx) => (
-                      <div
-                        key={idx}
-                        className="p-3 rounded-xl bg-slate-50 dark:bg-[#111111] border border-slate-200 dark:border-[#2a2a2a] text-xs text-slate-800 dark:text-gray-300 font-bold flex items-center gap-2"
-                      >
-                        <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></span>
-                        <span className="truncate">{comp}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Security Protocol & Observability */}
-                <div className="space-y-3 mb-2 text-xs font-medium">
-                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#111111] border border-slate-200 dark:border-[#2a2a2a]">
-                    <div className="text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-1 flex items-center gap-2">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-green-400" /> SECURITY & ACCESS PROTOCOL
-                    </div>
-                    <div className="text-slate-900 dark:text-white font-bold">{activeLayer.securityProtocol}</div>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#111111] border border-slate-200 dark:border-[#2a2a2a]">
-                    <div className="text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-1 flex items-center gap-2">
-                      <Activity className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> OBSERVABILITY & TELEMETRY
-                    </div>
-                    <div className="text-slate-900 dark:text-white font-bold">{activeLayer.observability}</div>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#111111] border border-slate-200 dark:border-[#2a2a2a]">
-                    <div className="text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-1 flex items-center gap-2">
-                      <Terminal className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> TARGET SCALABILITY BENCHMARK
-                    </div>
-                    <div className="text-emerald-600 dark:text-green-400 font-black">{activeLayer.scalabilityMetric}</div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </motion.div>
         </div>
+
       </div>
     </section>
   );
 };
-

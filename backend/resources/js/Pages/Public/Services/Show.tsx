@@ -5,6 +5,9 @@ import {
   ArrowRight,
   ArrowLeft,
   CheckCircle,
+  ShieldCheck,
+  Terminal,
+  Layers,
   Code,
   Cpu,
   Palette,
@@ -13,15 +16,11 @@ import {
   Activity,
   Smartphone,
   Server,
-  Terminal,
-  ShieldCheck,
-  Layers,
 } from 'lucide-react';
 import { CmsData } from '../../../Context/CmsContext';
 import { CmsService } from '../../../types';
 import { PublicPageShell } from '../../../Components/PublicPageShell';
 import { PageMasthead } from '../../../Components/PageMasthead';
-import { soundEngine } from '../../../lib/soundEngine';
 import { truncate } from '../../../lib/markdown';
 
 const iconMap: Record<string, React.ElementType> = {
@@ -92,15 +91,14 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
         <div className="flex flex-wrap items-center gap-2.5">
           <Link
             href="/services"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl liquid-glass text-xs font-bold text-slate-700 dark:text-neutral-300 border border-slate-200 dark:border-white/10 hover:border-blue-500/40 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[var(--bg-surface)] text-xs font-mono font-bold text-[var(--text-ink)] border hairline-border hover:border-[var(--accent-primary)] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>All services</span>
           </Link>
           <Link
             href="/#contact"
-            onClick={() => soundEngine.playTap()}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-linear-to-r from-blue-600 via-indigo-600 to-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/25 hover:from-blue-500 hover:to-indigo-500 transition-colors"
+            className="editorial-btn-primary inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold"
           >
             <span>Start a project</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -108,27 +106,27 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
         </div>
       </PageMasthead>
 
-      <section className="py-16 sm:py-24 bg-slate-50 dark:bg-[#0a0a0a] transition-colors duration-500">
+      <section className="py-16 sm:py-24 bg-[var(--bg-canvas)] text-[var(--text-ink)] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Primary narrative column */}
-          <div className="lg:col-span-8 space-y-10">
+          <div className="lg:col-span-8 space-y-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="liquid-glass rounded-3xl p-6 sm:p-8 ring-1 ring-black/5 dark:ring-white/10"
+              transition={{ duration: 0.3 }}
+              className="editorial-card rounded-2xl p-6 sm:p-8"
             >
-              <div className="flex items-center gap-3 pb-5 mb-6 border-b border-slate-200/80 dark:border-white/10">
-                <div className="p-3 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/60">
+              <div className="flex items-center gap-3 pb-5 mb-6 border-b hairline-border">
+                <div className="p-2.5 rounded-xl bg-[var(--accent-subtle)] text-[var(--accent-primary)] border hairline-border">
                   <Icon className="w-5 h-5" />
                 </div>
-                <h2 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
-                  What this engagement delivers
+                <h2 className="text-lg sm:text-xl font-black text-[var(--text-ink)]">
+                  What this discipline delivers
                 </h2>
               </div>
 
               {service.description && (
-                <p className="text-sm sm:text-base text-slate-700 dark:text-neutral-300 leading-relaxed mb-8">
+                <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed mb-8 font-normal">
                   {service.description}
                 </p>
               )}
@@ -138,10 +136,10 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
                   {features.map((feature, idx) => (
                     <div
                       key={idx}
-                      className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/70 dark:border-white/10"
+                      className="flex items-start gap-2.5 p-3.5 rounded-xl bg-[var(--bg-subtle)] border hairline-border"
                     >
-                      <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-                      <span className="text-xs sm:text-sm text-slate-700 dark:text-neutral-300 font-medium">
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <span className="text-xs sm:text-sm text-[var(--text-ink)] font-medium">
                         {feature}
                       </span>
                     </div>
@@ -152,18 +150,18 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
 
             {architecturePoints.length > 0 && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5 }}
-                className="liquid-glass rounded-3xl p-6 sm:p-8 ring-1 ring-black/5 dark:ring-white/10"
+                transition={{ duration: 0.3 }}
+                className="editorial-card rounded-2xl p-6 sm:p-8"
               >
-                <div className="flex items-center gap-3 pb-5 mb-6 border-b border-slate-200/80 dark:border-white/10">
-                  <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/60">
+                <div className="flex items-center gap-3 pb-5 mb-6 border-b hairline-border">
+                  <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <h2 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
-                    Architectural standards
+                  <h2 className="text-lg sm:text-xl font-black text-[var(--text-ink)]">
+                    Architectural standards & quality gates
                   </h2>
                 </div>
 
@@ -171,9 +169,9 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
                   {architecturePoints.map((point, idx) => (
                     <li
                       key={idx}
-                      className="flex items-start gap-3 text-xs sm:text-sm text-slate-700 dark:text-neutral-300 font-medium"
+                      className="flex items-start gap-3 text-xs sm:text-sm text-[var(--text-ink)] font-medium"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0 mt-1.5" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)] shrink-0 mt-2" />
                       <span>{point}</span>
                     </li>
                   ))}
@@ -182,14 +180,11 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
             )}
 
             {service.code_snippet && (
-              <div className="liquid-glass rounded-3xl p-6 sm:p-8 ring-1 ring-black/5 dark:ring-white/10">
+              <div className="editorial-card rounded-2xl p-6 sm:p-8">
                 <button
                   type="button"
-                  onClick={() => {
-                    soundEngine.playTap();
-                    setShowCode((prev) => !prev);
-                  }}
-                  className="inline-flex items-center gap-2 text-xs font-mono font-semibold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                  onClick={() => setShowCode((prev) => !prev)}
+                  className="inline-flex items-center gap-2 text-xs font-mono font-semibold text-[var(--accent-primary)] hover:underline cursor-pointer"
                 >
                   <Terminal className="w-3.5 h-3.5" />
                   <span>{showCode ? 'Hide implementation sample' : 'View implementation sample'}</span>
@@ -199,7 +194,7 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
-                    className="mt-4 bg-neutral-950 text-neutral-200 p-4 sm:p-5 rounded-2xl font-mono text-[11px] leading-relaxed border border-neutral-800 overflow-x-auto shadow-inner"
+                    className="mt-4 bg-slate-900 dark:bg-black text-slate-100 p-4 sm:p-5 rounded-xl font-mono text-[11px] leading-relaxed border border-slate-800 overflow-x-auto"
                   >
                     <pre>
                       <code>{service.code_snippet}</code>
@@ -213,19 +208,16 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
           {/* Sidebar: stack, related services, CTA */}
           <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-28 h-fit">
             {technologies.length > 0 && (
-              <div className="liquid-glass rounded-3xl p-6 ring-1 ring-black/5 dark:ring-white/10">
+              <div className="editorial-card rounded-2xl p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Layers className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                  <h2 className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-neutral-400">
+                  <Layers className="w-4 h-4 text-[var(--accent-primary)]" />
+                  <h2 className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)]">
                     Core stack & tooling
                   </h2>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {technologies.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 text-xs font-medium text-slate-700 dark:text-neutral-300"
-                    >
+                    <span key={idx} className="tech-tag text-xs">
                       {tech}
                     </span>
                   ))}
@@ -234,16 +226,16 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
             )}
 
             {related.length > 0 && (
-              <div className="liquid-glass rounded-3xl p-6 ring-1 ring-black/5 dark:ring-white/10">
-                <h2 className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-neutral-400 mb-4">
-                  Related services
+              <div className="editorial-card rounded-2xl p-6">
+                <h2 className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)] mb-4">
+                  Related disciplines
                 </h2>
                 <ul className="space-y-2">
                   {related.map((item) => (
                     <li key={item.slug}>
                       <Link
                         href={`/services/${item.slug}`}
-                        className="group flex items-center justify-between gap-3 py-2 text-xs font-bold text-slate-700 dark:text-neutral-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        className="group flex items-center justify-between gap-3 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors"
                       >
                         <span>{item.title}</span>
                         <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -254,16 +246,15 @@ export default function ServiceShow({ service, related = [], ...cms }: ServiceSh
               </div>
             )}
 
-            <div className="rounded-3xl p-6 bg-linear-to-br from-blue-600 via-indigo-600 to-purple-700 text-white shadow-xl shadow-blue-600/20">
-              <h2 className="text-lg font-black tracking-tight mb-2">Scope this service</h2>
-              <p className="text-xs text-blue-50/90 leading-relaxed mb-4 font-medium">
+            <div className="rounded-2xl p-6 bg-[var(--accent-subtle)] border hairline-border">
+              <h2 className="text-base font-black tracking-tight text-[var(--text-ink)] mb-2">Scope this discipline</h2>
+              <p className="text-xs text-[var(--text-muted)] leading-relaxed mb-4 font-normal">
                 Tell us the workflow you need and we will respond with an architecture direction and a realistic
                 timeline.
               </p>
               <Link
                 href="/#contact"
-                onClick={() => soundEngine.playTap()}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-blue-700 text-xs font-bold hover:bg-blue-50 transition-colors"
+                className="editorial-btn-primary inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold"
               >
                 <span>Start a project</span>
                 <ArrowRight className="w-3.5 h-3.5" />

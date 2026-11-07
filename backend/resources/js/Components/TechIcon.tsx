@@ -253,6 +253,53 @@ export const TechIcon: React.FC<TechIconProps> = ({ name, className = '', size =
         </svg>
       );
 
+    case 'bKash Merchant API':
+      return (
+        <svg width={s} height={s} viewBox="0 0 100 100" fill="none" className={className} aria-label="bKash">
+          <rect width="100" height="100" rx="20" fill="#E2136E" />
+          <path d="M22 62 L48 24 L58 38 L38 62 Z" fill="#FFFFFF" />
+          <path d="M58 38 L78 30 L66 54 Z" fill="#FFFFFF" opacity="0.9" />
+          <path d="M48 62 L74 62 L60 74 Z" fill="#FFFFFF" opacity="0.9" />
+        </svg>
+      );
+
+    case 'SSLCommerz':
+      return (
+        <svg width={s} height={s} viewBox="0 0 100 100" fill="none" className={className} aria-label="SSLCommerz">
+          <rect width="100" height="100" rx="20" fill="#0C2340" />
+          <path d="M24 38 C24 30 32 26 40 26 L60 26 C68 26 76 32 76 40 C76 48 68 52 58 52 L42 52 C32 52 24 58 24 66 C24 74 32 78 42 78 L64 78" stroke="#38BDF8" strokeWidth="8" strokeLinecap="round" />
+        </svg>
+      );
+
+    case 'Nagad Gateway':
+      return (
+        <svg width={s} height={s} viewBox="0 0 100 100" fill="none" className={className} aria-label="Nagad">
+          <rect width="100" height="100" rx="20" fill="#F7941D" />
+          <path d="M30 70 L30 30 L48 56 L48 30 M54 70 L54 30 L72 56 L72 30" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+
+    case 'Courier Logistics APIs':
+      return (
+        <svg width={s} height={s} viewBox="0 0 100 100" fill="none" className={className} aria-label="Courier Logistics">
+          <rect width="100" height="100" rx="20" fill="#0F766E" />
+          <path d="M25 40 L50 25 L75 40 L50 55 Z" stroke="#FFFFFF" strokeWidth="5" strokeLinejoin="round" fill="none" />
+          <path d="M25 40 L25 65 L50 80 L50 55" stroke="#FFFFFF" strokeWidth="5" strokeLinejoin="round" fill="none" />
+          <path d="M75 40 L75 65 L50 80" stroke="#FFFFFF" strokeWidth="5" strokeLinejoin="round" fill="none" />
+        </svg>
+      );
+
+    case 'Transactional SMS Rails':
+      return (
+        <svg width={s} height={s} viewBox="0 0 100 100" fill="none" className={className} aria-label="Transactional SMS">
+          <rect width="100" height="100" rx="20" fill="#4338CA" />
+          <path d="M24 30 L76 30 C80 30 84 34 84 38 L84 62 C84 66 80 70 76 70 L40 70 L24 82 L24 38 C24 34 28 30 32 30" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          <circle cx="42" cy="50" r="4" fill="#38BDF8" />
+          <circle cx="54" cy="50" r="4" fill="#38BDF8" />
+          <circle cx="66" cy="50" r="4" fill="#38BDF8" />
+        </svg>
+      );
+
     default:
       return (
         <div className={`rounded-lg bg-blue-500/20 text-blue-500 flex items-center justify-center font-bold text-xs ${className}`} style={{ width: s, height: s }}>

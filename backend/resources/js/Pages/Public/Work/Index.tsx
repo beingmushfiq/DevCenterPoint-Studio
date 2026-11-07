@@ -48,7 +48,7 @@ export default function WorkIndex(props: WorkIndexProps) {
         crumbs={[{ label: 'Work' }]}
       />
 
-      <section className="py-16 sm:py-24 bg-slate-50 dark:bg-[#0a0a0a] transition-colors duration-500">
+      <section className="py-16 sm:py-24 bg-[var(--bg-canvas)] text-[var(--text-ink)] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {works.length === 0 ? (
             <SectionState
@@ -61,25 +61,25 @@ export default function WorkIndex(props: WorkIndexProps) {
               {works.map((work, idx) => (
                 <motion.div
                   key={work.slug}
-                  initial={{ opacity: 0, y: 24 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.5, delay: (idx % 2) * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.3, delay: (idx % 2) * 0.05 }}
                 >
                   <Link
                     href={`/work/${work.slug}`}
-                    className="group flex h-full flex-col liquid-glass rounded-3xl overflow-hidden ring-1 ring-black/5 dark:ring-white/10 hover:ring-blue-500/40 transition-all duration-300"
+                    className="group flex h-full flex-col editorial-card rounded-2xl overflow-hidden hover:border-[var(--accent-primary)] transition-all duration-200"
                   >
                     {work.thumbnail_url && (
-                      <div className="relative aspect-video overflow-hidden bg-slate-200 dark:bg-neutral-900">
+                      <div className="relative aspect-video overflow-hidden bg-[var(--bg-subtle)] border-b hairline-border">
                         <img
                           src={work.thumbnail_url}
                           alt={`${work.title} — case study`}
                           loading="lazy"
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102"
                         />
                         {work.category && (
-                          <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-950/80 backdrop-blur-sm text-[10px] font-mono font-bold uppercase tracking-wider text-white border border-white/10">
+                          <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-[var(--bg-surface)] text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--text-ink)] border hairline-border shadow-xs">
                             {work.category}
                           </span>
                         )}
@@ -87,17 +87,17 @@ export default function WorkIndex(props: WorkIndexProps) {
                     )}
 
                     <div className="flex flex-1 flex-col p-6 sm:p-7">
-                      <h2 className="text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white mb-1.5">
+                      <h2 className="text-lg sm:text-xl font-black tracking-tight text-[var(--text-ink)] mb-1.5">
                         {work.title}
                       </h2>
 
                       {work.tagline && (
-                        <p className="text-xs sm:text-sm font-bold text-blue-600 dark:text-blue-400 mb-3">
+                        <p className="text-xs sm:text-sm font-bold text-[var(--accent-primary)] mb-3">
                           {work.tagline}
                         </p>
                       )}
 
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 leading-relaxed mb-5">
+                      <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed mb-5 font-normal">
                         {work.overview}
                       </p>
 
@@ -106,12 +106,12 @@ export default function WorkIndex(props: WorkIndexProps) {
                           {work.metrics.slice(0, 3).map((metric, i) => (
                             <div
                               key={i}
-                              className="rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 p-3 text-center"
+                              className="rounded-xl bg-[var(--bg-subtle)] border hairline-border p-3 text-center"
                             >
-                              <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white">
+                              <div className="text-sm sm:text-base font-black text-[var(--accent-primary)] font-mono">
                                 {metric.value}
                               </div>
-                              <div className="text-[9px] font-mono uppercase tracking-wider text-slate-500 dark:text-neutral-500 mt-1 leading-tight">
+                              <div className="text-[9px] font-mono uppercase tracking-wider text-[var(--text-muted)] mt-1 leading-tight">
                                 {metric.label}
                               </div>
                             </div>
@@ -119,9 +119,9 @@ export default function WorkIndex(props: WorkIndexProps) {
                         </div>
                       )}
 
-                      <span className="mt-auto inline-flex items-center gap-2 text-xs font-bold text-blue-600 dark:text-blue-400">
-                        <span>Read the case study</span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                      <span className="mt-auto inline-flex items-center gap-1.5 text-xs font-bold text-[var(--accent-primary)]">
+                        <span>Read technical case study</span>
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-1" />
                       </span>
                     </div>
                   </Link>
@@ -135,9 +135,9 @@ export default function WorkIndex(props: WorkIndexProps) {
               href="https://devcenterpoint.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-neutral-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors"
             >
-              <span>Discuss a project like these</span>
+              <span>Discuss a production engagement</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
